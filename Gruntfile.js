@@ -6,7 +6,7 @@ module.exports = function(grunt) {
         screeps: {
             options: {
                 email: 'grzegorz.przydryga@gmail.com',
-                password: '01am0r3E',
+                password: '',
                 branch: 'default',
                 ptr: false
             },
