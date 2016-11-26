@@ -41,3 +41,4 @@ jspm_packages
 .gitignore
 .idea/
 node_modules/
+/ScreepsAutocomplete/

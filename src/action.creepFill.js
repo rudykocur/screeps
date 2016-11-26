@@ -4,37 +4,50 @@ module.exports = {
 
         var rolesMin = {
             builder: 1,
-            upgrader: 2,
+            upgrader: 0,
             repairer: 0,
-            harvester: 2
+            mover: 1,
+            'harvester-pure': 1,
+            harvester: 0
         };
         
         var rolesFactory = {
-            builder: function(spawn) {
-                spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], null, {
-                    role: 'builder'
+            builder: function(spawn, role) {
+                spawn.createCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], null, {
+                    role: role
                 })
             },
-            repairer: function(spawn) {
+            repairer: function(spawn, role) {
                 spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], null, {
-                    role: 'repairer'
+                    role: role
                 })
             },
-            upgrader: function(spawn) {
+            upgrader: function(spawn, role) {
                 spawn.createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], null, {
-                    role: 'upgrader',
+                    role: role,
                     energySource: '57ef9ddd86f108ae6e60e6dd'
                 })
             },
-            harvester: function(spawn) {
-                spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], null, {role: 'harvester'})
+            harvester: function(spawn, role) {
+                spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], null, {role: role})
             },
+            'harvester-pure': function(spawn, role) {
+                spawn.createCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE], null, {
+                    role: role,
+                    energySource: '57ef9ddd86f108ae6e60e6db'
+                })
+            },
+            mover: function(spawn, role) {
+                spawn.createCreep([CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], null, {role: role})
+            }
         };
 
         var currentRolesCount = {
             builder: 0,
             upgrader: 0,
             repairer: 0,
+            mover: 0,
+            'harvester-pure': 0,
             harvester: 0
         };
 
@@ -47,7 +60,7 @@ module.exports = {
             if(currentRolesCount[role] < rolesMin[role]) {
                 console.log("Spawning creep " + role);
 
-                rolesFactory[role](spawn);
+                rolesFactory[role](spawn, role);
             }
         })
     }
