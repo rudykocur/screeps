@@ -18,7 +18,7 @@ module.exports = (function() {
         upgrader: {
             minimum: 2,
             body: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            memo: {role: 'upgrader', energySource: objects.containerBottom}
+            memo: {role: 'upgrader', fromStructures: objects.containersTop}
         },
 
         harvester: {
