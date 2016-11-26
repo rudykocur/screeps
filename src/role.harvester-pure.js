@@ -10,7 +10,7 @@ module.exports = (function() {
                 actionHarvest.tryHarvestSource(creep);
             }
             else {
-                actionHarvest.tryTransferToStorage(creep, 10);
+                actionHarvest.tryTransferToStorage(creep, {maxRange: 10});
             }
         }
     }

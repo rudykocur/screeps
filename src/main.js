@@ -4,6 +4,7 @@ const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleMover = require('role.mover');
 const roleRepairer = require('role.repairer');
+const roleTransfer = require('role.transfer');
 const roleTower = require('role.tower');
 var creepSpawn = require('creepSpawn');
 
@@ -15,6 +16,7 @@ module.exports = (function() {
         mover: roleMover,
         builder: roleBuilder,
         repairer: roleRepairer,
+        transfer: roleTransfer,
         none: {run: function() {}},
     };
 

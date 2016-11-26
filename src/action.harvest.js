@@ -1,42 +1,51 @@
 module.exports = (function() {
 
-    function tryHarvestSource(creep) {
-        var source = creep.pos.findClosestByRange(FIND_SOURCES);
-
-        if (creep.memory.energySource) {
-            var desirableSource = Game.getObjectById(creep.memory.energySource);
-            if (desirableSource) {
-                source = desirableSource;
-            }
-        }
-
-        if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source);
-        }
-    }
-
-    function tryHarvestStorage(creep, minAmount) {
-        var source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-
-            /**
-             *
-             * @param {StructureContainer} struct
-             */
-            filter: function(struct) {
-                return (struct.structureType == STRUCTURE_CONTAINER || struct.structureType == STRUCTURE_STORAGE) &&
-                    _.sum(struct.store) > (minAmount || 50);
-            }
-        });
-
-        if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(source);
-        }
-    }
-
     return {
-        tryHarvestSource: tryHarvestSource,
+        tryHarvestSource: function tryHarvestSource(creep) {
+            var source = creep.pos.findClosestByRange(FIND_SOURCES);
 
-        tryHarvestStorage: tryHarvestStorage,
+            if (creep.memory.energySource) {
+                var desirableSource = Game.getObjectById(creep.memory.energySource);
+                if (desirableSource) {
+                    source = desirableSource;
+                }
+            }
+
+            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(source);
+            }
+        },
+
+        /**
+         * @param {Creep} creep
+         * @param {Object} options
+         */
+        tryHarvestStorage: function (creep, options) {
+            options = _.defaults(options || {}, {reserve: 50, structures: false});
+
+            var source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+
+                /**
+                 *
+                 * @param {StructureContainer} struct
+                 */
+                filter: function(struct) {
+                    if(options.structures && options.structures.indexOf(struct.id) < 0) {
+                        return false;
+                    }
+
+                    if([STRUCTURE_CONTAINER, STRUCTURE_STORAGE].indexOf(struct.structureType) < 0) {
+                        return false;
+                    }
+
+                    return _.sum(struct.store) > options.reserve;
+                }
+            });
+
+            if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(source);
+            }
+        },
 
         tryTransferToSpawn: function(creep) {
             var target;
@@ -87,21 +96,47 @@ module.exports = (function() {
             return false;
         },
 
-        tryTransferToStorage: function(creep, maxRange) {
+        /**
+         * @param {Creep} creep
+         * @param {Object} options
+         */
+        tryTransferToStorage: function(creep, options) {
+            options = _.defaults(options || {}, {maxRange: 0, structures: null});
+
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 /**
                  * @param {StructureStorage} struct
                  */
-                filter: struct => (struct.structureType == STRUCTURE_STORAGE &&
-                                        _.sum(struct.store) < struct.storeCapacity &&
-                                        (!maxRange || creep.pos.getRangeTo(struct.pos) < maxRange))
+                filter: struct => {
+                    if(options.structures && options.structures.indexOf(struct.id) < 0) {
+                        return false;
+                    }
+                    if (struct.structureType != STRUCTURE_STORAGE) {
+                        return false
+                    }
+                    if (options.maxRange && creep.pos.getRangeTo(struct.pos) > options.maxRange) {
+                        return false;
+                    }
+
+                    return _.sum(struct.store) < struct.storeCapacity;
+                }
             });
 
             if(!target) {
-              target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                  filter: struct => (struct.structureType == STRUCTURE_CONTAINER &&
-                                        _.sum(struct.store) < struct.storeCapacity &&
-                                        (!maxRange || creep.pos.getRangeTo(struct.pos) < maxRange))
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: struct => {
+                        if(options.structures && options.structures.indexOf(struct.id) < 0) {
+                            return false;
+                        }
+                        if (struct.structureType != STRUCTURE_CONTAINER) {
+                            return false
+                        }
+                        if (options.maxRange && creep.pos.getRangeTo(struct.pos) > options.maxRange) {
+                            return false;
+                        }
+
+                        return _.sum(struct.store) < struct.storeCapacity;
+                    }
               })
             }
 

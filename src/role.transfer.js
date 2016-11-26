@@ -7,18 +7,10 @@ module.exports = (function() {
         run:  function(creep) {
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
-                actionHarvest.tryHarvestStorage(creep);
+                actionHarvest.tryHarvestStorage(creep, {structures: creep.memory.fromStructures});
             }
-
             else {
-                if(actionHarvest.tryTransferToSpawn(creep)) {
-                    return;
-                }
-
-                if(actionHarvest.tryTransferToTower(creep)) {
-                    return;
-                }
-
+                actionHarvest.tryTransferToStorage(creep, {structures: creep.memory.toStructures});
             }
         }
     }
