@@ -4,7 +4,7 @@ module.exports = (function() {
         sourceTop: '57ef9ddd86f108ae6e60e6db',
         sourceBottom: '57ef9ddd86f108ae6e60e6dd',
         containerBottom: '5839a2e6cd1628ec268459e9',
-        containersTop: ['5839703ced37cf7c5fae4cff', '583958840ea1511330966adc'],
+        containersTop: ['5839703ced37cf7c5fae4cff', '583958840ea1511330966adc', '5839c28ae967568a17eabf44'],
         containersBottom: ['5839a2e6cd1628ec268459e9', '5839b19c8b3919d7655e0661'],
     };
 
@@ -16,8 +16,8 @@ module.exports = (function() {
         },
 
         upgrader: {
-            minimum: 2,
-            body: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            minimum: 3,
+            body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             memo: {role: 'upgrader', fromStructures: objects.containersTop}
         },
 
