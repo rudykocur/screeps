@@ -54,9 +54,7 @@ module.exports = (function() {
         /**
          * @param {StructureSpawn} spawn
          */
-        doAction:  function(spawn) {
-            var room = spawn.room;
-
+        autospawn:  function(spawn) {
             var counts = {};
 
             Object.keys(Game.creeps).forEach(function (creepName) {

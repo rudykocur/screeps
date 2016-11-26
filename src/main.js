@@ -5,7 +5,7 @@ const roleBuilder = require('role.builder');
 const roleMover = require('role.mover');
 const roleRepairer = require('role.repairer');
 const roleTower = require('role.tower');
-var actionFill = require('action.creepFill');
+var creepSpawn = require('creepSpawn');
 
 module.exports = (function() {
     var roleToAction = {
@@ -30,7 +30,7 @@ module.exports = (function() {
             }
             memoryClean();
 
-            actionFill.doAction(Game.spawns.Rabbithole);
+            creepSpawn.autospawn(Game.spawns.Rabbithole);
 
             for (var name in Game.creeps) {
                 var creep = Game.creeps[name];
