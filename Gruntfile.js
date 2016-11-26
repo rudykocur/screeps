@@ -4,15 +4,26 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         screeps: {
-            options: {
-                email: 'grzegorz.przydryga@gmail.com',
-                password: '',
-                branch: 'default',
-                ptr: false
-            },
+
             dist: {
+                options: {
+                    email: 'grzegorz.przydryga@gmail.com',
+                    password: '',
+                    branch: 'default',
+                    ptr: false
+                },
+                src: ['src/*.js']
+            },
+
+            sim: {
+                options: {
+                    email: 'grzegorz.przydryga@gmail.com',
+                    password: '',
+                    branch: 'sim',
+                    ptr: false
+                },
                 src: ['src/*.js']
             }
-        }
+        },
     });
 }

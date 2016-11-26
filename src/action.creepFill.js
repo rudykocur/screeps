@@ -3,7 +3,7 @@ module.exports = {
         var room = spawn.room;
 
         var rolesMin = {
-            builder: 2,
+            builder: 1,
             upgrader: 2,
             repairer: 0,
             mover: 1,
@@ -13,7 +13,7 @@ module.exports = {
         
         var rolesFactory = {
             builder: function(spawn, role) {
-                spawn.createCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], null, {
+                spawn.createCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], null, {
                     role: role
                 })
             },
@@ -23,7 +23,7 @@ module.exports = {
                 })
             },
             upgrader: function(spawn, role) {
-                spawn.createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], null, {
+                spawn.createCreep([WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], null, {
                     role: role,
                     energySource: '57ef9ddd86f108ae6e60e6dd'
                 })
