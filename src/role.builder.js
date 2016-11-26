@@ -5,7 +5,7 @@ module.exports = {
     run:  function(creep) {
 
         if(actionUtils.shouldHarvestEnergy(creep)) {
-            actionHarvest.tryHarvestStorage(creep);
+            actionHarvest.tryHarvestStorage(creep, 300);
         }
         else {
 

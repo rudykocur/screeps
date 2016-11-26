@@ -7,7 +7,7 @@ module.exports = {
             upgrader: 0,
             repairer: 0,
             mover: 1,
-            'harvester-pure': 1,
+            'harvester-pure': 2,
             harvester: 0
         };
         

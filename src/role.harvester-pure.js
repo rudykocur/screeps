@@ -9,9 +9,8 @@ module.exports = (function() {
             if(actionUtils.shouldHarvestEnergy(creep)) {
                 actionHarvest.tryHarvestSource(creep);
             }
-
             else {
-                actionHarvest.tryTransferToStorage(creep);
+                actionHarvest.tryTransferToStorage(creep, 10);
             }
         }
     }

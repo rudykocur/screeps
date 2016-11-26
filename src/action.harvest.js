@@ -15,7 +15,7 @@ module.exports = (function() {
         }
     }
 
-    function tryHarvestStorage(creep) {
+    function tryHarvestStorage(creep, minAmount) {
         var source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 
             /**
@@ -23,7 +23,7 @@ module.exports = (function() {
              * @param {StructureContainer} struct
              */
             filter: function(struct) {
-                return _.sum(struct.store) > 50;
+                return _.sum(struct.store) > (minAmount || 50);
             }
         });
 
@@ -60,19 +60,21 @@ module.exports = (function() {
             return false;
         },
 
-        tryTransferToStorage: function(creep) {
+        tryTransferToStorage: function(creep, maxRange) {
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 /**
                  * @param {StructureStorage} struct
                  */
                 filter: struct => (struct.structureType == STRUCTURE_STORAGE &&
-                                        _.sum(struct.store) < struct.storeCapacity)
+                                        _.sum(struct.store) < struct.storeCapacity &&
+                                        (!maxRange || creep.pos.getRangeTo(struct.pos) < maxRange))
             });
 
             if(!target) {
               target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                   filter: struct => (struct.structureType == STRUCTURE_CONTAINER &&
-                                        _.sum(struct.store) < struct.storeCapacity)
+                                        _.sum(struct.store) < struct.storeCapacity &&
+                                        (!maxRange || creep.pos.getRangeTo(struct.pos) < maxRange))
               })
             }
 
