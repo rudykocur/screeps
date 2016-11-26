@@ -20,7 +20,7 @@ module.exports = (function() {
             minimum: 2,
             body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
             memo: {
-                role: 'harvester-pure',
+                role: 'harvester',
                 energySource: 'sourceTop'
             }
         },
@@ -29,7 +29,7 @@ module.exports = (function() {
             minimum: 1,
             body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE],
             memo: {
-                role: 'harvester-pure',
+                role: 'harvester',
                 energySource: 'sourceBottom'
             }
         },

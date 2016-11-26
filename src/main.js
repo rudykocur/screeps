@@ -1,21 +1,18 @@
-var roleHarvester = require('role.harvester');
 var roleHarvesterPure = require('role.harvester-pure');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleMover = require('role.mover');
-const roleRepairer = require('role.repairer');
 const roleTransfer = require('role.transfer');
 const roleTower = require('role.tower');
 var creepSpawn = require('creepSpawn');
 
 module.exports = (function() {
     var roleToAction = {
-        harvester: roleHarvester,
         'harvester-pure': roleHarvesterPure,
+        harvester: roleHarvesterPure,
         upgrader: roleUpgrader,
         mover: roleMover,
         builder: roleBuilder,
-        repairer: roleRepairer,
         transfer: roleTransfer,
         none: {run: function() {}},
     };
