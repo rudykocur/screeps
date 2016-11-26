@@ -1,5 +1,6 @@
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
+const actionBuild = require('action.build');
 
 module.exports = {
     run:  function(creep) {
@@ -9,11 +10,17 @@ module.exports = {
         }
         else {
 
-            if(actionUtils.actionTryBuild(creep)) {
+            if(actionBuild.findNewStructureToRepair(creep)) {
+                if(actionBuild.actionTryRepair(creep)) {
+                    return false;
+                }
+            }
+
+            if(actionBuild.actionTryBuild(creep)) {
                 return;
             }
 
-            if(actionUtils.actionTryRepairRoad(creep)) {
+            if(actionBuild.actionTryRepair(creep)) {
                 return;
             }
 

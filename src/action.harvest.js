@@ -38,16 +38,22 @@ module.exports = (function() {
         tryHarvestStorage: tryHarvestStorage,
 
         tryTransferToSpawn: function(creep) {
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                filter: structure => (structure.structureType == STRUCTURE_EXTENSION &&
-                                        structure.energy < structure.energyCapacity)
-            });
+            var target;
 
             if(!target) {
-              target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
-                  filter: structure => (structure.structureType == STRUCTURE_SPAWN &&
-                                        structure.energy < structure.energyCapacity)
-              })
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: structure => {
+                        return structure.structureType == STRUCTURE_SPAWN &&
+                            structure.energy < structure.energyCapacity}
+                });
+            }
+
+            if (!target) {
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: structure => {
+                        return structure.structureType == STRUCTURE_EXTENSION &&
+                            structure.energy < structure.energyCapacity}
+                })
             }
 
             if(target) {

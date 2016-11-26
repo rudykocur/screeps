@@ -3,8 +3,8 @@ module.exports = {
         var room = spawn.room;
 
         var rolesMin = {
-            builder: 1,
-            upgrader: 0,
+            builder: 2,
+            upgrader: 2,
             repairer: 0,
             mover: 1,
             'harvester-pure': 2,

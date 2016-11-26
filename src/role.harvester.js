@@ -1,4 +1,5 @@
 const actionHarvest = require('action.harvest');
+const actionBuld = require('action.build');
 const actionUtils = require('action.utils');
 
 module.exports = {
@@ -18,7 +19,7 @@ module.exports = {
                 return;
             }
 
-            if(actionUtils.actionTryBuild(creep)) {
+            if(actionBuld.actionTryBuild(creep)) {
                 return;
             }
 
