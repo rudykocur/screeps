@@ -1,0 +1,41 @@
+module.exports = {
+    shouldHarvestEnergy:  function(creep) {
+        return creep.carry.energy < creep.carryCapacity;
+    },
+
+    actionTryBuild: function(creep) {
+        var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+
+        if(target) {
+            if(creep.build(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+                creep.build(target);
+            }
+
+            return true;
+        }
+
+        return false
+    },
+
+    actionTryRepairRoad: function(creep) {
+        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            filter: function(struct) {
+                var hpLeft = struct.hits / struct.hitsMax;
+
+                return struct.structureType == STRUCTURE_ROAD && hpLeft < 0.65;
+            }
+        });
+
+        if(target) {
+            if(creep.repair(target) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(target);
+                creep.repair(target);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+};

@@ -4,8 +4,8 @@ module.exports = {
 
         var rolesMin = {
             builder: 1,
-            upgrader: 1,
-            repairer: 1,
+            upgrader: 2,
+            repairer: 0,
             harvester: 2
         };
         
@@ -21,7 +21,7 @@ module.exports = {
                 })
             },
             upgrader: function(spawn) {
-                spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], null, {
+                spawn.createCreep([WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], null, {
                     role: 'upgrader',
                     energySource: '57ef9ddd86f108ae6e60e6dd'
                 })
