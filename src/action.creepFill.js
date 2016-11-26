@@ -1,61 +1,70 @@
-module.exports = {
-    /**
-     * @param {StructureSpawn} spawn
-     */
-    doAction:  function(spawn) {
-        var room = spawn.room;
+module.exports = (function() {
+    var groups = {
+        builder: {
+            minimum: 2,
+            body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            memo: {role: 'builder'}
+        },
 
-        var logWarning = _.throttle(function(msg) {console.log(msg)}, 10000);
+        upgrader: {
+            minimum: 2,
+            body: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            memo: {role: 'upgrader', energySource: '57ef9ddd86f108ae6e60e6dd'}
+        },
 
-        var groups = {
-            builder: {
-                minimum: 2,
-                body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-                memo: {role: 'builder'}
-            },
+        harvester: {
+            minimum: 2,
+            body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
+            memo: {role: 'harvester-pure', energySource: '57ef9ddd86f108ae6e60e6db'}
+        },
 
-            upgrader: {
-                minimum: 2,
-                body: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-                memo: {role: 'upgrader', energySource: '57ef9ddd86f108ae6e60e6dd'}
-            },
+        mover: {
+            minimum: 1,
+            body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            memo: {role: 'mover'}
+        },
+    };
 
-            harvester: {
-                minimum: 2,
-                body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
-                memo: {role: 'harvester-pure', energySource: '57ef9ddd86f108ae6e60e6db'}
-            },
 
-            mover: {
-                minimum: 1,
-                body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-                memo: {role: 'mover'}
-            },
-        };
-
-        var counts = {};
-
-        Object.keys(Game.creeps).forEach(function (creepName) {
-            var creep = Game.creeps[creepName];
-            counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
-        });
-
-        Object.keys(groups).forEach(function(groupName) {
+    return {
+        createCreep: function(groupName, spawn) {
             var group = groups[groupName];
 
-            if(counts[groupName] < group.minimum) {
-                var memo = group.memo;
-                memo.group = groupName;
+            var memo = group.memo;
+            memo.group = groupName;
 
-                if(spawn.canCreateCreep(group.body) == OK) {
-                    var newCreepName = spawn.createCreep(group.body, null, memo);
-                    console.log('Spawned creep from group ' + groupName + ', name: ' + newCreepName);
-                }
-                else {
-                    logWarning('Not enough energy for creep tye: ' + groupName);
-                }
-
+            if(spawn.canCreateCreep(group.body) == OK) {
+                var newCreepName = spawn.createCreep(group.body, null, memo);
+                console.log('Spawned creep from group ' + groupName + ', name: ' + newCreepName);
             }
-        });
+            else {
+                logWarning('Not enough energy for creep tye: ' + groupName);
+            }
+        },
+
+        /**
+         * @param {StructureSpawn} spawn
+         */
+        doAction:  function(spawn) {
+            var room = spawn.room;
+
+            var logWarning = _.throttle(function(msg) {console.log(msg)}, 10000);
+
+            var counts = {};
+
+            Object.keys(Game.creeps).forEach(function (creepName) {
+                var creep = Game.creeps[creepName];
+                counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
+            });
+
+            Object.keys(groups).forEach(function(groupName) {
+                var group = groups[groupName];
+
+                if(counts[groupName] < group.minimum) {
+                    module.exports.createCreep(groupName, spawn);
+
+                }
+            });
+        }
     }
-}
+})();
