@@ -15,6 +15,10 @@ module.exports = (function() {
                     return;
                 }
 
+                if(actionHarvest.tryTransferToTower(creep)) {
+                    return;
+                }
+
                 actionUtils.actionFillController(creep);
             }
         }

@@ -67,6 +67,26 @@ module.exports = (function() {
             return false;
         },
 
+        tryTransferToTower: function(creep) {
+            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                /**
+                 *
+                 * @param {StructureTower} structure
+                 */
+                filter: structure => {
+                    return structure.structureType == STRUCTURE_TOWER && structure.energy < 500}
+            });
+
+            if(target) {
+                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target)
+                }
+                return true;
+            }
+
+            return false;
+        },
+
         tryTransferToStorage: function(creep, maxRange) {
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 /**

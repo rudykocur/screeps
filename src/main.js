@@ -4,6 +4,7 @@ const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
 const roleMover = require('role.mover');
 const roleRepairer = require('role.repairer');
+const roleTower = require('role.tower');
 var actionFill = require('action.creepFill');
 
 module.exports = (function() {
@@ -16,6 +17,10 @@ module.exports = (function() {
         repairer: roleRepairer,
         none: {run: function() {}},
     };
+
+    function getStructures(type) {
+        return _.filter(_.values(Game.structures), s => s.structureType == type);
+    }
 
     return {
         loop: function () {
@@ -39,6 +44,10 @@ module.exports = (function() {
                     console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
                 }
             }
+
+            _.each(getStructures(STRUCTURE_TOWER), function(tower) {
+                roleTower.run(tower);
+            })
         },
     }
 
