@@ -1,67 +1,61 @@
 module.exports = {
+    /**
+     * @param {StructureSpawn} spawn
+     */
     doAction:  function(spawn) {
         var room = spawn.room;
 
-        var rolesMin = {
-            builder: 1,
-            upgrader: 2,
-            repairer: 0,
-            mover: 1,
-            'harvester-pure': 2,
-            harvester: 0
-        };
-        
-        var rolesFactory = {
-            builder: function(spawn, role) {
-                spawn.createCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE], null, {
-                    role: role
-                })
+        var logWarning = _.throttle(function(msg) {console.log(msg)}, 10000);
+
+        var groups = {
+            builder: {
+                minimum: 2,
+                body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                memo: {role: 'builder'}
             },
-            repairer: function(spawn, role) {
-                spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], null, {
-                    role: role
-                })
+
+            upgrader: {
+                minimum: 2,
+                body: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                memo: {role: 'upgrader', energySource: '57ef9ddd86f108ae6e60e6dd'}
             },
-            upgrader: function(spawn, role) {
-                spawn.createCreep([WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], null, {
-                    role: role,
-                    energySource: '57ef9ddd86f108ae6e60e6dd'
-                })
+
+            harvester: {
+                minimum: 2,
+                body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
+                memo: {role: 'harvester-pure', energySource: '57ef9ddd86f108ae6e60e6db'}
             },
-            harvester: function(spawn, role) {
-                spawn.createCreep([WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE], null, {role: role})
+
+            mover: {
+                minimum: 1,
+                body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                memo: {role: 'mover'}
             },
-            'harvester-pure': function(spawn, role) {
-                spawn.createCreep([WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE], null, {
-                    role: role,
-                    energySource: '57ef9ddd86f108ae6e60e6db'
-                })
-            },
-            mover: function(spawn, role) {
-                spawn.createCreep([CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], null, {role: role})
-            }
         };
 
-        var currentRolesCount = {
-            builder: 0,
-            upgrader: 0,
-            repairer: 0,
-            mover: 0,
-            'harvester-pure': 0,
-            harvester: 0
-        };
+        var counts = {};
 
         Object.keys(Game.creeps).forEach(function (creepName) {
             var creep = Game.creeps[creepName];
-            currentRolesCount[creep.memory.role] += 1;
+            counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
         });
 
-        Object.keys(rolesMin).forEach(function(role) {
-            if(currentRolesCount[role] < rolesMin[role]) {
-                console.log("Spawning creep " + role);
+        Object.keys(groups).forEach(function(groupName) {
+            var group = groups[groupName];
 
-                rolesFactory[role](spawn, role);
+            if(counts[groupName] < group.minimum) {
+                var memo = group.memo;
+                memo.group = groupName;
+
+                if(spawn.canCreateCreep(group.body) == OK) {
+                    var newCreepName = spawn.createCreep(group.body, null, memo);
+                    console.log('Spawned creep from group ' + groupName + ', name: ' + newCreepName);
+                }
+                else {
+                    logWarning('Not enough energy for creep tye: ' + groupName);
+                }
+
             }
-        })
+        });
     }
 }
