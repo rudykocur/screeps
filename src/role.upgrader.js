@@ -1,20 +1,16 @@
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
+const bookmarks = require('bookmarks');
 
 module.exports = (function() {
-    function getSourcesList(creep) {
-        if(creep.memory.energySource) {
-            return [creep.memory.energySource];
-        }
-        else {
-            return creep.memory.fromStructures;
-        }
-    }
 
     return {
         run: function(creep){
             if(actionUtils.shouldHarvestEnergy(creep)) {
-                actionHarvest.tryHarvestStorage(creep, {reserve: 300, structures: getSourcesList(creep)});
+                actionHarvest.tryHarvestStorage(creep, {
+                    reserve: 300,
+                    structures: bookmarks.getObjects(creep.memory.fromStructures)
+                });
             }
             else {
                 actionUtils.actionFillController(creep);

@@ -1,5 +1,6 @@
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
+const bookmarks = require('bookmarks');
 
 module.exports = (function() {
 
@@ -7,7 +8,9 @@ module.exports = (function() {
         run:  function(creep) {
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
-                actionHarvest.tryHarvestSource(creep);
+                actionHarvest.tryHarvestSource(creep, {
+                    structures: bookmarks.getObjects(creep.memory.energySource)
+                });
             }
             else {
                 actionHarvest.tryTransferToStorage(creep, {maxRange: 10});

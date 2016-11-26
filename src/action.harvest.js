@@ -1,19 +1,25 @@
 module.exports = (function() {
 
     return {
-        tryHarvestSource: function tryHarvestSource(creep) {
-            var source = creep.pos.findClosestByRange(FIND_SOURCES);
+        tryHarvestSource: function tryHarvestSource(creep, options) {
+            options = _.defaults(options || {}, {structures: false});
 
-            if (creep.memory.energySource) {
-                var desirableSource = Game.getObjectById(creep.memory.energySource);
-                if (desirableSource) {
-                    source = desirableSource;
+            var source = creep.pos.findClosestByRange(FIND_SOURCES, {
+                filter: function(struct) {
+                    if(options.structures && options.structures.indexOf(struct.id) < 0) {
+                        return false;
+                    }
+
+                    return true;
+                }
+            });
+
+            if(source) {
+                if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source);
                 }
             }
 
-            if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-            }
         },
 
         /**
