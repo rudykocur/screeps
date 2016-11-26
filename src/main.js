@@ -55,7 +55,7 @@ function memoryClean() {
 function printDiagnostics() {
     var room = Game.spawns.Rabbithole.room;
     console.log('Power: ' + room.energyAvailable + '/' + room.energyCapacityAvailable);
-    console.log(Object.keys(Game.creeps).map(cn => cn+':'+Game.creeps[cn].memory.role+':'+Game.creeps[cn].ticksToLive+' '));
+    console.log(Object.keys(Game.creeps).map(cn => cn+':'+Game.creeps[cn].memory.group+':'+Game.creeps[cn].ticksToLive+' '));
 }
 
 

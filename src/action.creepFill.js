@@ -1,4 +1,11 @@
 module.exports = (function() {
+
+    var objects = {
+        sourceTop: '57ef9ddd86f108ae6e60e6db',
+        sourceBottom: '57ef9ddd86f108ae6e60e6dd',
+        containerBottom: '5839a2e6cd1628ec268459e9',
+    };
+
     var groups = {
         builder: {
             minimum: 2,
@@ -9,22 +16,27 @@ module.exports = (function() {
         upgrader: {
             minimum: 2,
             body: [WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            memo: {role: 'upgrader', energySource: '57ef9ddd86f108ae6e60e6dd'}
+            memo: {role: 'upgrader', energySource: objects.containerBottom}
         },
 
         harvester: {
             minimum: 2,
             body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
-            memo: {role: 'harvester-pure', energySource: '57ef9ddd86f108ae6e60e6db'}
+            memo: {role: 'harvester-pure', energySource: objects.sourceTop}
+        },
+
+        harvesterBottom: {
+            minimum: 1,
+            body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE],
+            memo: {role: 'harvester-pure', energySource: objects.sourceBottom}
         },
 
         mover: {
             minimum: 1,
-            body: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            body: [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
             memo: {role: 'mover'}
         },
     };
-
 
     return {
         createCreep: function(groupName, spawn) {
@@ -37,9 +49,6 @@ module.exports = (function() {
                 var newCreepName = spawn.createCreep(group.body, null, memo);
                 console.log('Spawned creep from group ' + groupName + ', name: ' + newCreepName);
             }
-            else {
-                logWarning('Not enough energy for creep tye: ' + groupName);
-            }
         },
 
         /**
@@ -47,8 +56,6 @@ module.exports = (function() {
          */
         doAction:  function(spawn) {
             var room = spawn.room;
-
-            var logWarning = _.throttle(function(msg) {console.log(msg)}, 10000);
 
             var counts = {};
 
@@ -60,7 +67,7 @@ module.exports = (function() {
             Object.keys(groups).forEach(function(groupName) {
                 var group = groups[groupName];
 
-                if(counts[groupName] < group.minimum) {
+                if((counts[groupName] || 0) < group.minimum) {
                     module.exports.createCreep(groupName, spawn);
 
                 }
