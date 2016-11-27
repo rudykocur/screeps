@@ -27,6 +27,29 @@ module.exports = (function() {
         return _.filter(_.values(Game.structures), s => s.structureType == type);
     }
 
+    function runDefence() {
+
+        _.each(Game.rooms, /** @param {Room} room */ function(room) {
+            if(Game.time % 20 == 0) {
+                var hostiles = room.find(FIND_HOSTILE_CREEPS);
+
+                for(var i = 0; i < hostiles.length; i++) {
+                    /** @type Creep */
+                    var hostile = hostiles[i];
+
+                    var aggresive = _.any(hostile.body, p => _.contains([ATTACK, RANGED_ATTACK, CLAIM], p.type));
+
+                    if(aggresive) {
+                        if(!room.controller.safeMode) {
+                            Game.notify("Activated safe mode in room " + room);
+                            room.controller.activateSafeMode();
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     return {
         loop: function () {
 
@@ -34,8 +57,7 @@ module.exports = (function() {
                 Game.stat = printDiagnostics;
             }
             memoryClean();
-
-            // Memory.rooms = ['E17S66', 'E17S66'];
+            runDefence();
 
             creepExt.register(taskWithdrawStorage.task);
             creepExt.register(taskUpgrade.task);
