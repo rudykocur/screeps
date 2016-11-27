@@ -32,7 +32,7 @@ module.exports = {
     actionTryBuild: function(creep) {
         var target;
 
-        var priority = Memory.buildPriority || [];
+        var priority = Memory.buildQueue || [];
 
         while(priority.length > 0) {
             var tmp = priority[0];

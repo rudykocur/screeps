@@ -50,14 +50,14 @@ module.exports = (function() {
                 }
             },
             settler: {
-                minimum: 3,
+                minimum: 4,
                 body: [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
                 memo: {
                     role: 'settler',
                 }
             },
             settlerCtrl: {
-                minimum: 1,
+                minimum: 0,
                 body: [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
                 memo: {
                     role: 'settler',
@@ -65,12 +65,12 @@ module.exports = (function() {
                 }
             },
             settlerFar: {
-                minimum: 1,
-                body: [WORK, WORK, CARRY, MOVE, MOVE, MOVE],
+                minimum: 2,
+                body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE],
                 memo: {
                     role: 'settler',
                     energySource: '57ef9ebf86f108ae6e60fd87',
-                    disableController: true
+                    disableBuild: true,
                 }
             }
 

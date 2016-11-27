@@ -31,18 +31,20 @@ module.exports = (function() {
 
         _.each(Game.rooms, /** @param {Room} room */ function(room) {
             if(Game.time % 20 == 0) {
+                var aggresive = false;
                 var hostiles = room.find(FIND_HOSTILE_CREEPS);
 
                 for(var i = 0; i < hostiles.length; i++) {
                     /** @type Creep */
                     var hostile = hostiles[i];
 
-                    var aggresive = _.any(hostile.body, p => _.contains([ATTACK, RANGED_ATTACK, CLAIM], p.type));
+                    aggresive = _.any(hostile.body, p => _.contains([ATTACK, RANGED_ATTACK, CLAIM], p.type));
 
                     if(aggresive) {
                         if(!room.controller.safeMode) {
                             Game.notify("Activated safe mode in room " + room);
                             room.controller.activateSafeMode();
+                            break;
                         }
                     }
                 }
