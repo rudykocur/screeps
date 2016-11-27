@@ -5,9 +5,14 @@ const bookmarks = require('bookmarks');
 module.exports = (function() {
 
     function getTaskId() {
-        Memory.creepExtTaskIdCounter = Memory.creepExtTaskIdCounter || 1;
+        Memory.counters = Memory.counters || {};
+        Memory.counters.taskId = Memory.counters.taskId || 1;
 
-        return Memory.creepExtTaskIdCounter++;
+        if(Memory.counters.taskId > 100000) {
+            Memory.counters.taskId = 1;
+        }
+
+        return Memory.counters.taskId++;
     }
 
     return {
@@ -27,7 +32,7 @@ module.exports = (function() {
                     return true;
                 }
 
-                this.creep.say('ERR ' + moveResult);
+                this.creep.say('ERR M ' + moveResult);
                 module.exports.endTask(this.creep);
                 return false;
             }

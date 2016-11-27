@@ -8,7 +8,7 @@ module.exports = (function() {
         },
 
         upgrader: {
-            minimum: 3,
+            minimum: 2,
             body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             memo: {
                 role: 'upgrader',
@@ -52,6 +52,17 @@ module.exports = (function() {
 
     };
 
+    function getCreepId() {
+        Memory.counters = Memory.counters || {};
+        Memory.counters.creepId = Memory.counters.creepId || 1;
+
+        if(Memory.counters.creepId > 100000) {
+            Memory.counters.creepId = 1;
+        }
+
+        return Memory.counters.creepId++;
+    }
+
     return {
         createCreep: function(groupName, spawn) {
             var group = groups[groupName];
@@ -60,7 +71,8 @@ module.exports = (function() {
             memo.group = groupName;
 
             if(spawn.canCreateCreep(group.body) == OK) {
-                var newCreepName = spawn.createCreep(group.body, null, memo);
+                var name = groupName + getCreepId();
+                var newCreepName = spawn.createCreep(group.body, name, memo);
                 console.log('Spawned creep from group ' + groupName + ', name: ' + newCreepName);
             }
         },

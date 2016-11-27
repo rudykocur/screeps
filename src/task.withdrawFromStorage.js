@@ -27,7 +27,7 @@ module.exports = (function() {
             run() {
                 /** @param {StructureStorage} */
                 var target = Game.getObjectById(this.state.target);
-                var result = this.creep.withdraw(target, RESOURCE_ENERGY, 10);
+                var result = this.creep.withdraw(target, RESOURCE_ENERGY);
 
                 if(result == OK) {
                     creepExt.endTask(this.creep);
@@ -38,7 +38,7 @@ module.exports = (function() {
                     return this.move();
                 }
 
-                this.creep.say('ERR ' + result);
+                this.creep.say('ERR WST ' + result);
                 creepExt.endTask(this.creep);
 
             }

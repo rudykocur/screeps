@@ -43,7 +43,7 @@ module.exports = (function() {
                     return this.move();
                 }
 
-                this.creep.say('ERR ' + result);
+                this.creep.say('ERR U' + result);
                 creepExt.endTask(this.creep);
             }
         },

@@ -9,7 +9,7 @@ module.exports = (function() {
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
                 actionHarvest.tryHarvestStorage(creep, {
-                    reserve: 200,
+                    reserve: 0,
                     structures: bookmarks.getObjects(creep.memory.fromStructures)
                 });
             }

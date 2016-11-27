@@ -51,7 +51,11 @@ module.exports = (function() {
                         return false;
                     }
 
-                    return _.sum(struct.store) > options.reserve;
+                    if(options.reserve) {
+                        return _.sum(struct.store) > (options.reserve + creep.carryCapacity)
+                    }
+
+                    return true;
                 }
             });
 
