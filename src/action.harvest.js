@@ -27,12 +27,19 @@ module.exports = (function() {
          * @param {Object} options
          */
         tryHarvestStorage: function (creep, options) {
+            var source = module.exports.findStorageToHarvest(creep, options);
+
+            if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(source);
+            }
+        },
+
+        findStorageToHarvest: function(creep, options) {
             options = _.defaults(options || {}, {reserve: 50, structures: false});
 
             var source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
 
                 /**
-                 *
                  * @param {StructureContainer} struct
                  */
                 filter: function(struct) {
@@ -48,9 +55,7 @@ module.exports = (function() {
                 }
             });
 
-            if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
-            }
+            return source;
         },
 
         tryTransferToSpawn: function(creep) {

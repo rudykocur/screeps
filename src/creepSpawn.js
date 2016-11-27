@@ -2,7 +2,7 @@ module.exports = (function() {
 
     var groups = {
         builder: {
-            minimum: 2,
+            minimum: 1,
             body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             memo: {role: 'builder'}
         },
@@ -41,14 +41,15 @@ module.exports = (function() {
         },
 
         transfer1: {
-            minimum: 2,
+            minimum: 1,
             body: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
             memo: {
                 role: 'transfer',
                 fromStructures: 'containersBottom',
                 toStructures: 'containersTop',
             }
-        }
+        },
+
     };
 
     return {
