@@ -14,8 +14,10 @@ module.exports = {
 
         else {
 
-            if(actionHarvest.tryTransferToSpawn(creep)) {
-                return;
+            if(!creep.memory.disableSpawn) {
+                if(actionHarvest.tryTransferToSpawn(creep)) {
+                    return;
+                }
             }
 
             if(!creep.memory.disableBuild) {
@@ -24,8 +26,10 @@ module.exports = {
                 }
             }
 
-            if(actionHarvest.tryTransferToStorage(creep)) {
-                return
+            if(!creep.memory.disableStorage) {
+                if(actionHarvest.tryTransferToStorage(creep)) {
+                    return
+                }
             }
 
             if(!creep.memory.disableController) {
