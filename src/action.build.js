@@ -30,12 +30,29 @@ module.exports = {
     },
 
     actionTryBuild: function(creep) {
-        var target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+        var target;
+
+        var priority = Memory.buildPriority || [];
+
+        while(priority.length > 0) {
+            var tmp = priority[0];
+            var tmpTarget = Game.getObjectById(tmp);
+            if(!tmpTarget) {
+                priority.splice(0, 1);
+            }
+            else {
+                target = tmpTarget;
+                break;
+            }
+        }
+
+        if(!target) {
+            target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+        }
 
         if(target) {
             if(creep.build(target) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(target);
-                creep.build(target);
             }
 
             return true;

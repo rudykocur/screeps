@@ -1,56 +1,6 @@
+const config = require('config');
+
 module.exports = (function() {
-
-    var groups = {
-        builder: {
-            minimum: 1,
-            body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            memo: {role: 'builder'}
-        },
-
-        upgrader: {
-            minimum: 2,
-            body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
-            memo: {
-                role: 'upgrader',
-                fromStructures: 'containersTop'
-            }
-        },
-
-        harvester: {
-            minimum: 2,
-            body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
-            memo: {
-                role: 'harvester',
-                energySource: 'sourceTop'
-            }
-        },
-
-        harvesterBottom: {
-            minimum: 1,
-            body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE],
-            memo: {
-                role: 'harvester',
-                energySource: 'sourceBottom'
-            }
-        },
-
-        mover: {
-            minimum: 1,
-            body: [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
-            memo: {role: 'mover'}
-        },
-
-        transfer1: {
-            minimum: 1,
-            body: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
-            memo: {
-                role: 'transfer',
-                fromStructures: 'containersBottom',
-                toStructures: 'containersTop',
-            }
-        },
-
-    };
 
     function getCreepId() {
         Memory.counters = Memory.counters || {};
@@ -65,7 +15,7 @@ module.exports = (function() {
 
     return {
         createCreep: function(groupName, spawn) {
-            var group = groups[groupName];
+            var group = config.spawn[groupName];
 
             var memo = group.memo;
             memo.group = groupName;
@@ -88,8 +38,8 @@ module.exports = (function() {
                 counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
             });
 
-            Object.keys(groups).forEach(function(groupName) {
-                var group = groups[groupName];
+            Object.keys(config.spawn).forEach(function(groupName) {
+                var group = config.spawn[groupName];
 
                 if((counts[groupName] || 0) < group.minimum) {
                     module.exports.createCreep(groupName, spawn);

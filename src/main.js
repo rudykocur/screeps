@@ -4,6 +4,7 @@ const roleBuilder = require('role.builder');
 const roleMover = require('role.mover');
 const roleTransfer = require('role.transfer');
 const roleTower = require('role.tower');
+const roleSettler = require('role.settler');
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 
@@ -18,6 +19,7 @@ module.exports = (function() {
         mover: roleMover,
         builder: roleBuilder,
         transfer: roleTransfer,
+        settler: roleSettler,
         none: {run: function() {}},
     };
 
@@ -43,26 +45,24 @@ module.exports = (function() {
             for (var name in Game.creeps) {
                 var creep = Game.creeps[name];
 
+                var role = creep.memory.role;
+
+                if(roleToAction[role]) {
+                    if(roleToAction[role].scheduleTask) {
+                        roleToAction[role].scheduleTask(creep);
+                    }
+                    else {
+                        roleToAction[role].run(creep);
+                    }
+                }
+                else {
+                    console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
+                }
+
                 var task = creepExt.getTask(creep);
                 if(task) {
                     task.run()
                 }
-                else {
-                    var role = creep.memory.role;
-
-                    if(roleToAction[role]) {
-                        if(roleToAction[role].scheduleTask) {
-                            roleToAction[role].scheduleTask(creep);
-                        }
-                        else {
-                            roleToAction[role].run(creep);
-                        }
-                    }
-                    else {
-                        console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
-                    }
-                }
-
             }
 
             _.each(getStructures(STRUCTURE_TOWER), function(tower) {
