@@ -2,41 +2,63 @@ const actionHarvest = require('action.harvest');
 const actionBuld = require('action.build');
 const actionUtils = require('action.utils');
 
-module.exports = {
+module.exports = (function() {
     /**
      * @param {Creep} creep
+     * @param {String} targetRoom
      */
-    run:  function(creep) {
+    function tryChangeRoom(creep, targetRoom) {
 
-        if(actionUtils.shouldHarvestEnergy(creep)) {
-            actionHarvest.run(creep);
+        if(targetRoom && creep.pos.roomName != targetRoom) {
+            var exitDir = creep.room.findExitTo(targetRoom);
+            var exit = creep.pos.findClosestByRange(exitDir);
+            creep.moveTo(exit);
+            return true;
         }
 
-        else {
+        return false;
+    }
 
-            if(!creep.memory.disableSpawn) {
-                if(actionHarvest.tryTransferToSpawn(creep)) {
-                    return;
-                }
+    return {
+        /**
+         * @param {Creep} creep
+         */
+        run:  function(creep) {
+
+            if(tryChangeRoom(creep, creep.memory.room)) {
+                return;
             }
 
-            if(!creep.memory.disableBuild) {
-                if(actionBuld.actionTryBuild(creep)) {
-                    return;
-                }
+            if(actionUtils.shouldHarvestEnergy(creep)) {
+                actionHarvest.run(creep);
             }
 
-            if(!creep.memory.disableStorage) {
-                if(actionHarvest.tryTransferToStorage(creep)) {
-                    return
-                }
-            }
+            else {
 
-            if(!creep.memory.disableController) {
-                if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(creep.room.controller);
+                if(!creep.memory.disableSpawn) {
+                    if(actionHarvest.tryTransferToSpawn(creep)) {
+                        return;
+                    }
+                }
+
+                if(!creep.memory.disableBuild) {
+                    if(actionBuld.actionTryBuild(creep)) {
+                        return;
+                    }
+                }
+
+                if(!creep.memory.disableStorage) {
+                    if(actionHarvest.tryTransferToStorage(creep)) {
+                        return
+                    }
+                }
+
+                if(!creep.memory.disableController) {
+                    if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(creep.room.controller);
+                    }
                 }
             }
         }
     }
-};
+})();

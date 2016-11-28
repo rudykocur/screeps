@@ -16,6 +16,10 @@ module.exports = (function() {
                      * @param {Structure} struct
                      */
                     filter: function(struct) {
+                        if(struct.structureType == STRUCTURE_WALL) {
+                            return struct.hits < 70000;
+                        }
+
                         return (struct.hits / struct.hitsMax) < 0.75;
                     }
                 });

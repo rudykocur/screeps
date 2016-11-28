@@ -47,7 +47,7 @@ module.exports = {
         }
 
         if(!target) {
-            target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+            target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
         }
 
         if(target) {

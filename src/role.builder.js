@@ -22,9 +22,10 @@ module.exports = (function() {
                     return;
                 }
 
-                if(actionBuild.actionTryRepair(creep)) {
-                    return;
-                }
+                //if(actionBuild.actionTryRepair(creep)) {
+                //    return;
+                //}
+
 
                 actionUtils.actionFillController(creep);
             }

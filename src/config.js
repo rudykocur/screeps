@@ -2,40 +2,57 @@ module.exports = (function() {
     return {
         spawn: {
             builder: {
-                minimum: 0,
-                body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                minimum: 1,
+                body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
                 memo: {role: 'builder'}
             },
 
             upgrader: {
-                minimum: 0,
-                body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                minimum: 1,
+                body: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
                 memo: {
                     role: 'upgrader',
-                    fromStructures: 'containersTop'
+                    fromStructures: 'containersRight'
                 }
             },
 
-            harvester: {
-                minimum: 0,
-                body: [WORK, WORK, WORK, WORK, CARRY, CARRY, MOVE],
+            upgraderAny: {
+                minimum: 1,
+                body: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
                 memo: {
-                    role: 'harvester',
-                    energySource: 'sourceTop'
+                    role: 'upgrader',
                 }
             },
 
-            harvesterBottom: {
-                minimum: 0,
-                body: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE],
+            upgraderLeft: {
+                minimum: 2,
+                body: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
+                memo: {
+                    role: 'upgrader',
+                    fromStructures: 'containersLeft'
+                }
+            },
+
+            harvesterRight: {
+                minimum: 2,
+                body: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
                 memo: {
                     role: 'harvester',
-                    energySource: 'sourceBottom'
+                    energySource: 'sourceRight'
+                }
+            },
+
+            harvesterLeft: {
+                minimum: 2,
+                body: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
+                memo: {
+                    role: 'harvester',
+                    energySource: 'sourceLeft'
                 }
             },
 
             mover: {
-                minimum: 0,
+                minimum: 1,
                 body: [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
                 memo: {role: 'mover'}
             },
@@ -49,25 +66,14 @@ module.exports = (function() {
                     toStructures: 'containersTop',
                 }
             },
-            settler: {
-                minimum: 4,
-                body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+            settlerTop: {
+                minimum: 2,
+                body: [MOVE,MOVE,MOVE,MOVE,WORK,CARRY],
                 memo: {
                     role: 'settler',
+                    room: 'E66N42',
                 }
             },
-            settlerFar: {
-                minimum: 2,
-                body: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
-                memo: {
-                    role: 'settler',
-                    energySource: '57ef9ebf86f108ae6e60fd87',
-                    disableBuild: true,
-                    disableSpawn: true,
-                    disableStorage: true,
-                }
-            }
-
         }
     }
 })();

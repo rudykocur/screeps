@@ -71,9 +71,14 @@ module.exports = (function() {
 
                 var role = creep.memory.role;
 
+                var task = creepExt.getTask(creep);
+
                 if(roleToAction[role]) {
+
                     if(roleToAction[role].scheduleTask) {
-                        roleToAction[role].scheduleTask(creep);
+                        if(!task) {
+                            roleToAction[role].scheduleTask(creep);
+                        }
                     }
                     else {
                         roleToAction[role].run(creep);
@@ -83,7 +88,7 @@ module.exports = (function() {
                     console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
                 }
 
-                var task = creepExt.getTask(creep);
+                task = creepExt.getTask(creep);
                 if(task) {
                     task.run()
                 }
