@@ -4,15 +4,24 @@ module.exports = (function() {
         tryHarvestSource: function tryHarvestSource(creep, options) {
             options = _.defaults(options || {}, {structures: false});
 
-            var source = creep.pos.findClosestByRange(FIND_SOURCES, {
-                filter: function(struct) {
-                    if(options.structures && options.structures.indexOf(struct.id) < 0) {
-                        return false;
-                    }
+            var source;
 
-                    return true;
-                }
-            });
+            var dropped = creep.pos.findInRange(FIND_DROPPED_ENERGY, 1);
+            if(dropped.length > 0) {
+                source = dropped[0];
+            }
+
+            if(!source) {
+                source = creep.pos.findClosestByRange(FIND_SOURCES, {
+                    filter: function(struct) {
+                        if(options.structures && options.structures.indexOf(struct.id) < 0) {
+                            return false;
+                        }
+
+                        return true;
+                    }
+                });
+            }
 
             if(source) {
                 if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
