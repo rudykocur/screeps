@@ -15,8 +15,6 @@ module.exports = (function() {
             if(hostiles.length > 0) {
                 var username = hostiles[0].owner.username;
                 Game.notify(`User ${username} spotted in room ${roomName}`);
-                // var towers = Game.rooms[roomName].find(
-                //     FIND_MY_STRUCTURES, {filter: {structureType: STRUCTURE_TOWER}});
                 tower.attack(hostiles[0]);
                 return;
             }
@@ -27,7 +25,7 @@ module.exports = (function() {
                      * @param {Structure} struct
                      */
                     filter: function(struct) {
-                        if(struct.structureType == STRUCTURE_WALL) {
+                        if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
                             return struct.hits < 70000;
                         }
 

@@ -2,7 +2,7 @@ const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 
 module.exports = (function() {
-    var room = 'E65N41';
+    var room = 'sim';
     var tmpPoint = new RoomPosition(30, 30, room);
 
     var sites = [
@@ -35,18 +35,22 @@ module.exports = (function() {
 
     return {
         run:  function(creep) {
-            if(tryChangeRoom(creep, room)) {
-                return;
-            }
+            // if(tryChangeRoom(creep, room)) {
+            //     return;
+            // }
+            //
+            // if(creep.pos.x > 48) {
+            //     creep.move(LEFT);
+            //     return;
+            // }
 
-            if(creep.pos.x > 48) {
-                creep.move(LEFT);
-                return;
-            }
+            //console.log('creep', creep, '::', room, '::', creep.room.name);
 
             if(creep.room.name == room) {
                 _.each(sites, function(site) {
-                    creep.room.createConstructionSite(site.pos.x, site.pos.y, site.type);
+                    var result = creep.room.createConstructionSite(site.pos.x, site.pos.y, site.type);
+
+                    console.log('construnction result', result);
                 })
             }
 
