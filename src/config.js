@@ -53,7 +53,7 @@ module.exports = (function() {
 
             mover: {
                 minimum: 1,
-                body: [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+                body: [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
                 memo: {role: 'mover'}
             },
 
@@ -67,11 +67,30 @@ module.exports = (function() {
                 }
             },
             settlerTop: {
-                minimum: 2,
+                minimum: 3,
                 body: [MOVE,MOVE,MOVE,MOVE,WORK,CARRY],
                 memo: {
                     role: 'settler',
                     room: 'E66N42',
+                }
+            },
+
+            settlerLeft: {
+                minimum: 1,
+                body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                memo: {
+                    role: 'settler',
+                    room: 'E65N41',
+                }
+            },
+            settlerLeftHaul: {
+                minimum: 2,
+                body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                memo: {
+                    role: 'settler',
+                    harvestRoom: 'E65N41',
+                    workRoom: 'E66N41',
+                    disableSpawn: true,
                 }
             },
         }

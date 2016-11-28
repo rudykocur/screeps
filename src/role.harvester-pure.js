@@ -13,7 +13,7 @@ module.exports = (function() {
                 });
             }
             else {
-                actionHarvest.tryTransferToStorage(creep, {maxRange: 10});
+                actionHarvest.tryTransferToStorage(creep, {maxRange: 3});
             }
         }
     }

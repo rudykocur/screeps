@@ -30,10 +30,18 @@ module.exports = (function() {
             }
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
+                if(tryChangeRoom(creep, creep.memory.harvestRoom)) {
+                    return;
+                }
+
                 actionHarvest.run(creep);
             }
 
             else {
+
+                if(tryChangeRoom(creep, creep.memory.workRoom)) {
+                    return;
+                }
 
                 if(!creep.memory.disableSpawn) {
                     if(actionHarvest.tryTransferToSpawn(creep)) {
