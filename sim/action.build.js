@@ -32,7 +32,7 @@ module.exports = {
     actionTryBuild: function(creep) {
         var target;
 
-        var priority = Memory.buildPriority || [];
+        var priority = Memory.buildQueue || [];
 
         while(priority.length > 0) {
             var tmp = priority[0];
@@ -47,7 +47,7 @@ module.exports = {
         }
 
         if(!target) {
-            target = creep.pos.findClosestByPath(FIND_CONSTRUCTION_SITES);
+            target = creep.pos.findClosestByPath(FIND_MY_CONSTRUCTION_SITES);
         }
 
         if(target) {

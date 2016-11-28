@@ -31,6 +31,11 @@ module.exports = (function() {
          * @param {StructureSpawn} spawn
          */
         autospawn:  function(spawn) {
+            if(!spawn) {
+                console.log('No spawn given to autospawn');
+                return;
+            }
+
             var counts = {};
 
             Object.keys(Game.creeps).forEach(function (creepName) {

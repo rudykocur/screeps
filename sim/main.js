@@ -5,6 +5,7 @@ const roleMover = require('role.mover');
 const roleTransfer = require('role.transfer');
 const roleTower = require('role.tower');
 const roleSettler = require('role.settler');
+const roleRoomPrepare = require('role.roomPrepare');
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 
@@ -20,11 +21,37 @@ module.exports = (function() {
         builder: roleBuilder,
         transfer: roleTransfer,
         settler: roleSettler,
+        roomPrepare: roleRoomPrepare,
         none: {run: function() {}},
     };
 
     function getStructures(type) {
         return _.filter(_.values(Game.structures), s => s.structureType == type);
+    }
+
+    function runDefence() {
+
+        _.each(Game.rooms, /** @param {Room} room */ function(room) {
+            if(Game.time % 20 == 0) {
+                var aggresive = false;
+                var hostiles = room.find(FIND_HOSTILE_CREEPS);
+
+                for(var i = 0; i < hostiles.length; i++) {
+                    /** @type Creep */
+                    var hostile = hostiles[i];
+
+                    aggresive = _.any(hostile.body, p => _.contains([ATTACK, RANGED_ATTACK, CLAIM], p.type));
+
+                    if(aggresive) {
+                        if(!room.controller.safeMode) {
+                            Game.notify("Activated safe mode in room " + room);
+                            room.controller.activateSafeMode();
+                            break;
+                        }
+                    }
+                }
+            }
+        });
     }
 
     return {
@@ -34,24 +61,26 @@ module.exports = (function() {
                 Game.stat = printDiagnostics;
             }
             memoryClean();
-
-            // Memory.rooms = ['E17S66', 'E17S66'];
+            runDefence();
 
             creepExt.register(taskWithdrawStorage.task);
             creepExt.register(taskUpgrade.task);
 
-            if(Game.spawns.Rabbithole) {
-                creepSpawn.autospawn(Game.spawns.Rabbithole);
-            }
+            creepSpawn.autospawn(Game.spawns.Rabbithole);
 
             for (var name in Game.creeps) {
                 var creep = Game.creeps[name];
 
                 var role = creep.memory.role;
 
+                var task = creepExt.getTask(creep);
+
                 if(roleToAction[role]) {
+
                     if(roleToAction[role].scheduleTask) {
-                        roleToAction[role].scheduleTask(creep);
+                        if(!task) {
+                            roleToAction[role].scheduleTask(creep);
+                        }
                     }
                     else {
                         roleToAction[role].run(creep);
@@ -61,7 +90,7 @@ module.exports = (function() {
                     console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
                 }
 
-                var task = creepExt.getTask(creep);
+                task = creepExt.getTask(creep);
                 if(task) {
                     task.run()
                 }
