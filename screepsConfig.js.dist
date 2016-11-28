@@ -1,0 +1,4 @@
+module.exports = {
+    login: 'screeps_login_here',
+    password: 'screeps_password_here',
+}

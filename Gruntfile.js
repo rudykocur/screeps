@@ -1,3 +1,5 @@
+var screepsConfig = require('./screepsConfig');
+
 module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-screeps');
@@ -7,8 +9,8 @@ module.exports = function(grunt) {
 
             dist: {
                 options: {
-                    email: 'grzegorz.przydryga@gmail.com',
-                    password: '',
+                    email: screepsConfig.login,
+                    password: screepsConfig.password,
                     branch: 'default',
                     ptr: false
                 },
@@ -17,12 +19,12 @@ module.exports = function(grunt) {
 
             sim: {
                 options: {
-                    email: 'grzegorz.przydryga@gmail.com',
-                    password: '',
+                    email: screepsConfig.login,
+                    password: screepsConfig.password,
                     branch: 'sim',
                     ptr: false
                 },
-                src: ['src/*.js']
+                src: ['sim/*.js']
             }
         },
     });
