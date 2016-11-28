@@ -5,6 +5,7 @@ const roleMover = require('role.mover');
 const roleTransfer = require('role.transfer');
 const roleTower = require('role.tower');
 const roleSettler = require('role.settler');
+const roleRoomPrepare = require('role.roomPrepare');
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 
@@ -20,6 +21,7 @@ module.exports = (function() {
         builder: roleBuilder,
         transfer: roleTransfer,
         settler: roleSettler,
+        roomPrepare: roleRoomPrepare,
         none: {run: function() {}},
     };
 
