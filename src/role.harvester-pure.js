@@ -2,20 +2,32 @@ const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 const bookmarks = require('bookmarks');
 
+const creepExt = require('creepExt');
+const taskMove = require('task.move');
+const taskHarvest = require('task.harvest');
+
 module.exports = (function() {
 
     return {
-        run:  function(creep) {
+        scheduleTask: function(creep) {
+            var source = bookmarks.getObject(creep.memory.energySource);
 
-            if(actionUtils.shouldHarvestEnergy(creep)) {
-                actionHarvest.tryHarvestSource(creep, {
-                    structures: bookmarks.getObjects(creep.memory.energySource)
-                });
+            if(creep.pos.isNearTo(source)) {
+                creepExt.addTask(creep, taskHarvest.task.create(creep, source));
             }
             else {
-                actionHarvest.tryTransferToStorage(creep, {maxRange: 3});
+                var containers = source.pos.findInRange(FIND_STRUCTURES, 1, {
+                    filter: {structureType: STRUCTURE_CONTAINER}
+                });
+
+                if(containers.length > 0) {
+                    creepExt.addTask(creep, taskMove.task.create(creep, containers[0]));
+                }
+                else {
+                    creep.say('NO CONT!');
+                }
             }
-        }
+        },
     }
 })();
 

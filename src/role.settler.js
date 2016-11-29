@@ -3,21 +3,6 @@ const actionBuld = require('action.build');
 const actionUtils = require('action.utils');
 
 module.exports = (function() {
-    /**
-     * @param {Creep} creep
-     * @param {String} targetRoom
-     */
-    function tryChangeRoom(creep, targetRoom) {
-
-        if(targetRoom && creep.pos.roomName != targetRoom) {
-            var exitDir = creep.room.findExitTo(targetRoom);
-            var exit = creep.pos.findClosestByRange(exitDir);
-            creep.moveTo(exit);
-            return true;
-        }
-
-        return false;
-    }
 
     return {
         /**
@@ -25,12 +10,12 @@ module.exports = (function() {
          */
         run:  function(creep) {
 
-            if(tryChangeRoom(creep, creep.memory.room)) {
+            if(actionUtils.tryChangeRoom(creep, creep.memory.room)) {
                 return;
             }
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
-                if(tryChangeRoom(creep, creep.memory.harvestRoom)) {
+                if(actionUtils.tryChangeRoom(creep, creep.memory.harvestRoom, creep.memory.via)) {
                     return;
                 }
 
@@ -39,7 +24,7 @@ module.exports = (function() {
 
             else {
 
-                if(tryChangeRoom(creep, creep.memory.workRoom)) {
+                if(actionUtils.tryChangeRoom(creep, creep.memory.workRoom, creep.memory.via)) {
                     return;
                 }
 
@@ -61,8 +46,15 @@ module.exports = (function() {
                     }
                 }
 
+                if(creep.memory.enableRepair) {
+                    actionBuld.findNewStructureToRepair(creep);
+                    if(actionBuld.actionTryRepair(creep)) {
+                        return;
+                    }
+                }
+
                 if(!creep.memory.disableController) {
-                    if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                    if(creep.room.controller.my && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(creep.room.controller);
                     }
                 }

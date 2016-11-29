@@ -7,7 +7,18 @@ module.exports = (function() {
         run:  function(creep) {
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
-                actionHarvest.tryHarvestStorage(creep);
+                if(actionHarvest.tryHarvestDroppedSource(creep)) {
+                    return;
+                }
+
+                if(actionHarvest.tryHarvestStorage(creep, {types: [STRUCTURE_CONTAINER]})) {
+                    return;
+                }
+
+                // if all containers empty, but there is spawn need for refill, then try take from storage
+                if(actionHarvest.findSpawnToTransfer(creep)) {
+                    actionHarvest.tryHarvestStorage(creep, {types: [STRUCTURE_STORAGE]});
+                }
             }
 
             else {
@@ -18,6 +29,8 @@ module.exports = (function() {
                 if(actionHarvest.tryTransferToTower(creep)) {
                     return;
                 }
+
+                actionHarvest.tryTransferToStorage(creep, {allowContainers: false});
 
             }
         }

@@ -11,6 +11,8 @@ const creepExt = require('creepExt');
 
 const taskWithdrawStorage = require('task.withdrawFromStorage');
 const taskUpgrade = require('task.upgradeController');
+const taskMove = require('task.move');
+const taskHarvest = require('task.harvest');
 
 module.exports = (function() {
     var roleToAction = {
@@ -57,14 +59,15 @@ module.exports = (function() {
     return {
         loop: function () {
 
-            if (!Game.diagnostics) {
-                Game.stat = printDiagnostics;
-            }
+            Game.stat = printDiagnostics;
+
             memoryClean();
             runDefence();
 
             creepExt.register(taskWithdrawStorage.task);
             creepExt.register(taskUpgrade.task);
+            creepExt.register(taskMove.task);
+            creepExt.register(taskHarvest.task);
 
             creepSpawn.autospawn(Game.spawns.Rabbithole);
 
@@ -117,5 +120,3 @@ function printDiagnostics() {
     console.log('Power: ' + room.energyAvailable + '/' + room.energyCapacityAvailable);
     console.log(Object.keys(Game.creeps).map(cn => cn+':'+Game.creeps[cn].memory.group+':'+Game.creeps[cn].ticksToLive+' '));
 }
-
-

@@ -3,7 +3,7 @@ module.exports = (function() {
         spawn: {
             builder: {
                 minimum: 1,
-                body: [WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
+                body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
                 memo: {role: 'builder'}
             },
 
@@ -12,30 +12,31 @@ module.exports = (function() {
                 body: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
                 memo: {
                     role: 'upgrader',
-                    fromStructures: 'containersRight'
+                    fromStructures: 'storage'
                 }
             },
 
             upgraderAny: {
-                minimum: 1,
+                minimum: 0,
                 body: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
                 memo: {
                     role: 'upgrader',
+                    fromStructures: 'storage',
                 }
             },
 
             upgraderLeft: {
-                minimum: 2,
+                minimum: 0,
                 body: [WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE],
                 memo: {
                     role: 'upgrader',
-                    fromStructures: 'containersLeft'
+                    fromStructures: 'storage'
                 }
             },
 
             harvesterRight: {
-                minimum: 2,
-                body: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
+                minimum: 1,
+                body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
                 memo: {
                     role: 'harvester',
                     energySource: 'sourceRight'
@@ -43,8 +44,8 @@ module.exports = (function() {
             },
 
             harvesterLeft: {
-                minimum: 2,
-                body: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
+                minimum: 1,
+                body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
                 memo: {
                     role: 'harvester',
                     energySource: 'sourceLeft'
@@ -52,8 +53,8 @@ module.exports = (function() {
             },
 
             mover: {
-                minimum: 1,
-                body: [CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                minimum: 2,
+                body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 memo: {role: 'mover'}
             },
 
@@ -67,11 +68,23 @@ module.exports = (function() {
                 }
             },
             settlerTop: {
-                minimum: 3,
-                body: [MOVE,MOVE,MOVE,MOVE,WORK,CARRY],
+                minimum: 1,
+                body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY],
                 memo: {
                     role: 'settler',
+                    enableRepair: true,
                     room: 'E66N42',
+                }
+            },
+
+            settlerTopHaul: {
+                minimum: 2,
+                body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                memo: {
+                    role: 'settler',
+                    harvestRoom: 'E66N42',
+                    workRoom: 'E66N41',
+                    disableSpawn: true,
                 }
             },
 
@@ -80,6 +93,7 @@ module.exports = (function() {
                 body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                 memo: {
                     role: 'settler',
+                    enableRepair: true,
                     room: 'E65N41',
                 }
             },
@@ -91,6 +105,18 @@ module.exports = (function() {
                     harvestRoom: 'E65N41',
                     workRoom: 'E66N41',
                     disableSpawn: true,
+                }
+            },
+            settlerTopLeftHaul: {
+                minimum: 1,
+                body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                memo: {
+                    role: 'settler',
+                    harvestRoom: 'E65N42',
+                    workRoom: 'E66N41',
+                    via: ['E66N41', 'E66N42', 'E65N42'],
+                    disableSpawn: true,
+                    debug: true,
                 }
             },
         }

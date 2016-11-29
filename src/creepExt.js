@@ -2,6 +2,12 @@ const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 const bookmarks = require('bookmarks');
 
+Creep.prototype.debugLog = function(message) {
+    if(this.memory.debug) {
+        console.log('CREEPER ' + this.name + ':', message);
+    }
+};
+
 module.exports = (function() {
 
     function getTaskId() {
@@ -35,6 +41,10 @@ module.exports = (function() {
                 this.creep.say('ERR M ' + moveResult);
                 module.exports.endTask(this.creep);
                 return false;
+            }
+
+            finish() {
+                module.exports.endTask(this.creep);
             }
         },
 
