@@ -8,6 +8,10 @@ Creep.prototype.debugLog = function(message) {
     }
 };
 
+Creep.prototype.addTask = function(task) {
+    module.exports.addTask(this, task);
+};
+
 module.exports = (function() {
 
     function getTaskId() {

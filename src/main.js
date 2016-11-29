@@ -5,7 +5,7 @@ const roleMover = require('role.mover');
 const roleTransfer = require('role.transfer');
 const roleTower = require('role.tower');
 const roleSettler = require('role.settler');
-const roleRoomPrepare = require('role.roomPrepare');
+const roleCollector = require('role.collector');
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 
@@ -22,8 +22,8 @@ module.exports = (function() {
         mover: roleMover,
         builder: roleBuilder,
         transfer: roleTransfer,
+        collector: roleCollector,
         settler: roleSettler,
-        roomPrepare: roleRoomPrepare,
         none: {run: function() {}},
     };
 
@@ -72,7 +72,12 @@ module.exports = (function() {
             creepSpawn.autospawn(Game.spawns.Rabbithole);
 
             for (var name in Game.creeps) {
+                /** @type Creep */
                 var creep = Game.creeps[name];
+
+                if(creep.spawning) {
+                    continue;
+                }
 
                 var role = creep.memory.role;
 

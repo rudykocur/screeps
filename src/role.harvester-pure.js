@@ -24,7 +24,7 @@ module.exports = (function() {
                     creepExt.addTask(creep, taskMove.task.create(creep, containers[0]));
                 }
                 else {
-                    creep.say('NO CONT!');
+                    creepExt.addTask(creep, taskMove.task.create(creep, source));
                 }
             }
         },

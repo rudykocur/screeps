@@ -26,33 +26,41 @@ module.exports = (function() {
          */
         tryChangeRoom: function(creep, targetRoom, via) {
 
-            if(targetRoom && (creep.pos.roomName != targetRoom)) {
-                if(via) {
-                    var route = Game.map.findRoute(creep.pos.roomName, targetRoom, {
-                        routeCallback: function(room) {
-                            if(via.indexOf(room)>=0) {
-                                return 1
+            var exit = module.exports.findRoomExit(creep, targetRoom, via);
 
-                            };
-                            return Infinity;
-                        }
-                    });
-
-                    if(route.length > 0) {
-                        var exit = creep.pos.findClosestByPath(route[0].exit, {costCallback: routeWithAvoid});
-                        creep.moveTo(exit);
-                        return true;
-                    }
-                }
-                else {
-                    var exitDir = creep.room.findExitTo(targetRoom);
-                    var exit = creep.pos.findClosestByPath(exitDir);
-                    creep.moveTo(exit);
-                    return true;
-                }
+            if(exit) {
+                creep.moveTo(exit);
+                return true;
             }
 
             return false;
+        },
+
+        findRoomExit: function(creep, targetRoom, via) {
+
+            if(targetRoom && (creep.pos.roomName != targetRoom)) {
+                var route;
+
+                if(via) {
+                    route = Game.map.findRoute(creep.pos.roomName, targetRoom, {
+                        routeCallback: function (room) {
+                            if (via.indexOf(room) >= 0) {
+                                return 1
+
+                            }
+
+                            return Infinity;
+                        }
+                    });
+                }
+                else {
+                    route = Game.map.findRoute(creep.pos.roomName, targetRoom);
+                }
+
+                if(route.length > 0) {
+                    return creep.pos.findClosestByPath(route[0].exit, {costCallback: routeWithAvoid});
+                }
+            }
         },
 
         actionFillController: function(creep) {

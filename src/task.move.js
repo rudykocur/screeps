@@ -16,7 +16,14 @@ module.exports = (function() {
              * @param {StructureStorage} target
              */
             static create(creep, target) {
-                var path = creep.pos.findPathTo(target.pos);
+                var path;
+
+                if(target.pos) {
+                    path = creep.pos.findPathTo(target.pos);
+                }
+                else {
+                    path = creep.pos.findPathTo(target);
+                }
 
                 return new module.exports.task(creep, {
                     path: path,
@@ -32,7 +39,7 @@ module.exports = (function() {
 
                 if(result == OK) {
                     this.state.path.splice(0, 1);
-                    if(this.state.path.length <= 1) {
+                    if(this.state.path.length <= 0) {
                         this.finish();
                     }
                     return;
