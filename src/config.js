@@ -107,7 +107,7 @@ module.exports = (function() {
                 }
             },
             collectorLeft: {
-                minimum: 1,
+                minimum: 2,
                 body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 memo: {
                     role: 'collector',
@@ -131,6 +131,15 @@ module.exports = (function() {
                     energySource: 'roomLeftSourceRight'
                 }
             },
+
+            fighter: {
+                minimum: 0,
+                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                memo: {
+                    role: 'brawler',
+                    room: 'E65N41'
+                }
+            }
         }
     }
 })();

@@ -19,6 +19,10 @@ module.exports = (function() {
                     return;
                 }
 
+                if(actionHarvest.tryHarvestDroppedSource(creep)) {
+                    return;
+                }
+
                 actionHarvest.run(creep);
             }
 

@@ -135,7 +135,7 @@ module.exports = (function() {
                  * @param {StructureTower} structure
                  */
                 filter: structure => {
-                    return structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity}
+                    return structure.structureType == STRUCTURE_TOWER && structure.energy < structure.energyCapacity * 0.75}
             });
 
             if(target) {
