@@ -8,8 +8,8 @@ module.exports = (function() {
             },
 
             upgrader: {
-                minimum: 4,
-                body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                minimum: 6,
+                body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                 memo: {
                     role: 'upgrader',
                     fromStructures: 'storage'
@@ -37,6 +37,7 @@ module.exports = (function() {
             mover: {
                 minimum: 2,
                 body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                priority: 10,
                 memo: {role: 'mover'}
             },
 
@@ -59,14 +60,14 @@ module.exports = (function() {
                     room: 'E65N41',
                 }
             },
-            settlerLeftHaul: {
-                minimum: 0,
+
+            settlerTopRight: {
+                minimum: 1,
                 body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                 memo: {
                     role: 'settler',
-                    harvestRoom: 'E65N41',
-                    workRoom: 'E66N41',
-                    disableSpawn: true,
+                    enableRepair: true,
+                    room: 'E67N42',
                 }
             },
             settlerTopLeftHaul: {
@@ -82,7 +83,7 @@ module.exports = (function() {
                 }
             },
             collectorTop: {
-                minimum: 1,
+                minimum: 2,
                 body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 memo: {
                     role: 'collector',
@@ -107,7 +108,7 @@ module.exports = (function() {
                 }
             },
             collectorLeft: {
-                minimum: 2,
+                minimum: 1,
                 body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 memo: {
                     role: 'collector',
@@ -132,12 +133,42 @@ module.exports = (function() {
                 }
             },
 
+            collectorTopRight: {
+                minimum: 2,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                memo: {
+                    role: 'collector',
+                    room: 'E67N42',
+                    via: ['E66N41', 'E66N42', 'E67N42'],
+                    storageId: '583d89cbc23dc5573898a00f'
+                }
+            },
+            diggerRoomTopRightSourceLeft: {
+                minimum: 1,
+                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
+                memo: {
+                    role: 'harvester',
+                    energySource: 'roomTopRightSourceLeft'
+                }
+            },
+            diggerRoomTopRightSourceRight: {
+                minimum: 1,
+                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
+                memo: {
+                    role: 'harvester',
+                    energySource: 'roomTopRightSourceRight'
+                }
+            },
+
             fighter: {
                 minimum: 0,
+                priority: -1,
                 body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                 memo: {
                     role: 'brawler',
-                    room: 'E65N41'
+                    // room: 'E68N42',
+                    room: 'E67N42',
+                    // room: 'E65N41'
                 }
             }
         }

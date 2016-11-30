@@ -49,7 +49,7 @@ module.exports = (function() {
                     if(aggresive) {
                         if(!room.controller.safeMode) {
                             Game.notify("Activated safe mode in room " + room);
-                            room.controller.activateSafeMode();
+                            //room.controller.activateSafeMode();
                             break;
                         }
                     }

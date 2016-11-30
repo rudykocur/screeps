@@ -11,6 +11,9 @@ module.exports = (function() {
 
         roomLeftSourceLeft: ['57ef9eaa86f108ae6e60fb04'],
         roomLeftSourceRight: ['57ef9eaa86f108ae6e60fb03'],
+
+        roomTopRightSourceLeft: ['57ef9ed386f108ae6e60fffa'],
+        roomTopRightSourceRight: ['57ef9ed386f108ae6e60fff8'],
     };
     return {
         getObjects: function(name) {

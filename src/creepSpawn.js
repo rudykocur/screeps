@@ -14,10 +14,10 @@ module.exports = (function() {
     }
 
     return {
-        createCreep: function(groupName, spawn) {
+        createCreep: function(groupName, spawn, memo) {
             var group = config.spawn[groupName];
 
-            var memo = group.memo;
+            memo = _.defaults(memo || {}, group.memo);
             memo.group = groupName;
 
             if(spawn.canCreateCreep(group.body) == OK) {
@@ -43,14 +43,21 @@ module.exports = (function() {
                 counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
             });
 
+            var needToSpawn = [];
+
             Object.keys(config.spawn).forEach(function(groupName) {
                 var group = config.spawn[groupName];
 
                 if((counts[groupName] || 0) < group.minimum) {
-                    module.exports.createCreep(groupName, spawn);
-
+                    needToSpawn.push(groupName);
                 }
             });
+
+            var sortedToSpawn = _.sortBy(needToSpawn,name => (config.spawn[name].priority || 0));
+
+            if(sortedToSpawn.length > 0) {
+                module.exports.createCreep(sortedToSpawn[0], spawn);
+            }
         }
     }
 })();

@@ -14,7 +14,6 @@ module.exports = (function() {
 
             if(hostiles.length > 0) {
                 var username = hostiles[0].owner.username;
-                Game.notify(`User ${username} spotted in room ${roomName}`);
                 tower.attack(hostiles[0]);
                 return;
             }
@@ -26,7 +25,7 @@ module.exports = (function() {
                      */
                     filter: function(struct) {
                         if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
-                            return struct.hits < 100000;
+                            return struct.hits < 150000;
                         }
 
                         return (struct.hits / struct.hitsMax) < 0.75;

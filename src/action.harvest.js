@@ -44,7 +44,7 @@ module.exports = (function() {
 
             if(!source) {
                 source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.amount > 30
+                    filter: r => r.amount > 30 || r.resourceType != RESOURCE_ENERGY
                 });
             }
 
