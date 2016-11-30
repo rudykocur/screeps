@@ -25,7 +25,7 @@ module.exports = (function() {
                      */
                     filter: function(struct) {
                         if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
-                            return struct.hits < 150000;
+                            return struct.hits < 200000;
                         }
 
                         return (struct.hits / struct.hitsMax) < 0.75;

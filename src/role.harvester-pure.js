@@ -10,7 +10,18 @@ module.exports = (function() {
 
     return {
         scheduleTask: function(creep) {
-            var source = bookmarks.getObject(creep.memory.energySource);
+            var source;
+            if(creep.memory.energySourceId) {
+                source = Game.getObjectById(creep.memory.energySourceId);
+            }
+            else {
+                source = bookmarks.getObject(creep.memory.energySource);
+            }
+
+            if(!source) {
+                console.log('Creep', creep.name, 'cannot find its source');
+                return;
+            }
 
             if(creep.pos.isNearTo(source)) {
                 creepExt.addTask(creep, taskHarvest.task.create(creep, source));

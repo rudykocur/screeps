@@ -1,6 +1,7 @@
 const config = require('config');
 
 module.exports = (function() {
+    var spawnTriggered = false;
 
     function getCreepId() {
         Memory.counters = Memory.counters || {};
@@ -14,8 +15,22 @@ module.exports = (function() {
     }
 
     return {
-        createCreep: function(groupName, spawn, memo) {
-            var group = config.spawn[groupName];
+        createCreep: function(spawn, name, body, memo) {
+            if(spawnTriggered == true) {return false;}
+
+            if(spawn.canCreateCreep(body) == OK) {
+                name = name + getCreepId();
+                var newCreepName = spawn.createCreep(body, name, memo);
+                console.log('Spawned creep. Name: ' + newCreepName);
+                spawnTriggered = true;
+                return true;
+            }
+        },
+
+        createCreepFromGroup: function(groupName, spawn, memo) {
+            if(spawnTriggered == true) {return;}
+
+            var group = config.spawn[groupName] || {};
 
             memo = _.defaults(memo || {}, group.memo);
             memo.group = groupName;
@@ -24,6 +39,8 @@ module.exports = (function() {
                 var name = groupName + getCreepId();
                 var newCreepName = spawn.createCreep(group.body, name, memo);
                 console.log('Spawned creep from group ' + groupName + ', name: ' + newCreepName);
+                spawnTriggered = true;
+                return true;
             }
         },
 
@@ -53,11 +70,12 @@ module.exports = (function() {
                 }
             });
 
-            var sortedToSpawn = _.sortBy(needToSpawn,name => (config.spawn[name].priority || 0));
+            var sortedToSpawn = _.sortBy(needToSpawn,name => (config.spawn[name].priority || 0)*-1);
 
             if(sortedToSpawn.length > 0) {
-                module.exports.createCreep(sortedToSpawn[0], spawn);
+                module.exports.createCreepFromGroup(sortedToSpawn[0], spawn);
             }
         }
+
     }
 })();

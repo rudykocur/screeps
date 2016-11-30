@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 var roleHarvesterPure = require('role.harvester-pure');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
@@ -14,6 +16,19 @@ const taskWithdrawStorage = require('task.withdrawFromStorage');
 const taskUpgrade = require('task.upgradeController');
 const taskMove = require('task.move');
 const taskHarvest = require('task.harvest');
+
+var taskModules = [
+    require('task.withdrawFromStorage'),
+    require('task.upgradeController'),
+    require('task.move'),
+    require('task.harvest'),
+];
+
+var roomHandlers = {
+    outpost: require('room.outpost')
+};
+
+// profiler.enable();
 
 module.exports = (function() {
     var roleToAction = {
@@ -59,19 +74,38 @@ module.exports = (function() {
     }
 
     return {
-        loop: function () {
+        loop: function() {
+            // profiler.wrap(function() {
+            //     module.exports.runLoop();
+            // });
+            module.exports.runLoop();
+        },
+
+        runLoop: function () {
 
             Game.stat = printDiagnostics;
 
             memoryClean();
             runDefence();
 
-            creepExt.register(taskWithdrawStorage.task);
-            creepExt.register(taskUpgrade.task);
-            creepExt.register(taskMove.task);
-            creepExt.register(taskHarvest.task);
+            taskModules.forEach(function(taskModule) {
+                creepExt.register(taskModule.task);
+            });
 
             creepSpawn.autospawn(Game.spawns.Rabbithole);
+
+            try {
+                _.each(Memory.roomHandlers || {}, function (handlerData, roomName) {
+
+                    var clz = roomHandlers[handlerData.type].handler;
+                    var handler = new clz(roomName, handlerData);
+
+                    handler.process();
+                });
+            }
+            catch(e) {
+                console.log('Failure at processing rooms', e);
+            }
 
             for (var name in Game.creeps) {
                 /** @type Creep */
@@ -108,7 +142,7 @@ module.exports = (function() {
 
             _.each(getStructures(STRUCTURE_TOWER), function(tower) {
                 roleTower.run(tower);
-            })
+            });
         },
     }
 

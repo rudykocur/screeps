@@ -6,6 +6,10 @@ module.exports = (function() {
     return {
         run:  function(creep) {
 
+            if(actionUtils.tryChangeRoom(creep, creep.memory.room)) {
+                return;
+            }
+
             if(actionUtils.shouldHarvestEnergy(creep)) {
                 if(actionHarvest.tryHarvestDroppedSource(creep)) {
                     return;

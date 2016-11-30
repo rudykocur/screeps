@@ -36,7 +36,7 @@ module.exports = (function() {
 
             mover: {
                 minimum: 2,
-                body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 priority: 10,
                 memo: {role: 'mover'}
             },
@@ -82,83 +82,6 @@ module.exports = (function() {
                     debug: true,
                 }
             },
-            collectorTop: {
-                minimum: 2,
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                memo: {
-                    role: 'collector',
-                    room: 'E66N42',
-                    storageId: '583d89cbc23dc5573898a00f'
-                }
-            },
-            diggerRoomUpSourceUp: {
-                minimum: 1,
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
-                memo: {
-                    role: 'harvester',
-                    energySource: 'roomUpSourceTop'
-                }
-            },
-            diggerRoomUpSourceDown: {
-                minimum: 1,
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
-                memo: {
-                    role: 'harvester',
-                    energySource: 'roomUpSourceBottom'
-                }
-            },
-            collectorLeft: {
-                minimum: 1,
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                memo: {
-                    role: 'collector',
-                    room: 'E65N41',
-                    storageId: '583d89cbc23dc5573898a00f'
-                }
-            },
-            diggerRoomLeftSourceLeft: {
-                minimum: 1,
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
-                memo: {
-                    role: 'harvester',
-                    energySource: 'roomLeftSourceLeft'
-                }
-            },
-            diggerRoomLeftSourceRight: {
-                minimum: 1,
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
-                memo: {
-                    role: 'harvester',
-                    energySource: 'roomLeftSourceRight'
-                }
-            },
-
-            collectorTopRight: {
-                minimum: 2,
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                memo: {
-                    role: 'collector',
-                    room: 'E67N42',
-                    via: ['E66N41', 'E66N42', 'E67N42'],
-                    storageId: '583d89cbc23dc5573898a00f'
-                }
-            },
-            diggerRoomTopRightSourceLeft: {
-                minimum: 1,
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
-                memo: {
-                    role: 'harvester',
-                    energySource: 'roomTopRightSourceLeft'
-                }
-            },
-            diggerRoomTopRightSourceRight: {
-                minimum: 1,
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
-                memo: {
-                    role: 'harvester',
-                    energySource: 'roomTopRightSourceRight'
-                }
-            },
 
             fighter: {
                 minimum: 0,
@@ -170,6 +93,29 @@ module.exports = (function() {
                     room: 'E67N42',
                     // room: 'E65N41'
                 }
+            }
+        },
+
+        blueprints: {
+            outpostMiner: {
+                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
+                role: 'harvester',
+                memo: {}
+            },
+
+            outpostCollector: {
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                role: 'collector',
+                memo: {
+                    storageId: '583d89cbc23dc5573898a00f'
+                }
+            },
+
+            outpostDefender: {
+                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                role: 'brawler',
+                memo: {}
             }
         }
     }

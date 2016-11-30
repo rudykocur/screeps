@@ -14,7 +14,9 @@ module.exports = (function() {
             return;
         }
 
-        var source = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+        var source = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY, {
+            filter: s => s.amount > 50
+        });
 
         if(source) {
             if(creep.pos.inRangeTo(source, 1)) {
