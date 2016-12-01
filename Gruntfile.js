@@ -3,6 +3,7 @@ var screepsConfig = require('./screepsConfig');
 module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-screeps');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.initConfig({
         screeps: {
@@ -27,5 +28,14 @@ module.exports = function(grunt) {
                 src: ['sim/*.js']
             }
         },
+        copy: {
+            toSim: {
+                files: [
+                    {expand: true, cwd: 'src', src: ['**', '!main.js'], dest: 'sim/'}
+                ]
+            }
+        }
     });
+
+    grunt.registerTask('screeps-sim', ['copy:toSim','screeps:sim'])
 }

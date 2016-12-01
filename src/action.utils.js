@@ -9,10 +9,12 @@ module.exports = (function() {
     }
 
     return {
-        shouldHarvestEnergy:  function(creep) {
-            if(creep.carryCapacity == 0) {return false;}
+        shouldHarvestEnergy:  function(creep, minEnergy) {
+            minEnergy = minEnergy || 0;
 
-            if(!creep.memory.harvesting && creep.carry.energy == 0) {
+            if(creep.carryCapacity <= minEnergy) {return false;}
+
+            if(!creep.memory.harvesting && creep.carry.energy <= minEnergy) {
                 creep.memory.harvesting = true;
             }
             if(creep.memory.harvesting && creep.carry.energy == creep.carryCapacity) {

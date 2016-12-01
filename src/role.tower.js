@@ -18,14 +18,14 @@ module.exports = (function() {
                 return;
             }
 
-            if(tower.energy > 200) {
+            if(tower.energy > 300) {
                 var target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
                     /**
                      * @param {Structure} struct
                      */
                     filter: function(struct) {
                         if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
-                            return struct.hits < 200000;
+                            return struct.hits < 230000;
                         }
 
                         return (struct.hits / struct.hitsMax) < 0.75;

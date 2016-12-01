@@ -38,6 +38,7 @@ module.exports = (function() {
                 if(ctrl.my && ctrl.ticksToDowngrade < 4000) {
                     if(creep.upgradeController(ctrl) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(ctrl);
+                        return;
                     }
                 }
 
@@ -46,8 +47,6 @@ module.exports = (function() {
                         return;
                     }
                 }
-
-
 
                 if(!creep.memory.disableBuild && creep.getActiveBodyparts(WORK) > 0) {
                     if(actionBuld.actionTryBuild(creep)) {
@@ -79,7 +78,7 @@ module.exports = (function() {
 
                         if(creep.getActiveBodyparts(CLAIM) > 0) {
 
-                            if(Object.keys(Game.spawns).length < Game.gcl.level && false) {
+                            if(creep.memory.claimController) {
                                 if(creep.claimController(ctrl) == ERR_NOT_IN_RANGE) {
                                     creep.moveTo(ctrl);
                                 }

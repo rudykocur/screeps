@@ -109,7 +109,27 @@ module.exports = (function() {
 
                     room: 'E65N41'
                 }
-            }
+            },
+
+            tank: {
+                minimum: 0,
+                priority: -10,
+                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                memo: {
+                    role: 'combatTank',
+                    room: 'E67N42'
+                }
+            },
+
+            healer: {
+                minimum: 0,
+                priority: -10,
+                body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL],
+                memo: {
+                    role: 'combatHealer',
+                }
+            },
         },
 
         blueprints: {

@@ -47,7 +47,9 @@ module.exports = (function() {
         /**
          * @param {StructureSpawn} spawn
          */
-        autospawn:  function(spawn) {
+        onTick:  function(spawn) {
+            spawnTriggered = false;
+
             if(!spawn) {
                 console.log('No spawn given to autospawn');
                 return;

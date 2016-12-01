@@ -1,21 +1,9 @@
 const profiler = require('screeps-profiler');
 
-var roleHarvesterPure = require('role.harvester-pure');
-const roleUpgrader = require('role.upgrader');
-const roleBuilder = require('role.builder');
-const roleMover = require('role.mover');
-const roleTransfer = require('role.transfer');
-const roleTower = require('role.tower');
-const roleSettler = require('role.settler');
-const roleCollector = require('role.collector');
-const roleBrawler = require('role.brawler');
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 
-const taskWithdrawStorage = require('task.withdrawFromStorage');
-const taskUpgrade = require('task.upgradeController');
-const taskMove = require('task.move');
-const taskHarvest = require('task.harvest');
+var roleTower = require('role.tower');
 
 var taskModules = [
     require('task.withdrawFromStorage'),
@@ -24,6 +12,21 @@ var taskModules = [
     require('task.harvest'),
 ];
 
+var roleModules = {
+    'harvester-pure': require('role.harvester-pure'),
+    harvester: require('role.harvester-pure'),
+    upgrader: require('role.upgrader'),
+    mover: require('role.mover'),
+    builder: require('role.builder'),
+    brawler: require('role.brawler'),
+    transfer: require('role.transfer'),
+    collector: require('role.collector'),
+    settler: require('role.settler'),
+    combatTank: require('role.combatTank'),
+    combatHealer: require('role.combatHealer'),
+    none: {run: function() {}},
+}
+
 var roomHandlers = {
     outpost: require('room.outpost')
 };
@@ -31,18 +34,6 @@ var roomHandlers = {
 // profiler.enable();
 
 module.exports = (function() {
-    var roleToAction = {
-        'harvester-pure': roleHarvesterPure,
-        harvester: roleHarvesterPure,
-        upgrader: roleUpgrader,
-        mover: roleMover,
-        builder: roleBuilder,
-        brawler: roleBrawler,
-        transfer: roleTransfer,
-        collector: roleCollector,
-        settler: roleSettler,
-        none: {run: function() {}},
-    };
 
     function getStructures(type) {
         return _.filter(_.values(Game.structures), s => s.structureType == type);
@@ -92,7 +83,7 @@ module.exports = (function() {
                 creepExt.register(taskModule.task);
             });
 
-            creepSpawn.autospawn(Game.spawns.Rabbithole);
+            creepSpawn.onTick(Game.spawns.Rabbithole);
 
             try {
                 _.each(Memory.roomHandlers || {}, function (handlerData, roomName) {
@@ -119,15 +110,17 @@ module.exports = (function() {
 
                 var task = creepExt.getTask(creep);
 
-                if(roleToAction[role]) {
+                var module = roleModules[role];
 
-                    if(roleToAction[role].scheduleTask) {
+                if(module) {
+
+                    if(module.scheduleTask) {
                         if(!task) {
-                            roleToAction[role].scheduleTask(creep);
+                            module.scheduleTask(creep);
                         }
                     }
                     else {
-                        roleToAction[role].run(creep);
+                        module.run(creep);
                     }
                 }
                 else {

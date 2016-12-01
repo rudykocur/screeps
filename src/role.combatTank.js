@@ -7,12 +7,16 @@ module.exports = (function() {
 
     return {
         /**
-         * test
          * @param {Creep} creep
          */
         run:  function(creep) {
 
             if(actionUtils.tryChangeRoom(creep, creep.memory.room)) {
+                return;
+            }
+
+            if(creep.hits < (creep.hitsMax * 0.5)) {
+                creep.say('w8');
                 return;
             }
 

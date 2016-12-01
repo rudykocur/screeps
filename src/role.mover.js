@@ -10,7 +10,7 @@ module.exports = (function() {
                 return;
             }
 
-            if(actionUtils.shouldHarvestEnergy(creep)) {
+            if(actionUtils.shouldHarvestEnergy(creep, 51)) {
                 if(actionHarvest.tryHarvestDroppedSource(creep)) {
                     return;
                 }

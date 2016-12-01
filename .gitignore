@@ -42,3 +42,4 @@ jspm_packages
 .idea/
 node_modules/
 /ScreepsAutocomplete/
+/sim/*.js
