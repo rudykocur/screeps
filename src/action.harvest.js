@@ -218,12 +218,8 @@ module.exports = (function() {
 
         run: function (creep) {
             var source;
-            if (creep.memory.energySource) {
-                var desirableSource = Game.getObjectById(creep.memory.energySource);
-                if (desirableSource) {
-                    source = desirableSource;
-                }
-            }
+
+            source = Game.getObjectById(creep.memory.energySource);
 
             if(!source) {
                 source = creep.pos.findClosestByRange(FIND_SOURCES);

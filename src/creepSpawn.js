@@ -21,62 +21,69 @@ module.exports = (function() {
             if(spawn.canCreateCreep(body) == OK) {
                 name = name + getCreepId();
                 var newCreepName = spawn.createCreep(body, name, memo);
-                console.log('Spawned creep. Name: ' + newCreepName);
+                console.log('Spawn '+spawn.name+': created creep. Name: ' + newCreepName);
                 spawnTriggered = true;
                 return true;
             }
         },
 
-        createCreepFromGroup: function(groupName, spawn, memo) {
+        createCreepFromGroup: function(groupName, group, spawn, memo) {
             if(spawnTriggered == true) {return;}
-
-            var group = config.spawn[groupName] || {};
 
             memo = _.defaults(memo || {}, group.memo);
             memo.group = groupName;
+            memo.spawn = spawn.name;
 
             if(spawn.canCreateCreep(group.body) == OK) {
                 var name = groupName + getCreepId();
                 var newCreepName = spawn.createCreep(group.body, name, memo);
-                console.log('Spawned creep from group ' + groupName + ', name: ' + newCreepName);
+                console.log('Spawn ' + spawn.name +': created creep from group ' + groupName + ', name: ' + newCreepName);
                 spawnTriggered = true;
                 return true;
             }
         },
 
         /**
-         * @param {StructureSpawn} spawn
+         * @param {StructureSpawn} homeSpawn
          */
-        onTick:  function(spawn) {
+        onTick:  function(homeSpawn) {
             spawnTriggered = false;
 
-            if(!spawn) {
-                console.log('No spawn given to autospawn');
+            if(!homeSpawn) {
+                console.log('No home spawn given to autospawn');
                 return;
             }
 
-            var counts = {};
+            var creepsBySpawn = _.groupBy(Game.creeps, c => c.memory.spawn || homeSpawn.name);
 
-            Object.keys(Game.creeps).forEach(function (creepName) {
-                var creep = Game.creeps[creepName];
-                counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
-            });
+            _.each(Game.spawns, (spawn, spawnName) => {
+                var creeps = creepsBySpawn[spawnName] || [];
+                var spawnConfig = config.spawn[spawnName];
 
-            var needToSpawn = [];
+                var counts = {};
 
-            Object.keys(config.spawn).forEach(function(groupName) {
-                var group = config.spawn[groupName];
+                creeps.forEach((creep) => {
+                    counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
+                });
 
-                if((counts[groupName] || 0) < group.minimum) {
-                    needToSpawn.push(groupName);
+                var needToSpawn = [];
+
+                Object.keys(spawnConfig).forEach(function(groupName) {
+                    var group = spawnConfig[groupName];
+
+                    if((counts[groupName] || 0) < group.minimum) {
+                        needToSpawn.push(groupName);
+                    }
+                });
+
+                var sortedToSpawn = _.sortBy(needToSpawn, name => (spawnConfig[name].priority || 0)*-1);
+
+                if(sortedToSpawn.length > 0) {
+                    var groupName = sortedToSpawn[0];
+                    var configData = spawnConfig[groupName];
+                    module.exports.createCreepFromGroup(groupName, configData, spawn);
                 }
             });
-
-            var sortedToSpawn = _.sortBy(needToSpawn,name => (config.spawn[name].priority || 0)*-1);
-
-            if(sortedToSpawn.length > 0) {
-                module.exports.createCreepFromGroup(sortedToSpawn[0], spawn);
-            }
         }
 
     }

@@ -3,6 +3,10 @@ const creepSpawn = require('creepSpawn');
 
 module.exports = (function() {
     return {
+        /**
+         * Required data in Memory:
+         * Memory.roomHandlers.N01E01 = {type: 'outpost', homeRoom: 'N02E01'}
+         */
         handler: class OutpostRoomHandler {
             constructor(roomName, state) {
                 this.roomName = roomName;
@@ -68,6 +72,9 @@ module.exports = (function() {
                 return null;
             }
 
+            /**
+             * @param {Source} source
+             */
             pingMinerForSource(source) {
                 if(!source.minerId) {
 
@@ -77,14 +84,21 @@ module.exports = (function() {
                         return;
                     }
 
+                    var sourceObj = Game.getObjectById(source.id);
+
+                    var roomName = sourceObj.pos.roomName;
+
                     var blueprint = config.blueprints.outpostMiner;
+                    var override = blueprint.roomOverride[roomName] || {};
+
+                    var body = override.body || blueprint.body;
 
                     var memo = _.defaults({
                         energySourceId: source.id,
                         role: blueprint.role,
                     }, blueprint.memo);
 
-                    this.trySpawnCreep('miner', blueprint.body, memo);
+                    this.trySpawnCreep('miner', body, memo);
                 }
                 else {
                     var miner = Game.getObjectById(source.minerId);
@@ -98,6 +112,17 @@ module.exports = (function() {
             pingCollectors() {
                 var needed = this.state.sources.length;
                 var blueprint = config.blueprints.outpostCollector;
+                var override = blueprint.roomOverride[this.roomName] || {};
+
+                if(typeof override['spawnAmount'] != 'undefined') {
+                    // console.log('correcting needed to ', override.spawnAmount, '::', this.roomName);
+                    needed = override.spawnAmount;
+                }
+
+                if(needed < 1) {
+                    return;
+                }
+
 
                 this.state.collectors = this.state.collectors.filter(c => {
                     var creep = Game.getObjectById(c);

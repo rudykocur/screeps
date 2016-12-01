@@ -10,7 +10,9 @@ module.exports = (function() {
                 return;
             }
 
-            if(actionUtils.shouldHarvestEnergy(creep, 51)) {
+            var minEnergy = (creep.carryCapacity > 50 ? 51 : 0);
+
+            if(actionUtils.shouldHarvestEnergy(creep, minEnergy)) {
                 if(actionHarvest.tryHarvestDroppedSource(creep)) {
                     return;
                 }
@@ -34,7 +36,17 @@ module.exports = (function() {
                     return;
                 }
 
-                actionHarvest.tryTransferToStorage(creep, {allowContainers: false});
+                if(actionHarvest.tryTransferToStorage(creep, {allowContainers: false})) {
+                    return;
+                }
+
+                var storage = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                    filter: {structureType: STRUCTURE_STORAGE}
+                });
+
+                if(!storage) {
+                    actionHarvest.tryTransferToStorage(creep)
+                }
 
             }
         }
