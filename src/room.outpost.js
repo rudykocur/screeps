@@ -172,7 +172,7 @@ module.exports = (function() {
                 this.state.defenderId = defenderId;
             }
 
-            static hasCombatParts(creep) {
+            hasCombatParts(creep) {
                 return creep.getActiveBodyparts(ATTACK) ||
                     creep.getActiveBodyparts(RANGED_ATTACK) ||
                     creep.getActiveBodyparts(HEAL);

@@ -72,6 +72,10 @@ module.exports = (function() {
                     var group = spawnConfig[groupName];
 
                     if((counts[groupName] || 0) < group.minimum) {
+                        if(group.condition && !group.condition({creep, spawn})) {
+                            return;
+                        }
+
                         needToSpawn.push(groupName);
                     }
                 });

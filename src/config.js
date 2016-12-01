@@ -59,6 +59,10 @@ module.exports = (function() {
                     minimum: 1,
                     body: [MOVE, CLAIM, CLAIM],
                     priority: -3,
+                    condition: params => {
+                        var res = params.spawn.room.controller.reservation;
+                        return !res || res.ticksToEnd < 1000;
+                    },
                     memo: {
                         role: 'settler',
                         room: 'E66N42',
@@ -77,7 +81,7 @@ module.exports = (function() {
                 },
 
                 settlerTopRight: {
-                    minimum: 1,
+                    minimum: 0,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
@@ -101,6 +105,7 @@ module.exports = (function() {
                 fighter: {
                     minimum: 0,
                     priority: -1,
+                    // body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
@@ -134,16 +139,25 @@ module.exports = (function() {
 
             Moria: {
                 moriaBuilder: {
-                    minimum: 3,
-                    body: [MOVE,WORK,WORK,CARRY],
+                    minimum: 2,
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
                     memo: {role: 'builder'},
                 },
 
                 moriaMover: {
                     minimum: 1,
-                    body: [MOVE,MOVE,CARRY,CARRY,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: 10,
                     memo: {role: 'mover'}
+                },
+                moriaUpgrader: {
+                    minimum: 3,
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
+                    priority: -2,
+                    memo: {
+                        role: 'upgrader',
+                        fromStructures: 'roomTopRightContainers'
+                    }
                 },
             },
         },

@@ -8,6 +8,10 @@ module.exports = (function() {
         run:  function(creep) {
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
+                if(actionHarvest.tryHarvestDroppedSource(creep)) {
+                    return;
+                }
+
                 actionHarvest.tryHarvestStorage(creep, {reserve: 300});
             }
             else {

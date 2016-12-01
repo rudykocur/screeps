@@ -78,6 +78,8 @@ module.exports = (function() {
         findStorageToHarvest: function(creep, options) {
             options = _.defaults(options || {}, {
                 reserve: 50,
+                reserveContainer: null,
+                reserveStorage: null,
                 structures: false,
                 types: [STRUCTURE_CONTAINER, STRUCTURE_STORAGE],
             });
@@ -97,7 +99,15 @@ module.exports = (function() {
                     }
 
                     if(options.reserve) {
-                        return _.sum(struct.store) > (options.reserve + creep.carryCapacity)
+                        var reserve = options.reserve;
+                        if(struct.structureType == STRUCTURE_STORAGE && options.reserveStorage) {
+                            reserve = options.reserveStorage;
+                        }
+                        if(struct.structureType == STRUCTURE_CONTAINER && options.reserveContainer) {
+                            reserve = options.reserveContainer;
+                        }
+
+                        return _.sum(struct.store) > (reserve + creep.carryCapacity)
                     }
 
                     return true;
