@@ -108,6 +108,8 @@ module.exports = (function() {
         },
 
         tryTransferToSpawn: function(creep) {
+            if(_.sum(creep.carry) == 0) {return false;}
+
             var target = module.exports.findSpawnToTransfer(creep);
 
             if(target) {
@@ -129,6 +131,8 @@ module.exports = (function() {
         },
 
         tryTransferToTower: function(creep) {
+            if(_.sum(creep.carry) == 0) {return false;}
+
             var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                 /**
                  *
@@ -153,6 +157,8 @@ module.exports = (function() {
          * @param {Object} options
          */
         tryTransferToStorage: function(creep, options) {
+            if(_.sum(creep.carry) == 0) {return false;}
+
             options = _.defaults(options || {}, {
                 maxRange: 0,
                 structures: null,

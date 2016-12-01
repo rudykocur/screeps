@@ -7,9 +7,11 @@ module.exports = (function() {
                 memo: {role: 'builder'}
             },
 
+
             upgrader: {
-                minimum: 6,
+                minimum: 4,
                 body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                priority: -2,
                 memo: {
                     role: 'upgrader',
                     fromStructures: 'storage'
@@ -19,6 +21,7 @@ module.exports = (function() {
             harvesterRight: {
                 minimum: 1,
                 body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                priority: 6,
                 memo: {
                     role: 'harvester',
                     energySource: 'sourceRight'
@@ -28,6 +31,7 @@ module.exports = (function() {
             harvesterLeft: {
                 minimum: 1,
                 body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                priority: 5,
                 memo: {
                     role: 'harvester',
                     energySource: 'sourceLeft'
@@ -51,8 +55,19 @@ module.exports = (function() {
                 }
             },
 
-            settlerLeft: {
+            settlerTopReserver: {
                 minimum: 1,
+                body: [MOVE, CLAIM, CLAIM],
+                priority: -3,
+                memo: {
+                    role: 'settler',
+                    room: 'E66N42',
+                    disableBuild: true,
+                }
+            },
+
+            settlerLeft: {
+                minimum: 0,
                 body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                 memo: {
                     role: 'settler',
@@ -90,8 +105,9 @@ module.exports = (function() {
                 memo: {
                     role: 'brawler',
                     // room: 'E68N42',
-                    room: 'E67N42',
-                    // room: 'E65N41'
+                    // room: 'E67N42',
+
+                    room: 'E65N41'
                 }
             }
         },

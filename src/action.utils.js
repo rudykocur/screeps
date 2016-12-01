@@ -10,6 +10,8 @@ module.exports = (function() {
 
     return {
         shouldHarvestEnergy:  function(creep) {
+            if(creep.carryCapacity == 0) {return false;}
+
             if(!creep.memory.harvesting && creep.carry.energy == 0) {
                 creep.memory.harvesting = true;
             }

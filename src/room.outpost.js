@@ -16,6 +16,10 @@ module.exports = (function() {
             }
 
             process() {
+                if(!Game.rooms[this.roomName]) {
+                    return;
+                }
+
                 if(!this.state.sources) {
                     this.discoverSources();
                 }
@@ -124,7 +128,6 @@ module.exports = (function() {
 
                 if(!defenderId) {
                     var room = Game.rooms[this.roomName];
-
                     var creeps = room.find(FIND_HOSTILE_CREEPS, {
                         filter: c => this.hasCombatParts(c)
                     });

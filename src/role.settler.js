@@ -4,6 +4,7 @@ const actionUtils = require('action.utils');
 
 module.exports = (function() {
 
+
     return {
         /**
          * @param {Creep} creep
@@ -32,13 +33,23 @@ module.exports = (function() {
                     return;
                 }
 
+                var ctrl = creep.room.controller;
+
+                if(ctrl.my && ctrl.ticksToDowngrade < 4000) {
+                    if(creep.upgradeController(ctrl) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(ctrl);
+                    }
+                }
+
                 if(!creep.memory.disableSpawn) {
                     if(actionHarvest.tryTransferToSpawn(creep)) {
                         return;
                     }
                 }
 
-                if(!creep.memory.disableBuild) {
+
+
+                if(!creep.memory.disableBuild && creep.getActiveBodyparts(WORK) > 0) {
                     if(actionBuld.actionTryBuild(creep)) {
                         return;
                     }
@@ -58,9 +69,32 @@ module.exports = (function() {
                 }
 
                 if(!creep.memory.disableController) {
-                    if(creep.room.controller.my && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(creep.room.controller);
+
+                    if(ctrl.my) {
+                        if(creep.upgradeController(ctrl) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(ctrl);
+                        }
                     }
+                    else {
+
+                        if(creep.getActiveBodyparts(CLAIM) > 0) {
+
+                            if(Object.keys(Game.spawns).length < Game.gcl.level && false) {
+                                if(creep.claimController(ctrl) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(ctrl);
+                                }
+                            }
+                            else {
+                                if(creep.reserveController(ctrl) == ERR_NOT_IN_RANGE) {
+                                    creep.moveTo(ctrl);
+                                }
+                            }
+
+                        }
+                    }
+                    // if(creep.room.controller.my && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
+                    //     creep.moveTo(creep.room.controller);
+                    // }
                 }
             }
         }

@@ -14,7 +14,7 @@ module.exports = (function() {
         scheduleTask: function(creep) {
             if(creep.carry.energy == 0) {
                 var target = actionHarvest.findStorageToHarvest(creep, {
-                    reserve: 300,
+                    reserve: 10000,
                     structures: bookmarks.getObjects(creep.memory.fromStructures)
                 });
 

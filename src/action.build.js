@@ -30,6 +30,8 @@ module.exports = {
     },
 
     actionTryBuild: function(creep) {
+        if(_.sum(creep.carry) == 0) {return false;}
+
         var target;
 
         var priority = Memory.buildQueue || [];
@@ -62,6 +64,8 @@ module.exports = {
     },
 
     actionTryRepair: function(creep) {
+        if(_.sum(creep.carry) == 0) {return false;}
+
         if(creep.memory.repairTarget) {
             /** @type {Structure} */
             var target = Game.getObjectById(creep.memory.repairTarget);

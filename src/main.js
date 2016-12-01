@@ -104,7 +104,7 @@ module.exports = (function() {
                 });
             }
             catch(e) {
-                console.log('Failure at processing rooms', e);
+                console.log('Failure at processing rooms', e, '::', e.stack);
             }
 
             for (var name in Game.creeps) {
@@ -157,7 +157,10 @@ function memoryClean() {
 }
 
 function printDiagnostics() {
+    _.each(_.groupBy(Game.creeps, 'pos.roomName'), function(creeps, roomName) {
+        //var room = Game.rooms[roomName];
+        console.log(roomName + ': ' + creeps.map(c => c.name+':'+c.memory.group+':'+c.ticksToLive).join(', '));
+    })
     var room = Game.spawns.Rabbithole.room;
-    console.log('Power: ' + room.energyAvailable + '/' + room.energyCapacityAvailable);
-    console.log(Object.keys(Game.creeps).map(cn => cn+':'+Game.creeps[cn].memory.group+':'+Game.creeps[cn].ticksToLive+' '));
+    console.log('Spawn power: ' + _.map(Game.spawns, s => s.name + ' ' + s.room.energyAvailable + '/' + s.room.energyCapacityAvailable ).join(', '));
 }
