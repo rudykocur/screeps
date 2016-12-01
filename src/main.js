@@ -2,6 +2,7 @@ const profiler = require('screeps-profiler');
 
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
+const config = require('config');
 
 var roleTower = require('role.tower');
 
@@ -54,9 +55,16 @@ module.exports = (function() {
 
                     if(aggresive) {
                         if(!room.controller.safeMode) {
-                            Game.notify("Activated safe mode in room " + room);
-                            //room.controller.activateSafeMode();
-                            break;
+                            var roomSettings = config.rooms[room.name] || {};
+
+                            if(roomSettings.panicMode) {
+                                Game.notify("Activated safe mode in room " + room);
+                                room.controller.activateSafeMode();
+                                break;
+                            }
+                            else {
+                                Game.notify("Enemy spotted in room " + room + '. Owner: ' + hostile.owner.username);
+                            }
                         }
                     }
                 }

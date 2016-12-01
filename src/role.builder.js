@@ -26,9 +26,9 @@ module.exports = (function() {
                     return;
                 }
 
-                //if(actionBuild.actionTryRepair(creep)) {
-                //    return;
-                //}
+                if(creep.memory.allowRepair && actionBuild.actionTryRepair(creep)) {
+                   return;
+                }
 
 
                 actionUtils.actionFillController(creep);

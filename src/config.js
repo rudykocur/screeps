@@ -1,5 +1,10 @@
 module.exports = (function() {
     return {
+        rooms: {
+            E67N42: {
+                panicMode: true,
+            }
+        },
         spawn: {
             Rabbithole: {
                 builder: {
@@ -60,7 +65,7 @@ module.exports = (function() {
                     body: [MOVE, CLAIM, CLAIM],
                     priority: -3,
                     condition: params => {
-                        var res = params.spawn.room.controller.reservation;
+                        var res = Game.rooms.E66N42.controller.reservation;
                         return !res || res.ticksToEnd < 1000;
                     },
                     memo: {
@@ -131,6 +136,7 @@ module.exports = (function() {
                     minimum: 0,
                     priority: -10,
                     body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL],
+                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL],
                     memo: {
                         role: 'combatHealer',
                     }
@@ -139,19 +145,22 @@ module.exports = (function() {
 
             Moria: {
                 moriaBuilder: {
-                    minimum: 2,
+                    minimum: 1,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
-                    memo: {role: 'builder'},
+                    memo: {
+                        role: 'builder',
+                        allowRepair: true,
+                    },
                 },
 
                 moriaMover: {
-                    minimum: 1,
+                    minimum: 2,
                     body: [MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: 10,
                     memo: {role: 'mover'}
                 },
                 moriaUpgrader: {
-                    minimum: 3,
+                    minimum: 4,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
                     priority: -2,
                     memo: {
@@ -181,9 +190,6 @@ module.exports = (function() {
                     storageId: '583d89cbc23dc5573898a00f'
                 },
                 roomOverride: {
-                    E67N42: {
-                        spawnAmount: 0
-                    }
                 }
             },
 
