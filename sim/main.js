@@ -1,6 +1,8 @@
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
+
 const gang = require('gang');
+const combatAction = require('combatAction');
 
 var taskModules = [
     require('task.withdrawFromStorage'),
@@ -28,7 +30,15 @@ module.exports = (function() {
 
     return {
         loop: function () {
+
+            Game.foo = foo;
+
             gang.extendGame();
+            combatAction.extendGame();
+
+            creepSpawn.reset();
+
+            Game.combatActions.processCombatActions();
 
             for (var name in Game.creeps) {
                 /** @type Creep */
@@ -65,13 +75,64 @@ module.exports = (function() {
                 }
             }
 
-            try{
-                Game.gangs.processGangs();
-            }
-            catch(e) {
-                console.log('Failed to process gangs', e, '::', e.stack);
-            }
+            Game.gangs.processGangs();
         },
     }
 
 })();
+
+function foo() {
+    var gangs = {
+        gang1: [
+            {
+                body: [TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, HEAL, HEAL],
+                // count: 1,
+                count: 3,
+            },
+        ],
+
+        gang2: [
+            {
+                body: [TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK],
+                count: 2
+            },
+            {
+                body: [TOUGH, TOUGH, TOUGH, TOUGH, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK, ATTACK,
+                    HEAL, HEAL, HEAL],
+                count: 1
+            },
+        ]
+    };
+
+    var orders = [
+        {
+            gang1: {
+                action: 'move',
+                target: 't1',
+            },
+            gang2: {
+                action: 'move',
+                target: 't2'
+            }
+        },
+
+        {
+            gang1: {
+                action: 'move',
+                target: 't3'
+            }
+        },
+
+        {
+            gang2: {
+                action: 'attack',
+                range: 5,
+                target: 't4',
+            }
+        }
+    ]
+
+    var action = Game.combatActions.get('action1');
+    action.spawnGangs(Game.spawns.Spawn1, gangs);
+    action.addOrders(orders);
+}

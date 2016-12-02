@@ -236,7 +236,7 @@ module.exports = (function() {
                     }
                 },
                 moriaRigthHaul: {
-                    minimum: 2,
+                    minimum: 0,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
@@ -270,6 +270,7 @@ module.exports = (function() {
                     E67N42: {'spawnAmount' : 0},
                     E65N41: {'spawnAmount' : 3},
                     E66N42: {'spawnAmount' : 3},
+                    E68N42: {memo: {storageId: '5840280c7a2a211d3c2fcf72'}}
                 }
             },
 

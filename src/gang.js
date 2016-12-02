@@ -1,3 +1,5 @@
+const actionCombat = require('action.combat');
+
 module.exports = (function() {
 
     class GangManager {
@@ -5,7 +7,7 @@ module.exports = (function() {
             this.name = name;
             this.state = state;
 
-            _.defaults(this.state, {members: []});
+            _.defaults(this.state, {members: [], order: null});
         }
 
         addCreep(creep) {
@@ -14,6 +16,8 @@ module.exports = (function() {
             }
 
             this.state.members.push(creep.id);
+
+            return creep;
         }
 
         debug(...messages) {
@@ -70,21 +74,40 @@ module.exports = (function() {
             }
         }
 
-        setMoveTarget(target) {
-            if(target.pos) {
-                this.state.moveTarget = target.pos;
+        isOrderCompleted() {
+            var order = this.state.order;
+            if(!order) {
+                return true;
             }
-            else if(target.x && target.y) {
-                this.state.moveTarget = {x: target.x, y: target.y}
+
+            var creeps = this.getCreeps();
+
+            if(creeps.length < 1) {
+                return false;
             }
+
+            var target;
+            if(order.action == 'move') {
+                target = Game.flags[order.target];
+
+                var inRange = target.pos.findInRange(creeps, 1);
+
+                return inRange.length == creeps.length;
+            }
+
+            if(order.action == 'attack') {
+                var point = Game.flags[order.target];
+                target = actionCombat.findTargetInRange(point, order.range || 1);
+
+                return !target;
+            }
+
+            this.debug('check for unknown order', order.type);
+            return true;
         }
 
-        getMoveTarget() {
-            var target = this.state.moveTarget;
-
-            if(target) {
-                return new RoomPosition(target.x, target.y, target.roomName);
-            }
+        setOrder(orderData) {
+            this.state.order = orderData;
         }
 
         process() {
@@ -95,18 +118,37 @@ module.exports = (function() {
             var toHeal = this.getCreepToHeal(creeps);
 
             if(toHeal) {
-                // this.debug('will heal', toHeal, 'with', healers);
-
                 healers.forEach(h => this.tryHealCreep(toHeal, h));
                 return;
             }
 
-            var target = this.getMoveTarget();
+            var target;
+            var order = this.state.order;
 
-            if(target) {
-                creeps.forEach(c => {
-                    var x = c.moveTo(target);
-                });
+            if(order) {
+                if (order.action == 'move') {
+                    target = Game.flags[order.target];
+
+                    if (target) {
+                        creeps.forEach(c => {
+                            var x = c.moveTo(target);
+                        });
+                    }
+                }
+
+                if (order.action == 'attack') {
+                    var point = Game.flags[order.target];
+
+                    target = actionCombat.findTargetInRange(point, order.range || 1);
+
+                    if (target) {
+                        creeps.forEach(c => {
+                            if (c.attack(target) == ERR_NOT_IN_RANGE) {
+                                c.moveTo(target);
+                            }
+                        });
+                    }
+                }
             }
 
             healers.forEach(h => this.tryHealAround(h, creeps));
@@ -119,9 +161,14 @@ module.exports = (function() {
         },
 
         processGangs: function() {
-            for(var name in Memory.gangs) {
-                var gang = module.exports.getGang(name);
-                gang.process();
+            try {
+                for (var name in Memory.gangs) {
+                    var gang = module.exports.getGang(name);
+                    gang.process();
+                }
+            }
+            catch(e) {
+                console.log('Failed to process gangs', e, '::', e.stack);
             }
         },
 

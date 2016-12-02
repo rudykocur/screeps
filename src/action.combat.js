@@ -10,6 +10,42 @@ module.exports = (function() {
                 creep.getActiveBodyparts(RANGED_ATTACK) ||
                 creep.getActiveBodyparts(HEAL);
         },
+        
+        findTargetInRange: function(obj, range) {
+            var target = [];
+
+            if(!target.length) {
+                target = obj.pos.findInRange(FIND_HOSTILE_STRUCTURES, range, {
+                    filter: s => s.structureType == STRUCTURE_TOWER
+                });
+            }
+
+            if(!target.length) {
+                target = obj.pos.findInRange(FIND_HOSTILE_CREEPS, range, {
+                    filter: c => module.exports.hasCombatParts(c)
+                });
+            }
+
+            if(!target.length) {
+                target = obj.pos.findInRange(FIND_HOSTILE_SPAWNS, range);
+            }
+
+            if(!target.length) {
+                target = obj.pos.findInRange(FIND_HOSTILE_CREEPS, range);
+            }
+
+            if(!target.length) {
+                target = obj.pos.findInRange(FIND_HOSTILE_STRUCTURES, range);
+            }
+
+            if(!target.length) {
+                target = obj.pos.findInRange(FIND_HOSTILE_CONSTRUCTION_SITES, range);
+            }
+
+            if(target.length > 0) {
+                return target[0];
+            }
+        },
 
         findAttackTarget: function(creep) {
             var target;

@@ -3,7 +3,9 @@ const profiler = require('screeps-profiler');
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 const config = require('config');
+
 const gang = require('gang');
+const combatAction = require('combatAction');
 
 var roleTower = require('role.tower');
 
@@ -85,6 +87,7 @@ module.exports = (function() {
 
             Game.stat = printDiagnostics;
             gang.extendGame();
+            combatAction.extendGame();
 
             memoryClean();
             runDefence();
@@ -93,7 +96,11 @@ module.exports = (function() {
                 creepExt.register(taskModule.task);
             });
 
-            creepSpawn.onTick(Game.spawns.Rabbithole);
+            creepSpawn.reset();
+
+            Game.combatActions.processCombatActions();
+
+            creepSpawn.autospawn(Game.spawns.Rabbithole);
 
             try {
                 _.each(Memory.roomHandlers || {}, function (handlerData, roomName) {
@@ -148,12 +155,7 @@ module.exports = (function() {
             });
 
 
-            try{
-                Game.gangs.processGangs();
-            }
-            catch(e) {
-                console.log('Failed to process gangs', e, '::', e.stack);
-            }
+            Game.gangs.processGangs();
         },
     }
 

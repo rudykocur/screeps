@@ -142,7 +142,7 @@ module.exports = (function() {
                     var memo = _.defaults({
                         room: this.roomName,
                         role: blueprint.role,
-                    }, blueprint.memo);
+                    }, override.memo || {}, blueprint.memo);
 
                     this.trySpawnCreep('collector', blueprint.body, memo);
                 }

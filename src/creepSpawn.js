@@ -16,7 +16,7 @@ module.exports = (function() {
                 name = name + getCreepId();
                 var newCreepName = spawn.createCreep(body, name, memo);
                 console.log('Spawn '+spawn.name+': created creep. Name: ' + newCreepName);
-                return true;
+                return newCreepName;
             }
         },
 
@@ -40,8 +40,11 @@ module.exports = (function() {
         /**
          * @param {StructureSpawn} homeSpawn
          */
-        onTick:  function(homeSpawn) {
+        reset:  function() {
             spawnerBlocked = {};
+        },
+
+        autospawn: function(homeSpawn) {
 
             if(!homeSpawn) {
                 console.log('No home spawn given to autospawn');
