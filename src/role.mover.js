@@ -10,7 +10,7 @@ module.exports = (function() {
                 return;
             }
 
-            var minEnergy = (creep.carryCapacity > 50 ? 51 : 0);
+            var minEnergy = (creep.carryCapacity > 50 ? 50 : 0);
 
             if(actionUtils.shouldHarvestEnergy(creep, minEnergy)) {
                 if(actionHarvest.tryHarvestDroppedSource(creep)) {

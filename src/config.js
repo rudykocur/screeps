@@ -14,8 +14,9 @@ module.exports = (function() {
                 },
 
                 upgrader: {
-                    minimum: 4,
-                    body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    minimum: 6,
+                    //body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY],
                     priority: -2,
                     memo: {
                         role: 'upgrader',
@@ -65,22 +66,37 @@ module.exports = (function() {
                     body: [MOVE, CLAIM, CLAIM],
                     priority: -3,
                     condition: params => {
+                        if(!Game.rooms.E66N42) {return false;}
                         var res = Game.rooms.E66N42.controller.reservation;
                         return !res || res.ticksToEnd < 1000;
                     },
                     memo: {
                         role: 'settler',
                         room: 'E66N42',
-                        disableBuild: true,
                     }
                 },
 
                 settlerLeft: {
-                    minimum: 0,
+                    minimum: 1,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
                         enableRepair: true,
+                        room: 'E65N41',
+                    }
+                },
+
+                settlerLeftReserver: {
+                    minimum: 1,
+                    body: [MOVE, CLAIM, CLAIM],
+                    priority: -3,
+                    condition: params => {
+                        if(!Game.rooms.E65N41) {return false;}
+                        var res = Game.rooms.E65N41.controller.reservation;
+                        return !res || res.ticksToEnd < 1000;
+                    },
+                    memo: {
+                        role: 'settler',
                         room: 'E65N41',
                     }
                 },
@@ -149,23 +165,65 @@ module.exports = (function() {
                     body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
                     memo: {
                         role: 'builder',
-                        allowRepair: true,
+                        //allowRepair: true,
                     },
                 },
 
                 moriaMover: {
-                    minimum: 2,
+                    minimum: 1,
                     body: [MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: 10,
                     memo: {role: 'mover'}
                 },
+                moriaTransfer: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                    priority: 5,
+                    memo: {role: 'transfer', fromStructures: 'moriaBottom', toStructures: 'moriaTop'}
+                },
                 moriaUpgrader: {
                     minimum: 4,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     priority: -2,
                     memo: {
                         role: 'upgrader',
                         fromStructures: 'roomTopRightContainers'
+                    }
+                },
+                moriaTopHaul: {
+                    minimum: 2,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                    memo: {
+                        role: 'settler',
+                        harvestRoom: 'E67N43',
+                        workRoom: 'E67N42',
+                        //disableSpawn: true,
+                    }
+                },
+                moriaTop: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                    memo: {
+                        role: 'settler',
+                        room: 'E67N43',
+                    }
+                },
+                moriaRight: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                    memo: {
+                        role: 'settler',
+                        room: 'E68N42',
+                    }
+                },
+                moriaTopHaul: {
+                    minimum: 2,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                    memo: {
+                        role: 'settler',
+                        harvestRoom: 'E68N42',
+                        workRoom: 'E67N42',
+                        //disableSpawn: true,
                     }
                 },
             },
@@ -173,7 +231,7 @@ module.exports = (function() {
 
         blueprints: {
             outpostMiner: {
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK],
+                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
                 role: 'harvester',
                 memo: {},
                 roomOverride: {
@@ -190,6 +248,8 @@ module.exports = (function() {
                     storageId: '583d89cbc23dc5573898a00f'
                 },
                 roomOverride: {
+                    E67N42: {'spawnAmount' : 0},
+                    E65N41: {'spawnAmount' : 3}
                 }
             },
 

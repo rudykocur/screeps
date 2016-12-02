@@ -1,7 +1,7 @@
 const config = require('config');
 
 module.exports = (function() {
-    var spawnTriggered = false;
+    var spawnerBlocked = {};
 
     function getCreepId() {
         Memory.counters = Memory.counters || {};
@@ -16,19 +16,22 @@ module.exports = (function() {
 
     return {
         createCreep: function(spawn, name, body, memo) {
-            if(spawnTriggered == true) {return false;}
+            if(spawnerBlocked[spawn.name] == true) {return;}
+
+            spawnerBlocked[spawn.name] = true;
 
             if(spawn.canCreateCreep(body) == OK) {
                 name = name + getCreepId();
                 var newCreepName = spawn.createCreep(body, name, memo);
                 console.log('Spawn '+spawn.name+': created creep. Name: ' + newCreepName);
-                spawnTriggered = true;
                 return true;
             }
         },
 
         createCreepFromGroup: function(groupName, group, spawn, memo) {
-            if(spawnTriggered == true) {return;}
+            if(spawnerBlocked[spawn.name] == true) {return;}
+
+            spawnerBlocked[spawn.name] = true;
 
             memo = _.defaults(memo || {}, group.memo);
             memo.group = groupName;
@@ -38,7 +41,6 @@ module.exports = (function() {
                 var name = groupName + getCreepId();
                 var newCreepName = spawn.createCreep(group.body, name, memo);
                 console.log('Spawn ' + spawn.name +': created creep from group ' + groupName + ', name: ' + newCreepName);
-                spawnTriggered = true;
                 return true;
             }
         },
@@ -47,7 +49,7 @@ module.exports = (function() {
          * @param {StructureSpawn} homeSpawn
          */
         onTick:  function(homeSpawn) {
-            spawnTriggered = false;
+            spawnerBlocked = {};
 
             if(!homeSpawn) {
                 console.log('No home spawn given to autospawn');
@@ -72,7 +74,14 @@ module.exports = (function() {
                     var group = spawnConfig[groupName];
 
                     if((counts[groupName] || 0) < group.minimum) {
-                        if(group.condition && !group.condition({spawn})) {
+                        try {
+                            if (group.condition && !group.condition({spawn})) {
+                                return;
+                            }
+                        }
+                        catch(e) {
+                            console.log('Condition failed', e, '::', e.stack);
+                            Game.notify('Spawn condition failed: ' + e + ' :: ' + e.stack);
                             return;
                         }
 
