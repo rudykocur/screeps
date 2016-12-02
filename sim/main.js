@@ -1,5 +1,6 @@
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
+const gang = require('gang');
 
 var taskModules = [
     require('task.withdrawFromStorage'),
@@ -27,6 +28,8 @@ module.exports = (function() {
 
     return {
         loop: function () {
+            gang.extendGame();
+
             for (var name in Game.creeps) {
                 /** @type Creep */
                 var creep = Game.creeps[name];
@@ -60,6 +63,13 @@ module.exports = (function() {
                 if(task) {
                     task.run()
                 }
+            }
+
+            try{
+                Game.gangs.processGangs();
+            }
+            catch(e) {
+                console.log('Failed to process gangs', e, '::', e.stack);
             }
         },
     }

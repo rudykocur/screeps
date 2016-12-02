@@ -3,6 +3,7 @@ const profiler = require('screeps-profiler');
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 const config = require('config');
+const gang = require('gang');
 
 var roleTower = require('role.tower');
 
@@ -83,6 +84,7 @@ module.exports = (function() {
         runLoop: function () {
 
             Game.stat = printDiagnostics;
+            gang.extendGame();
 
             memoryClean();
             runDefence();
@@ -144,6 +146,14 @@ module.exports = (function() {
             _.each(getStructures(STRUCTURE_TOWER), function(tower) {
                 roleTower.run(tower);
             });
+
+
+            try{
+                Game.gangs.processGangs();
+            }
+            catch(e) {
+                console.log('Failed to process gangs', e, '::', e.stack);
+            }
         },
     }
 

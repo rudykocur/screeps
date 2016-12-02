@@ -1,6 +1,7 @@
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 const bookmarks = require('bookmarks');
+const utils = require('utils');
 
 Creep.prototype.debugLog = function(message) {
     if(this.memory.debug) {
@@ -12,18 +13,17 @@ Creep.prototype.addTask = function(task) {
     module.exports.addTask(this, task);
 };
 
+Creep.prototype.bodypartHpLeft = function(partType) {
+    var parts = _(this.body).filter({type: partType});
+
+    var hp = parts.sum(b => b.hits);
+
+    return hp / (parts.size() * 100);
+}
+
 module.exports = (function() {
 
-    function getTaskId() {
-        Memory.counters = Memory.counters || {};
-        Memory.counters.taskId = Memory.counters.taskId || 1;
-
-        if(Memory.counters.taskId > 100000) {
-            Memory.counters.taskId = 1;
-        }
-
-        return Memory.counters.taskId++;
-    }
+    var getTaskId = _.partial(utils.getNextId, 'taskId');
 
     return {
 

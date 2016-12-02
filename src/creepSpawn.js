@@ -1,18 +1,10 @@
 const config = require('config');
+const utils = require('utils');
 
 module.exports = (function() {
     var spawnerBlocked = {};
 
-    function getCreepId() {
-        Memory.counters = Memory.counters || {};
-        Memory.counters.creepId = Memory.counters.creepId || 1;
-
-        if(Memory.counters.creepId > 100000) {
-            Memory.counters.creepId = 1;
-        }
-
-        return Memory.counters.creepId++;
-    }
+    var getCreepId = _.partial(utils.getNextId, 'creepId');
 
     return {
         createCreep: function(spawn, name, body, memo) {

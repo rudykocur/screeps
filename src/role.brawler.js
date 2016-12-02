@@ -16,7 +16,17 @@ module.exports = (function() {
                 return;
             }
 
-            var target = actionCombat.findAttackTarget(creep);
+            var target;
+
+            if(creep.memory.attackTarget) {
+                target = Game.getObjectById(creep.memory.attackTarget);
+            }
+            else if(creep.memory.moveFlag) {
+                target = Game.flags[creep.memory.moveFlag];
+            }
+            else {
+                target = actionCombat.findAttackTarget(creep);
+            }
 
             if(target) {
 

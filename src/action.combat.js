@@ -47,33 +47,5 @@ module.exports = (function() {
             return target;
         },
 
-        // /**
-        //  * @param {Creep} creep
-        //  */
-        // run:  function(creep) {
-        //
-        //     if(actionUtils.tryChangeRoom(creep, creep.memory.room)) {
-        //         return;
-        //     }
-        //
-        //
-        //
-        //     if(target) {
-        //
-        //         if(creep.pos.isNearTo(target)) {
-        //             creep.attack(target);
-        //         }
-        //         else {
-        //             creep.moveTo(target);
-        //         }
-        //     }
-        //     else {
-        //         var flags = _.groupBy(Game.flags, 'room.name')[creep.pos.roomName];
-        //
-        //         if(flags && flags.length > 0) {
-        //             creep.moveTo(flags[0].pos);
-        //         }
-        //     }
-        // }
     }
 })();

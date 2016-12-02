@@ -33,6 +33,29 @@ module.exports = (function() {
                     return;
                 }
 
+                var dismantle = creep.memory.dismantleTarget;
+                if(dismantle) {
+                    var target = Game.getObjectById(dismantle);
+                    if(!target) {
+                        delete creep.memory.dismantleTarget;
+                    }
+                    else {
+                        if(creep.dismantle(target) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(target);
+                        }
+
+                        return;
+                    }
+                }
+
+                if(creep.memory.moveFlag) {
+                    var target = Game.flags[creep.memory.moveFlag];
+                    if(target){
+                        creep.moveTo(target);
+                        return;
+                    }
+                }
+
                 var ctrl = creep.room.controller;
 
                 if(ctrl.my && ctrl.ticksToDowngrade < 4000) {

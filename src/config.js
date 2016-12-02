@@ -125,15 +125,25 @@ module.exports = (function() {
 
                 fighter: {
                     minimum: 0,
-                    priority: -1,
+                    priority: 15,
                     // body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
-                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                    body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
                         // room: 'E68N42',
                         // room: 'E67N42',
 
-                        room: 'E65N41'
+                        // room: 'E64N41'
+                    }
+                },
+
+                disdis: {
+                    minimum: 0,
+                    priority: 15,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    memo: {
+                        role: 'settler',
                     }
                 },
 
@@ -157,6 +167,15 @@ module.exports = (function() {
                         role: 'combatHealer',
                     }
                 },
+
+                gang1: {
+                    minimum: 0,
+                    priority: 15,
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    memo: {
+                        role: 'none'
+                    }
+                }
             },
 
             Moria: {
@@ -216,7 +235,7 @@ module.exports = (function() {
                         room: 'E68N42',
                     }
                 },
-                moriaTopHaul: {
+                moriaRigthHaul: {
                     minimum: 2,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
@@ -249,7 +268,8 @@ module.exports = (function() {
                 },
                 roomOverride: {
                     E67N42: {'spawnAmount' : 0},
-                    E65N41: {'spawnAmount' : 3}
+                    E65N41: {'spawnAmount' : 3},
+                    E66N42: {'spawnAmount' : 3},
                 }
             },
 
