@@ -16,8 +16,9 @@ module.exports = (function() {
         roomTopRightSourceRight: ['57ef9ed386f108ae6e60fff8'],
         roomTopRightContainers: ['5840280c7a2a211d3c2fcf72'],
 
-        moriaBottom: ['584091db618805d413879e32'],
-        moriaTop: ['5840280c7a2a211d3c2fcf72']
+        moriaBottom: ['57ef9ed386f108ae6e60fffa'],
+        moriaTop: ['57ef9ed386f108ae6e60fff8'],
+        moriaStorage: ['58422dec43fcac045102285b'],
     };
     return {
         getObjects: function(name) {

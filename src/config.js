@@ -2,19 +2,42 @@ module.exports = (function() {
     return {
         rooms: {
             E67N42: {
-                panicMode: true,
+                panicMode: false,
             }
         },
+        roomHandlers: {
+            E66N42: {
+                type:"outpost",
+                homeRoom:"E66N41",
+            },
+            E65N41:{
+                type:"outpost",
+                homeRoom:"E66N41",
+            },
+            E68N42:{
+                type:"outpost",
+                homeRoom:"E67N42",
+            },
+            E67N43:{
+                type:"outpost",
+                homeRoom:"E67N42",
+            },
+            E65N42:{
+                type:"outpost",
+                homeRoom:"E66N41",
+            }
+        },
+
         spawn: {
             Rabbithole: {
                 builder: {
                     minimum: 1,
-                    body: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY],
                     memo: {role: 'builder'}
                 },
 
                 upgrader: {
-                    minimum: 6,
+                    minimum: 5,
                     //body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY],
                     priority: -2,
@@ -101,25 +124,14 @@ module.exports = (function() {
                     }
                 },
 
-                settlerTopRight: {
-                    minimum: 0,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
-                    memo: {
-                        role: 'settler',
-                        enableRepair: true,
-                        room: 'E67N42',
-                    }
-                },
-                settlerTopLeftHaul: {
+                settlerTopLeft: {
                     minimum: 1,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
-                        harvestRoom: 'E65N42',
-                        workRoom: 'E66N41',
+                        enableRepair: true,
+                        room: 'E65N42',
                         via: ['E66N41', 'E66N42', 'E65N42'],
-                        disableSpawn: true,
-                        debug: true,
                     }
                 },
 
@@ -128,13 +140,16 @@ module.exports = (function() {
                     priority: 15,
                     // body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
-                    body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                        TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
                         // room: 'E68N42',
                         // room: 'E67N42',
 
-                        // room: 'E64N41'
+                        room: 'E64N41'
                     }
                 },
 
@@ -185,32 +200,46 @@ module.exports = (function() {
                     memo: {
                         role: 'builder',
                         //allowRepair: true,
+                        disableController: true,
                     },
                 },
 
                 moriaMover: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                    minimum: 2,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: 10,
                     memo: {role: 'mover'}
                 },
-                moriaTransfer: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                    priority: 5,
-                    memo: {role: 'transfer', fromStructures: 'moriaBottom', toStructures: 'moriaTop'}
-                },
                 moriaUpgrader: {
                     minimum: 4,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     priority: -2,
                     memo: {
                         role: 'upgrader',
-                        fromStructures: 'roomTopRightContainers'
+                        fromStructures: 'moriaStorage'
+                    }
+                },
+                moriaHarvesterTop: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    priority: 6,
+                    memo: {
+                        role: 'harvester',
+                        energySource: 'moriaTop'
+                    }
+                },
+
+                moriaHarvesterBottom: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    priority: 5,
+                    memo: {
+                        role: 'harvester',
+                        energySource: 'moriaBottom'
                     }
                 },
                 moriaTopHaul: {
-                    minimum: 2,
+                    minimum: 0,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
@@ -235,14 +264,18 @@ module.exports = (function() {
                         room: 'E68N42',
                     }
                 },
-                moriaRigthHaul: {
-                    minimum: 0,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                moriaRightReserver: {
+                    minimum: 1,
+                    body: [MOVE, CLAIM, CLAIM],
+                    priority: -3,
+                    condition: params => {
+                        if(!Game.rooms.E68N42) {return false;}
+                        var res = Game.rooms.E68N42.controller.reservation;
+                        return !res || res.ticksToEnd < 1000;
+                    },
                     memo: {
                         role: 'settler',
-                        harvestRoom: 'E68N42',
-                        workRoom: 'E67N42',
-                        //disableSpawn: true,
+                        room: 'E68N42',
                     }
                 },
             },
@@ -254,9 +287,9 @@ module.exports = (function() {
                 role: 'harvester',
                 memo: {},
                 roomOverride: {
-                    E67N42: {
-                        body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]
-                    }
+                    E67N42: {body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]},
+                    E66N42: {body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]},
+                    E65N41: {body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]},
                 }
             },
 
@@ -267,10 +300,10 @@ module.exports = (function() {
                     storageId: '583d89cbc23dc5573898a00f'
                 },
                 roomOverride: {
-                    E67N42: {'spawnAmount' : 0},
-                    E65N41: {'spawnAmount' : 3},
-                    E66N42: {'spawnAmount' : 3},
-                    E68N42: {memo: {storageId: '5840280c7a2a211d3c2fcf72'}}
+                    E65N41: {'spawnAmount' : 2},
+                    E66N42: {'spawnAmount' : 2},
+                    E68N42: {memo: {storageId: '58422dec43fcac045102285b'}},
+                    E67N43: {memo: {storageId: '58422dec43fcac045102285b'}},
                 }
             },
 

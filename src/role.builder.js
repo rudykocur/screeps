@@ -30,8 +30,9 @@ module.exports = (function() {
                    return;
                 }
 
-
-                actionUtils.actionFillController(creep);
+                if(!creep.memory.disableController) {
+                    actionUtils.actionFillController(creep);
+                }
             }
         },
     }

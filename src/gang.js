@@ -43,7 +43,7 @@ module.exports = (function() {
             if(mostDamaged.length > 0) {
                 var creep = mostDamaged[0];
 
-                if(creep.bodypartHpLeft(TOUGH) < 0.8) {
+                if(creep.bodypartHpLeft(TOUGH) < 0.4) {
                     return creep;
                 }
             }
@@ -89,6 +89,9 @@ module.exports = (function() {
             var target;
             if(order.action == 'move') {
                 target = Game.flags[order.target];
+                if(!target.room) {
+                    return false;
+                }
 
                 var inRange = target.pos.findInRange(creeps, 1);
 
@@ -97,6 +100,11 @@ module.exports = (function() {
 
             if(order.action == 'attack') {
                 var point = Game.flags[order.target];
+
+                if(!point.room) {
+                    return false;
+                }
+
                 target = actionCombat.findTargetInRange(point, order.range || 1);
 
                 return !target;
@@ -138,6 +146,9 @@ module.exports = (function() {
 
                 if (order.action == 'attack') {
                     var point = Game.flags[order.target];
+                    if(!point.room) {
+                        return false;
+                    }
 
                     target = actionCombat.findTargetInRange(point, order.range || 1);
 

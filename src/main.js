@@ -6,6 +6,7 @@ const config = require('config');
 
 const gang = require('gang');
 const combatAction = require('combatAction');
+const roomHanders = require('room.handlers');
 
 var roleTower = require('role.tower');
 
@@ -31,9 +32,7 @@ var roleModules = {
     none: {run: function() {}},
 }
 
-var roomHandlers = {
-    outpost: require('room.outpost')
-};
+
 
 // profiler.enable();
 
@@ -84,8 +83,9 @@ module.exports = (function() {
         },
 
         runLoop: function () {
-
             Game.stat = printDiagnostics;
+            Game.killBrot = killBrot;
+
             gang.extendGame();
             combatAction.extendGame();
 
@@ -102,18 +102,7 @@ module.exports = (function() {
 
             creepSpawn.autospawn(Game.spawns.Rabbithole);
 
-            try {
-                _.each(Memory.roomHandlers || {}, function (handlerData, roomName) {
-
-                    var clz = roomHandlers[handlerData.type].handler;
-                    var handler = new clz(roomName, handlerData);
-
-                    handler.process();
-                });
-            }
-            catch(e) {
-                console.log('Failure at processing rooms', e, '::', e.stack);
-            }
+            roomHanders.processRoomHandlers();
 
             for (var name in Game.creeps) {
                 /** @type Creep */
@@ -176,4 +165,65 @@ function printDiagnostics() {
     })
     var room = Game.spawns.Rabbithole.room;
     console.log('Spawn power: ' + _.map(Game.spawns, s => s.name + ' ' + s.room.energyAvailable + '/' + s.room.energyCapacityAvailable ).join(', '));
+}
+
+function killBrot() {
+    var gangs = {
+        tanks: [
+            {
+                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL],
+                count: 3
+            },
+        ],
+    };
+
+    var moriaGangs = {
+        fighters: [
+            {
+                count: 3,
+                body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK]
+            }
+        ]
+    }
+
+    var orders = [
+        {
+            tanks: {
+                action: 'move',
+                target: 't1',
+            },
+            fighters: {
+                action: 'move',
+                target: 'a1'
+            }
+        },
+
+        {
+            tanks: {
+                action: 'move',
+                target: 't2'
+            }
+        },
+
+        {
+            fighters: {
+                action: 'attack',
+                range: 0,
+                target: 'a2',
+            },
+        },
+        {
+            fighters: {
+                action: 'attack',
+                range: 5,
+                target: 'a3',
+            },
+        },
+    ];
+
+    var action = Game.combatActions.get('killBrot');
+    action.spawnGangs(Game.spawns.Moria, moriaGangs);
+    action.spawnGangs(Game.spawns.Rabbithole, gangs);
+    action.addOrders(orders);
 }

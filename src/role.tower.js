@@ -19,7 +19,7 @@ module.exports = (function() {
             }
 
             if(tower.energy > 300) {
-                var target = tower.pos.findClosestByRange(FIND_STRUCTURES, {
+                var toRepair = tower.room.find(FIND_STRUCTURES, {
                     /**
                      * @param {Structure} struct
                      */
@@ -31,6 +31,8 @@ module.exports = (function() {
                         return (struct.hits / struct.hitsMax) < 0.75;
                     }
                 });
+
+                var target = _.first(_.sortBy(toRepair, struct => (struct.hits/struct.hitsMax)));
 
                 if(target) {
                     tower.repair(target);
