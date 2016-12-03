@@ -1,8 +1,11 @@
 const profiler = require('screeps-profiler');
 
+require('prototype.Room');
+
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 const config = require('config');
+const logger = require('logger');
 
 const gang = require('gang');
 const combatAction = require('combatAction');
@@ -30,9 +33,7 @@ var roleModules = {
     combatTank: require('role.combatTank'),
     combatHealer: require('role.combatHealer'),
     none: {run: function() {}},
-}
-
-
+};
 
 // profiler.enable();
 
@@ -57,16 +58,17 @@ module.exports = (function() {
 
                     if(aggresive) {
                         if(!room.controller.safeMode) {
-                            var roomSettings = config.rooms[room.name] || {};
-
-                            if(roomSettings.panicMode) {
-                                Game.notify("Activated safe mode in room " + room);
-                                room.controller.activateSafeMode();
-                                break;
-                            }
-                            else {
+                            // var roomSettings = config.rooms[room.name] || {};
+                            //
+                            // if(roomSettings.panicMode) {
+                            //     Game.notify("Activated safe mode in room " + room);
+                            //     room.controller.activateSafeMode();
+                            //     break;
+                            // }
+                            // else {
                                 Game.notify("Enemy spotted in room " + room + '. Owner: ' + hostile.owner.username);
-                            }
+                                logger.error("Enemy spotted in room " + room + '. Owner: ' + hostile.owner.username);
+                            // }
                         }
                     }
                 }

@@ -1,26 +1,32 @@
 const config = require('config');
+const logger = require('logger');
 const creepSpawn = require('creepSpawn');
+
+const roleCollector = require('role.collector');
 
 module.exports = (function() {
     return {
-        /**
-         * Required data in Memory:
-         * Memory.roomHandlers.N01E01 = {type: 'outpost', homeRoom: 'N02E01'}
-         */
         handler: class OutpostRoomHandler {
-            constructor(roomName, state) {
-                this.roomName = roomName;
+            constructor(room, state, config) {
+                this.room = room;
                 this.state = state;
+                this.cfg = config;
 
                 this.state.collectors = this.state.collectors || [];
             }
 
-            debug(message) {
-                console.log('OutpostRoomHandler '+this.roomName+': ' + message);
+            debug(...messages) {
+                var msg = `outpost ${this.room.customName}: <span style="color: gray">${messages.join(' ')}</span>`;
+                console.log(msg);
+            }
+
+            error(...messages) {
+                var msg = `outpost ${this.room.customName}: ${messages.join(' ')}`;
+                logger.error(msg);
             }
 
             process() {
-                if(!Game.rooms[this.roomName]) {
+                if(!this.room) {
                     return;
                 }
 
@@ -40,8 +46,7 @@ module.exports = (function() {
             }
 
             discoverSources() {
-                var room = Game.rooms[this.roomName];
-                var sources = room.find(FIND_SOURCES);
+                var sources = this.room.find(FIND_SOURCES);
 
                 this.state.sources = sources.map(s => {
                     return {
@@ -52,17 +57,17 @@ module.exports = (function() {
             }
 
             findMinerForSource(sourceId) {
-                var miners = _.filter(Game.creeps, creep => creep.memory.energySourceId == sourceId);
+                var miner = _.first(_.filter(Game.creeps, creep => creep.memory.energySourceId == sourceId));
 
-                if(miners.length > 0) {
-                    return miners[0].id;
+                if(miner) {
+                    return miner.id;
                 }
 
                 return null;
             }
 
             findDefender() {
-                var defenders = _.filter(Game.creeps, creep => {return creep.memory.room == this.roomName &&
+                var defenders = _.filter(Game.creeps, creep => {return creep.memory.room == this.room.name &&
                     creep.memory.role == config.blueprints.outpostMiner.role});
 
                 if(defenders.length > 0) {
@@ -84,14 +89,8 @@ module.exports = (function() {
                         return;
                     }
 
-                    var sourceObj = Game.getObjectById(source.id);
-
-                    var roomName = sourceObj.pos.roomName;
-
                     var blueprint = config.blueprints.outpostMiner;
-                    var override = blueprint.roomOverride[roomName] || {};
-
-                    var body = override.body || blueprint.body;
+                    var body = blueprint.body;
 
                     var memo = _.defaults({
                         energySourceId: source.id,
@@ -103,7 +102,7 @@ module.exports = (function() {
                 else {
                     var miner = Game.getObjectById(source.minerId);
                     if(!miner && source.minerId) {
-                        this.debug('miner for source ' + source.id + ' died. Will spawn soon.');
+                        this.debug('miner for source', source.id, 'died. Will spawn soon.');
                         source.minerId = null;
                     }
                 }
@@ -112,7 +111,7 @@ module.exports = (function() {
             pingCollectors() {
                 var needed = this.state.sources.length;
                 var blueprint = config.blueprints.outpostCollector;
-                var override = blueprint.roomOverride[this.roomName] || {};
+                var override = blueprint.roomOverride[this.room.name] || {};
 
                 if(typeof override['spawnAmount'] != 'undefined') {
                     // console.log('correcting needed to ', override.spawnAmount, '::', this.roomName);
@@ -134,14 +133,22 @@ module.exports = (function() {
 
                 if(this.state.collectors.length < needed) {
                     this.state.collectors = _.filter(Game.creeps, c => {
-                        return c.memory.room == this.roomName && c.memory.role == blueprint.role;
+                        return c.memory.room == this.room.name && c.memory.role == blueprint.role;
                     }).map(c => c.id);
                 }
 
                 if(this.state.collectors.length < needed) {
+                    var storage = roleCollector.findTargetContainer(this.homeRoom());
+
+                    if(!storage) {
+                        this.error("No storage for collector. Not spawning!");
+                        return;
+                    }
+
                     var memo = _.defaults({
-                        room: this.roomName,
+                        room: this.room.name,
                         role: blueprint.role,
+                        storageId: storage.id,
                     }, override.memo || {}, blueprint.memo);
 
                     this.trySpawnCreep('collector', blueprint.body, memo);
@@ -152,8 +159,7 @@ module.exports = (function() {
                 var defenderId = this.findDefender();
 
                 if(!defenderId) {
-                    var room = Game.rooms[this.roomName];
-                    var creeps = room.find(FIND_HOSTILE_CREEPS, {
+                    var creeps = this.room.find(FIND_HOSTILE_CREEPS, {
                         filter: c => this.hasCombatParts(c)
                     });
 
@@ -161,7 +167,7 @@ module.exports = (function() {
                         var blueprint = config.blueprints.outpostDefender;
 
                         var memo = _.defaults({
-                            room: this.roomName,
+                            room: this.room.name,
                             role: blueprint.role,
                         }, blueprint.memo);
 
@@ -179,7 +185,7 @@ module.exports = (function() {
             }
 
             homeRoom() {
-                return Game.rooms[this.state.homeRoom];
+                return Room.byCustomName(this.cfg.homeRoom);
             }
 
             trySpawnCreep(type, body, memo) {
@@ -190,7 +196,7 @@ module.exports = (function() {
                 if(spawns.length > 0) {
                     var spawn = spawns[0];
 
-                    creepSpawn.createCreep(spawn, 'outpost_'+this.roomName+'_'+type+'_', body, memo);
+                    creepSpawn.createCreep(spawn, 'outpost_'+this.room.customName+'_'+type+'_', body, memo);
                 }
             }
         }

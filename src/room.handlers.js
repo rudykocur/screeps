@@ -1,22 +1,30 @@
+const config = require('config');
+const logger = require('logger');
+
 var roomHandlers = {
-    outpost: require('room.outpost')
+    outpost: require('room.outpost'),
+    colony: require('room.colony'),
 };
 
 module.exports = (function() {
 
     return {
         processRoomHandlers: function() {
-            try {
-                _.each(Memory.roomHandlers || {}, function (handlerData, roomName) {
+            Memory.rooms = Memory.rooms || {};
 
-                    var clz = roomHandlers[handlerData.type].handler;
-                    var handler = new clz(roomName, handlerData);
+            try {
+                _.each(config.rooms, (roomConfig, roomName) => {
+                    Memory.rooms[roomName] = Memory.rooms[roomName] || {};
+
+                    var clz = roomHandlers[roomConfig.type].handler;
+                    var state = Memory.rooms[roomName];
+                    var handler = new clz(Room.byCustomName(roomName), state, roomConfig);
 
                     handler.process();
                 });
             }
             catch(e) {
-                console.log('Failure at processing rooms', e, '::', e.stack);
+                logger.error('Failure at processing rooms', e, '::', e.stack);
             }
         }
     }

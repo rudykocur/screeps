@@ -1,30 +1,58 @@
 module.exports = (function() {
     return {
-        rooms: {
-            E67N42: {
-                panicMode: false,
-            }
+        roomNames: {
+            E67N42: "moria",
+            E66N41: "home",
+            E66N42: "homeTop",
+            E65N41: "homeLeft",
+            E65N42: "loneOutpost",
+            E67N43: "moriaTop",
+            E68N42: "moriaRight",
         },
-        roomHandlers: {
-            E66N42: {
-                type:"outpost",
-                homeRoom:"E66N41",
+        rooms: {
+            home: {
+                type: "colony",
+                creeps: {
+                    upgrader: 5,
+                    builder: 1,
+                    harvester: 2,
+                    mover: 2,
+                },
             },
-            E65N41:{
-                type:"outpost",
-                homeRoom:"E66N41",
+            moria: {
+                type: "colony",
+                panicMode: false,
+                creeps: {
+                    upgrader: 4,
+                    builder: 1,
+                    harvester: 2,
+                    mover: 2,
+                }
             },
-            E68N42:{
+            homeTop: {
                 type:"outpost",
-                homeRoom:"E67N42",
+                homeRoom:"home",
             },
-            E67N43:{
+            homeLeft:{
                 type:"outpost",
-                homeRoom:"E67N42",
+                homeRoom:"home",
             },
-            E65N42:{
+            moriaRight:{
                 type:"outpost",
-                homeRoom:"E66N41",
+                homeRoom:"moria",
+                creeps: {
+                    // harvester: 2,
+                    claimer: 1,
+                    // collector: 2,
+                }
+            },
+            moriaTop:{
+                type:"outpost",
+                homeRoom:"moria",
+            },
+            loneOutpost:{
+                type:"outpost",
+                homeRoom:"home",
             }
         },
 
@@ -49,7 +77,7 @@ module.exports = (function() {
 
                 harvesterRight: {
                     minimum: 1,
-                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
                     priority: 6,
                     memo: {
                         role: 'harvester',
@@ -59,7 +87,7 @@ module.exports = (function() {
 
                 harvesterLeft: {
                     minimum: 1,
-                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
                     priority: 5,
                     memo: {
                         role: 'harvester',
@@ -221,7 +249,7 @@ module.exports = (function() {
                 },
                 moriaHarvesterTop: {
                     minimum: 1,
-                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK],
                     priority: 6,
                     memo: {
                         role: 'harvester',
@@ -231,21 +259,11 @@ module.exports = (function() {
 
                 moriaHarvesterBottom: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
                     priority: 5,
                     memo: {
                         role: 'harvester',
                         energySource: 'moriaBottom'
-                    }
-                },
-                moriaTopHaul: {
-                    minimum: 0,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
-                    memo: {
-                        role: 'settler',
-                        harvestRoom: 'E67N43',
-                        workRoom: 'E67N42',
-                        //disableSpawn: true,
                     }
                 },
                 moriaTop: {
@@ -286,24 +304,19 @@ module.exports = (function() {
                 body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
                 role: 'harvester',
                 memo: {},
-                roomOverride: {
-                    E67N42: {body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]},
-                    E66N42: {body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]},
-                    E65N41: {body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK]},
-                }
             },
 
             outpostCollector: {
                 body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 role: 'collector',
                 memo: {
-                    storageId: '583d89cbc23dc5573898a00f'
+                    // storageId: '583d89cbc23dc5573898a00f'
                 },
                 roomOverride: {
                     E65N41: {'spawnAmount' : 2},
                     E66N42: {'spawnAmount' : 2},
-                    E68N42: {memo: {storageId: '58422dec43fcac045102285b'}},
-                    E67N43: {memo: {storageId: '58422dec43fcac045102285b'}},
+                    E68N42: {'spawnAmount' : 3},
+                    // E67N43: {memo: {storageId: '58422dec43fcac045102285b'}},
                 }
             },
 

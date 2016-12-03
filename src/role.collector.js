@@ -49,6 +49,20 @@ module.exports = (function() {
                 }
             }
         },
+
+        findTargetContainer: function(room) {
+            var target = _.first(room.find(FIND_MY_STRUCTURES, {
+                filter: {structureType: STRUCTURE_STORAGE}
+            }));
+
+            if(!target) {
+                target = _.first(room.find(FIND_MY_STRUCTURES, {
+                    filter: {structureType: STRUCTURE_CONTAINER}
+                }));
+            }
+
+            return target;
+        }
     }
 })();
 

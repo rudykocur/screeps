@@ -37,13 +37,13 @@ module.exports = (function() {
             }
         },
 
-        /**
-         * @param {StructureSpawn} homeSpawn
-         */
         reset:  function() {
             spawnerBlocked = {};
         },
 
+        /**
+         * @param {StructureSpawn} homeSpawn
+         */
         autospawn: function(homeSpawn) {
 
             if(!homeSpawn) {
