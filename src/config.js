@@ -65,13 +65,14 @@ module.exports = (function() {
                 },
 
                 upgrader: {
-                    minimum: 3,
+                    minimum: 4,
                     //body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY],
+                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                        CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: -2,
                     memo: {
                         role: 'upgrader',
-                        fromStructures: 'storage'
                     }
                 },
 
@@ -246,7 +247,6 @@ module.exports = (function() {
                     priority: -2,
                     memo: {
                         role: 'upgrader',
-                        fromStructures: 'moriaStorage'
                     }
                 },
                 moriaHarvesterTop: {

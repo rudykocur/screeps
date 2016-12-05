@@ -13,11 +13,24 @@ module.exports = (function() {
          */
         scheduleTask: function(creep) {
             if(creep.carry.energy == 0) {
-                var target = actionHarvest.findStorageToHarvest(creep, {
-                    reserveStorage: 10000,
-                    reserveContainer: 300,
-                    structures: bookmarks.getObjects(creep.memory.fromStructures)
+                var target;
+
+                /** @type StructureStorage */
+                target = actionHarvest.findStorageToHarvest(creep, {
+                    types: [STRUCTURE_STORAGE]
                 });
+
+                // if we have storage built but not enough energy, then dont try to borrow from containers.
+                if(target && _.sum(target.store) < 10000) {
+                    return;
+                }
+
+                if(!target) {
+                    target = actionHarvest.findStorageToHarvest(creep, {
+                        reserve: 300,
+                        types: [STRUCTURE_CONTAINER]
+                    });
+                }
 
                 if(target) {
                     creepExt.addTask(creep, taskWithdraw.task.create(creep, target));
