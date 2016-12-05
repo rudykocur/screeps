@@ -29,6 +29,7 @@ var roleModules = {
     brawler: require('role.brawler'),
     transfer: require('role.transfer'),
     collector: require('role.collector'),
+    claimer: require('role.claimer'),
     settler: require('role.settler'),
     combatTank: require('role.combatTank'),
     combatHealer: require('role.combatHealer'),

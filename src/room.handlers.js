@@ -16,7 +16,7 @@ module.exports = (function() {
 
                 this.type = 'unknown';
 
-                _.defaults(this.state, {hostiles: []});
+                _.defaults(this.state, {hostiles: [], creeps: {}});
             }
 
             info(...messages) {
@@ -24,7 +24,8 @@ module.exports = (function() {
             }
 
             debug(...messages) {
-                return logger.log(`${this.type} ${this.room.customName}: ${logger.fmt.gray(messages)}`);
+                var msg = logger.fmt.gray(messages);
+                return logger.log(`${this.type} ${this.room.customName}: ${msg}`);
             }
 
             error(...messages) {
@@ -64,6 +65,12 @@ module.exports = (function() {
                 }
 
                 this.state.hostiles = currentCreeps;
+            }
+
+            findCreeps(role) {
+                return _.filter(Game.creeps, c => {
+                    return c.memory.room == this.room.name && c.memory.role == role;
+                });
             }
         },
 

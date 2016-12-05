@@ -36,6 +36,7 @@ module.exports = (function() {
                 });
 
                 this.pingCollectors();
+                this.pingClaimers();
             }
 
             discoverSources() {
@@ -60,8 +61,7 @@ module.exports = (function() {
             }
 
             findDefender() {
-                var defenders = _.filter(Game.creeps, creep => {return creep.memory.room == this.room.name &&
-                    creep.memory.role == config.blueprints.outpostDefender.role});
+                var defenders = this.findCreeps(config.blueprints.outpostDefender.role);
 
                 if(defenders.length > 0) {
                     return defenders[0].id;
@@ -103,33 +103,19 @@ module.exports = (function() {
 
             pingCollectors() {
                 var needed = this.state.sources.length;
-                var blueprint = config.blueprints.outpostCollector;
-                var override = blueprint.roomOverride[this.room.name] || {};
-
-                if(typeof override['spawnAmount'] != 'undefined') {
-                    // console.log('correcting needed to ', override.spawnAmount, '::', this.roomName);
-                    needed = override.spawnAmount;
+                if(this.config.creeps && this.config.creeps.collector !== undefined) {
+                    needed = this.config.creeps.collector;
                 }
+
+                var blueprint = config.blueprints.outpostCollector;
 
                 if(needed < 1) {
                     return;
                 }
 
-                this.state.collectors = this.state.collectors.filter(c => {
-                    var creep = Game.getObjectById(c);
-                    if(!creep) {
-                        this.debug('collector died. Will spawn soon.');
-                    }
-                    return !!creep;
-                });
+                var collectors = this.findCreeps(blueprint.role);
 
-                if(this.state.collectors.length < needed) {
-                    this.state.collectors = _.filter(Game.creeps, c => {
-                        return c.memory.room == this.room.name && c.memory.role == blueprint.role;
-                    }).map(c => c.id);
-                }
-
-                if(this.state.collectors.length < needed) {
+                if(collectors.length < needed) {
                     var storage = roleCollector.findTargetContainer(this.homeRoom());
 
                     if(!storage) {
@@ -141,9 +127,36 @@ module.exports = (function() {
                         room: this.room.name,
                         role: blueprint.role,
                         storageId: storage.id,
-                    }, override.memo || {}, blueprint.memo);
+                    }, blueprint.memo);
 
                     this.trySpawnCreep('collector', blueprint.body, memo);
+                }
+            }
+
+            pingClaimers() {
+                if(!this.config.creeps || !this.config.creeps.claimer) {
+                    return;
+                }
+
+                var reservation = this.room.controller.reservation;
+                if(reservation && reservation.ticksToEnd > 1000) {
+                    return;
+                }
+
+                var blueprint = config.blueprints.outpostClaimer;
+                var claimers = this.findCreeps(blueprint.role);
+
+                if(claimers.length < this.config.creeps.claimer) {
+                    var memo = _.defaults({
+                        room: this.room.name,
+                        role: blueprint.role,
+                    });
+
+                    var newCreep = this.trySpawnCreep('claimer', blueprint.body, memo);
+
+                    if(newCreep) {
+                        this.debug('created claimer', newCreep);
+                    }
                 }
             }
 

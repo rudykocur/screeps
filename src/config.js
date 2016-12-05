@@ -32,10 +32,18 @@ module.exports = (function() {
             // homeTop: {
             //     type:"outpost",
             //     homeRoom:"home",
+            //     creeps: {
+            //         collector: 3,
+            //         claimer: 1,
+            //     },
             // },
             homeLeft:{
                 type:"outpost",
                 homeRoom:"home",
+                creeps: {
+                    collector: 3,
+                    claimer: 1,
+                },
             },
             moriaRight:{
                 type:"outpost",
@@ -43,7 +51,7 @@ module.exports = (function() {
                 creeps: {
                     // harvester: 2,
                     claimer: 1,
-                    // collector: 2,
+                    collector: 3,
                 }
             },
             moriaTop:{
@@ -139,7 +147,7 @@ module.exports = (function() {
                 },
 
                 settlerLeftReserver: {
-                    minimum: 1,
+                    minimum: 0,
                     body: [MOVE, CLAIM, CLAIM],
                     priority: -3,
                     condition: params => {
@@ -287,7 +295,7 @@ module.exports = (function() {
                     }
                 },
                 moriaRightReserver: {
-                    minimum: 1,
+                    minimum: 0,
                     body: [MOVE, CLAIM, CLAIM],
                     priority: -3,
                     condition: params => {
@@ -328,6 +336,12 @@ module.exports = (function() {
             outpostDefender: {
                 body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                 role: 'brawler',
+                memo: {}
+            },
+
+            outpostClaimer: {
+                body: [MOVE, CLAIM, CLAIM],
+                role: 'claimer',
                 memo: {}
             }
         }
