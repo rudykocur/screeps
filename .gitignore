@@ -41,5 +41,7 @@ jspm_packages
 .gitignore
 .idea/
 node_modules/
-/ScreepsAutocomplete/
 /sim/*.js
+screepsConfig.js
+
+!/sim/main.js
