@@ -24,7 +24,7 @@ module.exports = (function() {
             }
 
             debug(...messages) {
-                var msg = logger.fmt.gray(messages);
+                var msg = logger.fmt.gray(...messages);
                 return logger.log(`${this.type} ${this.room.customName}: ${msg}`);
             }
 

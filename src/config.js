@@ -121,42 +121,12 @@ module.exports = (function() {
                     }
                 },
 
-                settlerTopReserver: {
-                    minimum: 0,
-                    body: [MOVE, CLAIM, CLAIM],
-                    priority: -3,
-                    condition: params => {
-                        if(!Game.rooms.E66N42) {return false;}
-                        var res = Game.rooms.E66N42.controller.reservation;
-                        return !res || res.ticksToEnd < 1000;
-                    },
-                    memo: {
-                        role: 'settler',
-                        room: 'E66N42',
-                    }
-                },
-
                 settlerLeft: {
                     minimum: 1,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
                         enableRepair: true,
-                        room: 'E65N41',
-                    }
-                },
-
-                settlerLeftReserver: {
-                    minimum: 0,
-                    body: [MOVE, CLAIM, CLAIM],
-                    priority: -3,
-                    condition: params => {
-                        if(!Game.rooms.E65N41) {return false;}
-                        var res = Game.rooms.E65N41.controller.reservation;
-                        return !res || res.ticksToEnd < 1000;
-                    },
-                    memo: {
-                        role: 'settler',
                         room: 'E65N41',
                     }
                 },
@@ -292,20 +262,6 @@ module.exports = (function() {
                         role: 'settler',
                         room: 'E68N42',
                         enableRepair: true,
-                    }
-                },
-                moriaRightReserver: {
-                    minimum: 0,
-                    body: [MOVE, CLAIM, CLAIM],
-                    priority: -3,
-                    condition: params => {
-                        if(!Game.rooms.E68N42) {return false;}
-                        var res = Game.rooms.E68N42.controller.reservation;
-                        return !res || res.ticksToEnd < 1000;
-                    },
-                    memo: {
-                        role: 'settler',
-                        room: 'E68N42',
                     }
                 },
             },
