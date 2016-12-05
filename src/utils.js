@@ -6,7 +6,7 @@ module.exports = (function() {
 
             counters[counterName] = counters[counterName] || 1;
 
-            if(counters[counterName] > 100000) {
+            if(counters[counterName] > 1000000) {
                 counters[counterName] = 1;
             }
 

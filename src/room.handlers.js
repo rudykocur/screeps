@@ -17,7 +17,7 @@ module.exports = (function() {
 
                 this.type = 'unknown';
 
-                _.defaults(this.state, {hostiles: [], creeps: {}});
+                _.defaults(this.state, {hostiles: [], creeps: {}, spawns: []});
             }
 
             info(...messages) {
@@ -38,6 +38,10 @@ module.exports = (function() {
             process() {
                 if(!this.room) {
                     return;
+                }
+
+                if(Game.time % 50 == 0) {
+                    this.updateSpawns();
                 }
 
                 if(Game.time % 10 == 0) {
@@ -66,6 +70,14 @@ module.exports = (function() {
                 }
 
                 this.state.hostiles = currentCreeps;
+            }
+
+            updateSpawns() {
+                this.state.spawns = this.room.find(FIND_MY_SPAWNS).map(s => s.id);
+            }
+
+            getSpawns() {
+                return this.state.spawns.map(sId => Game.getObjectById(sId));
             }
 
             findCreeps(role) {
@@ -111,7 +123,7 @@ module.exports = (function() {
             var roomConfig = config.rooms[room.customName];
             var clz = handlers[roomConfig.type].handler;
             var state = Memory.rooms[room.customName];
-            return new clz(Room.byCustomName(roomName), state, roomConfig);
+            return new clz(roomName, state, roomConfig);
         }
     }
 })();

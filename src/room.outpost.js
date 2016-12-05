@@ -2,6 +2,7 @@ const config = require('config');
 const logger = require('logger');
 const creepSpawn = require('creepSpawn');
 const roomHandlers = require('room.handlers');
+const spawnQueue = require('spawnQueue');
 
 const roleCollector = require('role.collector');
 
@@ -84,11 +85,8 @@ module.exports = (function() {
                         role: blueprint.role,
                     });
 
-                    var newCreep = this.trySpawnCreep('scout', blueprint.body, memo);
-
-                    if(newCreep) {
-                        this.debug('created scout', newCreep);
-                    }
+                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_LOW, this.homeRoom(),
+                        this.getCreepName('scout'), blueprint.body, memo);
                 }
             }
 
@@ -112,7 +110,9 @@ module.exports = (function() {
                         role: blueprint.role,
                     }, blueprint.memo);
 
-                    this.trySpawnCreep('miner', body, memo);
+                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_HIGH, this.homeRoom(), this.getCreepName('miner'),
+                        body, memo);
+
                 }
                 else {
                     var miner = Game.getObjectById(source.minerId);
@@ -156,7 +156,8 @@ module.exports = (function() {
                         storageId: storage.id,
                     }, blueprint.memo);
 
-                    this.trySpawnCreep('collector', body, memo);
+                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_HIGH, this.homeRoom(), this.getCreepName('collector'),
+                        body, memo);
                 }
             }
 
@@ -179,11 +180,8 @@ module.exports = (function() {
                         role: blueprint.role,
                     });
 
-                    var newCreep = this.trySpawnCreep('claimer', blueprint.body, memo);
-
-                    if(newCreep) {
-                        this.debug('created claimer', newCreep);
-                    }
+                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_NORMAL, this.homeRoom(), this.getCreepName('claimer'),
+                        blueprint.body, memo);
                 }
             }
 
@@ -198,10 +196,12 @@ module.exports = (function() {
                         role: blueprint.role,
                     }, blueprint.memo);
 
-                    var newDefender = this.trySpawnCreep('defender', blueprint.body, memo);
-
-                    if(newDefender) {
-                        logger.mail(this.info(logger.fmt.orange('created defender', newDefender)));
+                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_HIGH, this.homeRoom(),
+                        this.getCreepName('defender'), blueprint.body, memo);
+                }
+                else {
+                    if(!this.state.defenderId) {
+                        logger.mail(this.info(logger.fmt.orange('created defender', defenderId)));
                     }
                 }
 
@@ -212,16 +212,8 @@ module.exports = (function() {
                 return Room.byCustomName(this.config.homeRoom);
             }
 
-            trySpawnCreep(type, body, memo) {
-                var spawns = this.homeRoom().find(FIND_MY_SPAWNS, {
-                    filter: s => !s.spawning
-                });
-
-                if(spawns.length > 0) {
-                    var spawn = spawns[0];
-
-                    return creepSpawn.createCreep(spawn, 'outpost_'+this.roomName+'_'+type+'_', body, memo);
-                }
+            getCreepName(type) {
+                return 'outpost_'+this.roomName+'_'+type+'_';
             }
         }
     }

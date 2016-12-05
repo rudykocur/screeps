@@ -6,6 +6,7 @@ const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 const config = require('config');
 const logger = require('logger');
+const spawnQueue = require('spawnQueue');
 
 const gang = require('gang');
 const combatAction = require('combatAction');
@@ -66,13 +67,15 @@ module.exports = (function() {
                 creepExt.register(taskModule.task);
             });
 
-            creepSpawn.reset();
+            spawnQueue.reset();
 
             Game.combatActions.processCombatActions();
 
             creepSpawn.autospawn(Game.spawns.Rabbithole);
 
             roomHanders.processRoomHandlers();
+
+            spawnQueue.spawnCreeps();
 
             for (var name in Game.creeps) {
                 /** @type Creep */

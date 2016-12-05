@@ -38,6 +38,25 @@ module.exports = (function() {
                 }
             }
             else {
+                if(creep.getActiveBodyparts(HEAL) > 0) {
+                    if(creep.hits < creep.hitsMax) {
+                        creep.heal(creep);
+                    }
+                    else {
+                        var wounded = creep.pos.findClosestByPath(FIND_MY_CREEPS, {
+                            filter: c => c.hits < c.hitsMax
+                        });
+
+                        if(wounded) {
+                            if(creep.heal(wounded) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(wounded);
+                            }
+
+                            creep.rangedHeal(wounded);
+                        }
+                    }
+                }
+
                 var flags = _.groupBy(Game.flags, 'room.name')[creep.pos.roomName];
 
                 if(flags && flags.length > 0) {
