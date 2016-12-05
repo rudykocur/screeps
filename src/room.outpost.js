@@ -115,11 +115,10 @@ module.exports = (function() {
                     return;
                 }
 
-
                 this.state.collectors = this.state.collectors.filter(c => {
                     var creep = Game.getObjectById(c);
                     if(!creep) {
-                        // this.debug('collector died. Will spawn soon.');
+                        this.debug('collector died. Will spawn soon.');
                     }
                     return !!creep;
                 });

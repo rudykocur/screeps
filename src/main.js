@@ -43,39 +43,6 @@ module.exports = (function() {
         return _.filter(_.values(Game.structures), s => s.structureType == type);
     }
 
-    function runDefence() {
-
-        _.each(Game.rooms, /** @param {Room} room */ function(room) {
-            if(Game.time % 20 == 0) {
-                var aggresive = false;
-                var hostiles = room.find(FIND_HOSTILE_CREEPS);
-
-                for(var i = 0; i < hostiles.length; i++) {
-                    /** @type Creep */
-                    var hostile = hostiles[i];
-
-                    aggresive = _.any(hostile.body, p => _.contains([ATTACK, RANGED_ATTACK, CLAIM], p.type));
-
-                    if(aggresive) {
-                        if(!room.controller.safeMode) {
-                            // var roomSettings = config.rooms[room.name] || {};
-                            //
-                            // if(roomSettings.panicMode) {
-                            //     Game.notify("Activated safe mode in room " + room);
-                            //     room.controller.activateSafeMode();
-                            //     break;
-                            // }
-                            // else {
-                                Game.notify("Enemy spotted in room " + room + '. Owner: ' + hostile.owner.username);
-                                logger.error("Enemy spotted in room " + room + '. Owner: ' + hostile.owner.username);
-                            // }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
     return {
         loop: function() {
             // profiler.wrap(function() {
@@ -92,7 +59,6 @@ module.exports = (function() {
             combatAction.extendGame();
 
             memoryClean();
-            runDefence();
 
             taskModules.forEach(function(taskModule) {
                 creepExt.register(taskModule.task);

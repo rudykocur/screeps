@@ -10,11 +10,10 @@ module.exports = (function() {
          */
         run:  function(tower) {
 
-            var hostiles = tower.room.find(FIND_HOSTILE_CREEPS);
+            var hostile = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 
-            if(hostiles.length > 0) {
-                var username = hostiles[0].owner.username;
-                tower.attack(hostiles[0]);
+            if(hostile) {
+                tower.attack(hostile);
                 return;
             }
 
