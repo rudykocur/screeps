@@ -8,6 +8,8 @@ module.exports = (function() {
             E65N42: "loneOutpost",
             E67N43: "moriaTop",
             E68N42: "moriaRight",
+            E69N42: "moriaRightRight",
+            E67N41: "moriaBottom",
         },
         rooms: {
             home: {
@@ -41,7 +43,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"home",
                 creeps: {
-                    collector: 3,
+                    collector: 2,
                     claimer: 1,
                 },
             },
@@ -58,6 +60,11 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"moria",
             },
+            moriaBottom: {
+                type: "outpost",
+                homeRoom: "moria",
+                offroad: true,
+            }
             // loneOutpost:{
             //     type:"outpost",
             //     homeRoom:"home",
@@ -264,12 +271,21 @@ module.exports = (function() {
                         enableRepair: true,
                     }
                 },
+                moriaRightRight: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    memo: {
+                        role: 'settler',
+                        room: 'E69N42',
+                        enableRepair: true,
+                    }
+                },
             },
         },
 
         blueprints: {
             outpostMiner: {
-                body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
                 role: 'harvester',
                 memo: {},
             },
@@ -277,6 +293,8 @@ module.exports = (function() {
             outpostCollector: {
                 body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
                     CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                bodyOffroad: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 role: 'collector',
                 memo: {
                     // storageId: '583d89cbc23dc5573898a00f'
@@ -298,6 +316,12 @@ module.exports = (function() {
             outpostClaimer: {
                 body: [MOVE, CLAIM, CLAIM],
                 role: 'claimer',
+                memo: {}
+            },
+
+            outpostScout: {
+                body: [MOVE],
+                role: 'scout',
                 memo: {}
             }
         }

@@ -9,8 +9,9 @@ module.exports = (function() {
 
     return {
         RoomHander: class {
-            constructor(room, state, config) {
-                this.room = room;
+            constructor(roomName, state, config) {
+                this.roomName = roomName;
+                this.room = Room.byCustomName(roomName);
                 this.state = state;
                 this.config = config;
 
@@ -20,16 +21,16 @@ module.exports = (function() {
             }
 
             info(...messages) {
-                return logger.log(`${this.type} ${this.room.customName}: ${messages.join(' ')}`);
+                return logger.log(`${this.type} ${this.roomName}: ${messages.join(' ')}`);
             }
 
             debug(...messages) {
                 var msg = logger.fmt.gray(...messages);
-                return logger.log(`${this.type} ${this.room.customName}: ${msg}`);
+                return logger.log(`${this.type} ${this.roomName}: ${msg}`);
             }
 
             error(...messages) {
-                return logger.error(`${this.type} ${this.room.customName}: ${messages.join(' ')}`);
+                return logger.error(`${this.type} ${this.roomName}: ${messages.join(' ')}`);
             }
 
             prepareSpawnQueue() {}
@@ -68,8 +69,9 @@ module.exports = (function() {
             }
 
             findCreeps(role) {
+                var roomId = (this.room ? this.room.name : Room.customNameToId(this.roomName));
                 return _.filter(Game.creeps, c => {
-                    return c.memory.room == this.room.name && c.memory.role == role;
+                    return c.memory.room == roomId && c.memory.role == role;
                 });
             }
         },
@@ -88,7 +90,7 @@ module.exports = (function() {
 
                     var clz = handlers[roomConfig.type].handler;
                     var state = Memory.rooms[roomName];
-                    var handler = new clz(Room.byCustomName(roomName), state, roomConfig);
+                    var handler = new clz(roomName, state, roomConfig);
 
                     handler.process();
                 });

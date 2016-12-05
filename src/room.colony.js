@@ -8,8 +8,8 @@ const roleCollector = require('role.collector');
 module.exports = (function() {
     return {
         handler: class ColonyRoomHandler extends roomHandlers.RoomHander {
-            constructor(room, state, config) {
-                super(room, state, config);
+            constructor(roomName, state, config) {
+                super(roomName, state, config);
 
                 this.type = 'colony';
             }

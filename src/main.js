@@ -31,6 +31,7 @@ var roleModules = {
     collector: require('role.collector'),
     claimer: require('role.claimer'),
     settler: require('role.settler'),
+    scout: require('role.scout'),
     combatTank: require('role.combatTank'),
     combatHealer: require('role.combatHealer'),
     none: {run: function() {}},

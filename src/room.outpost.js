@@ -8,8 +8,8 @@ const roleCollector = require('role.collector');
 module.exports = (function() {
     return {
         handler: class OutpostRoomHandler extends roomHandlers.RoomHander {
-            constructor(room, state, config) {
-                super(room, state, config);
+            constructor(roomName, state, config) {
+                super(roomName, state, config);
 
                 this.type = 'outpost';
 
@@ -20,6 +20,9 @@ module.exports = (function() {
                 super.process();
 
                 if(!this.room) {
+                    if(!this.state.sources) {
+                        this.sendScout();
+                    }
                     return;
                 }
 
@@ -45,6 +48,7 @@ module.exports = (function() {
                 this.state.sources = sources.map(s => {
                     return {
                         id: s.id,
+                        pos: s.pos,
                         minerId: this.findMinerForSource(s.id)
                     }
                 });
@@ -68,6 +72,24 @@ module.exports = (function() {
                 }
 
                 return null;
+            }
+
+            sendScout() {
+                var blueprint = config.blueprints.outpostScout;
+                var scout = _.first(this.findCreeps(blueprint.role));
+
+                if(!scout) {
+                    var memo = _.defaults({
+                        room: Room.customNameToId(this.roomName),
+                        role: blueprint.role,
+                    });
+
+                    var newCreep = this.trySpawnCreep('scout', blueprint.body, memo);
+
+                    if(newCreep) {
+                        this.debug('created scout', newCreep);
+                    }
+                }
             }
 
             /**
@@ -121,6 +143,11 @@ module.exports = (function() {
                     if(!storage) {
                         logger.mail(this.error("No storage for collector. Not spawning!"), 10);
                         return;
+                    }
+
+                    var body = blueprint.body;
+                    if(this.config.offroad) {
+                        body = blueprint.bodyOffroad;
                     }
 
                     var memo = _.defaults({
@@ -193,7 +220,7 @@ module.exports = (function() {
                 if(spawns.length > 0) {
                     var spawn = spawns[0];
 
-                    return creepSpawn.createCreep(spawn, 'outpost_'+this.room.customName+'_'+type+'_', body, memo);
+                    return creepSpawn.createCreep(spawn, 'outpost_'+this.roomName+'_'+type+'_', body, memo);
                 }
             }
         }

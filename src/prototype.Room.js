@@ -13,3 +13,7 @@ Object.defineProperty(Room.prototype, 'customName', {get: function() {
 Room.byCustomName = function(roomName) {
     return Game.rooms[customNameToRoomId[roomName]];
 };
+
+Room.customNameToId = function(roomName) {
+    return customNameToRoomId[roomName];
+};
