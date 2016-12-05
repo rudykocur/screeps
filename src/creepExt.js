@@ -13,13 +13,17 @@ Creep.prototype.addTask = function(task) {
     module.exports.addTask(this, task);
 };
 
+Object.defineProperty(Creep.prototype, 'idwithOwner', {get: function() {
+    return `${this.id}(${this.owner.username})`;
+}});
+
 Creep.prototype.bodypartHpLeft = function(partType) {
     var parts = _(this.body).filter({type: partType});
 
     var hp = parts.sum(b => b.hits);
 
     return hp / (parts.size() * 100);
-}
+};
 
 module.exports = (function() {
 

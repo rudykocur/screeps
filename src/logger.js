@@ -1,15 +1,21 @@
 module.exports = (function() {
     return {
         log: function(...messages) {
-            console.log(messages.join(' '));
+            var msg = messages.join(' ');
+            console.log(msg);
+
+            return msg;
         },
 
         error: function(...messages) {
-            console.log(module.exports.fmt.red.apply(null, messages));
+            var msg = module.exports.fmt.red.apply(null, messages);
+            console.log(msg);
+
+            return msg;
         },
 
-        mail: function(...messages) {
-            Game.notify(messages.join(' '));
+        mail: function(message, interval) {
+            Game.notify(message, interval);
         },
 
         fmt: {

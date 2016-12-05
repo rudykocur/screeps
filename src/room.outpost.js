@@ -1,31 +1,24 @@
 const config = require('config');
 const logger = require('logger');
 const creepSpawn = require('creepSpawn');
+const roomHandlers = require('room.handlers');
 
 const roleCollector = require('role.collector');
 
 module.exports = (function() {
     return {
-        handler: class OutpostRoomHandler {
+        handler: class OutpostRoomHandler extends roomHandlers.RoomHander {
             constructor(room, state, config) {
-                this.room = room;
-                this.state = state;
-                this.cfg = config;
+                super(room, state, config);
+
+                this.type = 'outpost';
 
                 this.state.collectors = this.state.collectors || [];
             }
 
-            debug(...messages) {
-                var msg = `outpost ${this.room.customName}: <span style="color: gray">${messages.join(' ')}</span>`;
-                console.log(msg);
-            }
-
-            error(...messages) {
-                var msg = `outpost ${this.room.customName}: ${messages.join(' ')}`;
-                logger.error(msg);
-            }
-
             process() {
+                super.process();
+
                 if(!this.room) {
                     return;
                 }
@@ -34,8 +27,8 @@ module.exports = (function() {
                     this.discoverSources();
                 }
 
-                if(Game.time % 10 == 0) {
-                    this.checkThreats();
+                if(this.state.hostiles.length > 0) {
+                    this.spawnDefender();
                 }
 
                 this.state.sources.forEach(source => {
@@ -68,7 +61,7 @@ module.exports = (function() {
 
             findDefender() {
                 var defenders = _.filter(Game.creeps, creep => {return creep.memory.room == this.room.name &&
-                    creep.memory.role == config.blueprints.outpostMiner.role});
+                    creep.memory.role == config.blueprints.outpostDefender.role});
 
                 if(defenders.length > 0) {
                     return defenders[0].id;
@@ -141,7 +134,7 @@ module.exports = (function() {
                     var storage = roleCollector.findTargetContainer(this.homeRoom());
 
                     if(!storage) {
-                        this.error("No storage for collector. Not spawning!");
+                        logger.mail(this.error("No storage for collector. Not spawning!"), 10);
                         return;
                     }
 
@@ -155,42 +148,29 @@ module.exports = (function() {
                 }
             }
 
-            checkThreats() {
+            spawnDefender() {
                 var defenderId = this.findDefender();
 
                 if(!defenderId) {
-                    var creeps = this.room.find(FIND_HOSTILE_CREEPS, {
-                        filter: c => this.hasCombatParts(c)
-                    });
+                    var blueprint = config.blueprints.outpostDefender;
 
-                    if (creeps.length > 0) {
-                        var blueprint = config.blueprints.outpostDefender;
+                    var memo = _.defaults({
+                        room: this.room.name,
+                        role: blueprint.role,
+                    }, blueprint.memo);
 
-                        var memo = _.defaults({
-                            room: this.room.name,
-                            role: blueprint.role,
-                        }, blueprint.memo);
+                    var newDefender = this.trySpawnCreep('defender', blueprint.body, memo);
 
-                        var newDefender = this.trySpawnCreep('defender', blueprint.body, memo);
-
-                        if(newDefender) {
-                            logger.mail(logger.fmt.orange('Room', this.room.customName, ': created defender', newDefender));
-                            logger.log(logger.fmt.orange('Room', this.room.customName, ': created defender', newDefender))
-                        }
+                    if(newDefender) {
+                        logger.mail(this.info(logger.fmt.orange('created defender', newDefender)));
                     }
                 }
 
                 this.state.defenderId = defenderId;
             }
 
-            hasCombatParts(creep) {
-                return creep.getActiveBodyparts(ATTACK) ||
-                    creep.getActiveBodyparts(RANGED_ATTACK) ||
-                    creep.getActiveBodyparts(HEAL);
-            }
-
             homeRoom() {
-                return Room.byCustomName(this.cfg.homeRoom);
+                return Room.byCustomName(this.config.homeRoom);
             }
 
             trySpawnCreep(type, body, memo) {
