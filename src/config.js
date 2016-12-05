@@ -43,7 +43,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"home",
                 creeps: {
-                    collector: 2,
+                    collector: 3,
                     claimer: 1,
                 },
             },
@@ -64,6 +64,9 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "moria",
                 offroad: true,
+                creeps: {
+                    collector: 2,
+                },
             }
             // loneOutpost:{
             //     type:"outpost",
@@ -151,19 +154,19 @@ module.exports = (function() {
 
                 fighter: {
                     minimum: 0,
-                    priority: -4,
-                    // body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                    priority: 10,
+                    body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
-                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                        TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                        ATTACK,ATTACK,ATTACK],
+                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    //     TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    //     ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
                         // room: 'E68N42',
                         // room: 'E67N42',
 
-                        room: 'E64N41'
+                        room: 'E66N42'
                     }
                 },
 

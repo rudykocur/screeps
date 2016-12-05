@@ -156,7 +156,7 @@ module.exports = (function() {
                         storageId: storage.id,
                     }, blueprint.memo);
 
-                    this.trySpawnCreep('collector', blueprint.body, memo);
+                    this.trySpawnCreep('collector', body, memo);
                 }
             }
 
