@@ -85,30 +85,36 @@ module.exports = (function() {
                     continue;
                 }
 
-                var role = creep.memory.role;
+                try {
 
-                var task = creepExt.getTask(creep);
+                    var role = creep.memory.role;
 
-                var module = roleModules[role];
+                    var task = creepExt.getTask(creep);
 
-                if(module) {
+                    var module = roleModules[role];
 
-                    if(module.scheduleTask) {
-                        if(!task) {
-                            module.scheduleTask(creep);
+                    if (module) {
+
+                        if (module.scheduleTask) {
+                            if (!task) {
+                                module.scheduleTask(creep);
+                            }
+                        }
+                        else {
+                            module.run(creep);
                         }
                     }
                     else {
-                        module.run(creep);
+                        console.log("WARNING!! Creep " + creep.name + " has unknown role: " + role + "!");
+                    }
+
+                    task = creepExt.getTask(creep);
+                    if (task) {
+                        task.run()
                     }
                 }
-                else {
-                    console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
-                }
-
-                task = creepExt.getTask(creep);
-                if(task) {
-                    task.run()
+                catch(e) {
+                    logger.error('Failure at processing creep', creep, '::', e, '::', e.stack);
                 }
             }
 

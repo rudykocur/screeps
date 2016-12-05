@@ -67,6 +67,23 @@ module.exports = (function() {
             }
         },
 
+        findRoomRoute: function(creep, targetPos) {
+            return PathFinder.search(creep.pos, targetPos, {
+                roomCallback: function(roomName) {
+                    var matrix = new PathFinder.CostMatrix();
+
+                    var flags = _.groupBy(Game.flags, 'pos.roomName')[roomName];
+                    var blockFlags = _.filter(flags, {color: COLOR_GREY});
+
+                    blockFlags.forEach(f => {
+                        matrix.set(f.pos.x, f.pos.y, 255);
+                    });
+
+                    return matrix;
+                }
+            });
+        },
+
         actionFillController: function(creep) {
             if(creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(creep.room.controller);

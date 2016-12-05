@@ -1,5 +1,7 @@
 const creepExt = require('creepExt');
 
+const actionUtils = require('action.utils');
+
 module.exports = (function() {
 
     return {
@@ -17,21 +19,38 @@ module.exports = (function() {
              */
             static create(creep, target) {
                 var path;
+                var pos;
 
                 if(target.pos) {
-                    path = creep.pos.findPathTo(target.pos);
+                    pos = target.pos;
                 }
                 else {
-                    path = creep.pos.findPathTo(target);
+                    pos = target;
                 }
+
+                // if(pos.roomName == creep.pos.roomName) {
+                    path = creep.pos.findPathTo(pos);
+                // }
+                // else {
+                //     path = actionUtils.findRoomRoute(creep, pos).path;
+                // }
 
                 return new module.exports.task(creep, {
                     path: path,
+                    multiroom: (pos.roomName != creep.pos.roomName),
                 })
             }
 
             run() {
-                var result = this.creep.moveByPath(this.state.path);
+                var result;
+                // if(this.state.multiroom) {
+                //     let step = this.state.path[0];
+                //     if(this.creep.name == 'outpost_moriaRight_collector_7324') {console.log('FFFFF', JSON.stringify(step))};
+                //     result = this.creep.move(this.creep.pos.getDirectionTo(step));
+                // }
+                // else {
+                    result = this.creep.moveByPath(this.state.path);
+                // }
 
                 if(result == ERR_TIRED) {
                     return;

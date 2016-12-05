@@ -55,11 +55,11 @@ module.exports = (function() {
                     collector: 3,
                 }
             },
-            moriaRightRight:{
-                type:"outpost",
-                homeRoom:"moria",
-                creeps: {}
-            },
+            // moriaRightRight:{
+            //     type:"outpost",
+            //     homeRoom:"moria",
+            //     creeps: {}
+            // },
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
@@ -72,10 +72,10 @@ module.exports = (function() {
             //         collector: 2,
             //     },
             // }
-            // loneOutpost:{
-            //     type:"outpost",
-            //     homeRoom:"home",
-            // },
+            loneOutpost:{
+                type:"outpost",
+                homeRoom:"home",
+            },
         },
 
         spawn: {
@@ -247,7 +247,7 @@ module.exports = (function() {
                     }
                 },
                 moriaRightRight: {
-                    minimum: 1,
+                    minimum: 0,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     priority: 'low',
                     memo: {
