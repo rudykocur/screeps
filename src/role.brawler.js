@@ -53,6 +53,8 @@ module.exports = (function() {
                             }
 
                             creep.rangedHeal(wounded);
+
+                            return;
                         }
                     }
                 }
