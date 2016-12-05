@@ -171,7 +171,12 @@ module.exports = (function() {
                             role: blueprint.role,
                         }, blueprint.memo);
 
-                        this.trySpawnCreep('defender', blueprint.body, memo);
+                        var newDefender = this.trySpawnCreep('defender', blueprint.body, memo);
+
+                        if(newDefender) {
+                            logger.mail(logger.fmt.orange('Room', this.room.customName, ': created defender', newDefender));
+                            logger.log(logger.fmt.orange('Room', this.room.customName, ': created defender', newDefender))
+                        }
                     }
                 }
 
@@ -196,7 +201,7 @@ module.exports = (function() {
                 if(spawns.length > 0) {
                     var spawn = spawns[0];
 
-                    creepSpawn.createCreep(spawn, 'outpost_'+this.room.customName+'_'+type+'_', body, memo);
+                    return creepSpawn.createCreep(spawn, 'outpost_'+this.room.customName+'_'+type+'_', body, memo);
                 }
             }
         }

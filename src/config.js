@@ -29,10 +29,10 @@ module.exports = (function() {
                     mover: 2,
                 }
             },
-            homeTop: {
-                type:"outpost",
-                homeRoom:"home",
-            },
+            // homeTop: {
+            //     type:"outpost",
+            //     homeRoom:"home",
+            // },
             homeLeft:{
                 type:"outpost",
                 homeRoom:"home",
@@ -50,10 +50,10 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"moria",
             },
-            loneOutpost:{
-                type:"outpost",
-                homeRoom:"home",
-            }
+            // loneOutpost:{
+            //     type:"outpost",
+            //     homeRoom:"home",
+            // },
         },
 
         spawn: {
@@ -65,7 +65,7 @@ module.exports = (function() {
                 },
 
                 upgrader: {
-                    minimum: 5,
+                    minimum: 3,
                     //body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY],
                     priority: -2,
@@ -103,7 +103,7 @@ module.exports = (function() {
                 },
 
                 settlerTop: {
-                    minimum: 1,
+                    minimum: 0,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY],
                     memo: {
                         role: 'settler',
@@ -113,7 +113,7 @@ module.exports = (function() {
                 },
 
                 settlerTopReserver: {
-                    minimum: 1,
+                    minimum: 0,
                     body: [MOVE, CLAIM, CLAIM],
                     priority: -3,
                     condition: params => {
@@ -153,7 +153,7 @@ module.exports = (function() {
                 },
 
                 settlerTopLeft: {
-                    minimum: 1,
+                    minimum: 0,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
@@ -165,7 +165,7 @@ module.exports = (function() {
 
                 fighter: {
                     minimum: 0,
-                    priority: 15,
+                    priority: -4,
                     // body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
@@ -233,14 +233,16 @@ module.exports = (function() {
                 },
 
                 moriaMover: {
-                    minimum: 2,
+                    minimum: 3,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: 10,
                     memo: {role: 'mover'}
                 },
                 moriaUpgrader: {
                     minimum: 4,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
+                        CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: -2,
                     memo: {
                         role: 'upgrader',
@@ -272,6 +274,7 @@ module.exports = (function() {
                     memo: {
                         role: 'settler',
                         room: 'E67N43',
+                        enableRepair: true,
                     }
                 },
                 moriaRight: {
@@ -280,6 +283,7 @@ module.exports = (function() {
                     memo: {
                         role: 'settler',
                         room: 'E68N42',
+                        enableRepair: true,
                     }
                 },
                 moriaRightReserver: {
@@ -307,22 +311,22 @@ module.exports = (function() {
             },
 
             outpostCollector: {
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
+                    CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 role: 'collector',
                 memo: {
                     // storageId: '583d89cbc23dc5573898a00f'
                 },
                 roomOverride: {
-                    E65N41: {'spawnAmount' : 2},
-                    E66N42: {'spawnAmount' : 2},
+                    E65N41: {'spawnAmount' : 3},
+                    E66N42: {'spawnAmount' : 3},
                     E68N42: {'spawnAmount' : 3},
                     // E67N43: {memo: {storageId: '58422dec43fcac045102285b'}},
                 }
             },
 
             outpostDefender: {
-                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                    MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                 role: 'brawler',
                 memo: {}
             }

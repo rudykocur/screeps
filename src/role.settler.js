@@ -11,7 +11,7 @@ module.exports = (function() {
          */
         run:  function(creep) {
 
-            if(actionUtils.tryChangeRoom(creep, creep.memory.room)) {
+            if(actionUtils.tryChangeRoom(creep, creep.memory.room, creep.memory.via)) {
                 return;
             }
 
