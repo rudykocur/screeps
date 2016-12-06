@@ -63,10 +63,34 @@ module.exports = (function() {
 
                 if(newCreeps.length > 0) {
                     logger.mail(this.error('New hostile creeps:', newCreeps.map(cId => creepMap[cId].idwithOwner).join(', ')));
+
+                    var fleePoint = this.getFleePoint();
+
+                    if(fleePoint) {
+
+                        this.info(logger.fmt.orange(`all creeps will go to ${fleePoint.pos}`));
+
+                        this.getAllCreeps().forEach(c => {
+                            c.memory.tasks = [];
+                            c.memory.fleePoint = fleePoint.pos;
+                        })
+                    }
+                    else {
+                        this.info(logger.fmt.orange(`unable to find fleePoint for room ${this.roomName}. There will be slaughter`))
+                    }
                 }
 
                 if(goneCreeps.length > 0) {
                     logger.mail(this.info(logger.fmt.green('Hostile creeps', goneCreeps.join(', '), 'gone')));
+
+                    if(currentCreeps.length == 0) {
+                        this.info(logger.fmt.green('room is safe again'));
+
+                        this.getAllCreeps().forEach(c => {
+                            c.memory.tasks = [];
+                            delete c.memory.fleePoint;
+                        })
+                    }
                 }
 
                 this.state.hostiles = currentCreeps;
@@ -85,6 +109,20 @@ module.exports = (function() {
                 return _.filter(Game.creeps, c => {
                     return c.memory.room == roomId && c.memory.role == role;
                 });
+            }
+
+            getAllCreeps() {
+                return _.filter(Game.creeps, c => {
+                    return c.memory.room == Room.customNameToId(this.roomName);
+                });
+            }
+
+            getFleePoint() {
+                if(this.room) {
+                    return _.first(_.filter(Game.flags, f => {
+                        return f.pos.roomName == this.room.name && f.color == COLOR_GREEN
+                    }));
+                }
             }
         },
 

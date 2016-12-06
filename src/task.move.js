@@ -37,7 +37,8 @@ module.exports = (function() {
 
                 return new module.exports.task(creep, {
                     path: path,
-                    multiroom: (pos.roomName != creep.pos.roomName),
+                    // multiroom: (pos.roomName != creep.pos.roomName),
+                    multiroom: false,
                 })
             }
 
@@ -45,7 +46,6 @@ module.exports = (function() {
                 var result;
                 // if(this.state.multiroom) {
                 //     let step = this.state.path[0];
-                //     if(this.creep.name == 'outpost_moriaRight_collector_7324') {console.log('FFFFF', JSON.stringify(step))};
                 //     result = this.creep.move(this.creep.pos.getDirectionTo(step));
                 // }
                 // else {

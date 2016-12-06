@@ -54,8 +54,8 @@ module.exports = (function() {
                         handlers[request.roomName] = roomHandlers.getRoomHandler(request.roomName);
                     }
 
-                    var room = handlers[request.roomName];
-                    var freeSpawn = _.first(room.getSpawns().filter(s => !s.spawning && blockedSpawns.indexOf(s.id) < 0));
+                    var handler = handlers[request.roomName];
+                    var freeSpawn = _.first(handler.getSpawns().filter(s => !s.spawning && blockedSpawns.indexOf(s.id) < 0));
 
                     if(!freeSpawn) {
                         fullRooms.push(request.roomName);
@@ -66,6 +66,8 @@ module.exports = (function() {
                         fullRooms.push(request.roomName);
                         continue;
                     }
+
+                    request.memo.room = request.memo.room || handler.room.name;
 
                     var newCreepName = freeSpawn.createCreep(request.body, request.name, request.memo);
 

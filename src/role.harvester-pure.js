@@ -11,6 +11,11 @@ module.exports = (function() {
 
     return {
         scheduleTask: function(creep) {
+            if(creep.memory.fleePoint) {
+                creep.addTask(taskMove.task.create(creep, creep.memory.fleePoint));
+                return;
+            }
+
             var pos;
             if(creep.memory.energySourceId) {
                 let source = Game.getObjectById(creep.memory.energySourceId);

@@ -69,6 +69,8 @@ module.exports = (function() {
 
         findRoomRoute: function(creep, targetPos) {
             return PathFinder.search(creep.pos, targetPos, {
+                plainCost: 2,
+                swampCost: 10,
                 roomCallback: function(roomName) {
                     var matrix = new PathFinder.CostMatrix();
 
@@ -78,6 +80,16 @@ module.exports = (function() {
                     blockFlags.forEach(f => {
                         matrix.set(f.pos.x, f.pos.y, 255);
                     });
+
+                    var room = Game.rooms[roomName];
+                    if(room) {
+                        room.find(FIND_STRUCTURES).forEach(function(structure) {
+                            if (structure.structureType === STRUCTURE_ROAD) {
+                                // Favor roads over plain tiles
+                                matrix.set(structure.pos.x, structure.pos.y, 1);
+                            }
+                        });
+                    }
 
                     return matrix;
                 }

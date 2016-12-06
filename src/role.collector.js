@@ -35,6 +35,11 @@ module.exports = (function() {
          * @param {Creep} creep
          */
         scheduleTask: function(creep) {
+            if(creep.memory.fleePoint) {
+                creep.addTask(taskMove.task.create(creep, creep.memory.fleePoint));
+                return;
+            }
+
             if(_.sum(creep.carry) < creep.carryCapacity) {
 
                 queueTaskForDroppedEnergy(creep);

@@ -215,6 +215,16 @@ module.exports = (function() {
             getCreepName(type) {
                 return 'outpost_'+this.roomName+'_'+type+'_';
             }
+
+            getFleePoint() {
+                var flag = super.getFleePoint();
+
+                if(!flag) {
+                    return _.first(_.filter(Game.flags, f => {
+                        return f.pos.roomName == this.homeRoom().name && f.color == COLOR_GREEN
+                    }));
+                }
+            }
         }
     }
 })();

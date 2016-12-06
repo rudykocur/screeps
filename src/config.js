@@ -247,7 +247,7 @@ module.exports = (function() {
                     }
                 },
                 moriaRightRight: {
-                    minimum: 0,
+                    minimum: 1,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     priority: 'low',
                     memo: {
