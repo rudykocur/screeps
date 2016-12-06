@@ -54,19 +54,19 @@ module.exports = (function() {
                 creeps: {
                     // harvester: 2,
                     claimer: 1,
-                    collector: 3,
+                    collector: 2,
                     settler: 1,
                 }
             },
-            moriaRightRight:{
-                type:"outpost",
-                homeRoom:"moria",
-                creeps: {
-                    settler: 1,
-                    harvester: 0,
-                    collector: 0,
-                }
-            },
+            // moriaRightRight:{
+            //     type:"outpost",
+            //     homeRoom:"moria",
+            //     creeps: {
+            //         settler: 1,
+            //         harvester: 0,
+            //         collector: 0,
+            //     }
+            // },
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",

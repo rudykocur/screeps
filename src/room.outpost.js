@@ -190,7 +190,7 @@ module.exports = (function() {
                 this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
             }
 
-            maintainPopulation(type, blueprint, spawnQueue) {
+            maintainPopulation(type, blueprint, priority) {
                 if(!this.config.creeps || !this.config.creeps[type]) {
                     return;
                 }
@@ -203,7 +203,7 @@ module.exports = (function() {
                         role: blueprint.role,
                     });
 
-                    spawnQueue.enqueueCreep(spawnQueue, this.homeRoom(), this.getCreepName(type),
+                    spawnQueue.enqueueCreep(priority, this.homeRoom(), this.getCreepName(type),
                         blueprint.body, memo);
                 }
             }
