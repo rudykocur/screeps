@@ -7,14 +7,14 @@ const taskMove = require('task.move');
 
 module.exports = (function() {
     function queueTaskForDroppedEnergy(creep) {
-        var outExit = actionUtils.findRoomExit(creep, creep.memory.room);
 
-        if(outExit) {
-            creepExt.addTask(creep, taskMove.task.create(creep, outExit));
+        var targetRoom = Game.rooms[creep.memory.room];
+
+        if(!targetRoom) {
             return;
         }
 
-        var sources = creep.room.find(FIND_DROPPED_ENERGY, {
+        var sources = targetRoom.find(FIND_DROPPED_ENERGY, {
             filter: s => s.amount > 50
         });
 
@@ -36,7 +36,7 @@ module.exports = (function() {
          */
         scheduleTask: function(creep) {
             if(creep.memory.fleePoint) {
-                creep.addTask(taskMove.task.create(creep, creep.memory.fleePoint));
+                creep.addTask(taskMove.task.create(creep, RoomPosition.fromDict(creep.memory.fleePoint)));
                 return;
             }
 

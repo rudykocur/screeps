@@ -46,6 +46,7 @@ module.exports = (function() {
 
                 this.pingCollectors();
                 this.pingClaimers();
+                this.pingSettlers();
             }
 
             discoverSources() {
@@ -103,6 +104,10 @@ module.exports = (function() {
              * @param {Source} source
              */
             pingMinerForSource(source) {
+                if(this.config.creeps && this.config.creeps.harvester == 0) {
+                    return;
+                }
+
                 if(!source.minerId) {
 
                     var minerId = this.findMinerForSource(source.id);
@@ -117,6 +122,7 @@ module.exports = (function() {
                     var memo = _.defaults({
                         energySourceId: source.id,
                         energyPosition: source.pos,
+                        room: Room.customNameToId(this.roomName),
                         role: blueprint.role,
                     }, blueprint.memo);
 
@@ -172,25 +178,32 @@ module.exports = (function() {
             }
 
             pingClaimers() {
-                if(!this.config.creeps || !this.config.creeps.claimer) {
-                    return;
-                }
-
                 var reservation = this.room.controller.reservation;
                 if(reservation && reservation.ticksToEnd > 1000) {
                     return;
                 }
 
-                var blueprint = config.blueprints.outpostClaimer;
-                var claimers = this.findCreeps(blueprint.role);
+                this.maintainPopulation('claimer', config.blueprints.outpostClaimer, spawnQueue.PRIORITY_LOW);
+            }
 
-                if(claimers.length < this.config.creeps.claimer) {
+            pingSettlers() {
+                this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
+            }
+
+            maintainPopulation(type, blueprint, spawnQueue) {
+                if(!this.config.creeps || !this.config.creeps[type]) {
+                    return;
+                }
+
+                var creeps = this.findCreeps(blueprint.role);
+
+                if(creeps.length < this.config.creeps[type]) {
                     var memo = _.defaults({
                         room: this.room.name,
                         role: blueprint.role,
                     });
 
-                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_NORMAL, this.homeRoom(), this.getCreepName('claimer'),
+                    spawnQueue.enqueueCreep(spawnQueue, this.homeRoom(), this.getCreepName(type),
                         blueprint.body, memo);
                 }
             }

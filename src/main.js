@@ -1,6 +1,7 @@
 const profiler = require('screeps-profiler');
 
 require('prototype.Room');
+require('prototype.RoomPosition');
 
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');

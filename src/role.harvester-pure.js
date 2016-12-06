@@ -12,8 +12,7 @@ module.exports = (function() {
     return {
         scheduleTask: function(creep) {
             if(creep.memory.fleePoint) {
-                let p = creep.memory.fleePoint;
-                creep.addTask(taskMove.task.create(creep, new RoomPosition(p.x, p.y, p.roomName)));
+                creep.addTask(taskMove.task.create(creep, RoomPosition.fromDict(creep.memory.fleePoint)));
                 return;
             }
 

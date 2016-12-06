@@ -11,6 +11,11 @@ module.exports = (function() {
          */
         run:  function(creep) {
 
+            if(creep.memory.fleePoint) {
+                creep.moveTo(RoomPosition.fromDict(creep.memory.fleePoint));
+                return;
+            }
+
             if(actionUtils.tryChangeRoom(creep, creep.memory.room, creep.memory.via)) {
                 return;
             }
