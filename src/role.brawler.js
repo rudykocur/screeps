@@ -12,6 +12,22 @@ module.exports = (function() {
          */
         run:  function(creep) {
 
+            if(creep.memory.room && creep.pos.room != creep.memory.room) {
+                var targetRoom = Game.rooms[creep.memory.room];
+                if(!targetRoom) {
+                    var roomFlag = _.first(_.filter(Game.flags, f => {
+                        return f.pos.roomName == creep.memory.room && f.color == COLOR_ORANGE
+                    }));
+
+                    if(roomFlag) {
+                        creep.moveTo(roomFlag, {
+                            costCallback: actionUtils.costCallback
+                        });
+                        return;
+                    }
+                }
+            }
+
             if(actionUtils.tryChangeRoom(creep, creep.memory.room)) {
                 return;
             }
