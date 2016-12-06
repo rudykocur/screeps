@@ -24,6 +24,11 @@ module.exports = (function() {
                     if(!this.state.sources) {
                         this.sendScout();
                     }
+                    else {
+                        this.state.sources.forEach(source => {
+                            this.pingMinerForSource(source);
+                        });
+                    }
                     return;
                 }
 
@@ -66,6 +71,10 @@ module.exports = (function() {
             }
 
             findDefender() {
+                if(!this.room) {
+                    return;
+                }
+
                 var defenders = this.findCreeps(config.blueprints.outpostDefender.role);
 
                 if(defenders.length > 0) {
@@ -107,6 +116,7 @@ module.exports = (function() {
 
                     var memo = _.defaults({
                         energySourceId: source.id,
+                        energyPosition: source.pos,
                         role: blueprint.role,
                     }, blueprint.memo);
 

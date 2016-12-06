@@ -29,8 +29,10 @@ module.exports = (function() {
                     pos = source.pos;
                 }
             }
-            else if(creep.memory.energyPosition) {
-                pos = creep.memory.energyPosition;
+
+            if(!pos && creep.memory.energyPosition) {
+                let p = creep.memory.energyPosition;
+                pos = new RoomPosition(p.x, p.y, p.roomName);
             }
 
             if(!pos) {
@@ -48,12 +50,17 @@ module.exports = (function() {
                 creepExt.addTask(creep, taskHarvest.task.create(creep, source));
             }
             else {
-                var containers = pos.findInRange(FIND_STRUCTURES, 1, {
-                    filter: {structureType: STRUCTURE_CONTAINER}
-                });
+                var targetRoom = Game.rooms[pos.roomName];
+                var container;
 
-                if(containers.length > 0) {
-                    creepExt.addTask(creep, taskMove.task.create(creep, containers[0]));
+                if(targetRoom) {
+                    container = _.first(pos.findInRange(FIND_STRUCTURES, 1, {
+                        filter: {structureType: STRUCTURE_CONTAINER}
+                    }));
+                }
+
+                if(container) {
+                    creepExt.addTask(creep, taskMove.task.create(creep, container));
                 }
                 else {
                     creepExt.addTask(creep, taskMove.task.create(creep, pos));
