@@ -29,7 +29,9 @@ module.exports = (function() {
                 }
 
                 // if(pos.roomName == creep.pos.roomName) {
-                    path = creep.pos.findPathTo(pos);
+                    path = creep.pos.findPathTo(pos, {
+                        costCallback: actionUtils.costCallback
+                    });
                 // }
                 // else {
                 //     path = actionUtils.findRoomRoute(creep, pos).path;

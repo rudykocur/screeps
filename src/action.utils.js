@@ -67,6 +67,15 @@ module.exports = (function() {
             }
         },
 
+        costCallback: function(roomName, matrix) {
+            var flags = _.groupBy(Game.flags, 'pos.roomName')[roomName];
+            var blockFlags = _.filter(flags, {color: COLOR_GREY});
+
+            blockFlags.forEach(f => {
+                matrix.set(f.pos.x, f.pos.y, 255);
+            });
+        },
+
         findRoomRoute: function(creep, targetPos) {
             return PathFinder.search(creep.pos, targetPos, {
                 plainCost: 2,

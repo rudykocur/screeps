@@ -42,7 +42,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"home",
                 creeps: {
-                    collector: 3,
+                    collector: 2,
                     claimer: 1,
                 },
             },
@@ -72,10 +72,10 @@ module.exports = (function() {
             //         collector: 2,
             //     },
             // }
-            loneOutpost:{
-                type:"outpost",
-                homeRoom:"home",
-            },
+            // loneOutpost:{
+            //     type:"outpost",
+            //     homeRoom:"home",
+            // },
         },
 
         spawn: {
