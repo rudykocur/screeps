@@ -13,7 +13,7 @@ module.exports = (function() {
             minEnergy = minEnergy || 0;
             resource = resource || RESOURCE_ENERGY;
 
-            var carry = creep.carry[resource] || 0;
+            var carry = _.sum(creep.carry);
 
             if(creep.carryCapacity <= minEnergy) {return false;}
 

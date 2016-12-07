@@ -161,7 +161,7 @@ module.exports = (function() {
                 },
                 mineralTransfer: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                    body: [MOVE,MOVE,CARRY,CARRY,CARRY,CARRY],
                     priority: 'normal',
                     memo: {
                         role: 'transfer',
@@ -283,7 +283,7 @@ module.exports = (function() {
                 // [MOVE,MOVE,WORK,CARRY,CARRY]
                 baseSettler: {
                     minimum: 1,
-                    body: [MOVE,MOVE,WORK,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY],
                     priority: 'normal',
                     memo: {
                         role: 'settler',
@@ -293,7 +293,7 @@ module.exports = (function() {
                 },
                 baseSettler2: {
                     minimum: 1,
-                    body: [MOVE,MOVE,WORK,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY],
                     priority: 'normal',
                     memo: {
                         role: 'settler',

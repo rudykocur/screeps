@@ -37,16 +37,17 @@ module.exports = (function() {
          *
          * @param {Creep} creep
          */
-        tryHarvestDroppedSource: function (creep, minAmount) {
+        tryHarvestDroppedSource: function (creep, resource) {
             var source;
+            resource = resource || RESOURCE_ENERGY;
 
             source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-                filter: r => r.amount > (creep.carryCapacity * 0.75)
+                filter: r => r.amount > (creep.carryCapacity * 0.75) && r.resourceType == resource
             });
 
             if(!source) {
                 source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.amount > 30 || r.resourceType != RESOURCE_ENERGY
+                    filter: r => r.amount > 30 && r.resourceType == resource
                 });
             }
 
