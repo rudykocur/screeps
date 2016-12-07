@@ -30,7 +30,7 @@ module.exports = (function() {
 
                 var result = this.creep.harvest(source);
 
-                if(result == ERR_NOT_ENOUGH_RESOURCES) {
+                if(result == ERR_NOT_ENOUGH_RESOURCES || result == ERR_TIRED) {
                     return;
                 }
 

@@ -42,6 +42,10 @@ module.exports = (function() {
 
             if(creep.pos.isNearTo(pos)) {
                 let source = _.first(creep.room.lookForAt(LOOK_SOURCES, pos));
+
+                if(!source) {
+                    source = _.first(creep.room.lookForAt(LOOK_MINERALS, pos));
+                }
                 if(!source) {
                     logger.error('task.harvester: no source at position', pos);
                     return;

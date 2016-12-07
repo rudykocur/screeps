@@ -73,7 +73,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"moria",
                 creeps: {
-                    settler: 0,
+                    settler: 1,
                     // harvester: 0,
                     // collector: 0,
                 }
@@ -81,18 +81,20 @@ module.exports = (function() {
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
+                offroad: true,
                 creeps: {
                     settler: 0,
                 }
             },
-            // moriaBottom: {
-            //     type: "outpost",
-            //     homeRoom: "moria",
-            //     offroad: true,
-            //     creeps: {
-            //         collector: 2,
-            //     },
-            // }
+            moriaBottom: {
+                type: "outpost",
+                homeRoom: "moria",
+                offroad: true,
+                creeps: {
+                    settler: 0,
+                    // collector: 2,
+                },
+            },
             loneOutpost:{
                 type:"outpost",
                 homeRoom:"home",
@@ -140,6 +142,25 @@ module.exports = (function() {
                     memo: {
                         role: 'harvester',
                         energySource: 'sourceLeft'
+                    }
+                },
+                harvesterMineral: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    priority: 'normal',
+                    memo: {
+                        role: 'harvester',
+                        energySourceId: '5843ec060750719d418e9488'
+                    }
+                },
+                mineralTransfer: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                    priority: 'normal',
+                    memo: {
+                        role: 'transfer',
+                        transferResource: RESOURCE_OXYGEN,
+                        energySourceId: '5843ec060750719d418e9488'
                     }
                 },
 

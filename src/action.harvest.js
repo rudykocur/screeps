@@ -63,10 +63,14 @@ module.exports = (function() {
          * @param {Object} options
          */
         tryHarvestStorage: function (creep, options) {
+            options = _.defaults(options || {}, {
+                resource: RESOURCE_ENERGY,
+            });
+
             var source = module.exports.findStorageToHarvest(creep, options);
 
             if(source) {
-                if(creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                if(creep.withdraw(source, options.resource) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source);
                 }
                 return true;
@@ -80,6 +84,7 @@ module.exports = (function() {
                 reserve: 50,
                 structures: false,
                 types: [STRUCTURE_CONTAINER, STRUCTURE_STORAGE],
+                resource: RESOURCE_ENERGY,
             });
 
             var source = creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -97,10 +102,10 @@ module.exports = (function() {
                     }
 
                     if(options.reserve) {
-                        return _.sum(struct.store) > (options.reserve + creep.carryCapacity)
+                        return struct.store[options.resource] > (options.reserve + creep.carryCapacity)
                     }
 
-                    return true;
+                    return struct.store[options.resource] > 0;
                 }
             });
 
@@ -163,6 +168,7 @@ module.exports = (function() {
                 maxRange: 0,
                 structures: null,
                 allowContainers: true,
+                resource: RESOURCE_ENERGY,
             });
 
             var target;
@@ -207,7 +213,7 @@ module.exports = (function() {
             }
 
             if(target) {
-                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                if(creep.transfer(target, options.resource) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target)
                 }
                 return true;

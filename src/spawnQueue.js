@@ -73,11 +73,17 @@ module.exports = (function() {
 
                     var newCreepName = freeSpawn.createCreep(request.body, request.name, request.memo);
 
-                    console.log('Spawn '+freeSpawn.name+': created creep. Name: ' + newCreepName);
+                    console.log('Spawn '+freeSpawn.name+': created creep. Name: ' + newCreepName+'. Queues:', module.exports.getSpawnStats());
 
                     blockedSpawns.push(freeSpawn.id);
                 }
             }
         },
+
+        getSpawnStats: function() {
+            var allRequests = _.flatten(_.values(queues));
+            var byRoom = _.groupBy(allRequests, 'roomName');
+            return _.map(byRoom, (queue, roomName) => `${roomName}: ${queue.length}`).join(', ')
+        }
     }
 })();

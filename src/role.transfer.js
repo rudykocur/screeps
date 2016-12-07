@@ -10,12 +10,15 @@ module.exports = (function() {
             if(actionUtils.shouldHarvestEnergy(creep)) {
                 actionHarvest.tryHarvestStorage(creep, {
                     reserve: 0,
-                    structures: bookmarks.getObjects(creep.memory.fromStructures)
+                    structures: bookmarks.getObjects(creep.memory.fromStructures),
+                    resource: creep.memory.transferResource || RESOURCE_ENERGY,
                 });
             }
             else {
                 actionHarvest.tryTransferToStorage(creep, {
-                    structures: bookmarks.getObjects(creep.memory.toStructures)
+                    structures: bookmarks.getObjects(creep.memory.toStructures),
+                    allowContainers: false,
+                    resource: creep.memory.transferResource || RESOURCE_ENERGY,
                 });
             }
         }
