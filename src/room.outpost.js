@@ -20,29 +20,27 @@ module.exports = (function() {
             process() {
                 super.process();
 
-                if(!this.room) {
-                    if(!this.state.sources) {
-                        this.sendScout();
-                    }
-                    else {
-                        this.state.sources.forEach(source => {
-                            this.pingMinerForSource(source);
-                        });
-                    }
-                    return;
-                }
-
-                if(!this.state.sources) {
-                    this.discoverSources();
-                }
-
                 if(this.state.hostiles.length > 0) {
                     this.spawnDefender();
                 }
 
-                this.state.sources.forEach(source => {
-                    this.pingMinerForSource(source);
-                });
+                if(this.state.sources) {
+                    this.state.sources.forEach(source => {
+                        this.pingMinerForSource(source);
+                    });
+                }
+                else {
+                    if(this.room) {
+                        this.discoverSources();
+                    }
+                    else {
+                        this.sendScout();
+                    }
+                }
+
+                if(!this.room) {
+                    return;
+                }
 
                 this.pingCollectors();
                 this.pingClaimers();
@@ -201,7 +199,7 @@ module.exports = (function() {
                     var memo = _.defaults({
                         room: this.room.name,
                         role: blueprint.role,
-                    });
+                    }, blueprint.memo);
 
                     spawnQueue.enqueueCreep(priority, this.homeRoom(), this.getCreepName(type),
                         blueprint.body, memo);
@@ -215,11 +213,11 @@ module.exports = (function() {
                     var blueprint = config.blueprints.outpostDefender;
 
                     var memo = _.defaults({
-                        room: this.room.name,
+                        room: this.roomId,
                         role: blueprint.role,
                     }, blueprint.memo);
 
-                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_HIGH, this.homeRoom(),
+                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_DEFENCE, this.homeRoom(),
                         this.getCreepName('defender'), blueprint.body, memo);
                 }
                 else {

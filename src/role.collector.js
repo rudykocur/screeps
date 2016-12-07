@@ -14,8 +14,8 @@ module.exports = (function() {
             return;
         }
 
-        var sources = targetRoom.find(FIND_DROPPED_ENERGY, {
-            filter: s => s.amount > 50
+        var sources = targetRoom.find(FIND_DROPPED_RESOURCES, {
+            filter: s => s.resourceType == RESOURCE_ENERGY && s.amount > 50
         });
 
         var source = _.first(_.sortBy(sources, s => s.amount * -1));

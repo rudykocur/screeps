@@ -20,6 +20,10 @@ module.exports = (function() {
                 _.defaults(this.state, {hostiles: [], creeps: {}, spawns: []});
             }
 
+            get roomId() {
+                return Room.customNameToId(this.roomName);
+            }
+
             info(...messages) {
                 return logger.log(`${this.type} ${this.roomName}: ${messages.join(' ')}`);
             }

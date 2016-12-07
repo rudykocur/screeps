@@ -10,6 +10,8 @@ module.exports = (function() {
     return {
         // required for colony to function - movers, harvesters
         PRIORITY_CRITICAL: 'critical',
+        // creeps for defending rooms
+        PRIORITY_DEFENCE: 'defence',
         // required for outposts to function - collectors, miners
         PRIORITY_HIGH: 'high',
         // when everythin is normal - upgraders, builders
@@ -43,7 +45,7 @@ module.exports = (function() {
             var blockedSpawns = [];
             var handlers = {};
 
-            for(var priority of [e.PRIORITY_CRITICAL, e.PRIORITY_HIGH, e.PRIORITY_NORMAL, e.PRIORITY_LOW]) {
+            for(var priority of [e.PRIORITY_CRITICAL, e.PRIORITY_DEFENCE, e.PRIORITY_HIGH, e.PRIORITY_NORMAL, e.PRIORITY_LOW]) {
 
                 for(var request of queues[priority] || []) {
                     if(fullRooms.indexOf(request.roomName) >= 0) {

@@ -4,6 +4,7 @@ module.exports = (function() {
             E67N42: "moria",
             E66N41: "home",
             E66N42: "homeTop",
+            E66N43: "homeTopTop",
             E65N41: "homeLeft",
             E65N42: "loneOutpost",
             E67N43: "moriaTop",
@@ -37,13 +38,23 @@ module.exports = (function() {
                 creeps: {
                     claimer: 1,
                     settler: 1,
+                    collector: 3,
+                },
+            },
+            homeTopTop: {
+                type:"outpost",
+                homeRoom:"home",
+                creeps: {
+                    // claimer: 1,
+                    // settler: 1,
+                    // collector: 3,
                 },
             },
             homeLeft:{
                 type:"outpost",
                 homeRoom:"home",
                 creeps: {
-                    collector: 2,
+                    // collector: 3,
                     claimer: 1,
                     settler: 1,
                 },
@@ -58,20 +69,20 @@ module.exports = (function() {
                     settler: 1,
                 }
             },
-            // moriaRightRight:{
-            //     type:"outpost",
-            //     homeRoom:"moria",
-            //     creeps: {
-            //         settler: 1,
-            //         harvester: 0,
-            //         collector: 0,
-            //     }
-            // },
+            moriaRightRight:{
+                type:"outpost",
+                homeRoom:"moria",
+                creeps: {
+                    settler: 0,
+                    // harvester: 0,
+                    // collector: 0,
+                }
+            },
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
                 creeps: {
-                    settler: 1,
+                    settler: 0,
                 }
             },
             // moriaBottom: {
@@ -170,14 +181,38 @@ module.exports = (function() {
                     },
                 },
 
+                newRoomSettler: {
+                    minimum:1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    priority: 'high',
+                    memo: {
+                        role: 'settler',
+                        allowRepair: true,
+                        room: 'E68N43',
+                        energySource: '57ef9ee886f108ae6e6101b9',
+                    }
+                },
+
+                newRoomSettler2: {
+                    minimum:1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+                    priority: 'high',
+                    memo: {
+                        role: 'settler',
+                        allowRepair: true,
+                        room: 'E68N43',
+                        energySource: '57ef9ee886f108ae6e6101b8',
+                    }
+                },
+
                 moriaMover: {
-                    minimum: 3,
+                    minimum: 2,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: 'critical',
                     memo: {role: 'mover'}
                 },
                 moriaUpgrader: {
-                    minimum: 4,
+                    minimum: 3,
                     // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
                         CARRY,CARRY,CARRY,CARRY,CARRY],
@@ -205,6 +240,16 @@ module.exports = (function() {
                         energySource: 'moriaBottom'
                     }
                 },
+                moriaTestAttack: {
+                    minimum: 0,
+                    priority: 'critical',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E69N43',
+                        attackTarget: '582b8ad5b84ecc623611c8d9'
+                    }
+                }
             },
         },
 
@@ -216,8 +261,8 @@ module.exports = (function() {
             },
 
             outpostCollector: {
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
-                    CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
+                    CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 bodyOffroad: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
                     CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                 role: 'collector',
