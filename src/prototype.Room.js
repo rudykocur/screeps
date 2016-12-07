@@ -17,3 +17,7 @@ Room.byCustomName = function(roomName) {
 Room.customNameToId = function(roomName) {
     return customNameToRoomId[roomName];
 };
+
+Room.getStorage = function() {
+
+}

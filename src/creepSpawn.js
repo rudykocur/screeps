@@ -27,13 +27,10 @@ module.exports = (function() {
                     counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
                 });
 
-                var needToSpawn = [];
-
                 Object.keys(spawnConfig).forEach(function(groupName) {
                     var group = spawnConfig[groupName];
 
                     if((counts[groupName] || 0) < group.minimum) {
-                        needToSpawn.push(groupName);
 
                         var memo = _.defaults({}, group.memo);
                         memo.group = groupName;

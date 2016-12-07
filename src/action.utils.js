@@ -9,15 +9,18 @@ module.exports = (function() {
     }
 
     return {
-        shouldHarvestEnergy:  function(creep, minEnergy) {
+        shouldHarvestEnergy:  function(creep, minEnergy, resource) {
             minEnergy = minEnergy || 0;
+            resource = resource || RESOURCE_ENERGY;
+
+            var carry = creep.carry[resource] || 0;
 
             if(creep.carryCapacity <= minEnergy) {return false;}
 
-            if(!creep.memory.harvesting && creep.carry.energy <= minEnergy) {
+            if(!creep.memory.harvesting && carry <= minEnergy) {
                 creep.memory.harvesting = true;
             }
-            if(creep.memory.harvesting && creep.carry.energy == creep.carryCapacity) {
+            if(creep.memory.harvesting && carry == creep.carryCapacity) {
                 creep.memory.harvesting = false;
             }
 

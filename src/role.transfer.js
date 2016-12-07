@@ -6,19 +6,21 @@ module.exports = (function() {
 
     return {
         run:  function(creep) {
+            var resource = creep.memory.transferResource || RESOURCE_ENERGY;
 
-            if(actionUtils.shouldHarvestEnergy(creep)) {
+            if(actionUtils.shouldHarvestEnergy(creep, null, resource)) {
                 actionHarvest.tryHarvestStorage(creep, {
-                    reserve: 0,
+                    reserve: 1,
+                    types: [STRUCTURE_CONTAINER],
                     structures: bookmarks.getObjects(creep.memory.fromStructures),
-                    resource: creep.memory.transferResource || RESOURCE_ENERGY,
+                    resource: resource,
                 });
             }
             else {
                 actionHarvest.tryTransferToStorage(creep, {
                     structures: bookmarks.getObjects(creep.memory.toStructures),
                     allowContainers: false,
-                    resource: creep.memory.transferResource || RESOURCE_ENERGY,
+                    resource: resource,
                 });
             }
         }

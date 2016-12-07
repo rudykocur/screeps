@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 const config = require('config');
 const logger = require('logger');
 const creepSpawn = require('creepSpawn');
@@ -70,10 +72,6 @@ module.exports = (function() {
             }
 
             findDefender() {
-                if(!this.room) {
-                    return;
-                }
-
                 var defenders = this.findCreeps(config.blueprints.outpostDefender.role);
 
                 if(defenders.length > 0) {
@@ -249,3 +247,5 @@ module.exports = (function() {
         }
     }
 })();
+
+profiler.registerClass(module.exports.handler, 'OutpostRoomHandler');

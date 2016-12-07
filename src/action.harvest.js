@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 module.exports = (function() {
 
     return {
@@ -245,3 +247,5 @@ module.exports = (function() {
         }
     }
 })();
+
+profiler.registerObject(module.exports, 'action-harvest');

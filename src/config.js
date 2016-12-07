@@ -11,6 +11,7 @@ module.exports = (function() {
             E68N42: "moriaRight",
             E69N42: "moriaRightRight",
             E67N41: "moriaBottom",
+            E68N43: "kaerMorhen",
         },
         rooms: {
             home: {
@@ -31,6 +32,11 @@ module.exports = (function() {
                     harvester: 2,
                     mover: 2,
                 }
+            },
+            kaerMorhen: {
+                type: "colony",
+                panicMode: true,
+                creeps: {}
             },
             homeTop: {
                 type:"outpost",
@@ -92,7 +98,7 @@ module.exports = (function() {
                 offroad: true,
                 creeps: {
                     settler: 0,
-                    // collector: 2,
+                    collector: 2,
                 },
             },
             loneOutpost:{
@@ -114,7 +120,7 @@ module.exports = (function() {
                 },
 
                 upgrader: {
-                    minimum: 4,
+                    minimum: 5,
                     //body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY],
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
@@ -155,7 +161,7 @@ module.exports = (function() {
                 },
                 mineralTransfer: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                    body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     priority: 'normal',
                     memo: {
                         role: 'transfer',
@@ -203,7 +209,7 @@ module.exports = (function() {
                 },
 
                 newRoomSettler: {
-                    minimum:1,
+                    minimum: 1,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     priority: 'high',
                     memo: {
@@ -215,7 +221,7 @@ module.exports = (function() {
                 },
 
                 newRoomSettler2: {
-                    minimum:1,
+                    minimum: 1,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
                     priority: 'high',
                     memo: {
@@ -271,6 +277,29 @@ module.exports = (function() {
                         attackTarget: '582b8ad5b84ecc623611c8d9'
                     }
                 }
+            },
+
+            "Kaer Morhen": {
+                // [MOVE,MOVE,WORK,CARRY,CARRY]
+                baseSettler: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,WORK,CARRY,CARRY],
+                    priority: 'normal',
+                    memo: {
+                        role: 'settler',
+                        energySource: '57ef9ee886f108ae6e6101b9',
+                        disableBuild: true,
+                    }
+                },
+                baseSettler2: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,WORK,CARRY,CARRY],
+                    priority: 'normal',
+                    memo: {
+                        role: 'settler',
+                        energySource: '57ef9ee886f108ae6e6101b8',
+                    }
+                },
             },
         },
 
