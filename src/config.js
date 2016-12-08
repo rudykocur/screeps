@@ -19,7 +19,7 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 4,
                     builder: 1,
-                    harvester: 2,
+                    // harvester: 2,
                     mover: 2,
                 },
             },
@@ -29,22 +29,26 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 4,
                     builder: 1,
-                    harvester: 2,
+                    // harvester: 2,
                     mover: 2,
                 }
             },
             kaerMorhen: {
                 type: "colony",
                 panicMode: true,
-                creeps: {}
+                creeps: {
+                    upgrader: 7,
+                    builder: 1,
+                    mover: 2,
+                }
             },
             homeTop: {
                 type:"outpost",
                 homeRoom:"home",
                 creeps: {
                     claimer: 1,
-                    settler: 2,
-                    // collector: 1,
+                    settler: 1,
+                    // collector: 2,
                 },
             },
             homeTopTop: {
@@ -80,7 +84,6 @@ module.exports = (function() {
                 homeRoom:"moria",
                 creeps: {
                     settler: 1,
-                    // harvester: 0,
                     // collector: 0,
                 }
             },
@@ -99,6 +102,7 @@ module.exports = (function() {
                 creeps: {
                     settler: 0,
                     collector: 2,
+                    claimer: 1,
                 },
             },
             loneOutpost:{
@@ -112,28 +116,10 @@ module.exports = (function() {
 
         spawn: {
             Rabbithole: {
-                builder: {
-                    minimum: 1,
-                    priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY],
-                    memo: {role: 'builder'}
-                },
-
-                upgrader: {
-                    minimum: 5,
-                    //body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
-                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY],
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-                        CARRY,CARRY,CARRY,CARRY,CARRY],
-                    priority: 'normal',
-                    memo: {
-                        role: 'upgrader',
-                    }
-                },
 
                 harvesterRight: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
+                    body: 'harvester',
                     priority: 'critical',
                     memo: {
                         role: 'harvester',
@@ -143,7 +129,7 @@ module.exports = (function() {
 
                 harvesterLeft: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
+                    body: 'harvester',
                     priority: 'critical',
                     memo: {
                         role: 'harvester',
@@ -152,7 +138,7 @@ module.exports = (function() {
                 },
                 harvesterMineral: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    body: 'mineralHarvester',
                     priority: 'normal',
                     memo: {
                         role: 'harvester',
@@ -161,20 +147,13 @@ module.exports = (function() {
                 },
                 mineralTransfer: {
                     minimum: 1,
-                    body: [MOVE,MOVE,CARRY,CARRY,CARRY,CARRY],
+                    body: 'mineralTransfer',
                     priority: 'normal',
                     memo: {
                         role: 'transfer',
                         transferResource: RESOURCE_OXYGEN,
                         energySourceId: '5843ec060750719d418e9488'
                     }
-                },
-
-                mover: {
-                    minimum: 2,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                    priority: 'critical',
-                    memo: {role: 'mover'}
                 },
 
                 fighter: {
@@ -197,36 +176,9 @@ module.exports = (function() {
             },
 
             Moria: {
-                moriaBuilder: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
-                    priority: 'normal',
-                    memo: {
-                        role: 'builder',
-                        //allowRepair: true,
-                        disableController: true,
-                    },
-                },
-
-                moriaMover: {
-                    minimum: 2,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                    priority: 'critical',
-                    memo: {role: 'mover'}
-                },
-                moriaUpgrader: {
-                    minimum: 3,
-                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY],
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,
-                        CARRY,CARRY,CARRY,CARRY,CARRY],
-                    priority: 'normal',
-                    memo: {
-                        role: 'upgrader',
-                    }
-                },
                 moriaHarvesterTop: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK],
+                    body: 'harvester',
                     priority: 'critical',
                     memo: {
                         role: 'harvester',
@@ -236,7 +188,7 @@ module.exports = (function() {
 
                 moriaHarvesterBottom: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
+                    body: 'harvester',
                     priority: 'critical',
                     memo: {
                         role: 'harvester',
@@ -245,7 +197,7 @@ module.exports = (function() {
                 },
                 moriaHarvesterMineral: {
                     minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    body: 'mineralHarvester',
                     priority: 'normal',
                     memo: {
                         role: 'harvester',
@@ -254,7 +206,7 @@ module.exports = (function() {
                 },
                 moriaMineralTransfer: {
                     minimum: 1,
-                    body: [MOVE,MOVE,CARRY,CARRY,CARRY,CARRY],
+                    body: 'mineralTransfer',
                     priority: 'normal',
                     memo: {
                         role: 'transfer',
@@ -264,33 +216,9 @@ module.exports = (function() {
             },
 
             "Kaer Morhen": {
-                kmBuilder: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
-                    priority: 'normal',
-                    memo: {
-                        role: 'builder',
-                        allowRepair: true,
-                        disableController: true,
-                    },
-                },
-                kmMover: {
-                    minimum: 2,
-                    body: [MOVE,MOVE,CARRY,CARRY,CARRY,CARRY],
-                    priority: 'critical',
-                    memo: {role: 'mover'}
-                },
-                kmUpgrader: {
-                    minimum: 5,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
-                    priority: 'low',
-                    memo: {
-                        role: 'upgrader',
-                    }
-                },
                 kmHarvesterTop: {
                     minimum: 1,
-                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK],
+                    body: 'harvester',
                     priority: 'high',
                     memo: {
                         role: 'harvester',
@@ -299,7 +227,7 @@ module.exports = (function() {
                 },
                 kmHarvesterBottom: {
                     minimum: 1,
-                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK],
+                    body: 'harvester',
                     priority: 'normal',
                     memo: {
                         role: 'harvester',
@@ -311,45 +239,60 @@ module.exports = (function() {
 
         blueprints: {
             outpostMiner: {
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
+                body: 'harvesterOffroad',
                 role: 'harvester',
                 memo: {},
             },
 
             outpostCollector: {
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,
-                    CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                bodyOffroad: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                body: 'collector',
+                bodyOffroad: 'collectorOffroad',
                 role: 'collector',
                 memo: {}
             },
 
             outpostDefender: {
-                body: [MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,HEAL],
+                body: 'defender',
                 role: 'brawler',
                 memo: {}
             },
 
             outpostClaimer: {
-                body: [MOVE, CLAIM, CLAIM],
+                body: 'claimer',
                 role: 'claimer',
                 memo: {}
             },
 
             outpostScout: {
-                body: [MOVE],
+                body: 'scout',
                 role: 'scout',
                 memo: {}
             },
 
             outpostSettler: {
-                body: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY,CARRY],
+                body: 'settler',
                 role: 'settler',
                 memo: {
                     enableRepair: true,
                 },
             },
-        }
+            colonyMover: {
+                body: 'mover',
+                role: 'mover',
+                memo: {}
+            },
+            colonyUpgrader: {
+                body: 'upgrader',
+                role: 'upgrader',
+                memo: {}
+            },
+            colonyBuilder: {
+                body: 'builder',
+                role: 'builder',
+                memo: {
+                    disableController: true,
+                },
+            },
+        },
     }
 })();

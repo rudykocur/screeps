@@ -109,7 +109,7 @@ module.exports = (function() {
             }
 
             findCreeps(role) {
-                var roomId = (this.room ? this.room.name : Room.customNameToId(this.roomName));
+                var roomId = this.roomId;
                 return _.filter(Game.creeps, c => {
                     return c.memory.room == roomId && c.memory.role == role;
                 });
@@ -117,7 +117,7 @@ module.exports = (function() {
 
             getAllCreeps() {
                 return _.filter(Game.creeps, c => {
-                    return c.memory.room == Room.customNameToId(this.roomName);
+                    return c.memory.room == this.roomId;
                 });
             }
 

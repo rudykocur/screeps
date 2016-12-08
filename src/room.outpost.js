@@ -100,7 +100,7 @@ module.exports = (function() {
              * @param {Source} source
              */
             pingMinerForSource(source) {
-                if(this.config.creeps && this.config.creeps.harvester == 0) {
+                if(this.config.disableHarvesting) {
                     return;
                 }
 

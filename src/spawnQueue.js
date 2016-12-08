@@ -1,4 +1,6 @@
+const logger = require('logger');
 const utils = require('utils');
+const bodyConfig = require('config.body');
 
 const roomHandlers = require('room.handlers');
 
@@ -68,14 +70,27 @@ module.exports = (function() {
                         continue;
                     }
 
-                    if(freeSpawn.canCreateCreep(request.body) != OK ) {
+                    var body = request.body;
+
+                    if(typeof body == "string") {
+                        var rcl = bodyConfig.getEffectiveRcl(handler.room);
+                        var bodyName = body;
+                        body = bodyConfig.getBody(bodyName, rcl);
+
+                        if(!body) {
+                            logger.mail(logger.error(`Spawn ${freeSpawn.name} - cant find body for ${bodyName}`));
+                            continue;
+                        }
+                    }
+
+                    if(freeSpawn.canCreateCreep(body) != OK ) {
                         fullRooms.push(request.roomName);
                         continue;
                     }
 
                     request.memo.room = request.memo.room || handler.room.name;
 
-                    var newCreepName = freeSpawn.createCreep(request.body, request.name, request.memo);
+                    var newCreepName = freeSpawn.createCreep(body, request.name, request.memo);
 
                     console.log('Spawn '+freeSpawn.name+': created creep. Name: ' + newCreepName+'. Queues:', module.exports.getSpawnStats());
 

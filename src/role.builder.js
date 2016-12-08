@@ -35,11 +35,11 @@ module.exports = (function() {
                     return;
                 }
 
-                var flag = _.first(_.groupBy(Game.flags, 'room.name')[creep.pos.roomName]);
+                var idlePos = creep.getIdlePosition();
 
-                if(flag) {
-                    if(!creep.pos.isNearTo(flag)) {
-                        creep.moveTo(flag);
+                if(idlePos) {
+                    if(!creep.pos.isNearTo(idlePos)) {
+                        creep.moveTo(idlePos);
                     }
                 }
             }
