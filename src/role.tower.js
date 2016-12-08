@@ -1,3 +1,4 @@
+const config = require('config');
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 
@@ -18,13 +19,15 @@ module.exports = (function() {
             }
 
             if(tower.energy > 300) {
+                var towerHp = config.rooms[tower.room.customName].wallsHp || 230000;
+
                 var toRepair = tower.room.find(FIND_STRUCTURES, {
                     /**
                      * @param {Structure} struct
                      */
                     filter: function(struct) {
                         if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
-                            return struct.hits < 230000;
+                            return struct.hits < towerHp;
                         }
 
                         return (struct.hits / struct.hitsMax) < 0.75;

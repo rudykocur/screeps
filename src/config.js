@@ -17,9 +17,8 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 5,
                     builder: 1,
-                    // harvester: 2,
                     mover: 2,
                 },
             },
@@ -29,15 +28,15 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 4,
                     builder: 1,
-                    // harvester: 2,
                     mover: 2,
                 }
             },
             kaerMorhen: {
                 type: "colony",
                 panicMode: true,
+                wallsHp: 80000,
                 creeps: {
-                    upgrader: 7,
+                    upgrader: 8,
                     builder: 1,
                     mover: 2,
                 }
@@ -55,9 +54,9 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"home",
                 creeps: {
-                    // claimer: 1,
+                    claimer: 1,
                     // settler: 1,
-                    // collector: 3,
+                    collector: 2,
                 },
             },
             homeLeft:{
@@ -73,7 +72,6 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"moria",
                 creeps: {
-                    // harvester: 2,
                     claimer: 1,
                     collector: 2,
                     settler: 1,
@@ -84,7 +82,6 @@ module.exports = (function() {
                 homeRoom:"moria",
                 creeps: {
                     settler: 1,
-                    // collector: 0,
                 }
             },
             moriaTop:{
@@ -92,7 +89,6 @@ module.exports = (function() {
                 homeRoom:"moria",
                 offroad: true,
                 creeps: {
-                    settler: 0,
                 }
             },
             moriaBottom: {
@@ -100,8 +96,7 @@ module.exports = (function() {
                 homeRoom: "moria",
                 offroad: true,
                 creeps: {
-                    settler: 0,
-                    collector: 2,
+                    collector: 3,
                     claimer: 1,
                 },
             },
@@ -228,7 +223,7 @@ module.exports = (function() {
                 kmHarvesterBottom: {
                     minimum: 1,
                     body: 'harvester',
-                    priority: 'normal',
+                    priority: 'high',
                     memo: {
                         role: 'harvester',
                         energySourceId: '57ef9ee886f108ae6e6101b9',
