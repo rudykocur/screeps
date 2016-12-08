@@ -50,6 +50,15 @@ module.exports = (function() {
 
                 if(Game.time % 10 == 0) {
                     this.checkThreats();
+                    this.checkNukes();
+                }
+            }
+
+            checkNukes() {
+                var nukes = this.room.find(FIND_NUKES);
+
+                if(nukes.length > 0) {
+                    logger.mail(this.error('Detected', nukes.length, '!!!'));
                 }
             }
 
