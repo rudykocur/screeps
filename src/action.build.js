@@ -9,13 +9,15 @@ module.exports = {
         }
 
         /** @type {Structure} */
-        var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+        var targets = creep.room.find(FIND_STRUCTURES, {
             filter: function(struct) {
                 var hpLeft = struct.hits / struct.hitsMax;
 
                 return hpLeft < 0.55;
             }
         });
+
+        var target = _.first(_.sortBy(targets, s => (s.hits / s.hitsMax)));
 
         if(target) {
             creep.say("Start repairing " + target.structureType);

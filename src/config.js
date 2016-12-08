@@ -44,7 +44,7 @@ module.exports = (function() {
                 creeps: {
                     claimer: 1,
                     settler: 2,
-                    collector: 1,
+                    // collector: 1,
                 },
             },
             homeTopTop: {
@@ -208,30 +208,6 @@ module.exports = (function() {
                     },
                 },
 
-                newRoomSettler: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
-                    priority: 'high',
-                    memo: {
-                        role: 'settler',
-                        allowRepair: true,
-                        room: 'E68N43',
-                        energySource: '57ef9ee886f108ae6e6101b9',
-                    }
-                },
-
-                newRoomSettler2: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
-                    priority: 'high',
-                    memo: {
-                        role: 'settler',
-                        allowRepair: true,
-                        room: 'E68N43',
-                        energySource: '57ef9ee886f108ae6e6101b8',
-                    }
-                },
-
                 moriaMover: {
                     minimum: 2,
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
@@ -267,37 +243,61 @@ module.exports = (function() {
                         energySource: 'moriaBottom'
                     }
                 },
-                moriaTestAttack: {
-                    minimum: 0,
-                    priority: 'critical',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK],
+                moriaHarvesterMineral: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+                    priority: 'normal',
                     memo: {
-                        role: 'brawler',
-                        room: 'E69N43',
-                        attackTarget: '582b8ad5b84ecc623611c8d9'
+                        role: 'harvester',
+                        energySourceId: '57efa11d08bd77920836f23f'
                     }
-                }
+                },
+                moriaMineralTransfer: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,CARRY,CARRY,CARRY,CARRY],
+                    priority: 'normal',
+                    memo: {
+                        role: 'transfer',
+                        transferResource: RESOURCE_ZYNTHIUM,
+                    }
+                },
             },
 
             "Kaer Morhen": {
                 // [MOVE,MOVE,WORK,CARRY,CARRY]
                 baseSettler: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY],
+                    minimum: 0,
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
                     priority: 'normal',
                     memo: {
                         role: 'settler',
-                        energySource: '57ef9ee886f108ae6e6101b9',
-                        disableBuild: true,
+                        // energySource: '57ef9ee886f108ae6e6101b9',
+                        // disableBuild: true,
+                        disableStorage: true,
                     }
                 },
-                baseSettler2: {
-                    minimum: 1,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,CARRY,CARRY],
+                kmBuilder: {
+                    minimum: 2,
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
                     priority: 'normal',
                     memo: {
-                        role: 'settler',
-                        energySource: '57ef9ee886f108ae6e6101b8',
+                        role: 'builder',
+                        allowRepair: true,
+                        disableController: true,
+                    },
+                },
+                kmMover: {
+                    minimum: 2,
+                    body: [MOVE,MOVE,CARRY,CARRY,CARRY,CARRY],
+                    priority: 'critical',
+                    memo: {role: 'mover'}
+                },
+                kmUpgrader: {
+                    minimum: 5,
+                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
+                    priority: 'low',
+                    memo: {
+                        role: 'upgrader',
                     }
                 },
                 kmHarvesterTop: {

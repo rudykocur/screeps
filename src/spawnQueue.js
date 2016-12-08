@@ -12,6 +12,7 @@ module.exports = (function() {
         PRIORITY_CRITICAL: 'critical',
         // creeps for defending rooms
         PRIORITY_DEFENCE: 'defence',
+        PRIORITY_CLAIMERS: 'claimers',
         // required for outposts to function - collectors, miners
         PRIORITY_HIGH: 'high',
         // when everythin is normal - upgraders, builders
@@ -45,9 +46,12 @@ module.exports = (function() {
             var blockedSpawns = [];
             var handlers = {};
 
-            for(var priority of [e.PRIORITY_CRITICAL, e.PRIORITY_DEFENCE, e.PRIORITY_HIGH, e.PRIORITY_NORMAL, e.PRIORITY_LOW]) {
+            var priorities = [e.PRIORITY_CRITICAL, e.PRIORITY_DEFENCE, e.PRIORITY_CLAIMERS, e.PRIORITY_HIGH,
+                e.PRIORITY_NORMAL, e.PRIORITY_LOW];
 
-                for(var request of queues[priority] || []) {
+            for(var priority of priorities) {
+
+                for(var request of _.shuffle(queues[priority] || [])) {
                     if(fullRooms.indexOf(request.roomName) >= 0) {
                         continue;
                     }

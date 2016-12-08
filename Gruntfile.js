@@ -37,5 +37,10 @@ module.exports = function(grunt) {
         }
     });
 
+    grunt.registerTask('finished', 'finished', function() {
+        grunt.log.ok('Upload finished at ' + new Date().toISOString().replace('T', ' '));
+    });
+
+    grunt.registerTask('screeps-main', ['screeps:dist', 'finished']);
     grunt.registerTask('screeps-sim', ['copy:toSim','screeps:sim'])
-}
+};

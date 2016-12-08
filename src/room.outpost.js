@@ -179,7 +179,7 @@ module.exports = (function() {
                     return;
                 }
 
-                this.maintainPopulation('claimer', config.blueprints.outpostClaimer, spawnQueue.PRIORITY_LOW);
+                this.maintainPopulation('claimer', config.blueprints.outpostClaimer, spawnQueue.PRIORITY_CLAIMERS);
             }
 
             pingSettlers() {
