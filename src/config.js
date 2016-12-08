@@ -264,20 +264,8 @@ module.exports = (function() {
             },
 
             "Kaer Morhen": {
-                // [MOVE,MOVE,WORK,CARRY,CARRY]
-                baseSettler: {
-                    minimum: 0,
-                    body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
-                    priority: 'normal',
-                    memo: {
-                        role: 'settler',
-                        // energySource: '57ef9ee886f108ae6e6101b9',
-                        // disableBuild: true,
-                        disableStorage: true,
-                    }
-                },
                 kmBuilder: {
-                    minimum: 2,
+                    minimum: 1,
                     body: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY],
                     priority: 'normal',
                     memo: {

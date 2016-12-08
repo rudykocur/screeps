@@ -32,6 +32,15 @@ module.exports = (function() {
 
                 if(!creep.memory.disableController) {
                     actionUtils.actionFillController(creep);
+                    return;
+                }
+
+                var flag = _.first(_.groupBy(Game.flags, 'room.name')[creep.pos.roomName]);
+
+                if(flag) {
+                    if(!creep.pos.isNearTo(flag)) {
+                        creep.moveTo(flag);
+                    }
                 }
             }
         },

@@ -1,5 +1,7 @@
 const creepExt = require('creepExt');
 
+const actionUtils = require('action.utils');
+
 module.exports = (function() {
 
     return {
@@ -16,7 +18,9 @@ module.exports = (function() {
              * @param {StructureStorage} target
              */
             static create(creep, target) {
-                var path = creep.pos.findPathTo(target.pos);
+                var path = creep.pos.findPathTo(target.pos, {
+                        costCallback: actionUtils.costCallback
+                    });
 
                 return new module.exports.task(creep, {
                     target: target.id,

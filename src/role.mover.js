@@ -40,14 +40,6 @@ module.exports = (function() {
                     return;
                 }
 
-                var storage = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-                    filter: {structureType: STRUCTURE_STORAGE}
-                });
-
-                if(!storage) {
-                    actionHarvest.tryTransferToStorage(creep)
-                }
-
             }
         }
     }

@@ -162,9 +162,9 @@ module.exports = (function() {
 
             var room = Room.byCustomName(roomName);
 
-            var roomConfig = config.rooms[room.customName];
+            var roomConfig = config.rooms[roomName];
             var clz = handlers[roomConfig.type].handler;
-            var state = Memory.rooms[room.customName];
+            var state = Memory.rooms[roomName];
             return new clz(roomName, state, roomConfig);
         }
     }

@@ -1,5 +1,7 @@
 const creepExt = require('creepExt');
 
+const actionUtils = require('action.utils');
+
 module.exports = (function() {
 
     return {
@@ -15,7 +17,9 @@ module.exports = (function() {
              * @param {Creep} creep
              */
             static create(creep) {
-                var path = creep.pos.findPathTo(creep.room.controller);
+                var path = creep.pos.findPathTo(creep.room.controller, {
+                        costCallback: actionUtils.costCallback
+                    });
 
                 return new module.exports.task(creep, {
                     target: creep.room.controller.id,
