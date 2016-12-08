@@ -12,7 +12,11 @@ module.exports = (function() {
                     return;
                 }
 
-                actionHarvest.tryHarvestStorage(creep, {reserve: 300});
+                if(actionHarvest.tryHarvestStorage(creep, {reserve: 5000, types: [STRUCTURE_STORAGE]})) {
+                    return;
+                }
+
+                actionHarvest.tryHarvestStorage(creep, {reserve: 300, types: [STRUCTURE_CONTAINER]});
             }
             else {
 
