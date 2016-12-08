@@ -43,8 +43,8 @@ module.exports = (function() {
                 homeRoom:"home",
                 creeps: {
                     claimer: 1,
-                    settler: 1,
-                    collector: 3,
+                    settler: 2,
+                    collector: 1,
                 },
             },
             homeTopTop: {
@@ -298,6 +298,24 @@ module.exports = (function() {
                     memo: {
                         role: 'settler',
                         energySource: '57ef9ee886f108ae6e6101b8',
+                    }
+                },
+                kmHarvesterTop: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK],
+                    priority: 'high',
+                    memo: {
+                        role: 'harvester',
+                        energySourceId: '57ef9ee886f108ae6e6101b8',
+                    }
+                },
+                kmHarvesterBottom: {
+                    minimum: 1,
+                    body: [MOVE,MOVE,WORK,WORK,WORK,WORK],
+                    priority: 'normal',
+                    memo: {
+                        role: 'harvester',
+                        energySourceId: '57ef9ee886f108ae6e6101b9',
                     }
                 },
             },
