@@ -40,7 +40,7 @@ module.exports = (function() {
             3: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK],
         },
         claimer: {
-            5: [MOVE, MOVE, CLAIM, CLAIM],
+            4: [MOVE, MOVE, CLAIM, CLAIM],
         },
         defender: {
             3: [MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
