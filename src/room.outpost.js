@@ -87,7 +87,7 @@ module.exports = (function() {
 
                 if(!scout) {
                     var memo = _.defaults({
-                        room: Room.customNameToId(this.roomName),
+                        room: this.roomId,
                         role: blueprint.role,
                     });
 

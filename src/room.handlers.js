@@ -147,8 +147,9 @@ module.exports = (function() {
                 handlers[modName] = require('room.' + modName);
             });
 
-            try {
-                _.each(config.rooms, (roomConfig, roomName) => {
+
+            _.each(config.rooms, (roomConfig, roomName) => {
+                try {
                     Memory.rooms[roomName] = Memory.rooms[roomName] || {};
 
                     var clz = handlers[roomConfig.type].handler;
@@ -156,11 +157,12 @@ module.exports = (function() {
                     var handler = new clz(roomName, state, roomConfig);
 
                     handler.process();
-                });
-            }
-            catch(e) {
-                logger.error('Failure at processing rooms', e, '::', e.stack);
-            }
+                }
+                catch(e) {
+                    logger.error('Failure at processing room', roomName,'-', e, '::', e.stack);
+                }
+            });
+
         },
 
         getRoomHandler: function(roomName) {

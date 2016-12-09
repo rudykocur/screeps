@@ -12,6 +12,7 @@ module.exports = (function() {
             E69N42: "moriaRightRight",
             E67N41: "moriaBottom",
             E68N43: "kaerMorhen",
+            E69N43: "kmRight",
         },
         rooms: {
             home: {
@@ -21,6 +22,11 @@ module.exports = (function() {
                     builder: 1,
                     mover: 2,
                 },
+                minerals: {
+                    reserve: {
+                        [RESOURCE_OXYGEN]: 10000,
+                    }
+                }
             },
             moria: {
                 type: "colony",
@@ -29,6 +35,11 @@ module.exports = (function() {
                     upgrader: 4,
                     builder: 1,
                     mover: 2,
+                },
+                minerals: {
+                    reserve: {
+                        [RESOURCE_ZYNTHIUM]: 10000,
+                    }
                 }
             },
             kaerMorhen: {
@@ -36,9 +47,9 @@ module.exports = (function() {
                 panicMode: true,
                 wallsHp: 80000,
                 creeps: {
-                    upgrader: 8,
-                    builder: 1,
-                    mover: 2,
+                    upgrader: 1,
+                    builder: 2,
+                    mover: 0,
                 }
             },
             homeTop: {
@@ -107,6 +118,14 @@ module.exports = (function() {
                     // collector: 2,
                 }
             },
+            // kmRight: {
+            //     type: "outpost",
+            //     homeRoom: "kaerMorhen",
+            //     creeps: {
+            //         collector: 0,
+            //         settler: 2,
+            //     }
+            // }
         },
 
         spawn: {
@@ -169,6 +188,8 @@ module.exports = (function() {
                     }
                 },
             },
+
+            Cheshire: {},
 
             Moria: {
                 moriaHarvesterTop: {
