@@ -48,7 +48,7 @@ module.exports = (function() {
                 panicMode: true,
                 wallsHp: 100000,
                 creeps: {
-                    upgrader: 3,
+                    upgrader: 5,
                     builder: 1,
                     mover: 2,
                 }
@@ -108,7 +108,7 @@ module.exports = (function() {
                 homeRoom: "moria",
                 offroad: true,
                 creeps: {
-                    collector: 3,
+                    collector: 2,
                     claimer: 1,
                 },
             },

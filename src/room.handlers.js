@@ -73,6 +73,8 @@ module.exports = (function() {
 
                     if(!(key in jobs)) {
                         jobs[key] = {
+                            key: key,
+                            room: this.room.customName,
                             type: 'harvest',
                             subtype: 'energy',
                             sourceId: s.id,
@@ -87,6 +89,8 @@ module.exports = (function() {
 
                     if(!(key in jobs)) {
                         jobs[key] = {
+                            key: key,
+                            room: this.room.customName,
                             type: 'harvest',
                             subtype: 'mineral',
                             sourceId: m.id,

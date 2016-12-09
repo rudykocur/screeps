@@ -43,6 +43,8 @@ module.exports = (function() {
                         if(reserves[resource] > 0 && amount > reserves[resource]) {
                             if(!(key in jobs)) {
                                 jobs[key] = {
+                                    key: key,
+                                    room: this.room.customName,
                                     type: 'transfer',
                                     sourceId: storage.id,
                                     sourcePos: storage.pos,

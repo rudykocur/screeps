@@ -24,7 +24,7 @@ module.exports = (function() {
                 job = _.first(room.searchJobs({type: 'harvest', subtype: 'energy'}));
 
                 if (!job) {
-                    job = _.first(room.searchJobs({type: 'harvest', subtype: 'energy'}));
+                    job = _.first(room.searchJobs({type: 'harvest', subtype: 'mineral'}));
                 }
 
                 if (!job) {
@@ -35,8 +35,7 @@ module.exports = (function() {
                     return;
                 }
 
-                creep.memory.job = job;
-                job.takenBy = creep.id;
+                creep.takeJob(job);
             }
 
             var pos = RoomPosition.fromDict(job.sourcePos);
