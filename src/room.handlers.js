@@ -17,7 +17,11 @@ module.exports = (function() {
 
                 this.type = 'unknown';
 
-                _.defaults(this.state, {hostiles: [], creeps: {}, spawns: []});
+                _.defaults(this.state, {
+                    hostiles: [],
+                    creeps: {},
+                    jobs: {},
+                });
             }
 
             get roomId() {
@@ -37,21 +41,60 @@ module.exports = (function() {
                 return logger.error(`${this.type} ${this.roomName}: ${messages.join(' ')}`);
             }
 
-            prepareSpawnQueue() {}
-
             process() {
                 if(!this.room) {
                     return;
-                }
-
-                if(Game.time % 50 == 0) {
-                    this.updateSpawns();
                 }
 
                 if(Game.time % 10 == 0) {
                     this.checkThreats();
                     this.checkNukes();
                 }
+
+                this.prepareJobBoard();
+            }
+
+            prepareJobBoard() {
+                var jobs = this.state.jobs;
+
+                _.each(jobs, job => {
+                    if(job.takenBy && !Game.getObjectById(job.takenBy)) {
+                        job.takenBy = null;
+                    }
+                });
+
+                var sources = this.room.find(FIND_SOURCES);
+                var minerals = this.room.find(FIND_MINERALS, {
+                    filter: /** @param {Mineral} m */ m => _.first(this.room.lookForAt(LOOK_STRUCTURES, m.pos))
+                });
+
+                sources.forEach(s => {
+                    var key = 'mining-' + s.id;
+
+                    if(!(key in jobs)) {
+                        jobs[key] = {
+                            type: 'harvest',
+                            subtype: 'energy',
+                            sourceId: s.id,
+                            sourcePos: s.pos,
+                            takenBy: null,
+                        };
+                    }
+                });
+
+                minerals.forEach(m => {
+                    var key = 'mining-' + m.id;
+
+                    if(!(key in jobs)) {
+                        jobs[key] = {
+                            type: 'harvest',
+                            subtype: 'mineral',
+                            sourceId: m.id,
+                            sourcePos: m.pos,
+                            takenBy: null,
+                        };
+                    }
+                });
             }
 
             checkNukes() {
@@ -107,14 +150,6 @@ module.exports = (function() {
                 }
 
                 this.state.hostiles = currentCreeps;
-            }
-
-            updateSpawns() {
-                this.state.spawns = this.room.find(FIND_MY_SPAWNS).map(s => s.id);
-            }
-
-            getSpawns() {
-                return this.state.spawns.map(sId => Game.getObjectById(sId));
             }
 
             findCreeps(role) {

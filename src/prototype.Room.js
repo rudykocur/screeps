@@ -33,6 +33,7 @@ Room.prototype.refreshStructures = function() {
             terminal: null,
             containers: [],
             towers: [],
+            spawns: [],
             extensions: [],
         };
 
@@ -56,6 +57,10 @@ Room.prototype.refreshStructures = function() {
             if(struct.structureType == STRUCTURE_EXTENSION) {
                 state.structures.extensions.push(struct.id);
             }
+
+            if(struct.structureType == STRUCTURE_SPAWN) {
+                state.structures.spawns.push(struct.id);
+            }
         });
     }
 };
@@ -68,6 +73,10 @@ Room.prototype.getTerminal = function() {
 Room.prototype.getStorage = function() {
     this.refreshStructures();
     return Game.getObjectById(this.handlerMemory.structures.storage);
+};
+
+Room.prototype.getSpawns = function() {
+    return this.handlerMemory.structures.spawns.map(sId => Game.getObjectById(sId));
 };
 
 Room.prototype.getContainers = function(options) {
@@ -92,6 +101,7 @@ Room.prototype.searchJobs = function(options) {
     _.defaults(options, {
         type: null,
         subtype: null,
+        onlyFree: true,
     });
 
     var jobs = Memory.rooms[this.customName].jobs;
@@ -102,6 +112,10 @@ Room.prototype.searchJobs = function(options) {
         }
 
         if(options.subtype && options.subtype != job.subtype) {
+            return false;
+        }
+
+        if(options.onlyFree && job.takenBy) {
             return false;
         }
 

@@ -63,7 +63,7 @@ module.exports = (function() {
                     }
 
                     var handler = handlers[request.roomName];
-                    var freeSpawn = _.first(handler.getSpawns().filter(s => !s.spawning && blockedSpawns.indexOf(s.id) < 0));
+                    var freeSpawn = _.first(handler.room.getSpawns().filter(s => !s.spawning && blockedSpawns.indexOf(s.id) < 0));
 
                     if(!freeSpawn) {
                         fullRooms.push(request.roomName);

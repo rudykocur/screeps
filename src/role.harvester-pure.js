@@ -16,36 +16,34 @@ module.exports = (function() {
                 return;
             }
 
-            var pos;
-            if(creep.memory.energySourceId) {
-                let source = Game.getObjectById(creep.memory.energySourceId);
-                if(source) {
-                    pos = source.pos;
+            var room = creep.workRoom;
+
+            var job = creep.memory.job;
+
+            if(!job) {
+                job = _.first(room.searchJobs({type: 'harvest', subtype: 'energy'}));
+
+                if (!job) {
+                    job = _.first(room.searchJobs({type: 'harvest', subtype: 'energy'}));
                 }
-            }
-            else if(creep.memory.energySource) {
-                let source = bookmarks.getObject(creep.memory.energySource);
-                if(source) {
-                    pos = source.pos;
+
+                if (!job) {
+                    if (Game.time % 10 == 0) {
+                        logger.log(logger.fmt.orange('No job for harvester', creep.name));
+                    }
+
+                    return;
                 }
+
+                creep.memory.job = job;
+                job.takenBy = creep.id;
             }
 
-            if(!pos && creep.memory.energyPosition) {
-                let p = creep.memory.energyPosition;
-                pos = new RoomPosition(p.x, p.y, p.roomName);
-            }
-
-            if(!pos) {
-                console.log('Creep', creep.name, 'cannot find its source');
-                return;
-            }
+            var pos = RoomPosition.fromDict(job.sourcePos);
 
             if(creep.pos.isNearTo(pos)) {
-                let source = _.first(creep.room.lookForAt(LOOK_SOURCES, pos));
+                let source = Game.getObjectById(job.sourceId);
 
-                if(!source) {
-                    source = _.first(creep.room.lookForAt(LOOK_MINERALS, pos));
-                }
                 if(!source) {
                     logger.error('task.harvester: no source at position', pos);
                     return;

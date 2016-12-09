@@ -13,6 +13,10 @@ Creep.prototype.addTask = function(task) {
     module.exports.addTask(this, task);
 };
 
+Object.defineProperty(Creep.prototype, 'workRoom', {get: function() {
+    return Game.rooms[this.memory.room];
+}});
+
 Object.defineProperty(Creep.prototype, 'idwithOwner', {get: function() {
     return `${this.id}(${this.owner.username})`;
 }});

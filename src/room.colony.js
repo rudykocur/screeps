@@ -14,13 +14,11 @@ module.exports = (function() {
 
                 this.type = 'colony';
 
-                _.defaults(this.state, {jobs: {}, storageId: null, terminalId: null});
+                _.defaults(this.state, {});
             }
 
             process() {
                 super.process();
-
-                this.prepareJobBoard();
 
                 this.maintainPopulation('mover', config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
                 this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
@@ -28,42 +26,12 @@ module.exports = (function() {
             }
 
             prepareJobBoard() {
-                var storage = this.room.getStorage();
-                var terminal = this.room.getTerminal();
+                super.prepareJobBoard();
 
-                var sources = this.room.find(FIND_SOURCES);
-                var minerals = this.room.find(FIND_MINERALS, {
-                    filter: /** @param {Mineral} m */ m => _.first(this.room.lookForAt(LOOK_STRUCTURES, m.pos))
-                });
                 var jobs = this.state.jobs;
 
-                sources.forEach(s => {
-                    var key = 'mining-' + s.id;
-
-                    if(!(key in jobs)) {
-                        jobs[key] = {
-                            type: 'harvest',
-                            subtype: 'energy',
-                            sourceId: s.id,
-                            sourcePos: s.pos,
-                            takenBy: false,
-                        };
-                    }
-                });
-
-                minerals.forEach(m => {
-                    var key = 'mining-' + m.id;
-
-                    if(!(key in jobs)) {
-                        jobs[key] = {
-                            type: 'harvest',
-                            subtype: 'mineral',
-                            sourceId: m.id,
-                            sourcePos: m.pos,
-                            takenBy: false,
-                        };
-                    }
-                });
+                var storage = this.room.getStorage();
+                var terminal = this.room.getTerminal();
 
                 if(storage && terminal) {
 
@@ -81,7 +49,7 @@ module.exports = (function() {
                                     resource: resource,
                                     targetId: terminal.id,
                                     targetPos: terminal.pos,
-                                    takenBy: false,
+                                    takenBy: null,
                                     amount: 0,
                                 }
                             }

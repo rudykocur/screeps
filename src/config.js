@@ -46,11 +46,11 @@ module.exports = (function() {
             kaerMorhen: {
                 type: "colony",
                 panicMode: true,
-                wallsHp: 80000,
+                wallsHp: 100000,
                 creeps: {
-                    upgrader: 1,
+                    upgrader: 3,
                     builder: 1,
-                    mover: 1,
+                    mover: 2,
                 }
             },
             homeTop: {
@@ -116,7 +116,9 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "moria",
                 offroad: true,
-                creeps: {},
+                creeps: {
+                    collector: 2,
+                },
             },
             loneOutpost:{
                 type:"outpost",
@@ -129,7 +131,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
                 creeps: {
-                    collector: 2,
+                    collector: 4,
                     settler: 1,
                     claimer: 1,
                 }
