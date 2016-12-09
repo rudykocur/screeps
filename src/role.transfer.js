@@ -6,6 +6,10 @@ module.exports = (function() {
 
     return {
         run:  function(creep) {
+            if(actionUtils.tryDespawn(creep)) {
+                return
+            }
+
             var resource = creep.memory.transferResource || RESOURCE_ENERGY;
 
             var sourceContainer = _.first(creep.room.getContainers({resource: resource, amount: creep.carryCapacity}));

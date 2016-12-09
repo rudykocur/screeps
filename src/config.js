@@ -11,6 +11,7 @@ module.exports = (function() {
             E68N42: "moriaRight",
             E69N42: "moriaRightRight",
             E67N41: "moriaBottom",
+            E68N41: "mork",
             E68N43: "kaerMorhen",
             E69N43: "kmRight",
         },
@@ -18,7 +19,7 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 4,
                     builder: 1,
                     mover: 2,
                 },
@@ -48,8 +49,8 @@ module.exports = (function() {
                 wallsHp: 80000,
                 creeps: {
                     upgrader: 1,
-                    builder: 2,
-                    mover: 0,
+                    builder: 1,
+                    mover: 1,
                 }
             },
             homeTop: {
@@ -111,6 +112,12 @@ module.exports = (function() {
                     claimer: 1,
                 },
             },
+            mork: {
+                type: "outpost",
+                homeRoom: "moria",
+                offroad: true,
+                creeps: {},
+            },
             loneOutpost:{
                 type:"outpost",
                 homeRoom:"home",
@@ -118,14 +125,14 @@ module.exports = (function() {
                     // collector: 2,
                 }
             },
-            // kmRight: {
-            //     type: "outpost",
-            //     homeRoom: "kaerMorhen",
-            //     creeps: {
-            //         collector: 0,
-            //         settler: 2,
-            //     }
-            // }
+            kmRight: {
+                type: "outpost",
+                homeRoom: "kaerMorhen",
+                creeps: {
+                    collector: 3,
+                    settler: 1,
+                }
+            }
         },
 
         spawn: {
@@ -150,25 +157,25 @@ module.exports = (function() {
                         energySource: 'sourceLeft'
                     }
                 },
-                harvesterMineral: {
-                    minimum: 1,
-                    body: 'mineralHarvester',
-                    priority: 'normal',
-                    memo: {
-                        role: 'harvester',
-                        energySourceId: '5843ec060750719d418e9488'
-                    }
-                },
-                mineralTransfer: {
-                    minimum: 1,
-                    body: 'mineralTransfer',
-                    priority: 'normal',
-                    memo: {
-                        role: 'transfer',
-                        transferResource: RESOURCE_OXYGEN,
-                        energySourceId: '5843ec060750719d418e9488'
-                    }
-                },
+                // harvesterMineral: {
+                //     minimum: 1,
+                //     body: 'mineralHarvester',
+                //     priority: 'normal',
+                //     memo: {
+                //         role: 'harvester',
+                //         energySourceId: '5843ec060750719d418e9488'
+                //     }
+                // },
+                // mineralTransfer: {
+                //     minimum: 1,
+                //     body: 'mineralTransfer',
+                //     priority: 'normal',
+                //     memo: {
+                //         role: 'transfer',
+                //         transferResource: RESOURCE_OXYGEN,
+                //         energySourceId: '5843ec060750719d418e9488'
+                //     }
+                // },
 
                 fighter: {
                     minimum: 0,
@@ -235,7 +242,7 @@ module.exports = (function() {
                 kmHarvesterTop: {
                     minimum: 1,
                     body: 'harvester',
-                    priority: 'high',
+                    priority: 'critical',
                     memo: {
                         role: 'harvester',
                         energySourceId: '57ef9ee886f108ae6e6101b8',
@@ -244,7 +251,7 @@ module.exports = (function() {
                 kmHarvesterBottom: {
                     minimum: 1,
                     body: 'harvester',
-                    priority: 'high',
+                    priority: 'critical',
                     memo: {
                         role: 'harvester',
                         energySourceId: '57ef9ee886f108ae6e6101b9',

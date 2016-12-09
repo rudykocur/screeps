@@ -15,9 +15,9 @@ module.exports = (function() {
 
             var carry = _.sum(creep.carry);
 
-            if(creep.carryCapacity <= minEnergy) {return false;}
+            if(creep.carryCapacity == 0) {return false;}
 
-            if(!creep.memory.harvesting && carry <= minEnergy) {
+            if(!creep.memory.harvesting && carry == 0) {
                 creep.memory.harvesting = true;
             }
             if(creep.memory.harvesting && carry == creep.carryCapacity) {
@@ -25,6 +25,23 @@ module.exports = (function() {
             }
 
             return creep.memory.harvesting;
+        },
+
+        tryDespawn: function(creep) {
+            if(creep.memory.despawn) {
+                var spawn = creep.pos.findClosestByPath(FIND_MY_SPAWNS);
+
+                if(spawn) {
+                    if(!creep.pos.isNearTo(spawn)) {
+                        creep.moveTo(spawn);
+                    }
+
+                    spawn.recycleCreep(creep);
+                    return true;
+                }
+            }
+
+            return false;
         },
 
         /**

@@ -7,6 +7,10 @@ module.exports = (function() {
     return {
         run:  function(creep) {
 
+            if(actionUtils.tryDespawn(creep)) {
+                return
+            }
+
             if(actionUtils.shouldHarvestEnergy(creep)) {
                 if(actionHarvest.tryHarvestDroppedSource(creep)) {
                     return;
