@@ -28,7 +28,7 @@ module.exports = (function() {
             queues = {};
         },
 
-        enqueueCreep: function(priority, room, name, body, memo) {
+        enqueueCreep: function(priority, room, name, body, memo, callback) {
             var queue = queues[priority] = queues[priority] || [];
 
             var request = {
@@ -36,6 +36,7 @@ module.exports = (function() {
                 name: name + getCreepId(),
                 body: body,
                 memo: memo,
+                callback: callback
             };
 
             queue.push(request);
@@ -93,6 +94,10 @@ module.exports = (function() {
                     request.memo.room = request.memo.room || handler.room.name;
 
                     var newCreepName = freeSpawn.createCreep(body, request.name, request.memo);
+
+                    if(request.callback) {
+                        request.callback(newCreepName);
+                    }
 
                     console.log('Spawn '+freeSpawn.name+': created creep. Name: ' + newCreepName+'. Queues:', module.exports.getSpawnStats());
 

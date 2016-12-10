@@ -147,6 +147,10 @@ module.exports = (function() {
                 if (order.action == 'attack') {
                     var point = Game.flags[order.target];
                     if(!point.room) {
+                        creeps.forEach(c => {
+                            c.moveTo(point);
+                        });
+
                         return false;
                     }
 

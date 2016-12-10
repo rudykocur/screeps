@@ -1,4 +1,5 @@
 const creepSpawn = require('creepSpawn');
+const spawnQueue = require('spawnQueue');
 const creepGang = require('gang');
 
 module.exports = (function() {
@@ -22,10 +23,10 @@ module.exports = (function() {
 
         /**
          *
-         * @param {StructureSpawn} spawn
+         * @param {Room} room
          * @param data
          */
-        spawnGangs(spawn, data) {
+        spawnGangs(room, data) {
             _.each(data, (groups, gangName) => {
 
                 groups.forEach(group => {
@@ -35,7 +36,7 @@ module.exports = (function() {
                             memo: {role: 'none'},
                             gang: gangName,
                             name: 'ca_'+this.name+'_'+gangName+'_',
-                            spawnName: spawn.name,
+                            roomId: room.name,
                         })
                     }
                 })
@@ -47,9 +48,7 @@ module.exports = (function() {
         }
 
         process() {
-            if(this.processSpawnQueue()) {
-                return true;
-            }
+            this.processSpawnQueue();
 
             _.keys(this.state.workingGangs).forEach(gangName => {
 
@@ -95,18 +94,15 @@ module.exports = (function() {
 
             if(queue.length > 0) {
                 var toSpawn = queue[0];
-                var spawn = Game.spawns[toSpawn.spawnName];
+                var room = Game.rooms[toSpawn.roomId];
 
-                var newCreep = creepSpawn.createCreep(spawn, toSpawn.name, toSpawn.body, toSpawn.memo);
+                spawnQueue.enqueueCreep(spawnQueue.PRIORITY_CRITICAL, room, toSpawn.name, toSpawn.body,
+                    toSpawn.memo, (creepName) => {
+                        queue.splice(0, 1);
+                        this.state.spawningCreeps.push({name: creepName, gang: toSpawn.gang});
+                        var g = creepGang.getGang(toSpawn.gang); // just to create gang in memory
+                    });
 
-                if(newCreep) {
-                    queue.splice(0, 1);
-                    this.state.spawningCreeps.push({name: newCreep, gang: toSpawn.gang});
-                    var g = creepGang.getGang(toSpawn.gang); // just to create gang in memory
-                    // g.addCreep(newCreep);
-                }
-
-                // return true;
             }
         }
     }

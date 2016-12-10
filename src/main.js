@@ -39,7 +39,7 @@ var roleModules = {
     none: {run: function() {}},
 };
 
-// profiler.enable();
+profiler.enable();
 
 module.exports = (function() {
 
@@ -49,10 +49,10 @@ module.exports = (function() {
 
     return {
         loop: function() {
-            // profiler.wrap(function() {
-            //     module.exports.runLoop();
-            // });
+            profiler.wrap(function() {
                 module.exports.runLoop();
+            });
+            // module.exports.runLoop();
         },
 
         runLoop: function () {
@@ -149,40 +149,20 @@ function printDiagnostics() {
 
 function killBrot() {
     var gangs = {
-        tanks: [
-            {
-                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL],
-                count: 3
-            },
-        ],
-    };
-
-    var moriaGangs = {
         fighters: [
             {
-                count: 3,
-                body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK]
-            }
+                count: 2,
+                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK]            }
         ]
-    }
+    };
 
     var orders = [
         {
-            tanks: {
-                action: 'move',
-                target: 't1',
-            },
             fighters: {
                 action: 'move',
-                target: 'a1'
-            }
-        },
-
-        {
-            tanks: {
-                action: 'move',
-                target: 't2'
+                target: 'w1'
             }
         },
 
@@ -190,20 +170,29 @@ function killBrot() {
             fighters: {
                 action: 'attack',
                 range: 0,
-                target: 'a2',
+                target: 'w2',
             },
         },
         {
             fighters: {
                 action: 'attack',
-                range: 5,
-                target: 'a3',
+                range: 0,
+                target: 'w3',
+            },
+        },
+        {
+            fighters: {
+                action: 'attack',
+                range: 0,
+                target: 'w4',
             },
         },
     ];
 
     var action = Game.combatActions.get('killBrot');
-    action.spawnGangs(Game.spawns.Moria, moriaGangs);
-    action.spawnGangs(Game.spawns.Rabbithole, gangs);
+    // action.spawnGangs(Game.spawns.Moria, moriaGangs);
+    action.spawnGangs(Room.byCustomName('home'), gangs);
     action.addOrders(orders);
+
+    logger.log(logger.fmt.orange("Combat action killBrot started"));
 }

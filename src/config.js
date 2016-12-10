@@ -26,7 +26,7 @@ module.exports = (function() {
                 },
                 minerals: {
                     reserve: {
-                        [RESOURCE_ENERGY]: 1000000,
+                        // [RESOURCE_ENERGY]: 1000000,
                         [RESOURCE_OXYGEN]: 10000,
                     }
                 }
@@ -41,10 +41,15 @@ module.exports = (function() {
                 },
                 minerals: {
                     reserve: {
-                        [RESOURCE_ENERGY]: 1000000,
+                        // [RESOURCE_ENERGY]: 1000000,
                         [RESOURCE_ZYNTHIUM]: 10000,
                     }
-                }
+                },
+                // terminal: {
+                //     require: {
+                //         [RESOURCE_ENERGY]: 6000,
+                //     }
+                // }
             },
             kaerMorhen: {
                 type: "colony",
@@ -61,7 +66,7 @@ module.exports = (function() {
                 creeps: {
                     claimer: 1,
                     settler: 1,
-                    collector: 4,
+                    collector: 3,
                 },
             },
             homeTop: {
@@ -112,7 +117,7 @@ module.exports = (function() {
                 homeRoom:"moria",
                 offroad: true,
                 creeps: {
-                    collector: 2,
+                    collector: 1,
                 }
             },
             moriaBottom: {
@@ -143,7 +148,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
                 creeps: {
-                    collector: 3,
+                    collector: 4,
                     settler: 1,
                     claimer: 1,
                 }
@@ -243,7 +248,7 @@ module.exports = (function() {
                 //     }
                 // },
                 moriaMineralTransfer: {
-                    minimum: 1,
+                    minimum: 0,
                     body: 'mineralTransfer',
                     priority: 'normal',
                     memo: {

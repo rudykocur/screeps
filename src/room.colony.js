@@ -28,67 +28,107 @@ module.exports = (function() {
             prepareJobBoard() {
                 super.prepareJobBoard();
 
-                var jobs = this.state.jobs;
-
                 var storage = this.room.getStorage();
                 var terminal = this.room.getTerminal();
 
                 if(storage && terminal) {
-
-                    var reserves = _.get(this.config, 'minerals.reserve', {});
-
-                    _.each(storage.store, (amount, resource) => {
-                        var key = `market-${this.room.customName}-${resource}`;
-
-                        if(reserves[resource] > 0 && amount > reserves[resource] + 1000) {
-                            if(!(key in jobs)) {
-                                jobs[key] = {
-                                    key: key,
-                                    room: this.room.customName,
-                                    type: 'transfer',
-                                    sourceId: storage.id,
-                                    sourcePos: storage.pos,
-                                    resource: resource,
-                                    targetId: terminal.id,
-                                    targetPos: terminal.pos,
-                                    takenBy: null,
-                                    amount: 0,
-                                }
-                            }
-
-                            jobs[key].amount = amount - reserves[resource];
-                        }
-                        else {
-                            delete jobs[key];
-                        }
-                    });
-
-                    _.each(terminal.store, (amount, resource) => {
-                        var key = `terminal-withdraw-${this.room.customName}-${resource}`;
-
-                        if(storage.store[resource] < reserves[resource]) {
-                            if(!(key in jobs)) {
-                                jobs[key] = {
-                                    key: key,
-                                    room: this.room.customName,
-                                    type: 'transfer',
-                                    sourceId: terminal.id,
-                                    sourcePos: terminal.pos,
-                                    resource: resource,
-                                    targetId: storage.id,
-                                    targetPos: storage.pos,
-                                    takenBy: null,
-                                    amount: 0,
-                                }
-                            }
-
-                            jobs[key].amount = amount;
-                        }
-                        else {
-                            delete jobs[key];
-                        }
-                    })
+                    this.processStorageSurplusJobs(storage, terminal);
+                    this.createTerminalToStorageJobs(storage, terminal);
+                    this.createTerminalRequirementsJobs(storage, terminal);
                 }
+            }
+
+            processStorageSurplusJobs(storage, terminal) {
+                var reserves = _.get(this.config, 'minerals.reserve', {});
+                var jobs = this.state.jobs;
+
+                _.each(storage.store, (amount, resource) => {
+                    var key = `market-${this.room.customName}-${resource}`;
+
+                    if (reserves[resource] > 0 && amount > reserves[resource] + 1000) {
+                        if (!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'transfer',
+                                sourceId: storage.id,
+                                sourcePos: storage.pos,
+                                resource: resource,
+                                targetId: terminal.id,
+                                targetPos: terminal.pos,
+                                takenBy: null,
+                                amount: 0,
+                            }
+                        }
+
+                        jobs[key].amount = amount - reserves[resource];
+                    }
+                    else {
+                        delete jobs[key];
+                    }
+                });
+            }
+
+            createTerminalToStorageJobs(storage, terminal) {
+                var reserves = _.get(this.config, 'minerals.reserve', {});
+                var jobs = this.state.jobs;
+
+                _.each(terminal.store, (amount, resource) => {
+                    var key = `terminal-withdraw-${this.room.customName}-${resource}`;
+
+                    if(amount > 0 && (!reserves[resource] || storage.store[resource] < reserves[resource])) {
+                        if(!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'transfer',
+                                sourceId: terminal.id,
+                                sourcePos: terminal.pos,
+                                resource: resource,
+                                targetId: storage.id,
+                                targetPos: storage.pos,
+                                takenBy: null,
+                                amount: 0,
+                            }
+                        }
+
+                        jobs[key].amount = amount;
+                    }
+                    else {
+                        delete jobs[key];
+                    }
+                });
+            }
+
+            createTerminalRequirementsJobs(storage, terminal) {
+                var requires = _.get(this.config, 'terminal.require', {});
+                var jobs = this.state.jobs;
+
+                _.each(requires, (amount, resource) => {
+                    var key = `terminal-require-${this.room.customName}-${resource}`;
+
+                    if(storage.store[resource] > 10000) {
+                        if(!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'transfer',
+                                sourceId: storage.id,
+                                sourcePos: storage.pos,
+                                resource: resource,
+                                targetId: terminal.id,
+                                targetPos: terminal.pos,
+                                takenBy: null,
+                                amount: 0,
+                            }
+                        }
+
+                        jobs[key].amount = amount;
+                    }
+                    else {
+                        delete jobs[key];
+                    }
+                })
             }
 
             maintainPopulation(type, blueprint, priority) {

@@ -54,7 +54,7 @@ Creep.prototype.bodypartHpLeft = function(partType) {
 
 Creep.prototype.getIdlePosition = function() {
     var flags = _.filter(Game.flags, f => f.color != COLOR_GREY);
-    var flag = _.first(_.groupBy(flags, 'room.name')[this.workRoom]);
+    var flag = _.first(_.groupBy(flags, 'pos.roomName')[this.memory.room]);
 
     if(flag) {
         return flag.pos;
