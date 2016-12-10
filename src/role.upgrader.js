@@ -17,10 +17,7 @@ module.exports = (function() {
             if(creep.carry.energy == 0) {
                 var target;
 
-                /** @type StructureStorage */
-                target = actionHarvest.findStorageToHarvest(creep, {
-                    types: [STRUCTURE_STORAGE]
-                });
+                target = creep.room.getStorage();
 
                 // if we have storage built but not enough energy, then dont try to borrow from containers.
                 if(target && _.sum(target.store) < 10000) {
@@ -28,10 +25,8 @@ module.exports = (function() {
                 }
 
                 if(!target) {
-                    target = actionHarvest.findStorageToHarvest(creep, {
-                        reserve: 300,
-                        types: [STRUCTURE_CONTAINER]
-                    });
+                    let targets = _(creep.room.getContainers({resource: RESOURCE_ENERGY, amount: creep.carryCapacity}));
+                    target = target.sortBy(t => creep.pos.getRangeTo(t)).first();
                 }
 
                 if(target) {

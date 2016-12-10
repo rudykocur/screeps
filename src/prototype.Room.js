@@ -76,7 +76,38 @@ Room.prototype.getStorage = function() {
 };
 
 Room.prototype.getSpawns = function() {
+    this.refreshStructures();
     return this.handlerMemory.structures.spawns.map(sId => Game.getObjectById(sId));
+};
+
+Room.prototype.getExtensions = function() {
+    this.refreshStructures();
+    return this.handlerMemory.structures.extensions.map(id => Game.getObjectById(id));
+};
+
+Room.prototype.getTowers = function() {
+    this.refreshStructures();
+    return this.handlerMemory.structures.towers.map(sId => Game.getObjectById(sId));
+};
+
+Room.prototype.getDroppedResources = function(options) {
+    var state = this.handlerMemory;
+
+    if(!state.refreshTime_droppedResources || (Game.time - state.refreshTime_droppedResources) >5) {
+        state.refreshTime_droppedResources = Game.time;
+
+        state.droppedResources = this.find(FIND_DROPPED_RESOURCES);
+    }
+
+    _.defaults(options, {
+        resource: null
+    });
+
+    if(options.resource) {
+        return state.droppedResources.filter(r => r.resourceType == options.resource);
+    }
+
+    return state.droppedResources;
 };
 
 Room.prototype.getContainers = function(options) {
