@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 const actionBuild = require('action.build');
@@ -54,3 +56,5 @@ module.exports = (function() {
         },
     }
 })();
+
+profiler.registerObject(module.exports, 'role-builder');

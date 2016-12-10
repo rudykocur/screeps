@@ -40,7 +40,8 @@ module.exports = (function() {
             else if(creep.memory.moveFlag) {
                 target = Game.flags[creep.memory.moveFlag];
             }
-            else {
+
+            if(!target) {
                 target = actionCombat.findAttackTarget(creep);
             }
 

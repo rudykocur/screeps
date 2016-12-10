@@ -3,6 +3,8 @@ module.exports = (function() {
         roomNames: {
             E67N42: "moria",
             E66N41: "home",
+            E68N43: "kaerMorhen",
+            E64N41: "brot",
             E66N42: "homeTop",
             E66N43: "homeTopTop",
             E65N41: "homeLeft",
@@ -12,19 +14,19 @@ module.exports = (function() {
             E69N42: "moriaRightRight",
             E67N41: "moriaBottom",
             E68N41: "mork",
-            E68N43: "kaerMorhen",
             E69N43: "kmRight",
         },
         rooms: {
             home: {
                 type: "colony",
                 creeps: {
-                    upgrader: 4,
-                    builder: 1,
+                    upgrader: 5,
+                    builder: 2,
                     mover: 2,
                 },
                 minerals: {
                     reserve: {
+                        [RESOURCE_ENERGY]: 1000000,
                         [RESOURCE_OXYGEN]: 10000,
                     }
                 }
@@ -39,19 +41,28 @@ module.exports = (function() {
                 },
                 minerals: {
                     reserve: {
+                        [RESOURCE_ENERGY]: 1000000,
                         [RESOURCE_ZYNTHIUM]: 10000,
                     }
                 }
             },
             kaerMorhen: {
                 type: "colony",
-                panicMode: true,
-                wallsHp: 100000,
+                wallsHp: 120000,
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 9,
                     builder: 1,
                     mover: 2,
                 }
+            },
+            brot: {
+                type:"outpost",
+                homeRoom:"home",
+                creeps: {
+                    claimer: 1,
+                    settler: 1,
+                    collector: 4,
+                },
             },
             homeTop: {
                 type:"outpost",
@@ -101,6 +112,7 @@ module.exports = (function() {
                 homeRoom:"moria",
                 offroad: true,
                 creeps: {
+                    collector: 2,
                 }
             },
             moriaBottom: {
@@ -131,7 +143,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
                 creeps: {
-                    collector: 4,
+                    collector: 3,
                     settler: 1,
                     claimer: 1,
                 }
@@ -169,21 +181,21 @@ module.exports = (function() {
                 //         energySourceId: '5843ec060750719d418e9488'
                 //     }
                 // },
-                // mineralTransfer: {
-                //     minimum: 1,
-                //     body: 'mineralTransfer',
-                //     priority: 'normal',
-                //     memo: {
-                //         role: 'transfer',
-                //         transferResource: RESOURCE_OXYGEN,
-                //         energySourceId: '5843ec060750719d418e9488'
-                //     }
-                // },
+                mineralTransfer: {
+                    minimum: 1,
+                    body: 'mineralTransfer',
+                    priority: 'low',
+                    memo: {
+                        role: 'transfer',
+                        transferResource: RESOURCE_OXYGEN,
+                        energySourceId: '5843ec060750719d418e9488'
+                    }
+                },
 
                 fighter: {
                     minimum: 0,
                     priority: 'critical',
-                    body: [TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
@@ -194,7 +206,7 @@ module.exports = (function() {
                         // room: 'E68N42',
                         // room: 'E67N42',
 
-                        room: 'E66N42'
+                        room: 'E64N41'
                     }
                 },
             },
@@ -221,22 +233,22 @@ module.exports = (function() {
                         energySource: 'moriaBottom'
                     }
                 },
-                moriaHarvesterMineral: {
-                    minimum: 1,
-                    body: 'mineralHarvester',
-                    priority: 'normal',
-                    memo: {
-                        role: 'harvester',
-                        energySourceId: '57efa11d08bd77920836f23f'
-                    }
-                },
+                // moriaHarvesterMineral: {
+                //     minimum: 1,
+                //     body: 'mineralHarvester',
+                //     priority: 'normal',
+                //     memo: {
+                //         role: 'harvester',
+                //         energySourceId: '57efa11d08bd77920836f23f'
+                //     }
+                // },
                 moriaMineralTransfer: {
                     minimum: 1,
                     body: 'mineralTransfer',
                     priority: 'normal',
                     memo: {
                         role: 'transfer',
-                        transferResource: RESOURCE_ZYNTHIUM,
+                        // transferResource: RESOURCE_ZYNTHIUM,
                     }
                 },
             },

@@ -96,29 +96,3 @@ Room.prototype.getContainers = function(options) {
 
     return containers;
 };
-
-Room.prototype.searchJobs = function(options) {
-    _.defaults(options, {
-        type: null,
-        subtype: null,
-        onlyFree: true,
-    });
-
-    var jobs = Memory.rooms[this.customName].jobs;
-
-    return _.filter(jobs, job => {
-        if(options.type != job.type) {
-            return false;
-        }
-
-        if(options.subtype && options.subtype != job.subtype) {
-            return false;
-        }
-
-        if(options.onlyFree && job.takenBy) {
-            return false;
-        }
-
-        return true;
-    })
-};

@@ -2,6 +2,8 @@ const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 const bookmarks = require('bookmarks');
 const utils = require('utils');
+const config = require('config');
+const roomHandler = require('room.handlers');
 
 Creep.prototype.debugLog = function(message) {
     if(this.memory.debug) {
@@ -16,6 +18,11 @@ Creep.prototype.addTask = function(task) {
 Object.defineProperty(Creep.prototype, 'workRoom', {get: function() {
     return Game.rooms[this.memory.room];
 }});
+
+Object.defineProperty(Creep.prototype, 'workRoomHandler', {get: function() {
+    return roomHandler.getRoomHandler(config.roomNames[this.memory.room]);
+}});
+
 
 Object.defineProperty(Creep.prototype, 'idwithOwner', {get: function() {
     return `${this.id}(${this.owner.username})`;
@@ -47,7 +54,7 @@ Creep.prototype.bodypartHpLeft = function(partType) {
 
 Creep.prototype.getIdlePosition = function() {
     var flags = _.filter(Game.flags, f => f.color != COLOR_GREY);
-    var flag = _.first(_.groupBy(flags, 'room.name')[this.pos.roomName]);
+    var flag = _.first(_.groupBy(flags, 'room.name')[this.workRoom]);
 
     if(flag) {
         return flag.pos;

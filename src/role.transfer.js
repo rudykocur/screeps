@@ -12,58 +12,61 @@ module.exports = (function() {
 
             var resource = creep.memory.transferResource || RESOURCE_ENERGY;
 
-            var sourceContainer = _.first(creep.room.getContainers({resource: resource, amount: creep.carryCapacity}));
             var storage = creep.room.getStorage();
 
-            if(sourceContainer) {
-                if (actionUtils.shouldHarvestEnergy(creep, null, resource)) {
+            var job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer'}));
 
-                    if(!creep.pos.isNearTo(sourceContainer)) {
-                        creep.moveTo(sourceContainer);
+
+            if(job) {
+
+                if(!actionUtils.shouldHarvestEnergy(creep, null, job.resource) && !creep.carry[job.resource]) {
+                    if(!creep.pos.isNearTo(storage)) {
+                        creep.moveTo(storage);
                     }
 
-                    creep.withdraw(sourceContainer, resource);
+                    _.each(creep.carry, (amount, resource) => {
+                        if(amount > 0) {
+                            creep.transfer(storage, resource);
+                        }
+                    });
+
+                    return;
+                }
+
+                if (actionUtils.shouldHarvestEnergy(creep, null, job.resource)) {
+                    var source = RoomPosition.fromDict(job.sourcePos);
+
+                    if(!creep.pos.isNearTo(source)) {
+                        creep.moveTo(source);
+                    }
+
+                    creep.withdraw(Game.getObjectById(job.sourceId), job.resource);
                 }
                 else {
-                    if(!creep.pos.isNearTo(storage)) {
-                        creep.moveTo(storage);
+                    var target = RoomPosition.fromDict(job.targetPos);
+
+                    if(!creep.pos.isNearTo(target)) {
+                        creep.moveTo(target);
                     }
 
-                    creep.transfer(storage, resource);
+                    creep.transfer(Game.getObjectById(job.targetId), job.resource);
                 }
+
+                return;
             }
-            else {
-                var job = _.first(creep.room.searchJobs({type: 'transfer'}));
 
-                if(job) {
-                    if (actionUtils.shouldHarvestEnergy(creep, null, resource)) {
-                        var source = RoomPosition.fromDict(job.sourcePos);
+            if(_.sum(creep.carry) > 0){
 
-                        if(!creep.pos.isNearTo(source)) {
-                            creep.moveTo(source);
-                        }
-
-                        creep.withdraw(Game.getObjectById(job.sourceId), job.resource);
-
-                    }
-                    else {
-                        var target = RoomPosition.fromDict(job.targetPos);
-
-                        if(!creep.pos.isNearTo(target)) {
-                            creep.moveTo(target);
-                        }
-
-                        creep.transfer(Game.getObjectById(job.targetId), job.resource);
-                    }
+                if(!creep.pos.isNearTo(storage)) {
+                    creep.moveTo(storage);
                 }
-                else if(creep.carry[resource] > 0){
 
-                    if(!creep.pos.isNearTo(storage)) {
-                        creep.moveTo(storage);
+
+                _.each(creep.carry, (amount, resource) => {
+                    if(amount > 0) {
+                        creep.transfer(storage, resource);
                     }
-
-                    creep.transfer(storage, resource);
-                }
+                });
             }
         }
     }

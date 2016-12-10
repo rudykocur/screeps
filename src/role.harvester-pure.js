@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 const bookmarks = require('bookmarks');
@@ -16,15 +18,15 @@ module.exports = (function() {
                 return;
             }
 
-            var room = creep.workRoom;
+            var hanlder = creep.workRoomHandler;
 
             var job = creep.memory.job;
 
             if(!job) {
-                job = _.first(room.searchJobs({type: 'harvest', subtype: 'energy'}));
+                job = _.first(hanlder.searchJobs({type: 'harvest', subtype: 'energy'}));
 
                 if (!job) {
-                    job = _.first(room.searchJobs({type: 'harvest', subtype: 'mineral'}));
+                    job = _.first(hanlder.searchJobs({type: 'harvest', subtype: 'mineral'}));
                 }
 
                 if (!job) {
@@ -71,3 +73,4 @@ module.exports = (function() {
     }
 })();
 
+profiler.registerObject(module.exports, 'role-harvester');

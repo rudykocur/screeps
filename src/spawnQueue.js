@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 const logger = require('logger');
 const utils = require('utils');
 const bodyConfig = require('config.body');
@@ -106,3 +108,5 @@ module.exports = (function() {
         }
     }
 })();
+
+profiler.registerObject(module.exports, 'spawnQueue');

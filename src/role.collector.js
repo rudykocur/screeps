@@ -30,6 +30,12 @@ module.exports = (function() {
                 creepExt.addTask(creep, taskMove.task.create(creep, source));
             }
         }
+        else {
+            var idlePos = creep.getIdlePosition();
+            if(idlePos) {
+                creepExt.addTask(creep, taskMove.task.create(creep, idlePos));
+            }
+        }
     }
 
     return {
@@ -59,15 +65,14 @@ module.exports = (function() {
             }
         },
 
+        /**
+         * @param {Room} room
+         */
         findTargetContainer: function(room) {
-            var target = _.first(room.find(FIND_MY_STRUCTURES, {
-                filter: {structureType: STRUCTURE_STORAGE}
-            }));
+            var target = room.getStorage();
 
             if(!target) {
-                target = _.first(room.find(FIND_MY_STRUCTURES, {
-                    filter: {structureType: STRUCTURE_CONTAINER}
-                }));
+                target = _.first(room.getContainers());
             }
 
             return target;

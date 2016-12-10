@@ -40,7 +40,7 @@ module.exports = (function() {
                     _.each(storage.store, (amount, resource) => {
                         var key = `market-${this.room.customName}-${resource}`;
 
-                        if(reserves[resource] > 0 && amount > reserves[resource]) {
+                        if(reserves[resource] > 0 && amount > reserves[resource] + 1000) {
                             if(!(key in jobs)) {
                                 jobs[key] = {
                                     key: key,
@@ -62,6 +62,32 @@ module.exports = (function() {
                             delete jobs[key];
                         }
                     });
+
+                    _.each(terminal.store, (amount, resource) => {
+                        var key = `terminal-withdraw-${this.room.customName}-${resource}`;
+
+                        if(storage.store[resource] < reserves[resource]) {
+                            if(!(key in jobs)) {
+                                jobs[key] = {
+                                    key: key,
+                                    room: this.room.customName,
+                                    type: 'transfer',
+                                    sourceId: terminal.id,
+                                    sourcePos: terminal.pos,
+                                    resource: resource,
+                                    targetId: storage.id,
+                                    targetPos: storage.pos,
+                                    takenBy: null,
+                                    amount: 0,
+                                }
+                            }
+
+                            jobs[key].amount = amount;
+                        }
+                        else {
+                            delete jobs[key];
+                        }
+                    })
                 }
             }
 

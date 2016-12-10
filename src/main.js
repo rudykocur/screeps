@@ -52,7 +52,7 @@ module.exports = (function() {
             // profiler.wrap(function() {
             //     module.exports.runLoop();
             // });
-            module.exports.runLoop();
+                module.exports.runLoop();
         },
 
         runLoop: function () {

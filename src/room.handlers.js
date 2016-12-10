@@ -42,6 +42,8 @@ module.exports = (function() {
             }
 
             process() {
+                this.cleanDeadJobs();
+
                 if(!this.room) {
                     return;
                 }
@@ -54,7 +56,7 @@ module.exports = (function() {
                 this.prepareJobBoard();
             }
 
-            prepareJobBoard() {
+            cleanDeadJobs() {
                 var jobs = this.state.jobs;
 
                 _.each(jobs, job => {
@@ -62,6 +64,10 @@ module.exports = (function() {
                         job.takenBy = null;
                     }
                 });
+            }
+
+            prepareJobBoard() {
+                var jobs = this.state.jobs;
 
                 var sources = this.room.find(FIND_SOURCES);
                 var minerals = this.room.find(FIND_MINERALS, {
@@ -99,6 +105,32 @@ module.exports = (function() {
                         };
                     }
                 });
+            }
+
+            searchJobs(options) {
+                _.defaults(options, {
+                    type: null,
+                    subtype: null,
+                    onlyFree: true,
+                });
+
+                var jobs = this.state.jobs;
+
+                return _.filter(jobs, job => {
+                    if(options.type != job.type) {
+                        return false;
+                    }
+
+                    if(options.subtype && options.subtype != job.subtype) {
+                        return false;
+                    }
+
+                    if(options.onlyFree && job.takenBy) {
+                        return false;
+                    }
+
+                    return true;
+                })
             }
 
             checkNukes() {

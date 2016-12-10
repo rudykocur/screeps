@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 const bookmarks = require('bookmarks');
@@ -42,3 +44,5 @@ module.exports = (function() {
         }
     }
 })();
+
+profiler.registerObject(module.exports, 'role-upgrader');
