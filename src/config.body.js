@@ -32,6 +32,7 @@ module.exports = (function() {
         },
         mineralHarvester: {
             6: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
+            7: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
         },
         harvester: {
             1: [MOVE,MOVE,WORK,WORK],

@@ -73,7 +73,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 120000,
                 creeps: {
-                    upgrader: 7,
+                    upgrader: 5,
                     builder: 1,
                     mover: 2,
                 }
@@ -175,43 +175,12 @@ module.exports = (function() {
 
         spawn: {
             Rabbithole: {
-
-                harvesterRight: {
-                    minimum: 1,
-                    body: 'harvester',
-                    priority: 'critical',
-                    memo: {
-                        role: 'harvester',
-                        energySource: 'sourceRight'
-                    }
-                },
-
-                harvesterLeft: {
-                    minimum: 1,
-                    body: 'harvester',
-                    priority: 'critical',
-                    memo: {
-                        role: 'harvester',
-                        energySource: 'sourceLeft'
-                    }
-                },
-                // harvesterMineral: {
-                //     minimum: 1,
-                //     body: 'mineralHarvester',
-                //     priority: 'normal',
-                //     memo: {
-                //         role: 'harvester',
-                //         energySourceId: '5843ec060750719d418e9488'
-                //     }
-                // },
                 mineralTransfer: {
                     minimum: 1,
                     body: 'mineralTransfer',
                     priority: 'low',
                     memo: {
                         role: 'transfer',
-                        transferResource: RESOURCE_OXYGEN,
-                        energySourceId: '5843ec060750719d418e9488'
                     }
                 },
 
@@ -237,65 +206,17 @@ module.exports = (function() {
             Cheshire: {},
 
             Moria: {
-                moriaHarvesterTop: {
-                    minimum: 1,
-                    body: 'harvester',
-                    priority: 'critical',
-                    memo: {
-                        role: 'harvester',
-                        energySource: 'moriaTop'
-                    }
-                },
-
-                moriaHarvesterBottom: {
-                    minimum: 1,
-                    body: 'harvester',
-                    priority: 'critical',
-                    memo: {
-                        role: 'harvester',
-                        energySource: 'moriaBottom'
-                    }
-                },
-                // moriaHarvesterMineral: {
-                //     minimum: 1,
-                //     body: 'mineralHarvester',
-                //     priority: 'normal',
-                //     memo: {
-                //         role: 'harvester',
-                //         energySourceId: '57efa11d08bd77920836f23f'
-                //     }
-                // },
                 moriaMineralTransfer: {
                     minimum: 1,
                     body: 'mineralTransfer',
                     priority: 'normal',
                     memo: {
                         role: 'transfer',
-                        // transferResource: RESOURCE_ZYNTHIUM,
                     }
                 },
             },
 
-            "Kaer Morhen": {
-                kmHarvesterTop: {
-                    minimum: 1,
-                    body: 'harvester',
-                    priority: 'critical',
-                    memo: {
-                        role: 'harvester',
-                        energySourceId: '57ef9ee886f108ae6e6101b8',
-                    }
-                },
-                kmHarvesterBottom: {
-                    minimum: 1,
-                    body: 'harvester',
-                    priority: 'critical',
-                    memo: {
-                        role: 'harvester',
-                        energySourceId: '57ef9ee886f108ae6e6101b9',
-                    }
-                },
-            },
+            "Kaer Morhen": {},
         },
 
         blueprints: {
@@ -340,6 +261,16 @@ module.exports = (function() {
             colonyMover: {
                 body: 'mover',
                 role: 'mover',
+                memo: {}
+            },
+            colonyHarvester: {
+                body: 'harvester',
+                role: 'harvester',
+                memo: {}
+            },
+            colonyHarvesterMineral: {
+                body: 'mineralHarvester',
+                role: 'mineralHarvester',
                 memo: {}
             },
             colonyUpgrader: {

@@ -27,6 +27,7 @@ module.exports = (function() {
 
                 this.runReactions();
 
+                this.maintainHarvesterPopulation();
                 this.maintainPopulation('mover', config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
                 this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
                 this.maintainPopulation('upgrader', config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
@@ -62,6 +63,7 @@ module.exports = (function() {
                 }
 
                 this.createLabTransferJobs();
+                this.createMoveMineralToStorageJob();
             }
 
             processStorageSurplusJobs(storage, terminal) {
@@ -281,14 +283,73 @@ module.exports = (function() {
                 })
             }
 
+            createMoveMineralToStorageJob() {
+                /** @type Mineral */
+                var mineral = _.first(this.room.find(FIND_MINERALS));
+                var jobs = this.state.jobs;
+                var storage = this.room.getStorage();
+
+                var container = _.first(mineral.pos.findInRange(FIND_STRUCTURES, 1, {
+                    filter: {structureType: STRUCTURE_CONTAINER}
+                }));
+
+                var key = `mineralMove-${mineral.mineralType}`;
+                if(container && _.sum(container.store) > 400) {
+                    if(!(key in jobs)) {
+                        jobs[key] = {
+                            key: key,
+                            room: this.room.customName,
+                            type: 'transfer',
+                            sourceId: container.id,
+                            sourcePos: container.pos,
+                            resource: mineral.mineralType,
+                            targetId: storage.id,
+                            targetPos: storage.pos,
+                            takenBy: null,
+                            amount: 0,
+                        }
+                    }
+
+                    jobs[key].amount = _.sum(container.store);
+                }
+                else {
+                    delete jobs[key];
+                }
+            }
+
             maintainPopulation(type, blueprint, priority) {
-                if(!this.config.creeps || !this.config.creeps[type]) {
+                var amount = _.get(this.config, ['creeps', type], 0);
+                this.maintainPopulationAmount(type, amount, blueprint, priority);
+            }
+
+            maintainHarvesterPopulation() {
+                var sources = this.room.getAllSources().filter(source => source instanceof Source);
+                var minerals = this.room.getAllSources().filter(source => {
+                    if(source instanceof Mineral) {
+                        if(source.ticksToRegeneration) {
+                            return false;
+                        }
+
+                        return source.pos.lookFor(LOOK_STRUCTURES).length > 0;
+                    }
+                    return false;
+                });
+
+                this.maintainPopulationAmount('harvester', sources.length, config.blueprints.colonyHarvester,
+                    spawnQueue.PRIORITY_CRITICAL);
+
+                this.maintainPopulationAmount('mineralHarvester', minerals.length, config.blueprints.colonyHarvesterMineral,
+                    spawnQueue.PRIORITY_NORMAL);
+            }
+
+            maintainPopulationAmount(type, amount, blueprint, priority) {
+                if(amount <= 0) {
                     return;
                 }
 
                 var creeps = this.findCreeps(blueprint.role);
 
-                if(creeps.length < this.config.creeps[type]) {
+                if(creeps.length < amount) {
                     var memo = _.defaults({
                         room: this.room.name,
                         role: blueprint.role,

@@ -130,3 +130,15 @@ Room.prototype.getContainers = function(options) {
 
     return containers;
 };
+
+Room.prototype.getAllSources = function() {
+    var state = this.handlerMemory;
+
+    if(!state.refreshTime_sources || (Game.time - state.refreshTime_sources) > 1000) {
+        state.refreshTime_sources = Game.time;
+
+        state.allSouces = this.find(FIND_SOURCES).concat(this.find(FIND_MINERALS)).map(r => r.id);
+    }
+
+    return state.allSouces.map(id => Game.getObjectById(id));
+};
