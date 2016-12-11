@@ -28,6 +28,10 @@ Object.defineProperty(Creep.prototype, 'idwithOwner', {get: function() {
     return `${this.id}(${this.owner.username})`;
 }});
 
+Creep.prototype.getJob = function() {
+    return this.memory.job;
+};
+
 Creep.prototype.takeJob = function(job) {
     this.memory.job = job;
     job.takenBy = this.id;
@@ -40,6 +44,16 @@ Creep.prototype.releaseJob = function() {
         room.handlerMemory.jobs[job.key].takenBy = null;
     }
 
+    delete this.memory.job;
+    this.memory.tasks = [];
+};
+
+Creep.prototype.finishJob = function() {
+    var job = this.memory.job;
+
+    var room = Room.byCustomName(job.room);
+
+    delete room.handlerMemory.jobs[job.key];
     delete this.memory.job;
     this.memory.tasks = [];
 };

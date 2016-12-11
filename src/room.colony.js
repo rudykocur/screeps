@@ -28,6 +28,8 @@ module.exports = (function() {
             prepareJobBoard() {
                 super.prepareJobBoard();
 
+                this.createRefillEnergyJobs();
+
                 var storage = this.room.getStorage();
                 var terminal = this.room.getTerminal();
 
@@ -124,6 +126,52 @@ module.exports = (function() {
                         }
 
                         jobs[key].amount = amount;
+                    }
+                    else {
+                        delete jobs[key];
+                    }
+                })
+            }
+
+            createRefillEnergyJobs() {
+                var jobs = this.state.jobs;
+
+                this.room.getSpawns().concat(this.room.getExtensions()).forEach(/**StructureSpawn*/item => {
+                    var key = `refill-${this.room.customName}-${item.id}`;
+
+                    if(item.energy < item.energyCapacity) {
+                        if(!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'refill',
+                                subtype: 'spawn',
+                                targetId: item.id,
+                                targetPos: item.pos,
+                                takenBy: null,
+                            }
+                        }
+                    }
+                    else {
+                        delete jobs[key];
+                    }
+                });
+
+                this.room.getTowers().forEach(/**StructureTower*/ tower => {
+                    var key = `refill-${this.room.customName}-tower-${tower.id}`;
+
+                    if(tower.energy < tower.energyCapacity) {
+                        if(!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'refill',
+                                subtype: 'tower',
+                                targetId: tower.id,
+                                targetPos: tower.pos,
+                                takenBy: null,
+                            }
+                        }
                     }
                     else {
                         delete jobs[key];

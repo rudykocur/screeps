@@ -96,18 +96,21 @@ Room.prototype.getDroppedResources = function(options) {
     if(!state.refreshTime_droppedResources || (Game.time - state.refreshTime_droppedResources) >5) {
         state.refreshTime_droppedResources = Game.time;
 
-        state.droppedResources = this.find(FIND_DROPPED_RESOURCES);
+        state.droppedResources = this.find(FIND_DROPPED_RESOURCES).map(r=> {
+            return {id: r.id, amount: r.amount, resource: r.resourceType};
+        });
     }
 
     _.defaults(options, {
         resource: null
     });
 
+    let result = state.droppedResources;
     if(options.resource) {
-        return state.droppedResources.filter(r => r.resourceType == options.resource);
+        result = result.filter(r => r.resourceType == options.resource);
     }
 
-    return state.droppedResources;
+    return result.map(r => Game.getObjectById(r.id)).filter(r => r != null);
 };
 
 Room.prototype.getContainers = function(options) {

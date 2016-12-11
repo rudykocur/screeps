@@ -8,7 +8,7 @@ const roomModules = ['outpost', 'colony'];
 module.exports = (function() {
 
     return {
-        RoomHander: class {
+        RoomHander: class RoomHander {
             constructor(roomName, state, config) {
                 this.roomName = roomName;
                 this.room = Room.byCustomName(roomName);

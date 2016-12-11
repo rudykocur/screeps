@@ -1,5 +1,7 @@
 const profiler = require('screeps-profiler');
 
+const logger = require('logger');
+
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');
 
@@ -11,7 +13,7 @@ module.exports = (function() {
         /**
          * @param {Creep} creep
          */
-        scheduleTask: function(creep) {
+        run: function(creep) {
             if(creep.carry.energy == 0) {
                 var source = _.first(_.sortBy(creep.room.getDroppedResources({resource: RESOURCE_ENERGY}), r => r.amount * -1));
 
@@ -26,38 +28,48 @@ module.exports = (function() {
                 }
 
                 if(source) {
-                    if(creep.pos.isNearTo(source)) {
+                    let result;
                         if(source instanceof Resource) {
-                            creep.pickup(source);
+                            result = creep.pickup(source);
                         }
                         else {
-                            creep.withdraw(source, RESOURCE_ENERGY);
+                            result = creep.withdraw(source, RESOURCE_ENERGY);
                         }
-                    }
-                    else {
-                        creep.addTask(taskMove.task.create(creep, source))
-                    }
+
+                        if(result == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source);
+                        }
                 }
             }
             else {
-                let target = _.first(creep.room.getSpawns().filter(/**StructureSpawn*/ s => s.energy < s.energyCapacity));
+                let job = creep.getJob();
 
-                if(!target) {
-                    let targets = _(creep.room.getExtensions()).filter(e => e.energy < e.energyCapacity);
-                    target = targets.sortBy(e => creep.pos.getRangeTo(e)).first();
-                }
+                if(!job) {
+                    var handler = creep.workRoomHandler;
+                    let jobs = handler.searchJobs({type: 'refill', subtype: 'spawn'});
+                    job = _.first(_.sortBy(jobs, j => creep.pos.getRangeTo(RoomPosition.fromDict(j.targetPos))));
 
-                if(!target) {
-                    let targets = _(creep.room.getTowers()).filter(t => t.energy < t.energyCapacity);
-                    target = targets.sortBy(t => creep.pos.getRangeTo(t)).first();
-                }
-
-                if(target) {
-                    if(creep.pos.isNearTo(target)) {
-                        creep.transfer(target, RESOURCE_ENERGY);
+                    if(!job) {
+                        jobs = handler.searchJobs({type: 'refill', subtype: 'tower'});
+                        job = _.first(_.sortBy(jobs, j => creep.pos.getRangeTo(RoomPosition.fromDict(j.targetPos))));
                     }
-                    else {
-                        creep.addTask(taskMove.task.create(creep, target));
+
+                    if(job) {
+                        creep.takeJob(job);
+                    }
+                }
+
+                if(job) {
+                    let targetPos = RoomPosition.fromDict(job.targetPos);
+                    creep.moveTo(targetPos);
+                    let result = creep.transfer(Game.getObjectById(job.targetId), RESOURCE_ENERGY);
+
+                    if(result == OK) {
+                        creep.finishJob();
+                    }
+                    else if(result != ERR_NOT_IN_RANGE) {
+                        logger.mail(logger.error('OMG TRANSFER ERROR', creep, '::', result));
+                        creep.releaseJob();
                     }
                 }
             }
