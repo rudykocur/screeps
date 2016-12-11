@@ -47,7 +47,7 @@ module.exports = (function() {
                 _.each(storage.store, (amount, resource) => {
                     var key = `market-${this.room.customName}-${resource}`;
 
-                    if (reserves[resource] > 0 && amount > reserves[resource] + 1000) {
+                    if (reserves[resource] > 0 && amount > reserves[resource]) {
                         if (!(key in jobs)) {
                             jobs[key] = {
                                 key: key,
@@ -73,12 +73,17 @@ module.exports = (function() {
 
             createTerminalToStorageJobs(storage, terminal) {
                 var reserves = _.get(this.config, 'minerals.reserve', {});
+                var requires = _.get(this.config, 'terminal.require', {});
+
                 var jobs = this.state.jobs;
 
                 _.each(terminal.store, (amount, resource) => {
                     var key = `terminal-withdraw-${this.room.customName}-${resource}`;
 
-                    if(amount > 0 && (!reserves[resource] || storage.store[resource] < reserves[resource])) {
+                    var storageDemand = (reserves[resource] || 0) - (storage.store[resource] || 0);
+                    var availableAmount = amount - (requires[resource] || 0);
+
+                    if(availableAmount > 0 && storageDemand > 0) {
                         if(!(key in jobs)) {
                             jobs[key] = {
                                 key: key,
@@ -94,7 +99,7 @@ module.exports = (function() {
                             }
                         }
 
-                        jobs[key].amount = amount;
+                        jobs[key].amount = availableAmount;
                     }
                     else {
                         delete jobs[key];
@@ -109,7 +114,7 @@ module.exports = (function() {
                 _.each(requires, (amount, resource) => {
                     var key = `terminal-require-${this.room.customName}-${resource}`;
 
-                    if(storage.store[resource] > 10000) {
+                    if(storage.store[resource] > 10000 && (terminal.store[resource] || 0) < amount) {
                         if(!(key in jobs)) {
                             jobs[key] = {
                                 key: key,
@@ -125,7 +130,7 @@ module.exports = (function() {
                             }
                         }
 
-                        jobs[key].amount = amount;
+                        jobs[key].amount = amount - terminal.store[resource];
                     }
                     else {
                         delete jobs[key];

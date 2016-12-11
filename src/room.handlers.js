@@ -90,19 +90,25 @@ module.exports = (function() {
                     }
                 });
 
-                minerals.forEach(m => {
+                minerals.forEach(/**Mineral*/m => {
                     var key = 'mining-' + m.id;
 
-                    if(!(key in jobs)) {
-                        jobs[key] = {
-                            key: key,
-                            room: this.room.customName,
-                            type: 'harvest',
-                            subtype: 'mineral',
-                            sourceId: m.id,
-                            sourcePos: m.pos,
-                            takenBy: null,
-                        };
+                    if(m.mineralAmount > 0) {
+
+                        if (!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'harvest',
+                                subtype: 'mineral',
+                                sourceId: m.id,
+                                sourcePos: m.pos,
+                                takenBy: null,
+                            };
+                        }
+                    }
+                    else {
+                        delete jobs[key];
                     }
                 });
             }

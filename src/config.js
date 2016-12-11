@@ -29,6 +29,11 @@ module.exports = (function() {
                         // [RESOURCE_ENERGY]: 1000000,
                         [RESOURCE_OXYGEN]: 10000,
                     }
+                },
+                terminal: {
+                    require: {
+                        [RESOURCE_ENERGY]: 6000,
+                    }
                 }
             },
             moria: {
@@ -45,11 +50,11 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 10000,
                     }
                 },
-                // terminal: {
-                //     require: {
-                //         [RESOURCE_ENERGY]: 6000,
-                //     }
-                // }
+                terminal: {
+                    require: {
+                        [RESOURCE_ENERGY]: 6000,
+                    }
+                }
             },
             kaerMorhen: {
                 type: "colony",
@@ -248,7 +253,7 @@ module.exports = (function() {
                 //     }
                 // },
                 moriaMineralTransfer: {
-                    minimum: 0,
+                    minimum: 1,
                     body: 'mineralTransfer',
                     priority: 'normal',
                     memo: {

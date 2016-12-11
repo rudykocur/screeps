@@ -14,33 +14,28 @@ module.exports = (function() {
 
             var storage = creep.room.getStorage();
 
-            var job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer'}));
+            var job = creep.getJob();
+
+            if(!job) {
+                job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer'}));
+
+                if(job) {
+                    creep.takeJob(job);
+                }
+            }
 
 
             if(job) {
 
-                if(!actionUtils.shouldHarvestEnergy(creep, null, job.resource) && !creep.carry[job.resource]) {
-                    if(!creep.pos.isNearTo(storage)) {
-                        creep.moveTo(storage);
-                    }
-
-                    _.each(creep.carry, (amount, resource) => {
-                        if(amount > 0) {
-                            creep.transfer(storage, resource);
-                        }
-                    });
-
-                    return;
-                }
-
-                if (actionUtils.shouldHarvestEnergy(creep, null, job.resource)) {
+                if(!creep.carry[job.resource]) {
                     var source = RoomPosition.fromDict(job.sourcePos);
 
                     if(!creep.pos.isNearTo(source)) {
                         creep.moveTo(source);
                     }
 
-                    creep.withdraw(Game.getObjectById(job.sourceId), job.resource);
+                    var toWithdraw = Math.min(creep.carryCapacity, job.amount);
+                    creep.withdraw(Game.getObjectById(job.sourceId), job.resource, toWithdraw);
                 }
                 else {
                     var target = RoomPosition.fromDict(job.targetPos);
@@ -49,7 +44,15 @@ module.exports = (function() {
                         creep.moveTo(target);
                     }
 
-                    creep.transfer(Game.getObjectById(job.targetId), job.resource);
+                    let result = creep.transfer(Game.getObjectById(job.targetId), job.resource);
+
+                    if(result == OK) {
+                        creep.finishJob();
+                    }
+                    else if(result != ERR_NOT_IN_RANGE) {
+                        logger.mail(logger.error('OMG TRANSFER 22 ERROR', creep, '::', result));
+                        creep.releaseJob();
+                    }
                 }
 
                 return;
