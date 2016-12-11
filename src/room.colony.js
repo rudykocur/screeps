@@ -15,14 +15,36 @@ module.exports = (function() {
                 this.type = 'colony';
 
                 _.defaults(this.state, {});
+
+                this.labNameToId = {};
+                _.each(_.get(config, 'labs.names', {}), (labName, labId) => {
+                    this.labNameToId[labName] = labId;
+                });
             }
 
             process() {
                 super.process();
 
+                this.runReactions();
+
                 this.maintainPopulation('mover', config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
                 this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
                 this.maintainPopulation('upgrader', config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
+            }
+
+            runReactions() {
+                _.get(this.config, 'labs.reactions', []).forEach(reaction => {
+                    let [in1, in2, out] = reaction.labs;
+                    let [in1Resource, in2Resouce] = reaction.load;
+
+                    in1 = Game.getObjectById(this.labNameToId[in1]);
+                    in2 = Game.getObjectById(this.labNameToId[in2]);
+                    out = Game.getObjectById(this.labNameToId[out]);
+
+                    if(out.cooldown == 0) {
+                        out.runReaction(in1, in2);
+                    }
+                });
             }
 
             prepareJobBoard() {
@@ -38,6 +60,8 @@ module.exports = (function() {
                     this.createTerminalToStorageJobs(storage, terminal);
                     this.createTerminalRequirementsJobs(storage, terminal);
                 }
+
+                this.createLabTransferJobs();
             }
 
             processStorageSurplusJobs(storage, terminal) {
@@ -181,6 +205,79 @@ module.exports = (function() {
                     else {
                         delete jobs[key];
                     }
+                })
+            }
+
+            createLabTransferJobs() {
+                var jobs = this.state.jobs;
+
+                var storage = this.room.getStorage();
+                var terminal = this.room.getTerminal();
+
+                _.get(this.config, 'labs.reactions', []).forEach(reaction => {
+
+                    reaction.load.forEach((resource, index) => {
+                        var labName = reaction.labs[index];
+                        var labId = this.labNameToId[labName];
+                        /** @type StructureLab */
+                        var lab = Game.getObjectById(labId);
+
+                        let emptyJobKey = `labs-${labName}-empty-${lab.mineralType}`;
+
+                        if(lab.mineralType && lab.mineralType != resource) {
+
+                            if(!(emptyJobKey in jobs)) {
+                                logger.error('Lab contains invalid resource !!!!', lab);
+                                jobs[emptyJobKey] = {
+                                    key: emptyJobKey,
+                                    room: this.room.customName,
+                                    type: 'transfer',
+                                    sourceId: lab.id,
+                                    sourcePos: lab.pos,
+                                    resource: lab.mineralType,
+                                    targetId: storage.id,
+                                    targetPos: storage.pos,
+                                    takenBy: null,
+                                    amount: 0,
+                                }
+                            }
+
+                            jobs[emptyJobKey].amount = lab.mineralAmount;
+                        }
+                        else {
+                            delete jobs[emptyJobKey];
+
+                            if (lab.mineralAmount < 2000) {
+
+                                [storage, terminal].forEach(struct => {
+                                    var key = `labs-${labName}-withdraw-${struct.structureType}-${resource}`;
+                                    if (struct.store[resource] > 20000) {
+
+                                        if (!(key in jobs)) {
+                                            jobs[key] = {
+                                                key: key,
+                                                room: this.room.customName,
+                                                type: 'transfer',
+                                                sourceId: struct.id,
+                                                sourcePos: struct.pos,
+                                                resource: resource,
+                                                targetId: lab.id,
+                                                targetPos: lab.pos,
+                                                takenBy: null,
+                                                amount: 0,
+                                            }
+                                        }
+
+                                        jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
+                                    }
+                                    else {
+                                        delete jobs[key];
+                                    }
+                                });
+                            }
+                        }
+                    });
+
                 })
             }
 

@@ -34,6 +34,19 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_ENERGY]: 6000,
                     }
+                },
+                labs: {
+                    names: {
+                        '584cdc59d9c0e3e84cb9135f': 'left',
+                        '584c538f866164475da08cbf': 'right',
+                        '584c72e76ca81b64248b3829': 'result',
+                    },
+                    reactions: [
+                        {
+                            labs: ['left', 'right', 'result'],
+                            load: [RESOURCE_OXYGEN, RESOURCE_ZYNTHIUM],
+                        },
+                    ],
                 }
             },
             moria: {
@@ -60,7 +73,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 120000,
                 creeps: {
-                    upgrader: 9,
+                    upgrader: 7,
                     builder: 1,
                     mover: 2,
                 }
@@ -153,7 +166,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
                 creeps: {
-                    collector: 4,
+                    collector: 3,
                     settler: 1,
                     claimer: 1,
                 }
