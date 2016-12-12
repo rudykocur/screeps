@@ -34,7 +34,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 15000,
+                        [RESOURCE_ENERGY]: 20000,
                     }
                 },
                 labs: {
@@ -50,6 +50,7 @@ module.exports = (function() {
                         {
                             labs: ['tleft', 'tright', 'bmiddle'],
                             load: [RESOURCE_OXYGEN, RESOURCE_ZYNTHIUM],
+                            // load: [RESOURCE_OXYGEN, RESOURCE_LEMERGIUM],
                             amount: 500,
                         },
                         {
@@ -60,6 +61,7 @@ module.exports = (function() {
                         {
                             labs: ['tmiddle', 'bmiddle', 'bright'],
                             load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
+                            // load: [RESOURCE_HYDROXIDE, RESOURCE_LEMERGIUM_OXIDE],
                             amount: 1000,
                         },
                     ],
@@ -126,7 +128,7 @@ module.exports = (function() {
                 homeRoom:"home",
                 creeps: {
                     claimer: 1,
-                    // settler: 1,
+                    settler: 1,
                     collector: 2,
                 },
             },

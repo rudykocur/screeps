@@ -137,15 +137,20 @@ module.exports = (function() {
                 }
 
                 var creeps = this.findCreeps(blueprint.role);
-                if(!ignorePrespawn) {
-                    creeps = creeps.filter(c => {
-                        if(c.spawning) {
-                            return true;
-                        }
+                var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
 
-                        return c.ticksToLive > Math.min(c.memory.prespawnTime || 0, 300)
-                    });
-                }
+                creeps = creeps.filter(c => {
+                    if(c.spawning) {
+                        return true;
+                    }
+
+                    let prespawnTime = 0;
+                    if(!ignorePrespawn) {
+                        prespawnTime = Math.min(c.memory.prespawnTime || 0, 300);
+                    }
+
+                    return c.ticksToLive > prespawnTime + spawnTime;
+                });
 
                 if(creeps.length < amount) {
                     var memo = _.defaults({

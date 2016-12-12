@@ -344,7 +344,9 @@ module.exports = (function() {
                     return;
                 }
 
-                var creeps = this.findCreeps(blueprint.role);
+                var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
+
+                var creeps = this.findCreeps(blueprint.role).filter(c => c.ticksToLive > spawnTime);
 
                 if(creeps.length < amount) {
                     var memo = _.defaults({
