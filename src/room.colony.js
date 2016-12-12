@@ -47,12 +47,18 @@ module.exports = (function() {
                     var minTicks = Infinity, maxTicks = 0;
 
                     movers.forEach(/**Creep*/creep => {
-                        if(creep.ticksToLive < minTicks) {
-                            minTicks = creep.ticksToLive;
+                        if(creep.spawning) {
+                            maxTicks = CREEP_LIFE_TIME;
                         }
-                        if(creep.ticksToLive > maxTicks) {
-                            maxTicks = creep.ticksToLive;
+                        else {
+                            if(creep.ticksToLive < minTicks) {
+                                minTicks = creep.ticksToLive;
+                            }
+                            if(creep.ticksToLive > maxTicks) {
+                                maxTicks = creep.ticksToLive;
+                            }
                         }
+
                     });
 
                     if(maxTicks - minTicks < 300 && maxTicks < 600) {
@@ -418,7 +424,7 @@ module.exports = (function() {
 
                 var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
 
-                var creeps = this.findCreeps(blueprint.role).filter(c => c.ticksToLive > spawnTime);
+                var creeps = this.findCreeps(blueprint.role).filter(c => c.ticksToLive > spawnTime * 0.75);
 
                 if(creeps.length < amount) {
                     var memo = _.defaults({

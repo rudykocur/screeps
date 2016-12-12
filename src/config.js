@@ -157,7 +157,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"kaerMorhen",
                 creeps: {
-                    collector: 3,
+                    collector: 2,
                     claimer: 1,
                     settler: 1,
                 }
