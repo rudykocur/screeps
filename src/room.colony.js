@@ -35,14 +35,14 @@ module.exports = (function() {
 
             runReactions() {
                 _.get(this.config, 'labs.reactions', []).forEach(reaction => {
-                    let [in1, in2, out] = reaction.labs;
+                    let [in1, in2, /**StructureLab*/ out] = reaction.labs;
                     let [in1Resource, in2Resouce] = reaction.load;
 
                     in1 = Game.getObjectById(this.labNameToId[in1]);
                     in2 = Game.getObjectById(this.labNameToId[in2]);
                     out = Game.getObjectById(this.labNameToId[out]);
 
-                    if(out.cooldown == 0) {
+                    if(out.mineralAmount < reaction.amount && out.cooldown == 0) {
                         out.runReaction(in1, in2);
                     }
                 });

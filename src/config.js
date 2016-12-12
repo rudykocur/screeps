@@ -32,7 +32,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 6000,
+                        [RESOURCE_ENERGY]: 15000,
                     }
                 },
                 labs: {
@@ -45,6 +45,7 @@ module.exports = (function() {
                         {
                             labs: ['left', 'right', 'result'],
                             load: [RESOURCE_OXYGEN, RESOURCE_ZYNTHIUM],
+                            amount: 2000,
                         },
                     ],
                 }
@@ -73,7 +74,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 120000,
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 4,
                     builder: 1,
                     mover: 2,
                 }
@@ -84,7 +85,7 @@ module.exports = (function() {
                 creeps: {
                     claimer: 1,
                     settler: 1,
-                    collector: 4,
+                    collector: 3,
                 },
             },
             homeTop: {
@@ -198,7 +199,7 @@ module.exports = (function() {
                         // room: 'E68N42',
                         // room: 'E67N42',
 
-                        room: 'E64N41'
+                        room: 'E64N43'
                     }
                 },
             },
