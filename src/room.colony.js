@@ -229,7 +229,7 @@ module.exports = (function() {
                         if(lab.mineralType && lab.mineralType != resource) {
 
                             if(!(emptyJobKey in jobs)) {
-                                logger.error('Lab contains invalid resource !!!!', lab);
+
                                 jobs[emptyJobKey] = {
                                     key: emptyJobKey,
                                     room: this.room.customName,
@@ -277,6 +277,36 @@ module.exports = (function() {
                         }
                     });
 
+                    var outLabName = reaction.labs[2];
+                    /** @type StructureLab */
+                    var outLab = Game.getObjectById(this.labNameToId[outLabName]);
+
+                    var resultResource = REACTIONS[reaction.load[0]][reaction.load[1]];
+
+                    let emptyJobKey = `labs-${outLabName}-empty-${outLab.mineralType}`;
+
+                    if(outLab.mineralType && outLab.mineralType != resultResource ) {
+                        if(!(emptyJobKey in jobs)) {
+
+                            jobs[emptyJobKey] = {
+                                key: emptyJobKey,
+                                room: this.room.customName,
+                                type: 'transfer',
+                                sourceId: outLab.id,
+                                sourcePos: outLab.pos,
+                                resource: outLab.mineralType,
+                                targetId: storage.id,
+                                targetPos: storage.pos,
+                                takenBy: null,
+                                amount: 0,
+                            }
+                        }
+
+                        jobs[emptyJobKey].amount = outLab.mineralAmount;
+                    }
+                    else {
+                        delete jobs[emptyJobKey];
+                    }
                 })
             }
 
