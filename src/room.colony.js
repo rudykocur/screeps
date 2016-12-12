@@ -25,12 +25,42 @@ module.exports = (function() {
             process() {
                 super.process();
 
+                // if(Game.time % 100) {
+                if(true) {
+                    this.autobuildExtensions();
+                }
+
                 this.runReactions();
 
                 this.maintainHarvesterPopulation();
-                this.maintainPopulation('mover', config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
+                this.maintainMovers();
                 this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
                 this.maintainPopulation('upgrader', config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
+            }
+
+            maintainMovers() {
+                var needed = _.get(this.config, ['creeps', 'mover'], 0);
+
+                var movers = this.findCreeps(config.blueprints.colonyMover.role);
+
+                if(needed > 1 && movers.length > 1) {
+                    var minTicks = Infinity, maxTicks = 0;
+
+                    movers.forEach(/**Creep*/creep => {
+                        if(creep.ticksToLive < minTicks) {
+                            minTicks = creep.ticksToLive;
+                        }
+                        if(creep.ticksToLive > maxTicks) {
+                            maxTicks = creep.ticksToLive;
+                        }
+                    });
+
+                    if(maxTicks - minTicks < 300 && maxTicks < 600) {
+                        needed += 1;
+                    }
+                }
+
+                this.maintainPopulationAmount('mover', needed, config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
             }
 
             runReactions() {
@@ -41,6 +71,14 @@ module.exports = (function() {
                     in1 = Game.getObjectById(this.labNameToId[in1]);
                     in2 = Game.getObjectById(this.labNameToId[in2]);
                     out = Game.getObjectById(this.labNameToId[out]);
+
+                    if(in1.mineralType != in1Resource) {
+                        return;
+                    }
+
+                    if(in2.mineralType != in2Resouce) {
+                        return;
+                    }
 
                     if(out.mineralAmount < reaction.amount && out.cooldown == 0) {
                         out.runReaction(in1, in2);
@@ -73,7 +111,7 @@ module.exports = (function() {
                 _.each(storage.store, (amount, resource) => {
                     var key = `market-${this.room.customName}-${resource}`;
 
-                    if (reserves[resource] > 0 && amount > reserves[resource]) {
+                    if (reserves[resource] >= 0 && amount > reserves[resource]) {
                         if (!(key in jobs)) {
                             jobs[key] = {
                                 key: key,
@@ -237,8 +275,8 @@ module.exports = (function() {
                                     sourceId: lab.id,
                                     sourcePos: lab.pos,
                                     resource: lab.mineralType,
-                                    targetId: storage.id,
-                                    targetPos: storage.pos,
+                                    targetId: terminal.id,
+                                    targetPos: terminal.pos,
                                     takenBy: null,
                                     amount: 0,
                                 }
@@ -295,8 +333,8 @@ module.exports = (function() {
                                 sourceId: outLab.id,
                                 sourcePos: outLab.pos,
                                 resource: outLab.mineralType,
-                                targetId: storage.id,
-                                targetPos: storage.pos,
+                                targetId: terminal.id,
+                                targetPos: terminal.pos,
                                 takenBy: null,
                                 amount: 0,
                             }
@@ -314,14 +352,18 @@ module.exports = (function() {
                 /** @type Mineral */
                 var mineral = _.first(this.room.find(FIND_MINERALS));
                 var jobs = this.state.jobs;
-                var storage = this.room.getStorage();
+
+                var target = this.room.getTerminal();
+                if(!target) {
+                    target = this.room.getStorage();
+                }
 
                 var container = _.first(mineral.pos.findInRange(FIND_STRUCTURES, 1, {
                     filter: {structureType: STRUCTURE_CONTAINER}
                 }));
 
                 var key = `mineralMove-${mineral.mineralType}`;
-                if(container && _.sum(container.store) > 400) {
+                if(container && container.store[mineral.mineralType] > 400) {
                     if(!(key in jobs)) {
                         jobs[key] = {
                             key: key,
@@ -330,14 +372,14 @@ module.exports = (function() {
                             sourceId: container.id,
                             sourcePos: container.pos,
                             resource: mineral.mineralType,
-                            targetId: storage.id,
-                            targetPos: storage.pos,
+                            targetId: target.id,
+                            targetPos: target.pos,
                             takenBy: null,
                             amount: 0,
                         }
                     }
 
-                    jobs[key].amount = _.sum(container.store);
+                    jobs[key].amount = container.store[mineral.mineralType];
                 }
                 else {
                     delete jobs[key];
@@ -391,6 +433,15 @@ module.exports = (function() {
 
             getCreepName(type) {
                 return this.type+'_'+this.roomName+'_'+type+'_';
+            }
+
+            autobuildExtensions() {
+                var flags = _.groupBy(Game.flags, 'pos.roomName')[this.room.name];
+                if(!_.first(flags.filter(/**Flag*/f => f.color == COLOR_BROWN && f.secondaryColor == COLOR_YELLOW))) {
+                    return;
+                }
+
+                this.debug('autobuild flag set!');
             }
         }
     }

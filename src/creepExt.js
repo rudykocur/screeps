@@ -36,7 +36,17 @@ Creep.prototype.setPrespawnTime = function() {
 };
 
 Creep.prototype.getJob = function() {
-    return this.memory.job;
+    var job = this.memory.job;
+
+    if(job) {
+        var room = Room.byCustomName(job.room);
+        if(!(job.key in room.handlerMemory.jobs)) {
+            delete this.memory.job;
+            return;
+        }
+    }
+
+    return job;
 };
 
 Creep.prototype.takeJob = function(job) {

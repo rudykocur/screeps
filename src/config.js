@@ -28,8 +28,10 @@ module.exports = (function() {
                 },
                 minerals: {
                     reserve: {
-                        // [RESOURCE_ENERGY]: 1000000,
-                        [RESOURCE_OXYGEN]: 10000,
+                        [RESOURCE_ZYNTHIUM_OXIDE]: 0,
+                        [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
+                        [RESOURCE_ZYNTHIUM]: 0,
+                        [RESOURCE_OXYGEN]: 0,
                     }
                 },
                 terminal: {
@@ -72,13 +74,13 @@ module.exports = (function() {
                 panicMode: false,
                 creeps: {
                     upgrader: 4,
-                    builder: 0,
+                    builder: 1,
                     mover: 2,
                 },
                 minerals: {
                     reserve: {
                         // [RESOURCE_ENERGY]: 1000000,
-                        [RESOURCE_ZYNTHIUM]: 10000,
+                        [RESOURCE_ZYNTHIUM]: 0,
                     }
                 },
                 terminal: {
@@ -108,10 +110,11 @@ module.exports = (function() {
             orphan: {
                 type: "outpost",
                 homeRoom: "moria",
+                spawnRooms: ['home', 'moria'],
                 creeps: {
-                    collector: 2,
-                    claimer: 1,
-                    settler: 1,
+                    collector: 0,
+                    claimer: 0,
+                    settler: 3,
                 }
             },
             homeTop: {
@@ -153,9 +156,8 @@ module.exports = (function() {
             kmLower:{
                 type:"outpost",
                 homeRoom:"kaerMorhen",
-                // disableHarvesting: true,
                 creeps: {
-                    collector: 2,
+                    collector: 3,
                     claimer: 1,
                     settler: 1,
                 }
@@ -163,7 +165,6 @@ module.exports = (function() {
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
-                offroad: true,
                 spawnRooms: ['home'],
                 creeps: {
                     settler: 1,
@@ -244,6 +245,7 @@ module.exports = (function() {
             },
 
             Cheshire: {},
+            Brokilon: {},
 
             Moria: {
                 moriaMineralTransfer: {
