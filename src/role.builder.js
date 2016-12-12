@@ -26,6 +26,21 @@ module.exports = (function() {
             }
             else {
 
+                var dismantle = creep.memory.dismantleTarget;
+                if(dismantle) {
+                    var target = Game.getObjectById(dismantle);
+                    if(!target) {
+                        delete creep.memory.dismantleTarget;
+                    }
+                    else {
+                        if(creep.dismantle(target) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(target);
+                        }
+
+                        return;
+                    }
+                }
+
                 if(actionBuild.findNewStructureToRepair(creep)) {
                     if(actionBuild.actionTryRepair(creep)) {
                         return false;

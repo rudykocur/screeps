@@ -107,7 +107,7 @@ Room.prototype.getDroppedResources = function(options) {
 
     let result = state.droppedResources;
     if(options.resource) {
-        result = result.filter(r => r.resourceType == options.resource);
+        result = result.filter(r => r.resource == options.resource);
     }
 
     return result.map(r => Game.getObjectById(r.id)).filter(r => r != null);

@@ -3,7 +3,7 @@ const logger = require('logger');
 
 const actionCombat = require('action.combat');
 
-const roomModules = ['outpost', 'colony'];
+const roomModules = ['outpost', 'colony', 'sourceKeeper'];
 
 module.exports = (function() {
 
@@ -223,7 +223,6 @@ module.exports = (function() {
             roomModules.forEach(modName => {
                 handlers[modName] = require('room.' + modName);
             });
-
 
             _.each(config.rooms, (roomConfig, roomName) => {
                 try {

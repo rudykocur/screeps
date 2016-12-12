@@ -10,7 +10,10 @@ module.exports = {
 
         /** @type {Structure} */
         var targets = creep.room.find(FIND_STRUCTURES, {
-            filter: function(struct) {
+            filter: /**OwnedStructure*/struct => {
+                if((struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) && struct.hits > 5000) {
+                    return false;
+                }
                 var hpLeft = struct.hits / struct.hitsMax;
 
                 return hpLeft < 0.55;

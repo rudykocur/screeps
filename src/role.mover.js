@@ -15,6 +15,7 @@ module.exports = (function() {
          */
         run: function(creep) {
             if(creep.carry.energy == 0) {
+
                 var source = _.first(_.sortBy(creep.room.getDroppedResources({resource: RESOURCE_ENERGY}), r => r.amount * -1));
 
                 if(!source) {
@@ -70,6 +71,15 @@ module.exports = (function() {
                     else if(result != ERR_NOT_IN_RANGE) {
                         logger.mail(logger.error('OMG TRANSFER ERROR', creep, '::', result));
                         creep.releaseJob();
+                    }
+                }
+                else {
+                    let storage = creep.room.getStorage();
+
+                    if(_.sum(creep.carry) > 0 && storage) {
+                        if(creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(storage);
+                        }
                     }
                 }
             }

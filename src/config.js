@@ -15,6 +15,7 @@ module.exports = (function() {
             E67N41: "moriaBottom",
             E68N41: "mork",
             E69N43: "kmRight",
+            E66N44: "lair1",
         },
         rooms: {
             home: {
@@ -171,6 +172,10 @@ module.exports = (function() {
                     settler: 1,
                     claimer: 1,
                 }
+            },
+            lair1: {
+                type: "sourceKeeper",
+                homeRoom: "home",
             }
         },
 
