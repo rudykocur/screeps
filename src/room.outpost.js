@@ -91,7 +91,7 @@ module.exports = (function() {
                         role: blueprint.role,
                     });
 
-                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_LOW, this.homeRoom(),
+                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_CLAIMERS, this.homeRoom(),
                         this.getCreepName('scout'), blueprint.body, memo);
                 }
             }

@@ -11,11 +11,12 @@ module.exports = (function() {
             E65N42: "loneOutpost",
             E67N43: "moriaTop",
             E68N42: "moriaRight",
-            E69N42: "moriaRightRight",
+            E69N42: "kmLower",
             E67N41: "moriaBottom",
             E68N41: "mork",
             E69N43: "kmRight",
             E66N44: "lair1",
+            E67N44: "orphan",
         },
         rooms: {
             home: {
@@ -38,15 +39,28 @@ module.exports = (function() {
                 },
                 labs: {
                     names: {
-                        '584cdc59d9c0e3e84cb9135f': 'left',
-                        '584c538f866164475da08cbf': 'right',
-                        '584c72e76ca81b64248b3829': 'result',
+                        '584cdc59d9c0e3e84cb9135f': 'tleft',
+                        '584e0af645e985bf11b55745': 'tmiddle',
+                        '584c538f866164475da08cbf': 'tright',
+                        '584e59971c56de6e3ae4c2b0': 'bleft',
+                        '584c72e76ca81b64248b3829': 'bmiddle',
+                        '584e1616459b5b8d7e42983a': 'bright',
                     },
                     reactions: [
                         {
-                            labs: ['left', 'right', 'result'],
+                            labs: ['tleft', 'tright', 'bmiddle'],
                             load: [RESOURCE_OXYGEN, RESOURCE_ZYNTHIUM],
-                            amount: 2000,
+                            amount: 500,
+                        },
+                        {
+                            labs: ['tleft', 'bleft', 'tmiddle'],
+                            load: [RESOURCE_OXYGEN, RESOURCE_HYDROGEN],
+                            amount: 500,
+                        },
+                        {
+                            labs: ['tmiddle', 'bmiddle', 'bright'],
+                            load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
+                            amount: 1000,
                         },
                     ],
                 }
@@ -56,7 +70,7 @@ module.exports = (function() {
                 panicMode: false,
                 creeps: {
                     upgrader: 4,
-                    builder: 1,
+                    builder: 0,
                     mover: 2,
                 },
                 minerals: {
@@ -88,6 +102,15 @@ module.exports = (function() {
                     settler: 1,
                     collector: 3,
                 },
+            },
+            orphan: {
+                type: "outpost",
+                homeRoom: "moria",
+                creeps: {
+                    collector: 2,
+                    claimer: 1,
+                    settler: 1,
+                }
             },
             homeTop: {
                 type:"outpost",
@@ -125,10 +148,13 @@ module.exports = (function() {
                     settler: 1,
                 }
             },
-            moriaRightRight:{
+            kmLower:{
                 type:"outpost",
-                homeRoom:"moria",
+                homeRoom:"kaerMorhen",
+                // disableHarvesting: true,
                 creeps: {
+                    collector: 2,
+                    claimer: 1,
                     settler: 1,
                 }
             },
@@ -137,6 +163,8 @@ module.exports = (function() {
                 homeRoom:"moria",
                 offroad: true,
                 creeps: {
+                    settler: 1,
+                    claimer: 1,
                     collector: 1,
                 }
             },

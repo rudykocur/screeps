@@ -249,34 +249,31 @@ module.exports = (function() {
                         else {
                             delete jobs[emptyJobKey];
 
-                            if (lab.mineralAmount < 2000) {
+                            [storage, terminal].forEach(struct => {
+                                var key = `labs-${labName}-withdraw-${struct.structureType}-${resource}`;
+                                if (lab.mineralAmount < 2000 && struct.store[resource] > 0) {
 
-                                [storage, terminal].forEach(struct => {
-                                    var key = `labs-${labName}-withdraw-${struct.structureType}-${resource}`;
-                                    if (struct.store[resource] > 20000) {
-
-                                        if (!(key in jobs)) {
-                                            jobs[key] = {
-                                                key: key,
-                                                room: this.room.customName,
-                                                type: 'transfer',
-                                                sourceId: struct.id,
-                                                sourcePos: struct.pos,
-                                                resource: resource,
-                                                targetId: lab.id,
-                                                targetPos: lab.pos,
-                                                takenBy: null,
-                                                amount: 0,
-                                            }
+                                    if (!(key in jobs)) {
+                                        jobs[key] = {
+                                            key: key,
+                                            room: this.room.customName,
+                                            type: 'transfer',
+                                            sourceId: struct.id,
+                                            sourcePos: struct.pos,
+                                            resource: resource,
+                                            targetId: lab.id,
+                                            targetPos: lab.pos,
+                                            takenBy: null,
+                                            amount: 0,
                                         }
+                                    }
 
-                                        jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
-                                    }
-                                    else {
-                                        delete jobs[key];
-                                    }
-                                });
-                            }
+                                    jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
+                                }
+                                else {
+                                    delete jobs[key];
+                                }
+                            });
                         }
                     });
 
