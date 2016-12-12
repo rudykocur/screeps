@@ -18,15 +18,15 @@ module.exports = (function() {
                 return;
             }
 
-            var hanlder = creep.workRoomHandler;
+            var handler = creep.workRoomHandler;
 
             var job = creep.memory.job;
 
             if(!job) {
-                job = _.first(hanlder.searchJobs({type: 'harvest', subtype: 'energy'}));
+                job = _.first(handler.searchJobs({type: 'harvest', subtype: 'energy'}));
 
                 if (!job) {
-                    job = _.first(hanlder.searchJobs({type: 'harvest', subtype: 'mineral'}));
+                    job = _.first(handler.searchJobs({type: 'harvest', subtype: 'mineral'}));
                 }
 
                 if (!job) {
@@ -50,6 +50,7 @@ module.exports = (function() {
                     return;
                 }
 
+                creep.setPrespawnTime();
                 creepExt.addTask(creep, taskHarvest.task.create(creep, source));
             }
             else {

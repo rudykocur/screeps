@@ -353,12 +353,12 @@ module.exports = (function() {
                     }, blueprint.memo);
 
                     spawnQueue.enqueueCreep(priority, this.room, this.getCreepName(type),
-                        blueprint.body, memo);
+                        blueprint.body, memo, null, this.config.spawnRooms);
                 }
             }
 
             getCreepName(type) {
-                return 'colony_'+this.roomName+'_'+type+'_';
+                return this.type+'_'+this.roomName+'_'+type+'_';
             }
         }
     }

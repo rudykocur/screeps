@@ -28,6 +28,13 @@ Object.defineProperty(Creep.prototype, 'idwithOwner', {get: function() {
     return `${this.id}(${this.owner.username})`;
 }});
 
+Creep.prototype.setPrespawnTime = function() {
+    if(!this.memory.prespawnTime) {
+        let baseLifetime = this.getActiveBodyparts(CLAIM) > 0 ? CREEP_CLAIM_LIFE_TIME:CREEP_LIFE_TIME;
+        this.memory.prespawnTime = baseLifetime - this.ticksToLive;
+    }
+};
+
 Creep.prototype.getJob = function() {
     return this.memory.job;
 };

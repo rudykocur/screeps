@@ -32,6 +32,11 @@ module.exports = (function() {
                 return;
             }
 
+            if(creep.getActiveBodyparts(MOVE) == 0 && creep.getActiveBodyparts(HEAL) > 0) {
+                creep.heal(creep);
+                return;
+            }
+
             var target;
 
             if(creep.memory.attackTarget) {
@@ -51,7 +56,11 @@ module.exports = (function() {
                     creep.attack(target);
                 }
                 else {
-                    creep.moveTo(target);
+                    let result = creep.moveTo(target);
+
+                    if(creep.getActiveBodyparts(HEAL) > 0) {
+                        creep.heal(creep);
+                    }
                 }
             }
             else {

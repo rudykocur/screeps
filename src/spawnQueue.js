@@ -28,11 +28,12 @@ module.exports = (function() {
             queues = {};
         },
 
-        enqueueCreep: function(priority, room, name, body, memo, callback) {
+        enqueueCreep: function(priority, room, name, body, memo, callback, spawnRooms) {
             var queue = queues[priority] = queues[priority] || [];
 
             var request = {
                 roomName: room.customName,
+                spawnRooms: spawnRooms,
                 name: name + getCreepId(),
                 body: body,
                 memo: memo,
@@ -47,7 +48,6 @@ module.exports = (function() {
         spawnCreeps: function() {
             var e = module.exports;
 
-            var fullRooms = [];
             var blockedSpawns = [];
             var handlers = {};
 
@@ -57,51 +57,58 @@ module.exports = (function() {
             for(var priority of priorities) {
 
                 for(var request of _.shuffle(queues[priority] || [])) {
-                    if(fullRooms.indexOf(request.roomName) >= 0) {
-                        continue;
-                    }
 
                     if(!handlers[request.roomName]) {
                         handlers[request.roomName] = roomHandlers.getRoomHandler(request.roomName);
                     }
 
                     var handler = handlers[request.roomName];
-                    var freeSpawn = _.first(handler.room.getSpawns().filter(s => !s.spawning && blockedSpawns.indexOf(s.id) < 0));
 
-                    if(!freeSpawn) {
-                        fullRooms.push(request.roomName);
-                        continue;
-                    }
+                    var spawnRooms = request.spawnRooms || [request.roomName];
 
-                    var body = request.body;
+                    spawnRooms.forEach(spawnRoom => {
 
-                    if(typeof body == "string") {
-                        var rcl = bodyConfig.getEffectiveRcl(handler.room);
-                        var bodyName = body;
-                        body = bodyConfig.getBody(bodyName, rcl);
-
-                        if(!body) {
-                            logger.mail(logger.error(`Spawn ${freeSpawn.name} - cant find body for ${bodyName}`));
-                            continue;
+                        if(!handlers[spawnRoom]) {
+                            handlers[spawnRoom] = roomHandlers.getRoomHandler(spawnRoom);
                         }
-                    }
 
-                    if(freeSpawn.canCreateCreep(body) != OK ) {
-                        fullRooms.push(request.roomName);
-                        continue;
-                    }
+                        var spawnHandler = handlers[spawnRoom];
 
-                    request.memo.room = request.memo.room || handler.room.name;
+                        var freeSpawn = _.first(spawnHandler.room.getSpawns().filter(s => !s.spawning && blockedSpawns.indexOf(s.id) < 0));
 
-                    var newCreepName = freeSpawn.createCreep(body, request.name, request.memo);
+                        if(!freeSpawn) {
+                            return;
+                        }
 
-                    if(request.callback) {
-                        request.callback(newCreepName);
-                    }
+                        var body = request.body;
 
-                    console.log('Spawn '+freeSpawn.name+': created creep. Name: ' + newCreepName+'. Queues:', module.exports.getSpawnStats());
+                        if(typeof body == "string") {
+                            var rcl = bodyConfig.getEffectiveRcl(handler.room);
+                            var bodyName = body;
+                            body = bodyConfig.getBody(bodyName, rcl);
 
-                    blockedSpawns.push(freeSpawn.id);
+                            if(!body) {
+                                logger.mail(logger.error(`Spawn ${freeSpawn.name} - cant find body for ${bodyName}`));
+                                return;
+                            }
+                        }
+
+                        if(freeSpawn.canCreateCreep(body) != OK ) {
+                            return;
+                        }
+
+                        request.memo.room = request.memo.room || handler.room.name;
+
+                        var newCreepName = freeSpawn.createCreep(body, request.name, request.memo);
+
+                        if(request.callback) {
+                            request.callback(newCreepName);
+                        }
+
+                        console.log('Spawn '+freeSpawn.name+': created creep. Name: ' + newCreepName+'. Queues:', module.exports.getSpawnStats());
+
+                        blockedSpawns.push(freeSpawn.id);
+                    });
                 }
             }
         },

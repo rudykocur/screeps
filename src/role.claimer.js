@@ -24,8 +24,18 @@ module.exports = (function() {
 
             var ctrl = room.controller;
 
-            if(creep.reserveController(ctrl) == ERR_NOT_IN_RANGE) {
+            if(creep.memory.claim) {
+                creep.claimController(ctrl);
+                return;
+            }
+
+            let result = creep.reserveController(ctrl);
+
+            if(result == ERR_NOT_IN_RANGE) {
                 creep.moveTo(ctrl);
+            }
+            else if(result == OK) {
+                creep.setPrespawnTime();
             }
         }
     }

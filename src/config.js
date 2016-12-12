@@ -55,7 +55,7 @@ module.exports = (function() {
                         {
                             labs: ['tleft', 'bleft', 'tmiddle'],
                             load: [RESOURCE_OXYGEN, RESOURCE_HYDROGEN],
-                            amount: 500,
+                            amount: 1500,
                         },
                         {
                             labs: ['tmiddle', 'bmiddle', 'bright'],
@@ -90,7 +90,7 @@ module.exports = (function() {
                 wallsHp: 120000,
                 creeps: {
                     upgrader: 4,
-                    builder: 1,
+                    builder: 0,
                     mover: 2,
                 }
             },
@@ -162,6 +162,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"moria",
                 offroad: true,
+                spawnRooms: ['home'],
                 creeps: {
                     settler: 1,
                     claimer: 1,
@@ -171,8 +172,10 @@ module.exports = (function() {
             moriaBottom: {
                 type: "outpost",
                 homeRoom: "moria",
+                spawnRooms: ['home'],
                 offroad: true,
                 creeps: {
+                    settler: 1,
                     collector: 2,
                     claimer: 1,
                 },
@@ -181,6 +184,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "moria",
                 offroad: true,
+                spawnRooms: ['home'],
                 creeps: {
                     collector: 2,
                 },

@@ -23,13 +23,11 @@ module.exports = (function() {
                 super.process();
 
                 if(this.state.hostiles.length > 0) {
-                    this.spawnDefender();
+                    this.spawnDefenders(this.state.hostiles);
                 }
 
                 if(this.state.sources) {
-                    this.state.sources.forEach(source => {
-                        this.pingMinerForSource(source);
-                    });
+                    this.pingMiners();
                 }
                 else {
                     if(this.room) {
@@ -56,29 +54,8 @@ module.exports = (function() {
                     return {
                         id: s.id,
                         pos: s.pos,
-                        minerId: this.findMinerForSource(s.id)
                     }
                 });
-            }
-
-            findMinerForSource(sourceId) {
-                var miner = _.first(_.filter(Game.creeps, creep => creep.memory.energySourceId == sourceId));
-
-                if(miner) {
-                    return miner.id;
-                }
-
-                return null;
-            }
-
-            findDefender() {
-                var defenders = this.findCreeps(config.blueprints.outpostDefender.role);
-
-                if(defenders.length > 0) {
-                    return defenders[0].id;
-                }
-
-                return null;
             }
 
             sendScout() {
@@ -96,81 +73,34 @@ module.exports = (function() {
                 }
             }
 
-            /**
-             * @param {Source} source
-             */
-            pingMinerForSource(source) {
+            pingMiners() {
                 if(this.config.disableHarvesting) {
                     return;
                 }
 
-                if(!source.minerId) {
-
-                    var minerId = this.findMinerForSource(source.id);
-                    if(minerId) {
-                        source.minerId = minerId;
-                        return;
-                    }
-
-                    var blueprint = config.blueprints.outpostMiner;
-                    var body = blueprint.body;
-
-                    var memo = _.defaults({
-                        energySourceId: source.id,
-                        energyPosition: source.pos,
-                        room: Room.customNameToId(this.roomName),
-                        role: blueprint.role,
-                    }, blueprint.memo);
-
-                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_HIGH, this.homeRoom(), this.getCreepName('miner'),
-                        body, memo);
-
-                }
-                else {
-                    var miner = Game.getObjectById(source.minerId);
-                    if(!miner && source.minerId) {
-                        this.debug('miner for source', source.id, 'died. Will spawn soon.');
-                        source.minerId = null;
-                    }
-                }
+                let needed = this.state.sources.length;
+                this.maintainPopulationAmount('miner', needed, config.blueprints.outpostMiner, spawnQueue.PRIORITY_HIGH, true);
             }
 
             pingCollectors() {
-                var needed = this.state.sources.length;
-                if(this.config.creeps && this.config.creeps.collector !== undefined) {
-                    needed = this.config.creeps.collector;
-                }
+                let needed = _.get(this.config, 'creeps.collector', this.state.sources.length);
 
-                var blueprint = config.blueprints.outpostCollector;
+                let storage = this.homeRoom().getStorage();
 
-                if(needed < 1) {
+                if(!storage) {
+                    logger.mail(this.error("No storage for collector. Not spawning!"), 10);
                     return;
                 }
 
-                var collectors = this.findCreeps(blueprint.role);
+                var blueprint = JSON.parse(JSON.stringify(config.blueprints.outpostCollector));
+                blueprint.memo.storageId = storage.id;
 
-                if(collectors.length < needed) {
-                    var storage = roleCollector.findTargetContainer(this.homeRoom());
-
-                    if(!storage) {
-                        logger.mail(this.error("No storage for collector. Not spawning!"), 10);
-                        return;
-                    }
-
-                    var body = blueprint.body;
-                    if(this.config.offroad) {
-                        body = blueprint.bodyOffroad;
-                    }
-
-                    var memo = _.defaults({
-                        room: this.room.name,
-                        role: blueprint.role,
-                        storageId: storage.id,
-                    }, blueprint.memo);
-
-                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_HIGH, this.homeRoom(), this.getCreepName('collector'),
-                        body, memo);
+                if(this.config.offroad) {
+                    blueprint.body = blueprint.bodyOffroad;
                 }
+
+                this.maintainPopulationAmount('collector', needed, blueprint,
+                    spawnQueue.PRIORITY_HIGH);
             }
 
             pingClaimers() {
@@ -186,53 +116,50 @@ module.exports = (function() {
                 this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
             }
 
-            maintainPopulation(type, blueprint, priority) {
-                if(!this.config.creeps || !this.config.creeps[type]) {
-                    return;
-                }
-
-                var creeps = this.findCreeps(blueprint.role);
-
-                if(creeps.length < this.config.creeps[type]) {
-                    var memo = _.defaults({
-                        room: this.room.name,
-                        role: blueprint.role,
-                    }, blueprint.memo);
-
-                    spawnQueue.enqueueCreep(priority, this.homeRoom(), this.getCreepName(type),
-                        blueprint.body, memo);
-                }
-            }
-
-            spawnDefender() {
-                var defenderId = this.findDefender();
-
-                if(!defenderId) {
-                    var blueprint = config.blueprints.outpostDefender;
-
-                    var memo = _.defaults({
-                        room: this.roomId,
-                        role: blueprint.role,
-                    }, blueprint.memo);
-
-                    spawnQueue.enqueueCreep(spawnQueue.PRIORITY_DEFENCE, this.homeRoom(),
-                        this.getCreepName('defender'), blueprint.body, memo);
-                }
-                else {
-                    if(!this.state.defenderId) {
-                        logger.mail(this.info(logger.fmt.orange('created defender', defenderId)));
-                    }
-                }
-
-                this.state.defenderId = defenderId;
+            spawnDefenders(hostiles) {
+                var needed = hostiles.length;
+                this.maintainPopulationAmount('defender', needed, config.blueprints.outpostDefender,
+                    spawnQueue.PRIORITY_DEFENCE);
             }
 
             homeRoom() {
                 return Room.byCustomName(this.config.homeRoom);
             }
 
+            maintainPopulation(type, blueprint, priority) {
+                var amount = _.get(this.config, ['creeps', type], 0);
+                this.maintainPopulationAmount(type, amount, blueprint, priority);
+            }
+
+            maintainPopulationAmount(type, amount, blueprint, priority, ignorePrespawn) {
+                if(amount <= 0) {
+                    return;
+                }
+
+                var creeps = this.findCreeps(blueprint.role);
+                if(!ignorePrespawn) {
+                    creeps = creeps.filter(c => {
+                        if(c.spawning) {
+                            return true;
+                        }
+
+                        return c.ticksToLive > Math.min(c.memory.prespawnTime || 0, 300)
+                    });
+                }
+
+                if(creeps.length < amount) {
+                    var memo = _.defaults({
+                        room: Room.customNameToId(this.roomName),
+                        role: blueprint.role,
+                    }, blueprint.memo);
+
+                    spawnQueue.enqueueCreep(priority, this.homeRoom(), this.getCreepName(type),
+                        blueprint.body, memo, null, this.config.spawnRooms);
+                }
+            }
+
             getCreepName(type) {
-                return 'outpost_'+this.roomName+'_'+type+'_';
+                return this.type+'_'+this.roomName+'_'+type+'_';
             }
 
             getFleePoint() {

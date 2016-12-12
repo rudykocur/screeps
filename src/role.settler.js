@@ -22,6 +22,8 @@ module.exports = (function() {
                 return;
             }
 
+            creep.setPrespawnTime();
+
             if(actionUtils.shouldHarvestEnergy(creep)) {
                 if(actionUtils.tryChangeRoom(creep, creep.memory.harvestRoom, creep.memory.via)) {
                     return;

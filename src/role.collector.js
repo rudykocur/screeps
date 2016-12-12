@@ -24,6 +24,8 @@ module.exports = (function() {
 
         if(source) {
             if(creep.pos.inRangeTo(source, 1)) {
+                creep.setPrespawnTime();
+
                 creep.pickup(source);
             }
             else {
