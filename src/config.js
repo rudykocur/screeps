@@ -32,11 +32,12 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_ZYNTHIUM]: 0,
                         [RESOURCE_OXYGEN]: 0,
+                        [RESOURCE_ENERGY]: 500000,
                     }
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 20000,
+                        // [RESOURCE_ENERGY]: 20000,
                     }
                 },
                 labs: {
@@ -64,7 +65,7 @@ module.exports = (function() {
                             labs: ['tmiddle', 'bmiddle', 'bright'],
                             // load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
                             load: [RESOURCE_HYDROXIDE, RESOURCE_LEMERGIUM_OXIDE],
-                            amount: 1000,
+                            amount: 2000,
                         },
                     ],
                 }
@@ -85,7 +86,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 6000,
+                        [RESOURCE_ENERGY]: 100000,
                     }
                 }
             },
@@ -108,13 +109,14 @@ module.exports = (function() {
                 },
             },
             orphan: {
-                type: "outpost",
-                homeRoom: "moria",
-                spawnRooms: ['home', 'moria'],
+                type: "colony",
+                panicMode: true,
+                wallsHp: 5000,
                 creeps: {
-                    collector: 0,
-                    claimer: 0,
-                    settler: 3,
+                    upgrader: 0,
+                    builder: 1,
+                    mover: 4,
+                    settler: 5,
                 }
             },
             homeTop: {

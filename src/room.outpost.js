@@ -139,7 +139,7 @@ module.exports = (function() {
                 }
 
                 var creeps = this.findCreeps(blueprint.role);
-                var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
+                var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME * 0.75;
 
                 creeps = creeps.filter(c => {
                     if(c.spawning) {

@@ -68,6 +68,10 @@ Creep.prototype.releaseJob = function() {
 Creep.prototype.finishJob = function() {
     var job = this.memory.job;
 
+    if(!job) {
+        return;
+    }
+
     var room = Room.byCustomName(job.room);
 
     delete room.handlerMemory.jobs[job.key];

@@ -16,7 +16,9 @@ module.exports = (function() {
         run: function(creep) {
             if(creep.carry.energy == 0) {
 
-                var source = _.first(_.sortBy(creep.room.getDroppedResources({resource: RESOURCE_ENERGY}), r => r.amount * -1));
+                var sources = creep.room.getDroppedResources({resource: RESOURCE_ENERGY});
+                sources = sources.filter(src => src.pos.lookFor(LOOK_FLAGS).filter(/**Flag*/ f=> f.color == COLOR_CYAN).length == 0)
+                var source = _.first(_.sortBy(sources, r => r.amount * -1));
 
                 if(!source) {
                     let containers = creep.room.getContainers({resource: RESOURCE_ENERGY, amount: creep.carryCapacity});
@@ -76,9 +78,22 @@ module.exports = (function() {
                 else {
                     let storage = creep.room.getStorage();
 
-                    if(_.sum(creep.carry) > 0 && storage) {
-                        if(creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(storage);
+                    if(_.sum(creep.carry) > 0) {
+                        if(storage) {
+                            if(creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(storage);
+                            }
+                        }
+
+                        var dropFlag = _.first(_.filter(Game.flags, /**Flag*/f => f.pos.roomName == creep.room.name && f.color == COLOR_CYAN));
+
+                        if(dropFlag) {
+                            if(creep.pos.isEqualTo(dropFlag)) {
+                                creep.drop(RESOURCE_ENERGY);
+                            }
+                            else {
+                                creep.moveTo(dropFlag);
+                            }
                         }
                     }
                 }

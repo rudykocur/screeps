@@ -36,6 +36,7 @@ module.exports = (function() {
                 this.maintainMovers();
                 this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
                 this.maintainPopulation('upgrader', config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
+                this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
             }
 
             maintainMovers() {
@@ -447,7 +448,7 @@ module.exports = (function() {
                     return;
                 }
 
-                this.debug('autobuild flag set!');
+                // this.debug('autobuild flag set!');
             }
         }
     }
