@@ -45,8 +45,17 @@ module.exports = (function() {
             else if(creep.memory.moveFlag) {
                 target = Game.flags[creep.memory.moveFlag];
             }
+            else if(creep.memory.guardFlag) {
+                let flag = Game.flags[creep.memory.guardFlag];
 
-            if(!target) {
+                target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 5));
+
+                if(target) {
+                    console.log("GUARD", creep.name, 'found enemy', target);
+                }
+            }
+
+            if(!target && !creep.memory.guardFlag) {
                 target = actionCombat.findAttackTarget(creep);
             }
 
@@ -85,10 +94,16 @@ module.exports = (function() {
                     }
                 }
 
-                var flags = _.groupBy(Game.flags, 'room.name')[creep.pos.roomName];
+                let idleFlag;
+                if(creep.memory.guardFlag) {
+                    idleFlag = Game.flags[creep.memory.guardFlag];
+                }
+                else {
+                    idleFlag = _.first(_.groupBy(Game.flags, 'room.name')[creep.pos.roomName]);
+                }
 
-                if(flags && flags.length > 0) {
-                    creep.moveTo(flags[0].pos);
+                if(idleFlag) {
+                    creep.moveTo(idleFlag.pos);
                 }
             }
         }

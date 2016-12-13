@@ -274,19 +274,7 @@ module.exports = (function() {
                         if(lab.mineralType && lab.mineralType != resource) {
 
                             if(!(emptyJobKey in jobs)) {
-
-                                jobs[emptyJobKey] = {
-                                    key: emptyJobKey,
-                                    room: this.room.customName,
-                                    type: 'transfer',
-                                    sourceId: lab.id,
-                                    sourcePos: lab.pos,
-                                    resource: lab.mineralType,
-                                    targetId: terminal.id,
-                                    targetPos: terminal.pos,
-                                    takenBy: null,
-                                    amount: 0,
-                                }
+                                jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType) ;
                             }
 
                             jobs[emptyJobKey].amount = lab.mineralAmount;
@@ -299,18 +287,7 @@ module.exports = (function() {
                                 if (lab.mineralAmount < 2000 && struct.store[resource] > 0) {
 
                                     if (!(key in jobs)) {
-                                        jobs[key] = {
-                                            key: key,
-                                            room: this.room.customName,
-                                            type: 'transfer',
-                                            sourceId: struct.id,
-                                            sourcePos: struct.pos,
-                                            resource: resource,
-                                            targetId: lab.id,
-                                            targetPos: lab.pos,
-                                            takenBy: null,
-                                            amount: 0,
-                                        }
+                                        jobs[key] = this._getJobTransferDict(key, struct, lab, resource);
                                     }
 
                                     jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
@@ -332,25 +309,56 @@ module.exports = (function() {
 
                     if(outLab.mineralType && outLab.mineralType != resultResource ) {
                         if(!(emptyJobKey in jobs)) {
-
-                            jobs[emptyJobKey] = {
-                                key: emptyJobKey,
-                                room: this.room.customName,
-                                type: 'transfer',
-                                sourceId: outLab.id,
-                                sourcePos: outLab.pos,
-                                resource: outLab.mineralType,
-                                targetId: terminal.id,
-                                targetPos: terminal.pos,
-                                takenBy: null,
-                                amount: 0,
-                            }
+                            jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLabName, terminal, outLabName.mineralType);
                         }
 
                         jobs[emptyJobKey].amount = outLab.mineralAmount;
                     }
                     else {
                         delete jobs[emptyJobKey];
+                    }
+                });
+
+                _.each(_.get(this.config, 'labs.boost', {}), (resource, labName) => {
+                    /** @type StructureLab */
+                    var lab = Game.getObjectById(this.labNameToId[labName]);
+
+                    let emptyJobKey = `labs-${labName}-empty-${lab.mineralType}`;
+                    let loadEnergyKey = `labs-${labName}-load-energy`;
+
+                    if(lab.mineralType && lab.mineralType != resource) {
+                        if(!(emptyJobKey in jobs)) {
+                            jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType);
+                        }
+
+                        jobs[emptyJobKey].amount = lab.mineralAmount;
+                    }
+                    else {
+                        delete jobs[emptyJobKey];
+
+                        let key = `labs-${labName}-load-boost-${resource}`;
+
+                        if(lab.mineralAmount < lab.mineralCapacity && terminal.store[resource] > 0) {
+                            if (!(key in jobs)) {
+                                jobs[key] = this._getJobTransferDict(key, terminal, lab, resource);
+                            }
+
+                            jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
+                        }
+                        else {
+                            delete jobs[key];
+                        }
+                    }
+
+                    if(lab.energy < lab.energyCapacity) {
+                        if (!(loadEnergyKey in jobs)) {
+                            jobs[loadEnergyKey] = this._getJobTransferDict(loadEnergyKey, storage, lab, RESOURCE_ENERGY);
+                        }
+
+                        jobs[loadEnergyKey].amount = lab.energyCapacity - lab.energy;
+                    }
+                    else {
+                        delete jobs[loadEnergyKey];
                     }
                 })
             }
@@ -390,6 +398,21 @@ module.exports = (function() {
                 }
                 else {
                     delete jobs[key];
+                }
+            }
+
+            _getJobTransferDict(key, source, target, resource) {
+                return {
+                    key: key,
+                    room: this.room.customName,
+                    type: 'transfer',
+                    sourceId: source.id,
+                    sourcePos: source.pos,
+                    resource: resource,
+                    targetId: target.id,
+                    targetPos: target.pos,
+                    takenBy: null,
+                    amount: 0,
                 }
             }
 

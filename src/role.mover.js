@@ -21,7 +21,7 @@ module.exports = (function() {
                 let job = creep.getJob();
                 if(!job) {
                     let handler = creep.workRoomHandler;
-                    let jobs = handler.searchJobs({type: 'pickup', freeReserve: 100});
+                    let jobs = handler.searchJobs({type: 'pickup', freeReserve: 200});
                     job = _.first(_.sortBy(jobs, job => job.amount * -1));
 
                     if(job) {

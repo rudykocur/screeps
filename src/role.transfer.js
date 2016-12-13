@@ -28,13 +28,23 @@ module.exports = (function() {
             if(job) {
 
                 if(!creep.carry[job.resource]) {
-                    var source = RoomPosition.fromDict(job.sourcePos);
+                    var sourcePos = RoomPosition.fromDict(job.sourcePos);
+                    /** type StructureStorage */
+                    let source = Game.getObjectById(job.sourceId);
 
-                    if(!creep.pos.isNearTo(source)) {
-                        creep.moveTo(source);
+                    if(!creep.pos.isNearTo(sourcePos)) {
+                        creep.moveTo(sourcePos);
                     }
 
-                    var toWithdraw = Math.min(creep.carryCapacity, job.amount);
+                    let sourceAmount = Infinity;
+                    if(source instanceof StructureStorage || source instanceof StructureTerminal) {
+                        sourceAmount = source.store[job.resource];
+                    }
+                    if(source instanceof StructureLab) {
+                        sourceAmount = source.mineralAmount;
+                    }
+
+                    var toWithdraw = Math.min(creep.carryCapacity, job.amount, sourceAmount);
                     creep.withdraw(Game.getObjectById(job.sourceId), job.resource, toWithdraw);
                 }
                 else {

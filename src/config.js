@@ -49,24 +49,27 @@ module.exports = (function() {
                         '584c72e76ca81b64248b3829': 'bmiddle',
                         '584e1616459b5b8d7e42983a': 'bright',
                     },
+                    boost: {
+                        bright: RESOURCE_LEMERGIUM_ALKALIDE,
+                        tright: RESOURCE_ZYNTHIUM_ALKALIDE,
+                    },
                     reactions: [
                         {
-                            labs: ['tleft', 'tright', 'bmiddle'],
-                            // load: [RESOURCE_OXYGEN, RESOURCE_ZYNTHIUM],
-                            load: [RESOURCE_OXYGEN, RESOURCE_LEMERGIUM],
-                            amount: 500,
+                            labs: ['tmiddle', 'bmiddle', 'tright'],
+                            load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
+                            amount: 2000,
                         },
                         {
                             labs: ['tleft', 'bleft', 'tmiddle'],
                             load: [RESOURCE_OXYGEN, RESOURCE_HYDROGEN],
                             amount: 1500,
                         },
-                        {
-                            labs: ['tmiddle', 'bmiddle', 'bright'],
-                            // load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
-                            load: [RESOURCE_HYDROXIDE, RESOURCE_LEMERGIUM_OXIDE],
-                            amount: 2000,
-                        },
+                        // {
+                        //     labs: ['tmiddle', 'bmiddle', 'bright'],
+                        //     // load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
+                        //     load: [RESOURCE_HYDROXIDE, RESOURCE_LEMERGIUM_OXIDE],
+                        //     amount: 2000,
+                        // },
                     ],
                 }
             },
@@ -134,7 +137,7 @@ module.exports = (function() {
                 creeps: {
                     claimer: 1,
                     settler: 1,
-                    collector: 2,
+                    collector: 1,
                 },
             },
             homeLeft:{
@@ -224,6 +227,19 @@ module.exports = (function() {
                     priority: 'low',
                     memo: {
                         role: 'transfer',
+                    }
+                },
+
+                keeperKiller: {
+                    minimum: 0,
+                    priority: 'critical',
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E66N44',
+                        moveFlag: 'skIdleFlag',
                     }
                 },
 
