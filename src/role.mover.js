@@ -14,11 +14,32 @@ module.exports = (function() {
          * @param {Creep} creep
          */
         run: function(creep) {
-            if(creep.carry.energy == 0) {
+            if(actionUtils.shouldHarvestEnergy(creep)) {
 
-                var sources = creep.room.getDroppedResources({resource: RESOURCE_ENERGY});
-                sources = sources.filter(src => src.pos.lookFor(LOOK_FLAGS).filter(/**Flag*/ f=> f.color == COLOR_CYAN).length == 0)
-                var source = _.first(_.sortBy(sources, r => r.amount * -1));
+                let source;
+
+                let job = creep.getJob();
+                if(!job) {
+                    let handler = creep.workRoomHandler;
+                    let jobs = handler.searchJobs({type: 'pickup', freeReserve: 100});
+                    job = _.first(_.sortBy(jobs, job => job.amount * -1));
+
+                    if(job) {
+                        creep.takePartialJob(job, creep.carryCapacity);
+                    }
+                }
+
+                if(job) {
+                    if(job.type != 'pickup') {
+                        logger.error('OMG CREEP', creep.name, 'HAS JOB HERE', JSON.stringify(job));
+                    }
+
+                    source = Game.getObjectById(job.sourceId);
+
+                    if(!source) {
+                        creep.releasePartialJob();
+                    }
+                }
 
                 if(!source) {
                     let containers = creep.room.getContainers({resource: RESOURCE_ENERGY, amount: creep.carryCapacity});
@@ -42,13 +63,19 @@ module.exports = (function() {
                         if(result == ERR_NOT_IN_RANGE) {
                             creep.moveTo(source);
                         }
+
+                        if(job) {
+                            if(result == OK || result == ERR_FULL) {
+                                creep.finishJob();
+                            }
+                        }
                 }
             }
             else {
                 let job = creep.getJob();
 
                 if(!job) {
-                    var handler = creep.workRoomHandler;
+                    let handler = creep.workRoomHandler;
                     let jobs = handler.searchJobs({type: 'refill', subtype: 'spawn'});
                     job = _.first(_.sortBy(jobs, j => creep.pos.getRangeTo(RoomPosition.fromDict(j.targetPos))));
 
@@ -63,6 +90,10 @@ module.exports = (function() {
                 }
 
                 if(job) {
+                    if(job.type == 'pickup') {
+                        logger.error('OMG CREEP', creep.name, 'HAS PICKUP JOB HERE', JSON.stringify(job))
+                    }
+
                     let targetPos = RoomPosition.fromDict(job.targetPos);
                     creep.moveTo(targetPos);
                     let result = creep.transfer(Game.getObjectById(job.targetId), RESOURCE_ENERGY);

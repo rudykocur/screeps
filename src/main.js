@@ -40,7 +40,7 @@ var roleModules = {
     none: {run: function() {}},
 };
 
-profiler.enable();
+// profiler.enable();
 
 module.exports = (function() {
 
@@ -50,10 +50,10 @@ module.exports = (function() {
 
     return {
         loop: function() {
-            profiler.wrap(function() {
-                module.exports.runLoop();
-            });
-            // module.exports.runLoop();
+            // profiler.wrap(function() {
+            //     module.exports.runLoop();
+            // });
+            module.exports.runLoop();
         },
 
         runLoop: function () {

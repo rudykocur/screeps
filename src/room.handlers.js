@@ -63,7 +63,21 @@ module.exports = (function() {
                     if(job.takenBy && !Game.getObjectById(job.takenBy)) {
                         job.takenBy = null;
                     }
+
+                    if(job.reservations) {
+                        let creeps = _.keys(job.reservations);
+                        let toDelete = _.filter(creeps, creepId => Game.getObjectById(creepId) == null);
+                        if(toDelete.length > 0) {
+                            toDelete.forEach(key => delete job.reservations[key]);
+                        }
+                    }
                 });
+
+                let toDelete = _.filter(jobs, job => job.sourceId && Game.getObjectById(job.sourceId) == null).map(job => job.key);
+
+                if(toDelete.length > 0) {
+                    toDelete.forEach(key => delete jobs[key]);
+                }
             }
 
             prepareJobBoard() {
@@ -118,6 +132,7 @@ module.exports = (function() {
                     type: null,
                     subtype: null,
                     onlyFree: true,
+                    freeReserve: null,
                 });
 
                 var jobs = this.state.jobs;
@@ -132,6 +147,10 @@ module.exports = (function() {
                     }
 
                     if(options.onlyFree && job.takenBy) {
+                        return false;
+                    }
+
+                    if(options.freeReserve && _.sum(job.reservations) + options.freeReserve > job.amount) {
                         return false;
                     }
 

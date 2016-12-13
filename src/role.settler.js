@@ -87,7 +87,7 @@ module.exports = (function() {
                 }
 
                 if(!creep.memory.disableStorage) {
-                    if(actionHarvest.tryTransferToStorage(creep)) {
+                    if(actionHarvest.tryTransferToStorage(creep, {allowContainers: false})) {
                         return
                     }
                 }

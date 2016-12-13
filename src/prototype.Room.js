@@ -97,17 +97,18 @@ Room.prototype.getDroppedResources = function(options) {
         state.refreshTime_droppedResources = Game.time;
 
         state.droppedResources = this.find(FIND_DROPPED_RESOURCES).map(r=> {
-            return {id: r.id, amount: r.amount, resource: r.resourceType};
+            return {id: r.id, amount: r.amount, resourceType: r.resourceType, pos: r.pos};
         });
     }
 
+    options = options || {};
     _.defaults(options, {
         resource: null
     });
 
     let result = state.droppedResources;
     if(options.resource) {
-        result = result.filter(r => r.resource == options.resource);
+        result = result.filter(r => r.resourceType == options.resource);
     }
 
     return result.map(r => Game.getObjectById(r.id)).filter(r => r != null);

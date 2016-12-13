@@ -54,11 +54,27 @@ Creep.prototype.takeJob = function(job) {
     job.takenBy = this.id;
 };
 
+Creep.prototype.takePartialJob = function(job, amount) {
+    this.memory.job = job;
+    job.reservations[this.id] = amount;
+};
+
 Creep.prototype.releaseJob = function() {
     var job = this.memory.job;
     if(job) {
         var room = Room.byCustomName(job.room);
         room.handlerMemory.jobs[job.key].takenBy = null;
+    }
+
+    delete this.memory.job;
+    this.memory.tasks = [];
+};
+
+Creep.prototype.releasePartialJob = function() {
+    var job = this.memory.job;
+    if(job) {
+        var room = Room.byCustomName(job.room);
+        delete room.handlerMemory.jobs[job.key].reservations[this.id];
     }
 
     delete this.memory.job;
@@ -74,7 +90,13 @@ Creep.prototype.finishJob = function() {
 
     var room = Room.byCustomName(job.room);
 
-    delete room.handlerMemory.jobs[job.key];
+    if(room.handlerMemory.jobs[job.key].reservations) {
+        delete room.handlerMemory.jobs[job.key].reservations[this.id];
+    }
+    else {
+        delete room.handlerMemory.jobs[job.key];
+    }
+
     delete this.memory.job;
     this.memory.tasks = [];
 };

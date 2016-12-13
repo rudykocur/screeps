@@ -115,8 +115,8 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 0,
                     builder: 1,
-                    mover: 4,
-                    settler: 5,
+                    mover: 3,
+                    settler: 6,
                 }
             },
             homeTop: {

@@ -109,6 +109,7 @@ module.exports = (function() {
 
                 this.createLabTransferJobs();
                 this.createMoveMineralToStorageJob();
+                this.createResourcePickupJobs();
             }
 
             processStorageSurplusJobs(storage, terminal) {
@@ -393,6 +394,37 @@ module.exports = (function() {
                 }
             }
 
+            createResourcePickupJobs() {
+                var resources = this.room.getDroppedResources();
+                var jobs = this.state.jobs;
+
+                resources.forEach(/**{id,amount,resourceType,pos}*/ res => {
+                    var key = `pickup-${res.resourceType}-${res.id}`;
+
+                    var flags = RoomPosition.fromDict(res.pos).lookFor(LOOK_FLAGS);
+                    var isDropPoint = flags.filter(/**Flag*/ f => f.color == COLOR_CYAN).length > 0;
+
+                    if(!isDropPoint) {
+                        if(!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'pickup',
+                                sourceId: res.id,
+                                sourcePos: res.pos,
+                                reservations: {},
+                                amount: 0,
+                            }
+                        }
+
+                        jobs[key].amount = res.amount;
+                    }
+                    else {
+                        delete jobs[key];
+                    }
+                })
+            }
+
             maintainPopulation(type, blueprint, priority) {
                 var amount = _.get(this.config, ['creeps', type], 0);
                 this.maintainPopulationAmount(type, amount, blueprint, priority);
@@ -425,9 +457,16 @@ module.exports = (function() {
 
                 var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
 
-                var creeps = this.findCreeps(blueprint.role).filter(c => c.ticksToLive > spawnTime * 0.75);
+                var creeps = this.findCreeps(blueprint.role).filter(c => {
+                    if(c.spawning) {
+                        return true;
+                    }
+
+                    return c.ticksToLive > spawnTime * 0.75
+                });
 
                 if(creeps.length < amount) {
+
                     var memo = _.defaults({
                         room: this.room.name,
                         role: blueprint.role,
