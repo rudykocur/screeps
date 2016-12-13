@@ -81,6 +81,11 @@ module.exports = (function() {
             }
 
             prepareJobBoard() {
+                this.createMiningJobs();
+                this.createResourcePickupJobs();
+            }
+
+            createMiningJobs() {
                 var jobs = this.state.jobs;
 
                 var sources = this.room.find(FIND_SOURCES);
@@ -126,6 +131,38 @@ module.exports = (function() {
                     }
                 });
             }
+
+            createResourcePickupJobs() {
+                var resources = this.room.getDroppedResources();
+                var jobs = this.state.jobs;
+
+                resources.forEach(/**{id,amount,resourceType,pos}*/ res => {
+                    var key = `pickup-${res.resourceType}-${res.id}`;
+
+                    var flags = RoomPosition.fromDict(res.pos).lookFor(LOOK_FLAGS);
+                    var isDropPoint = flags.filter(/**Flag*/ f => f.color == COLOR_CYAN).length > 0;
+
+                    if(!isDropPoint) {
+                        if(!(key in jobs)) {
+                            jobs[key] = {
+                                key: key,
+                                room: this.room.customName,
+                                type: 'pickup',
+                                sourceId: res.id,
+                                sourcePos: res.pos,
+                                reservations: {},
+                                amount: 0,
+                            }
+                        }
+
+                        jobs[key].amount = res.amount;
+                    }
+                    else {
+                        delete jobs[key];
+                    }
+                })
+            }
+
 
             searchJobs(options) {
                 _.defaults(options, {

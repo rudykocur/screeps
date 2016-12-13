@@ -26,15 +26,16 @@ module.exports = (function() {
                     this.spawnDefenders(this.state.hostiles);
                 }
 
+                if(!this.room) {
+                    this.sendScout();
+                }
+
                 if(this.state.sources) {
                     this.pingMiners();
                 }
                 else {
                     if(this.room) {
                         this.discoverSources();
-                    }
-                    else {
-                        this.sendScout();
                     }
                 }
 
