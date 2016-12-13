@@ -78,7 +78,7 @@ module.exports = (function() {
                 panicMode: false,
                 creeps: {
                     upgrader: 4,
-                    builder: 1,
+                    builder: 2,
                     mover: 2,
                 },
                 minerals: {
@@ -97,7 +97,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 120000,
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 6,
                     builder: 0,
                     mover: 2,
                 }
@@ -162,7 +162,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"kaerMorhen",
                 creeps: {
-                    collector: 2,
+                    collector: 1,
                     claimer: 1,
                     settler: 1,
                 }
@@ -194,7 +194,7 @@ module.exports = (function() {
                 offroad: true,
                 spawnRooms: ['home'],
                 creeps: {
-                    collector: 2,
+                    collector: 1,
                 },
             },
             loneOutpost:{
@@ -264,6 +264,7 @@ module.exports = (function() {
 
             Cheshire: {},
             Brokilon: {},
+            Ys: {},
 
             Moria: {
                 moriaMineralTransfer: {
