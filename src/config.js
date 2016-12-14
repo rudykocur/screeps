@@ -22,7 +22,7 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 4,
                     builder: 1,
                     mover: 2,
                 },
@@ -78,7 +78,7 @@ module.exports = (function() {
                 panicMode: false,
                 creeps: {
                     upgrader: 4,
-                    builder: 2,
+                    builder: 1,
                     mover: 2,
                 },
                 minerals: {
@@ -119,7 +119,7 @@ module.exports = (function() {
                     upgrader: 0,
                     builder: 1,
                     mover: 3,
-                    settler: 6,
+                    settler: 3,
                 }
             },
             homeTop: {
