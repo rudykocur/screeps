@@ -1,4 +1,4 @@
-const profiler = require('screeps-profiler');
+const profiler = require('./profiler-impl');
 
 const actionHarvest = require('action.harvest');
 const actionUtils = require('action.utils');

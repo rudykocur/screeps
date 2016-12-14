@@ -1,4 +1,4 @@
-const profiler = require('screeps-profiler');
+const profiler = require('./profiler-impl');
 
 const config = require('config');
 const logger = require('logger');

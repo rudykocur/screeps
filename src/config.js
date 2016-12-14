@@ -214,17 +214,17 @@ module.exports = (function() {
                     claimer: 1,
                 }
             },
-            lair1: {
-                type: "sourceKeeper",
-                homeRoom: "home",
-                spawnRooms: ['home', 'moria'],
-                creeps: {
-                    defender: 1,
-                    settler: 1,
-                    harvester: 2,
-                    collector: 4,
-                },
-            }
+            // lair1: {
+            //     type: "sourceKeeper",
+            //     homeRoom: "home",
+            //     spawnRooms: ['home', 'moria'],
+            //     creeps: {
+            //         defender: 1,
+            //         settler: 1,
+            //         harvester: 2,
+            //         collector: 4,
+            //     },
+            // }
         },
 
         spawn: {

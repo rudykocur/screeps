@@ -1,4 +1,4 @@
-const profiler = require('screeps-profiler');
+const profiler = require('./profiler-impl');
 
 const config = require('config');
 const logger = require('logger');
@@ -373,9 +373,7 @@ module.exports = (function() {
                     target = this.room.getStorage();
                 }
 
-                var container = _.first(mineral.pos.findInRange(FIND_STRUCTURES, 1, {
-                    filter: {structureType: STRUCTURE_CONTAINER}
-                }));
+                var container = _.first(mineral.pos.findInRange(this.room.getContainers(), 1));
 
                 var key = `mineralMove-${mineral.mineralType}`;
                 if(container && container.store[mineral.mineralType] > 400) {

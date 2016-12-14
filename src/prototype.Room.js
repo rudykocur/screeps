@@ -115,6 +115,7 @@ Room.prototype.getDroppedResources = function(options) {
 };
 
 Room.prototype.getContainers = function(options) {
+    options = options || {}
     _.defaults(options, {
         resource: null,
         amount: 0,

@@ -1,4 +1,4 @@
-const profiler = require('screeps-profiler');
+const profiler = require('./profiler-impl');
 
 require('prototype.Room');
 require('prototype.RoomPosition');
@@ -41,7 +41,7 @@ var roleModules = {
     none: {run: function() {}},
 };
 
-// profiler.enable();
+profiler.enable();
 
 module.exports = (function() {
 
@@ -51,10 +51,14 @@ module.exports = (function() {
 
     return {
         loop: function() {
-            // profiler.wrap(function() {
-            //     module.exports.runLoop();
-            // });
-            module.exports.runLoop();
+            profiler.wrap(function() {
+                module.exports.runLoop();
+            });
+
+            // if(profiler.print) {
+            //     profiler.print();
+            // }
+            // module.exports.runLoop();
         },
 
         runLoop: function () {
