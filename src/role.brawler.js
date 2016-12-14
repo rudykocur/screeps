@@ -5,12 +5,71 @@ const actionCombat = require('action.combat');
 
 module.exports = (function() {
 
+    /**
+     * @param {Creep} creep
+     */
+    function tryBoostSelf(creep) {
+        var toBoostParts = creep.memory.boost;
+
+        if(!toBoostParts) {
+            return;
+        }
+
+        var toBoost = null;
+
+        // toBoost.forEach(/**{part,resource,amount}*/boostData => {
+        for(let i = 0; i < toBoostParts.length; i++) {
+            let boostData = toBoostParts[i];
+            var boostedParts = _.filter(creep.body, part => part.type == boostData.part && part.boost == boostData.resource);
+
+            var neededAmount = boostData.amount - boostedParts.length;
+
+            if(neededAmount > 0) {
+                toBoost = {
+                    resource: boostData.resource,
+                    amount: neededAmount,
+                };
+                break;
+            }
+        }
+
+        if(toBoost) {
+            let lab = _.first(creep.room.find(FIND_STRUCTURES).filter(/**StructureLab*/ struct => {
+                if(!struct instanceof StructureLab) {
+                    return false;
+                }
+
+                return struct.mineralType == toBoost.resource;
+            }));
+
+            if(!lab) {
+                console.log('No lab to boost', creep.name, '::', JSON.stringify(toBoost));
+            }
+
+            if(creep.pos.isNearTo(lab)) {
+                console.log('trying to boost', lab, '::', lab.mineralType, '::', toBoost.amount);
+                lab.boostCreep(creep, toBoost.amount);
+            }
+            else {
+                creep.moveTo(lab);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
     return {
         /**
          * test
          * @param {Creep} creep
          */
         run:  function(creep) {
+
+            if(tryBoostSelf(creep)) {
+                return;
+            }
 
             if(creep.memory.room && creep.pos.room != creep.memory.room) {
                 var targetRoom = Game.rooms[creep.memory.room];

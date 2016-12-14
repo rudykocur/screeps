@@ -30,6 +30,7 @@ var roleModules = {
     mover: require('role.mover'),
     builder: require('role.builder'),
     brawler: require('role.brawler'),
+    lairDefender: require('role.lairDefender'),
     transfer: require('role.transfer'),
     collector: require('role.collector'),
     claimer: require('role.claimer'),

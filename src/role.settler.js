@@ -67,7 +67,7 @@ module.exports = (function() {
 
                 var ctrl = creep.room.controller;
 
-                if(ctrl.my && ctrl.ticksToDowngrade < 4000) {
+                if(ctrl && ctrl.my && ctrl.ticksToDowngrade < 4000) {
                     if(creep.upgradeController(ctrl) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(ctrl);
                         return;

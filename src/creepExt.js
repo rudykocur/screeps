@@ -40,7 +40,7 @@ Creep.prototype.getJob = function() {
 
     if(job) {
         var room = Room.byCustomName(job.room);
-        if(!(job.key in room.handlerMemory.jobs)) {
+        if(!(job.key in this.workRoomHandler.state.jobs)) {
             delete this.memory.job;
             return;
         }

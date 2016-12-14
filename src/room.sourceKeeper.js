@@ -15,13 +15,19 @@ module.exports = (function() {
                 super(roomName, state, config);
 
                 this.type = 'sourceKeeper';
+
+                _.defaults(this.state, {
+                    flags: {},
+                });
             }
 
             process() {
                 super.process();
 
-                if(this.state.sources) {
+                if(this.state.lairs) {
 
+                    this.createMiningJobs();
+                    this.createDefendJobs();
                 }
                 else {
                     if(this.room) {
@@ -31,6 +37,98 @@ module.exports = (function() {
                         this.sendScout();
                     }
                 }
+
+                this.maintainPopulation('defender', config.blueprints.lairDefender, spawnQueue.PRIORITY_HIGH);
+                this.maintainPopulation('collector', config.blueprints.outpostCollector, spawnQueue.PRIORITY_NORMAL);
+                this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
+                this.maintainPopulation('harvester', config.blueprints.lairHarvester, spawnQueue.PRIORITY_NORMAL);
+            }
+
+            getKeeperFlags() {
+                var flags = _.groupBy(Game.flags, 'pos.roomName')[this.roomId];
+                return flags.filter(/**Flag*/f => f.color == COLOR_RED && f.secondaryColor == COLOR_WHITE);
+            }
+
+            getObjectsAroundFlags() {
+                var flags = this.getKeeperFlags();
+
+                this.state.flags = flags.map(/**Flag*/ flag => {
+                    var source = _.first(this.state.sources.filter(/**{id,pos}*/ src => {
+                        return flag.pos.getRangeTo(RoomPosition.fromDict(src.pos)) < 6;
+                    }));
+
+                    var lair = _.first(this.state.lairs.filter(/**{id,pos}*/ lair => {
+                        return flag.pos.getRangeTo(RoomPosition.fromDict(lair.pos)) < 6;
+                    }));
+
+                    return {
+                        source: source.id,
+                        sourcePos: source.pos,
+                        flagPos: flag.pos,
+                        flagName: flag.name,
+                        lairId: lair.id,
+                        lairPos: lair.pos,
+                    }
+                });
+
+                return this.state.flags;
+            }
+
+            /**
+             * Override from base class - completely different logic
+             */
+            createMiningJobs() {
+                var jobs = this.state.jobs;
+
+                var flags = this.getObjectsAroundFlags();
+
+                flags.forEach(/**{source,sourcePos}*/ data => {
+                    var key = `lair-mining-${data.source}`;
+
+                    if(!(key in jobs)) {
+                        jobs[key] = {
+                            key: key,
+                            room: this.roomName,
+                            type: 'harvest',
+                            subtype: 'energy',
+                            sourceId: data.source,
+                            sourcePos: data.sourcePos,
+                            takenBy: null,
+                        };
+                    }
+                });
+            }
+
+            createDefendJobs() {
+                var jobs = this.state.jobs;
+
+                var flags = this.getObjectsAroundFlags();
+
+                flags.forEach(/**{flagName,flagPos}*/ data => {
+                    var key = `lair-defend-${data.flagName}`;
+
+                    if(!(key in jobs)) {
+                        jobs[key] = {
+                            key: key,
+                            room: this.roomName,
+                            type: 'combat',
+                            subtype: 'defendLair',
+                            flagName: data.flagName,
+                            sourcePos: data.flagPos,
+                            takenBy: null,
+                            priority: 1000,
+                        };
+                    }
+
+                    /** @type StructureKeeperLair */
+                    var lair = Game.getObjectById(data.lairId);
+                    if(lair && lair.ticksToSpawn) {
+                        jobs[key].priority = lair.ticksToSpawn;
+                    }
+                    else {
+                        jobs[key].priority = 1000;
+                    }
+                });
             }
 
             discoverRoom() {
@@ -68,22 +166,40 @@ module.exports = (function() {
                 }
             }
 
-
             maintainPopulation(type, blueprint, priority) {
-                if(!this.config.creeps || !this.config.creeps[type]) {
+                var amount = _.get(this.config, ['creeps', type], 0);
+                this.maintainPopulationAmount(type, amount, blueprint, priority);
+            }
+
+            maintainPopulationAmount(type, amount, blueprint, priority, ignorePrespawn) {
+                if(amount <= 0) {
                     return;
                 }
 
                 var creeps = this.findCreeps(blueprint.role);
+                var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME * 0.9;
 
-                if(creeps.length < this.config.creeps[type]) {
+                creeps = creeps.filter(c => {
+                    if(c.spawning) {
+                        return true;
+                    }
+
+                    let prespawnTime = 0;
+                    if(!ignorePrespawn) {
+                        prespawnTime = Math.min(c.memory.prespawnTime || 0, 300) * 0.9;
+                    }
+
+                    return c.ticksToLive > prespawnTime + spawnTime;
+                });
+
+                if(creeps.length < amount) {
                     var memo = _.defaults({
-                        room: this.room.name,
+                        room: Room.customNameToId(this.roomName),
                         role: blueprint.role,
                     }, blueprint.memo);
 
                     spawnQueue.enqueueCreep(priority, this.homeRoom(), this.getCreepName(type),
-                        blueprint.body, memo);
+                        blueprint.body, memo, null, this.config.spawnRooms);
                 }
             }
 

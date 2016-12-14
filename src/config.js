@@ -32,12 +32,12 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_ZYNTHIUM]: 0,
                         [RESOURCE_OXYGEN]: 0,
-                        [RESOURCE_ENERGY]: 500000,
+                        // [RESOURCE_ENERGY]: 500000,
                     }
                 },
                 terminal: {
                     require: {
-                        // [RESOURCE_ENERGY]: 20000,
+                        [RESOURCE_ENERGY]: 20000,
                     }
                 },
                 labs: {
@@ -97,8 +97,8 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 120000,
                 creeps: {
-                    upgrader: 6,
-                    builder: 0,
+                    upgrader: 5,
+                    builder: 2,
                     mover: 2,
                 }
             },
@@ -116,15 +116,16 @@ module.exports = (function() {
                 panicMode: true,
                 wallsHp: 5000,
                 creeps: {
-                    upgrader: 0,
+                    upgrader: 2,
                     builder: 1,
                     mover: 3,
-                    settler: 3,
+                    settler: 0,
                 }
             },
             homeTop: {
                 type:"outpost",
                 homeRoom:"home",
+                spawnRooms: ['home', 'moria'],
                 creeps: {
                     claimer: 1,
                     settler: 1,
@@ -170,7 +171,7 @@ module.exports = (function() {
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['home'],
+                spawnRooms: ['home', 'moria'],
                 creeps: {
                     settler: 1,
                     claimer: 1,
@@ -180,7 +181,7 @@ module.exports = (function() {
             moriaBottom: {
                 type: "outpost",
                 homeRoom: "moria",
-                spawnRooms: ['home'],
+                spawnRooms: ['home', 'moria'],
                 offroad: true,
                 creeps: {
                     settler: 1,
@@ -192,7 +193,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "moria",
                 offroad: true,
-                spawnRooms: ['home'],
+                spawnRooms: ['home', 'moria'],
                 creeps: {
                     collector: 1,
                 },
@@ -216,6 +217,13 @@ module.exports = (function() {
             lair1: {
                 type: "sourceKeeper",
                 homeRoom: "home",
+                spawnRooms: ['home', 'moria'],
+                creeps: {
+                    defender: 1,
+                    settler: 2,
+                    harvester: 1,
+                    collector: 0,
+                },
             }
         },
 
@@ -233,13 +241,35 @@ module.exports = (function() {
                 keeperKiller: {
                     minimum: 0,
                     priority: 'critical',
-                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                        MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    //     MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                    //     ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
                     memo: {
                         role: 'brawler',
                         room: 'E66N44',
-                        moveFlag: 'skIdleFlag',
+                        guardFlag: 'skIdleFlag',
+                        // boost: [
+                        //     {part: MOVE, resource: RESOURCE_ZYNTHIUM_ALKALIDE, amount: 3},
+                        //     {part: HEAL, resource: RESOURCE_LEMERGIUM_ALKALIDE, amount: 3},
+                        // ]
+                    }
+                },
+
+                testBoost: {
+                    minimum: 0,
+                    priority: 'critical',
+                    body: [MOVE,MOVE],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E66N44',
+                        guardFlag: 'skIdleFlag',
+                        boost: [
+                            {part: MOVE, resource: RESOURCE_ZYNTHIUM_ALKALIDE, amount: 1},
+                            // {part: HEAL, resource: RESOURCE_LEMERGIUM_ALKALIDE, amount: 1},
+                        ]
                     }
                 },
 
@@ -345,6 +375,14 @@ module.exports = (function() {
                 memo: {
                     disableController: true,
                 },
+            },
+            lairDefender: {
+                body: 'lairDefender',
+                role: 'lairDefender',
+            },
+            lairHarvester: {
+                body: 'harvesterLair',
+                role: 'harvester',
             },
         },
     }
