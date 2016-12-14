@@ -1,47 +1,49 @@
 const profiler = require('./profiler-impl');
 
-require('prototype.Room');
-require('prototype.RoomPosition');
+require('./prototype.Room');
+require('./prototype.RoomPosition');
 
-const creepSpawn = require('creepSpawn');
-const creepExt = require('creepExt');
-const config = require('config');
-const logger = require('logger');
-const spawnQueue = require('spawnQueue');
+const creepSpawn = require('./creepSpawn');
+const creepExt = require('./creepExt');
+const config = require('./config');
+const logger = require('./logger');
+const spawnQueue = require('./spawnQueue');
 
-const gang = require('gang');
-const combatAction = require('combatAction');
-const roomHanders = require('room.handlers');
+const gang = require('./gang');
+const combatAction = require('./combatAction');
+const roomHanders = require('./room.handlers');
 
-var roleTower = require('role.tower');
+var roleTower = require('./role.tower');
 
 var taskModules = [
-    require('task.withdrawFromStorage'),
-    require('task.upgradeController'),
-    require('task.move'),
-    require('task.harvest'),
+    require('./task.withdrawFromStorage'),
+    require('./task.upgradeController'),
+    require('./task.move'),
+    require('./task.harvest'),
 ];
 
 var roleModules = {
-    'harvester-pure': require('role.harvester-pure'),
-    harvester: require('role.harvester-pure'),
-    mineralHarvester: require('role.harvester-pure'),
-    upgrader: require('role.upgrader'),
-    mover: require('role.mover'),
-    builder: require('role.builder'),
-    brawler: require('role.brawler'),
-    lairDefender: require('role.lairDefender'),
-    transfer: require('role.transfer'),
-    collector: require('role.collector'),
-    claimer: require('role.claimer'),
-    settler: require('role.settler'),
-    scout: require('role.scout'),
-    combatTank: require('role.combatTank'),
-    combatHealer: require('role.combatHealer'),
+    'harvester-pure': require('./role.harvester-pure'),
+    harvester: require('./role.harvester-pure'),
+    mineralHarvester: require('./role.harvester-pure'),
+    upgrader: require('./role.upgrader'),
+    mover: require('./role.mover'),
+    builder: require('./role.builder'),
+    brawler: require('./role.brawler'),
+    lairDefender: require('./role.lairDefender'),
+    transfer: require('./role.transfer'),
+    collector: require('./role.collector'),
+    claimer: require('./role.claimer'),
+    settler: require('./role.settler'),
+    scout: require('./role.scout'),
+    combatTank: require('./role.combatTank'),
+    combatHealer: require('./role.combatHealer'),
     none: {run: function() {}},
 };
 
-profiler.enable();
+// profiler.enable();
+
+profiler.registerClass(Game, 'Game');
 
 module.exports = (function() {
 

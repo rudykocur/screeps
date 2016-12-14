@@ -1,11 +1,11 @@
 const profiler = require('./profiler-impl');
 
-const actionHarvest = require('action.harvest');
-const actionUtils = require('action.utils');
-const bookmarks = require('bookmarks');
-const creepExt = require('creepExt');
-const taskUpgrade = require('task.upgradeController');
-const taskWithdraw = require('task.withdrawFromStorage');
+const actionHarvest = require('./action.harvest');
+const actionUtils = require('./action.utils');
+const bookmarks = require('./bookmarks');
+const creepExt = require('./creepExt');
+const taskUpgrade = require('./task.upgradeController');
+const taskWithdraw = require('./task.withdrawFromStorage');
 
 module.exports = (function() {
 

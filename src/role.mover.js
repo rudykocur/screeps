@@ -1,11 +1,11 @@
 const profiler = require('./profiler-impl');
 
-const logger = require('logger');
+const logger = require('./logger');
 
-const actionHarvest = require('action.harvest');
-const actionUtils = require('action.utils');
+const actionHarvest = require('./action.harvest');
+const actionUtils = require('./action.utils');
 
-const taskMove = require('task.move');
+const taskMove = require('./task.move');
 
 module.exports = (function() {
 

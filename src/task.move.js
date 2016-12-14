@@ -1,6 +1,7 @@
-const creepExt = require('creepExt');
+const profiler = require('./profiler-impl');
+const creepExt = require('./creepExt');
 
-const actionUtils = require('action.utils');
+const actionUtils = require('./action.utils');
 
 module.exports = (function() {
 
@@ -74,3 +75,6 @@ module.exports = (function() {
 
     }
 })();
+
+// profiler.registerObject(module.exports, 'task-move');
+profiler.registerObject(module.exports.task, 'task-move-class');

@@ -1,6 +1,6 @@
-const actionHarvest = require('action.harvest');
-const actionBuld = require('action.build');
-const actionUtils = require('action.utils');
+const actionHarvest = require('./action.harvest');
+const actionBuld = require('./action.build');
+const actionUtils = require('./action.utils');
 
 module.exports = (function() {
 

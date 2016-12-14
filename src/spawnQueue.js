@@ -1,10 +1,10 @@
 const profiler = require('./profiler-impl');
 
-const logger = require('logger');
-const utils = require('utils');
-const bodyConfig = require('config.body');
+const logger = require('./logger');
+const utils = require('./utils');
+const bodyConfig = require('./config.body');
 
-const roomHandlers = require('room.handlers');
+const roomHandlers = require('./room.handlers');
 
 module.exports = (function() {
     var queues = {};

@@ -1,5 +1,5 @@
 
-const config = require('config');
+const config = require('./config');
 
 var customNameToRoomId = {};
 _.each(config.roomNames, (roomName, roomId) => {

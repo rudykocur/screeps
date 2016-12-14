@@ -1,6 +1,8 @@
-const creepExt = require('creepExt');
 
-const actionUtils = require('action.utils');
+const profiler = require('./profiler-impl');
+const creepExt = require('./creepExt');
+
+const actionUtils = require('./action.utils');
 
 module.exports = (function() {
 
@@ -50,3 +52,5 @@ module.exports = (function() {
 
     }
 })();
+
+profiler.registerObject(module.exports.task, 'task-withdraw-class');

@@ -1,13 +1,13 @@
 const profiler = require('./profiler-impl');
 
-const actionHarvest = require('action.harvest');
-const actionUtils = require('action.utils');
-const bookmarks = require('bookmarks');
-const logger = require('logger');
+const actionHarvest = require('./action.harvest');
+const actionUtils = require('./action.utils');
+const bookmarks = require('./bookmarks');
+const logger = require('./logger');
 
-const creepExt = require('creepExt');
-const taskMove = require('task.move');
-const taskHarvest = require('task.harvest');
+const creepExt = require('./creepExt');
+const taskMove = require('./task.move');
+const taskHarvest = require('./task.harvest');
 
 module.exports = (function() {
 

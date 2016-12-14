@@ -1,7 +1,9 @@
-const actionHarvest = require('action.harvest');
-const actionBuld = require('action.build');
-const actionUtils = require('action.utils');
-const actionCombat = require('action.combat');
+const profiler = require('./profiler-impl');
+
+const actionHarvest = require('./action.harvest');
+const actionBuld = require('./action.build');
+const actionUtils = require('./action.utils');
+const actionCombat = require('./action.combat');
 
 module.exports = (function() {
 
@@ -168,3 +170,5 @@ module.exports = (function() {
         }
     }
 })();
+
+profiler.registerObject(module.exports, 'role-brawler');

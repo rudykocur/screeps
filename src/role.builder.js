@@ -1,8 +1,8 @@
 const profiler = require('./profiler-impl');
 
-const actionHarvest = require('action.harvest');
-const actionUtils = require('action.utils');
-const actionBuild = require('action.build');
+const actionHarvest = require('./action.harvest');
+const actionUtils = require('./action.utils');
+const actionBuild = require('./action.build');
 
 module.exports = (function() {
 
@@ -41,6 +41,7 @@ module.exports = (function() {
                     }
                 }
 
+                // TODO: for optimizations!!
                 if(actionBuild.findNewStructureToRepair(creep)) {
                     if(actionBuild.actionTryRepair(creep)) {
                         return false;

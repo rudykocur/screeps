@@ -1,7 +1,9 @@
-const config = require('config');
-const logger = require('logger');
+const profiler = require('./profiler-impl');
 
-const actionCombat = require('action.combat');
+const config = require('./config');
+const logger = require('./logger');
+
+const actionCombat = require('./action.combat');
 
 const roomModules = ['outpost', 'colony', 'sourceKeeper'];
 
@@ -278,7 +280,7 @@ module.exports = (function() {
 
             var handlers = {};
             roomModules.forEach(modName => {
-                handlers[modName] = require('room.' + modName);
+                handlers[modName] = require('./room.' + modName);
             });
 
             _.each(config.rooms, (roomConfig, roomName) => {
@@ -301,7 +303,7 @@ module.exports = (function() {
         getRoomHandler: function(roomName) {
             var handlers = {};
             roomModules.forEach(modName => {
-                handlers[modName] = require('room.' + modName);
+                handlers[modName] = require('./room.' + modName);
             });
 
             var room = Room.byCustomName(roomName);
@@ -313,3 +315,5 @@ module.exports = (function() {
         }
     }
 })();
+
+profiler.registerClass(module.exports.RoomHander, 'BaseRoomHandler');

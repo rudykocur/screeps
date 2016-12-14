@@ -1,9 +1,9 @@
-const actionHarvest = require('action.harvest');
-const actionUtils = require('action.utils');
-const bookmarks = require('bookmarks');
-const utils = require('utils');
-const config = require('config');
-const roomHandler = require('room.handlers');
+const actionHarvest = require('./action.harvest');
+const actionUtils = require('./action.utils');
+const bookmarks = require('./bookmarks');
+const utils = require('./utils');
+const config = require('./config');
+const roomHandler = require('./room.handlers');
 
 Creep.prototype.debugLog = function(message) {
     if(this.memory.debug) {

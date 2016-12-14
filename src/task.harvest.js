@@ -1,4 +1,5 @@
-const creepExt = require('creepExt');
+const profiler = require('./profiler-impl');
+const creepExt = require('./creepExt');
 
 module.exports = (function() {
 
@@ -51,3 +52,5 @@ module.exports = (function() {
 
     }
 })();
+
+profiler.registerObject(module.exports.task, 'task-harvest-class');

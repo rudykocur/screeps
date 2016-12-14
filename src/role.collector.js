@@ -1,11 +1,11 @@
 const profiler = require('./profiler-impl');
 
-const actionHarvest = require('action.harvest');
-const actionUtils = require('action.utils');
-const bookmarks = require('bookmarks');
+const actionHarvest = require('./action.harvest');
+const actionUtils = require('./action.utils');
+const bookmarks = require('./bookmarks');
 
-const creepExt = require('creepExt');
-const taskMove = require('task.move');
+const creepExt = require('./creepExt');
+const taskMove = require('./task.move');
 
 module.exports = (function() {
     function queueTaskForDroppedEnergy(creep) {

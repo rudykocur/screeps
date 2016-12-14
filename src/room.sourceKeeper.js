@@ -1,12 +1,12 @@
 const profiler = require('./profiler-impl');
 
-const config = require('config');
-const logger = require('logger');
-const creepSpawn = require('creepSpawn');
-const roomHandlers = require('room.handlers');
-const spawnQueue = require('spawnQueue');
+const config = require('./config');
+const logger = require('./logger');
+const creepSpawn = require('./creepSpawn');
+const roomHandlers = require('./room.handlers');
+const spawnQueue = require('./spawnQueue');
 
-const roleCollector = require('role.collector');
+const roleCollector = require('./role.collector');
 
 module.exports = (function() {
     return {
