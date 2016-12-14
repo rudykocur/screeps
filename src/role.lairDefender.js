@@ -11,7 +11,7 @@ module.exports = (function() {
          * @param {Creep} creep
          */
         run:  function(creep) {
-            var job = _.first(creep.workRoomHandler.searchJobs({type: 'combat', subtype: 'defendLair'}));
+            var job = _.first(creep.workRoomHandler.searchJobs({type: 'combat', subtype: 'defendLair', onlyFree: false}));
 
             if(job) {
                 var room = Room.byCustomName(job.room);
