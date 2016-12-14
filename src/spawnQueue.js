@@ -68,6 +68,10 @@ module.exports = (function() {
 
                     spawnRooms.forEach(spawnRoom => {
 
+                        if(request.spawned) {
+                            return;
+                        }
+
                         if(!handlers[spawnRoom]) {
                             handlers[spawnRoom] = roomHandlers.getRoomHandler(spawnRoom);
                         }
@@ -98,8 +102,13 @@ module.exports = (function() {
                         }
 
                         request.memo.room = request.memo.room || handler.room.name;
+                        request.memo.spawnTime = body.length * CREEP_SPAWN_TIME;
 
                         var newCreepName = freeSpawn.createCreep(body, request.name, request.memo);
+
+                        if(newCreepName != request.name) {
+                            logger.error('Failed to spawn creep', request.name);
+                        }
 
                         if(request.callback) {
                             request.callback(newCreepName);
@@ -108,6 +117,8 @@ module.exports = (function() {
                         console.log('Spawn '+freeSpawn.name+': created creep. Name: ' + newCreepName+'. Queues:', module.exports.getSpawnStats());
 
                         blockedSpawns.push(freeSpawn.id);
+
+                        request.spawned = true;
                     });
                 }
             }

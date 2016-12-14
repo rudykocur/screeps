@@ -1,3 +1,5 @@
+const profiler = require('screeps-profiler');
+
 const actionHarvest = require('action.harvest');
 const actionBuld = require('action.build');
 const actionUtils = require('action.utils');
@@ -11,13 +13,37 @@ module.exports = (function() {
          * @param {Creep} creep
          */
         run:  function(creep) {
-            var job = _.first(creep.workRoomHandler.searchJobs({type: 'combat', subtype: 'defendLair', onlyFree: false}));
+            let nearThreat = _.first(creep.pos.findInRange(FIND_HOSTILE_CREEPS, 3));
+            if(nearThreat) {
+                if (creep.pos.isNearTo(nearThreat)) {
+                    creep.attack(nearThreat);
+                }
+                else {
+                    let result = creep.moveTo(nearThreat);
+
+                    if (creep.getActiveBodyparts(HEAL) > 0) {
+                        creep.heal(creep);
+                    }
+                }
+                return;
+            }
+
+            var jobs = creep.workRoomHandler.searchJobs({type: 'combat', subtype: 'defendLair', onlyFree: false});
+            var job = _.first(_.sortBy(jobs.filter(j => j.priority < 100), j => j.priority));
+
+            if(!job) {
+                job = _.first(jobs.filter(j => j.enemy));
+            }
+
+            if(!job) {
+                job = _.first(_.sortBy(jobs, j => j.priority));
+            }
 
             if(job) {
+
                 var room = Room.byCustomName(job.room);
 
                 if(room) {
-                    creep.setPrespawnTime();
 
                     let flag = Game.flags[job.flagName];
 
@@ -25,6 +51,7 @@ module.exports = (function() {
 
                     if(target) {
                         if (creep.pos.isNearTo(target)) {
+                            creep.setPrespawnTime();
                             creep.attack(target);
                         }
                         else {
@@ -40,7 +67,7 @@ module.exports = (function() {
                             if(creep.hits < creep.hitsMax) {
                                 creep.heal(creep);
                             }
-                            else {
+                            else if(job.priority > 60) {
                                 var wounded = creep.pos.findClosestByPath(FIND_MY_CREEPS, {
                                     filter: c => c.hits < c.hitsMax
                                 });
@@ -57,13 +84,24 @@ module.exports = (function() {
                             }
                         }
 
+                        if(creep.pos.isNearTo(flag)) {
+                            creep.setPrespawnTime();
+                        }
+
                         creep.moveTo(flag.pos);
                     }
                 }
                 else {
-                    creep.moveTo(RoomPosition.fromDict(job.sourcePos));
+                    let idlePos = RoomPosition.fromDict(job.sourcePos);
+                    if(creep.pos.isNearTo(idlePos)) {
+                        creep.setPrespawnTime();
+                    }
+
+                    creep.moveTo(idlePos);
                 }
             }
         }
     }
 })();
+
+profiler.registerObject(module.exports, 'role-lairDefender');

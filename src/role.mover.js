@@ -22,7 +22,7 @@ module.exports = (function() {
                 if(!job) {
                     let handler = creep.workRoomHandler;
                     let jobs = handler.searchJobs({type: 'pickup', freeReserve: 200});
-                    job = _.first(_.sortBy(jobs, job => job.amount * -1));
+                    job = _.first(_.sortBy(jobs.filter(j => !j.resource || j.resource == RESOURCE_ENERGY), job => job.amount * -1));
 
                     if(job) {
                         creep.takePartialJob(job, creep.carryCapacity);

@@ -22,7 +22,7 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 3,
                     builder: 1,
                     mover: 2,
                 },
@@ -77,7 +77,7 @@ module.exports = (function() {
                 type: "colony",
                 panicMode: false,
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 3,
                     builder: 1,
                     mover: 2,
                 },
@@ -96,6 +96,7 @@ module.exports = (function() {
             kaerMorhen: {
                 type: "colony",
                 wallsHp: 120000,
+                noMinerals: true,
                 creeps: {
                     upgrader: 5,
                     builder: 2,
@@ -114,12 +115,11 @@ module.exports = (function() {
             orphan: {
                 type: "colony",
                 panicMode: true,
-                wallsHp: 5000,
+                wallsHp: 10000,
                 creeps: {
-                    upgrader: 2,
+                    upgrader: 7,
                     builder: 1,
                     mover: 3,
-                    settler: 0,
                 }
             },
             homeTop: {
@@ -171,9 +171,9 @@ module.exports = (function() {
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['home', 'moria'],
+                spawnRooms: ['moria'],
                 creeps: {
-                    settler: 1,
+                    settler: 2,
                     claimer: 1,
                     collector: 1,
                 }
@@ -220,9 +220,9 @@ module.exports = (function() {
                 spawnRooms: ['home', 'moria'],
                 creeps: {
                     defender: 1,
-                    settler: 2,
-                    harvester: 1,
-                    collector: 0,
+                    settler: 1,
+                    harvester: 2,
+                    collector: 4,
                 },
             }
         },

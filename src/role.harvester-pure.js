@@ -55,16 +55,22 @@ module.exports = (function() {
             }
             else {
                 var targetRoom = Game.rooms[pos.roomName];
-                var container;
+                var harvestPosition;
 
                 if(targetRoom) {
-                    container = _.first(pos.findInRange(FIND_STRUCTURES, 1, {
+                    harvestPosition = _.first(pos.findInRange(FIND_STRUCTURES, 1, {
                         filter: {structureType: STRUCTURE_CONTAINER}
                     }));
                 }
 
-                if(container) {
-                    creepExt.addTask(creep, taskMove.task.create(creep, container));
+                if(targetRoom && !harvestPosition) {
+                    harvestPosition = _.first(pos.findInRange(FIND_FLAGS, 1, {
+                        filter: /**Flag*/flag => flag.color == COLOR_YELLOW
+                    }));
+                }
+
+                if(harvestPosition) {
+                    creepExt.addTask(creep, taskMove.task.create(creep, harvestPosition));
                 }
                 else {
                     creepExt.addTask(creep, taskMove.task.create(creep, pos));

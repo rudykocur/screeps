@@ -110,7 +110,7 @@ Creep.prototype.bodypartHpLeft = function(partType) {
 };
 
 Creep.prototype.getIdlePosition = function() {
-    var flags = _.filter(Game.flags, f => f.color != COLOR_GREY);
+    var flags = _.filter(Game.flags, f => f.color != COLOR_GREY && f.color != COLOR_RED);
     var flag = _.first(_.groupBy(flags, 'pos.roomName')[this.memory.room]);
 
     if(flag) {

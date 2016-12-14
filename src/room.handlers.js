@@ -148,6 +148,7 @@ module.exports = (function() {
                                 key: key,
                                 room: this.room.customName,
                                 type: 'pickup',
+                                resource:res.resourceType,
                                 sourceId: res.id,
                                 sourcePos: res.pos,
                                 reservations: {},

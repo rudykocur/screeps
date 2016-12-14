@@ -152,7 +152,9 @@ module.exports = (function() {
                         prespawnTime = Math.min(c.memory.prespawnTime || 0, 300) * 0.75;
                     }
 
-                    return c.ticksToLive > prespawnTime + spawnTime;
+                    let creepSpawnTime = c.memory.spawnTime? c.memory.spawnTime : spawnTime;
+
+                    return c.ticksToLive > prespawnTime + creepSpawnTime;
                 });
 
                 if(creeps.length < amount) {

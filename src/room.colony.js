@@ -437,8 +437,10 @@ module.exports = (function() {
                 this.maintainPopulationAmount('harvester', sources.length, config.blueprints.colonyHarvester,
                     spawnQueue.PRIORITY_CRITICAL);
 
-                this.maintainPopulationAmount('mineralHarvester', minerals.length, config.blueprints.colonyHarvesterMineral,
-                    spawnQueue.PRIORITY_NORMAL);
+                if(!this.config.noMinerals) {
+                    this.maintainPopulationAmount('mineralHarvester', minerals.length, config.blueprints.colonyHarvesterMineral,
+                        spawnQueue.PRIORITY_NORMAL);
+                }
             }
 
             maintainPopulationAmount(type, amount, blueprint, priority) {
@@ -453,7 +455,9 @@ module.exports = (function() {
                         return true;
                     }
 
-                    return c.ticksToLive > spawnTime * 0.75
+                    let creepSpawnTime = c.memory.spawnTime? c.memory.spawnTime : spawnTime;
+
+                    return c.ticksToLive > creepSpawnTime * 0.75
                 });
 
                 if(creeps.length < amount) {

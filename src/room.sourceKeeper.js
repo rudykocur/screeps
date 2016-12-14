@@ -39,14 +39,28 @@ module.exports = (function() {
                 }
 
                 this.maintainPopulation('defender', config.blueprints.lairDefender, spawnQueue.PRIORITY_HIGH);
-                this.maintainPopulation('collector', config.blueprints.outpostCollector, spawnQueue.PRIORITY_NORMAL);
                 this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
                 this.maintainPopulation('harvester', config.blueprints.lairHarvester, spawnQueue.PRIORITY_NORMAL);
+                this.maintainCollectors();
             }
 
             getKeeperFlags() {
                 var flags = _.groupBy(Game.flags, 'pos.roomName')[this.roomId];
                 return flags.filter(/**Flag*/f => f.color == COLOR_RED && f.secondaryColor == COLOR_WHITE);
+            }
+
+            maintainCollectors() {
+                let storage = this.homeRoom().getStorage();
+
+                if(!storage) {
+                    logger.mail(this.error("No storage for collector. Not spawning!"), 10);
+                    return;
+                }
+
+                var blueprint = JSON.parse(JSON.stringify(config.blueprints.outpostCollector));
+                blueprint.memo.storageId = storage.id;
+
+                this.maintainPopulation('collector', blueprint, spawnQueue.PRIORITY_NORMAL)
             }
 
             getObjectsAroundFlags() {
@@ -61,6 +75,8 @@ module.exports = (function() {
                         return flag.pos.getRangeTo(RoomPosition.fromDict(lair.pos)) < 6;
                     }));
 
+                    var enemy = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 5));
+
                     return {
                         source: source.id,
                         sourcePos: source.pos,
@@ -68,6 +84,7 @@ module.exports = (function() {
                         flagName: flag.name,
                         lairId: lair.id,
                         lairPos: lair.pos,
+                        enemyId: _.get(enemy, 'id'),
                     }
                 });
 
@@ -104,7 +121,7 @@ module.exports = (function() {
 
                 var flags = this.getObjectsAroundFlags();
 
-                flags.forEach(/**{flagName,flagPos}*/ data => {
+                flags.forEach(/**{flagName,flagPos,enemyId}*/ data => {
                     var key = `lair-defend-${data.flagName}`;
 
                     if(!(key in jobs)) {
@@ -117,6 +134,7 @@ module.exports = (function() {
                             sourcePos: data.flagPos,
                             takenBy: null,
                             priority: 1000,
+                            enemy: null,
                         };
                     }
 
@@ -128,6 +146,8 @@ module.exports = (function() {
                     else {
                         jobs[key].priority = 1000;
                     }
+
+                    jobs[key].enemy = data.enemyId;
                 });
             }
 
@@ -189,7 +209,9 @@ module.exports = (function() {
                         prespawnTime = Math.min(c.memory.prespawnTime || 0, 300) * 0.9;
                     }
 
-                    return c.ticksToLive > prespawnTime + spawnTime;
+                    let creepSpawnTime = c.memory.spawnTime? c.memory.spawnTime : spawnTime;
+
+                    return c.ticksToLive > prespawnTime + creepSpawnTime;
                 });
 
                 if(creeps.length < amount) {

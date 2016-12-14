@@ -37,21 +37,13 @@ module.exports = (function() {
          *
          * @param {Creep} creep
          */
-        tryHarvestDroppedSource: function (creep, resource) {
-            var source;
-            resource = resource || RESOURCE_ENERGY;
+        tryHarvestDroppedSource: function (creep) {
 
-            source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-                filter: r => r.amount > (creep.carryCapacity * 0.75) && r.resourceType == resource
-            });
+            let sources = creep.workRoomHandler.searchJobs({type: 'pickup'});
+            let job = _.first(_.sortBy(sources.filter(s => s.resource == RESOURCE_ENERGY), s=> s.amount*-1));
 
-            if(!source) {
-                source = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES, {
-                    filter: r => r.amount > 30 && r.resourceType == resource
-                });
-            }
-
-            if(source) {
+            if(job) {
+                let source = Game.getObjectById(job.sourceId);
                 if(creep.pickup(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source);
                 }

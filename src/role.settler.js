@@ -101,7 +101,7 @@ module.exports = (function() {
 
                 if(!creep.memory.disableController) {
 
-                    if(ctrl.my) {
+                    if(ctrl && ctrl.my) {
                         if(creep.upgradeController(ctrl) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(ctrl);
                         }
