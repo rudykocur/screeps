@@ -4,351 +4,301 @@ const config = require('./config');
 const logger = require('./logger');
 const roomHandlers = require('./room.handlers');
 
+const RoomHandler = require('./room.handlers').RoomHandler;
+
 const spawnQueue = require('./spawnQueue');
 
-module.exports = (function() {
-    return {
-        handler: class ColonyRoomHandler extends roomHandlers.RoomHander {
-            constructor(roomName, state, config) {
-                super(roomName, state, config);
+class ColonyRoomHandler extends RoomHandler {
+    constructor(roomName, state, config) {
+        super(roomName, state, config);
 
-                this.type = 'colony';
+        this.type = 'colony';
 
-                _.defaults(this.state, {});
+        _.defaults(this.state, {});
 
-                this.labNameToId = {};
-                _.each(_.get(config, 'labs.names', {}), (labName, labId) => {
-                    this.labNameToId[labName] = labId;
-                });
-            }
+        this.labNameToId = {};
+        _.each(_.get(config, 'labs.names', {}), (labName, labId) => {
+            this.labNameToId[labName] = labId;
+        });
+    }
 
-            process() {
-                super.process();
+    process() {
+        super.process();
 
-                // if(Game.time % 100) {
-                if(true) {
-                    this.autobuildExtensions();
+        // if(Game.time % 100) {
+        // this.autobuildExtensions();
+
+        this.runReactions();
+
+        this.maintainHarvesterPopulation();
+        this.maintainMovers();
+        this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
+        this.maintainPopulation('upgrader', config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
+        this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
+    }
+
+    maintainMovers() {
+        var needed = _.get(this.config, ['creeps', 'mover'], 0);
+
+        var movers = this.findCreeps(config.blueprints.colonyMover.role);
+
+        if(needed > 1 && movers.length > 1) {
+            var minTicks = Infinity, maxTicks = 0;
+
+            movers.forEach(/**Creep*/creep => {
+                if(creep.spawning) {
+                    maxTicks = CREEP_LIFE_TIME;
                 }
-
-                this.runReactions();
-
-                this.maintainHarvesterPopulation();
-                this.maintainMovers();
-                this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
-                this.maintainPopulation('upgrader', config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
-                this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
-            }
-
-            maintainMovers() {
-                var needed = _.get(this.config, ['creeps', 'mover'], 0);
-
-                var movers = this.findCreeps(config.blueprints.colonyMover.role);
-
-                if(needed > 1 && movers.length > 1) {
-                    var minTicks = Infinity, maxTicks = 0;
-
-                    movers.forEach(/**Creep*/creep => {
-                        if(creep.spawning) {
-                            maxTicks = CREEP_LIFE_TIME;
-                        }
-                        else {
-                            if(creep.ticksToLive < minTicks) {
-                                minTicks = creep.ticksToLive;
-                            }
-                            if(creep.ticksToLive > maxTicks) {
-                                maxTicks = creep.ticksToLive;
-                            }
-                        }
-
-                    });
-
-                    if(maxTicks - minTicks < 300 && maxTicks < 600) {
-                        needed += 1;
+                else {
+                    if(creep.ticksToLive < minTicks) {
+                        minTicks = creep.ticksToLive;
+                    }
+                    if(creep.ticksToLive > maxTicks) {
+                        maxTicks = creep.ticksToLive;
                     }
                 }
 
-                this.maintainPopulationAmount('mover', needed, config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
+            });
+
+            if(maxTicks - minTicks < 300 && maxTicks < 600) {
+                needed += 1;
+            }
+        }
+
+        this.maintainPopulationAmount('mover', needed, config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
+    }
+
+    runReactions() {
+        _.get(this.config, 'labs.reactions', []).forEach(reaction => {
+            let [in1, in2, /**StructureLab*/ out] = reaction.labs;
+            let [in1Resource, in2Resouce] = reaction.load;
+
+            in1 = Game.getObjectById(this.labNameToId[in1]);
+            in2 = Game.getObjectById(this.labNameToId[in2]);
+            out = Game.getObjectById(this.labNameToId[out]);
+
+            if(in1.mineralType != in1Resource) {
+                return;
             }
 
-            runReactions() {
-                _.get(this.config, 'labs.reactions', []).forEach(reaction => {
-                    let [in1, in2, /**StructureLab*/ out] = reaction.labs;
-                    let [in1Resource, in2Resouce] = reaction.load;
-
-                    in1 = Game.getObjectById(this.labNameToId[in1]);
-                    in2 = Game.getObjectById(this.labNameToId[in2]);
-                    out = Game.getObjectById(this.labNameToId[out]);
-
-                    if(in1.mineralType != in1Resource) {
-                        return;
-                    }
-
-                    if(in2.mineralType != in2Resouce) {
-                        return;
-                    }
-
-                    if(out.mineralAmount < reaction.amount && out.cooldown == 0) {
-                        out.runReaction(in1, in2);
-                    }
-                });
+            if(in2.mineralType != in2Resouce) {
+                return;
             }
 
-            prepareJobBoard() {
-                super.prepareJobBoard();
+            if(out.mineralAmount < reaction.amount && out.cooldown == 0) {
+                out.runReaction(in1, in2);
+            }
+        });
+    }
 
-                this.createRefillEnergyJobs();
+    prepareJobBoard() {
+        super.prepareJobBoard();
 
-                var storage = this.room.getStorage();
-                var terminal = this.room.getTerminal();
+        if(Game.time % 5 == 3) {
+            this.createRefillEnergyJobs();
+        }
 
-                if(storage && terminal) {
-                    this.processStorageSurplusJobs(storage, terminal);
-                    this.createTerminalToStorageJobs(storage, terminal);
-                    this.createTerminalRequirementsJobs(storage, terminal);
+        var storage = this.room.getStorage();
+        var terminal = this.room.getTerminal();
+
+        if(storage && terminal) {
+            if(Game.time % 10 != 3) {
+                this.processStorageSurplusJobs(storage, terminal);
+            }
+
+            if(Game.time % 10 == 4) {
+                this.createTerminalToStorageJobs(storage, terminal);
+            }
+
+            this.createTerminalRequirementsJobs(storage, terminal);
+        }
+
+        this.createLabTransferJobs();
+
+        if(Game.time % 15 == 12) {
+            this.createMoveMineralToStorageJob();
+        }
+    }
+
+    processStorageSurplusJobs(storage, terminal) {
+
+        var reserves = _.get(this.config, 'minerals.reserve', {});
+        var jobs = this.state.jobs;
+
+        _.each(storage.store, (amount, resource) => {
+            var key = `market-${this.room.customName}-${resource}`;
+
+            if (reserves[resource] >= 0 && amount > reserves[resource]) {
+                if (!(key in jobs)) {
+                    jobs[key] = {
+                        key: key,
+                        room: this.room.customName,
+                        type: 'transfer',
+                        sourceId: storage.id,
+                        sourcePos: storage.pos,
+                        resource: resource,
+                        targetId: terminal.id,
+                        targetPos: terminal.pos,
+                        takenBy: null,
+                        amount: 0,
+                    }
                 }
 
-                this.createLabTransferJobs();
-                this.createMoveMineralToStorageJob();
+                jobs[key].amount = amount - reserves[resource];
             }
+            else {
+                delete jobs[key];
+            }
+        });
+    }
 
-            processStorageSurplusJobs(storage, terminal) {
-                if(Game.time % 10 != 3) {
-                    return;
+    createTerminalToStorageJobs(storage, terminal) {
+
+        var reserves = _.get(this.config, 'minerals.reserve', {});
+        var requires = _.get(this.config, 'terminal.require', {});
+
+        var jobs = this.state.jobs;
+
+        _.each(terminal.store, (amount, resource) => {
+            var key = `terminal-withdraw-${this.room.customName}-${resource}`;
+
+            var storageDemand = (reserves[resource] || 0) - (storage.store[resource] || 0);
+            var availableAmount = amount - (requires[resource] || 0);
+
+            if(availableAmount > 0 && storageDemand > 0) {
+                if(!(key in jobs)) {
+                    jobs[key] = {
+                        key: key,
+                        room: this.room.customName,
+                        type: 'transfer',
+                        sourceId: terminal.id,
+                        sourcePos: terminal.pos,
+                        resource: resource,
+                        targetId: storage.id,
+                        targetPos: storage.pos,
+                        takenBy: null,
+                        amount: 0,
+                    }
                 }
 
-                var reserves = _.get(this.config, 'minerals.reserve', {});
-                var jobs = this.state.jobs;
-
-                _.each(storage.store, (amount, resource) => {
-                    var key = `market-${this.room.customName}-${resource}`;
-
-                    if (reserves[resource] >= 0 && amount > reserves[resource]) {
-                        if (!(key in jobs)) {
-                            jobs[key] = {
-                                key: key,
-                                room: this.room.customName,
-                                type: 'transfer',
-                                sourceId: storage.id,
-                                sourcePos: storage.pos,
-                                resource: resource,
-                                targetId: terminal.id,
-                                targetPos: terminal.pos,
-                                takenBy: null,
-                                amount: 0,
-                            }
-                        }
-
-                        jobs[key].amount = amount - reserves[resource];
-                    }
-                    else {
-                        delete jobs[key];
-                    }
-                });
+                jobs[key].amount = availableAmount;
             }
+            else {
+                delete jobs[key];
+            }
+        });
+    }
 
-            createTerminalToStorageJobs(storage, terminal) {
-                if(Game.time % 10 != 4) {
-                    return;
+    createTerminalRequirementsJobs(storage, terminal) {
+        var requires = _.get(this.config, 'terminal.require', {});
+        var jobs = this.state.jobs;
+
+        _.each(requires, (amount, resource) => {
+            var key = `terminal-require-${this.room.customName}-${resource}`;
+
+            if(storage.store[resource] > 10000 && (terminal.store[resource] || 0) < amount) {
+                if(!(key in jobs)) {
+                    jobs[key] = {
+                        key: key,
+                        room: this.room.customName,
+                        type: 'transfer',
+                        sourceId: storage.id,
+                        sourcePos: storage.pos,
+                        resource: resource,
+                        targetId: terminal.id,
+                        targetPos: terminal.pos,
+                        takenBy: null,
+                        amount: 0,
+                    }
                 }
 
-                var reserves = _.get(this.config, 'minerals.reserve', {});
-                var requires = _.get(this.config, 'terminal.require', {});
-
-                var jobs = this.state.jobs;
-
-                _.each(terminal.store, (amount, resource) => {
-                    var key = `terminal-withdraw-${this.room.customName}-${resource}`;
-
-                    var storageDemand = (reserves[resource] || 0) - (storage.store[resource] || 0);
-                    var availableAmount = amount - (requires[resource] || 0);
-
-                    if(availableAmount > 0 && storageDemand > 0) {
-                        if(!(key in jobs)) {
-                            jobs[key] = {
-                                key: key,
-                                room: this.room.customName,
-                                type: 'transfer',
-                                sourceId: terminal.id,
-                                sourcePos: terminal.pos,
-                                resource: resource,
-                                targetId: storage.id,
-                                targetPos: storage.pos,
-                                takenBy: null,
-                                amount: 0,
-                            }
-                        }
-
-                        jobs[key].amount = availableAmount;
-                    }
-                    else {
-                        delete jobs[key];
-                    }
-                });
+                jobs[key].amount = amount - terminal.store[resource];
             }
-
-            createTerminalRequirementsJobs(storage, terminal) {
-                var requires = _.get(this.config, 'terminal.require', {});
-                var jobs = this.state.jobs;
-
-                _.each(requires, (amount, resource) => {
-                    var key = `terminal-require-${this.room.customName}-${resource}`;
-
-                    if(storage.store[resource] > 10000 && (terminal.store[resource] || 0) < amount) {
-                        if(!(key in jobs)) {
-                            jobs[key] = {
-                                key: key,
-                                room: this.room.customName,
-                                type: 'transfer',
-                                sourceId: storage.id,
-                                sourcePos: storage.pos,
-                                resource: resource,
-                                targetId: terminal.id,
-                                targetPos: terminal.pos,
-                                takenBy: null,
-                                amount: 0,
-                            }
-                        }
-
-                        jobs[key].amount = amount - terminal.store[resource];
-                    }
-                    else {
-                        delete jobs[key];
-                    }
-                })
+            else {
+                delete jobs[key];
             }
+        })
+    }
 
-            createRefillEnergyJobs() {
-                var jobs = this.state.jobs;
+    createRefillEnergyJobs() {
+        var jobs = this.state.jobs;
 
-                this.room.getSpawns().concat(this.room.getExtensions()).forEach(/**StructureSpawn*/item => {
-                    var key = `refill-${this.room.customName}-${item.id}`;
+        this.room.getSpawns().concat(this.room.getExtensions()).forEach(/**StructureSpawn*/item => {
+            var key = `refill-${this.room.customName}-${item.id}`;
 
-                    if(item.energy < item.energyCapacity) {
-                        if(!(key in jobs)) {
-                            jobs[key] = {
-                                key: key,
-                                room: this.room.customName,
-                                type: 'refill',
-                                subtype: 'spawn',
-                                targetId: item.id,
-                                targetPos: item.pos,
-                                takenBy: null,
-                            }
-                        }
+            if(item.energy < item.energyCapacity) {
+                if(!(key in jobs)) {
+                    jobs[key] = {
+                        key: key,
+                        room: this.room.customName,
+                        type: 'refill',
+                        subtype: 'spawn',
+                        targetId: item.id,
+                        targetPos: item.pos,
+                        takenBy: null,
                     }
-                    else {
-                        delete jobs[key];
-                    }
-                });
-
-                this.room.getTowers().forEach(/**StructureTower*/ tower => {
-                    var key = `refill-${this.room.customName}-tower-${tower.id}`;
-
-                    if(tower.energy < tower.energyCapacity) {
-                        if(!(key in jobs)) {
-                            jobs[key] = {
-                                key: key,
-                                room: this.room.customName,
-                                type: 'refill',
-                                subtype: 'tower',
-                                targetId: tower.id,
-                                targetPos: tower.pos,
-                                takenBy: null,
-                            }
-                        }
-                    }
-                    else {
-                        delete jobs[key];
-                    }
-                })
+                }
             }
+            else {
+                delete jobs[key];
+            }
+        });
 
-            createLabTransferJobs() {
-                var jobs = this.state.jobs;
+        this.room.getTowers().forEach(/**StructureTower*/ tower => {
+            var key = `refill-${this.room.customName}-tower-${tower.id}`;
 
-                var storage = this.room.getStorage();
-                var terminal = this.room.getTerminal();
-
-                _.get(this.config, 'labs.reactions', []).forEach(reaction => {
-
-                    reaction.load.forEach((resource, index) => {
-                        var labName = reaction.labs[index];
-                        var labId = this.labNameToId[labName];
-                        /** @type StructureLab */
-                        var lab = Game.getObjectById(labId);
-
-                        let emptyJobKey = `labs-${labName}-empty-${lab.mineralType}`;
-
-                        if(lab.mineralType && lab.mineralType != resource) {
-
-                            if(!(emptyJobKey in jobs)) {
-                                jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType) ;
-                            }
-
-                            jobs[emptyJobKey].amount = lab.mineralAmount;
-                        }
-                        else {
-                            delete jobs[emptyJobKey];
-
-                            [storage, terminal].forEach(struct => {
-                                var key = `labs-${labName}-withdraw-${struct.structureType}-${resource}`;
-                                if (lab.mineralAmount < 2000 && struct.store[resource] > 0) {
-
-                                    if (!(key in jobs)) {
-                                        jobs[key] = this._getJobTransferDict(key, struct, lab, resource);
-                                    }
-
-                                    jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
-                                }
-                                else {
-                                    delete jobs[key];
-                                }
-                            });
-                        }
-                    });
-
-                    var outLabName = reaction.labs[2];
-                    /** @type StructureLab */
-                    var outLab = Game.getObjectById(this.labNameToId[outLabName]);
-
-                    var resultResource = REACTIONS[reaction.load[0]][reaction.load[1]];
-
-                    let emptyJobKey = `labs-${outLabName}-empty-${outLab.mineralType}`;
-
-                    if(outLab.mineralType && outLab.mineralType != resultResource ) {
-                        if(!(emptyJobKey in jobs)) {
-                            jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLabName, terminal, outLabName.mineralType);
-                        }
-
-                        jobs[emptyJobKey].amount = outLab.mineralAmount;
+            if(tower.energy < tower.energyCapacity) {
+                if(!(key in jobs)) {
+                    jobs[key] = {
+                        key: key,
+                        room: this.room.customName,
+                        type: 'refill',
+                        subtype: 'tower',
+                        targetId: tower.id,
+                        targetPos: tower.pos,
+                        takenBy: null,
                     }
-                    else {
-                        delete jobs[emptyJobKey];
+                }
+            }
+            else {
+                delete jobs[key];
+            }
+        })
+    }
+
+    createLabTransferJobs() {
+        var jobs = this.state.jobs;
+
+        var storage = this.room.getStorage();
+        var terminal = this.room.getTerminal();
+
+        _.get(this.config, 'labs.reactions', []).forEach(reaction => {
+
+            reaction.load.forEach((resource, index) => {
+                var labName = reaction.labs[index];
+                var labId = this.labNameToId[labName];
+                /** @type StructureLab */
+                var lab = Game.getObjectById(labId);
+
+                let emptyJobKey = `labs-${labName}-empty-${lab.mineralType}`;
+
+                if(lab.mineralType && lab.mineralType != resource) {
+
+                    if(!(emptyJobKey in jobs)) {
+                        jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType) ;
                     }
-                });
 
-                _.each(_.get(this.config, 'labs.boost', {}), (resource, labName) => {
-                    /** @type StructureLab */
-                    var lab = Game.getObjectById(this.labNameToId[labName]);
+                    jobs[emptyJobKey].amount = lab.mineralAmount;
+                }
+                else {
+                    delete jobs[emptyJobKey];
 
-                    let emptyJobKey = `labs-${labName}-empty-${lab.mineralType}`;
-                    let loadEnergyKey = `labs-${labName}-load-energy`;
+                    [storage, terminal].forEach(struct => {
+                        var key = `labs-${labName}-withdraw-${struct.structureType}-${resource}`;
+                        if (lab.mineralAmount < 2000 && struct.store[resource] > 0) {
 
-                    if(lab.mineralType && lab.mineralType != resource) {
-                        if(!(emptyJobKey in jobs)) {
-                            jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType);
-                        }
-
-                        jobs[emptyJobKey].amount = lab.mineralAmount;
-                    }
-                    else {
-                        delete jobs[emptyJobKey];
-
-                        let key = `labs-${labName}-load-boost-${resource}`;
-
-                        if(lab.mineralAmount < lab.mineralCapacity && terminal.store[resource] > 0) {
                             if (!(key in jobs)) {
-                                jobs[key] = this._getJobTransferDict(key, terminal, lab, resource);
+                                jobs[key] = this._getJobTransferDict(key, struct, lab, resource);
                             }
 
                             jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
@@ -356,69 +306,96 @@ module.exports = (function() {
                         else {
                             delete jobs[key];
                         }
-                    }
+                    });
+                }
+            });
 
-                    if(lab.energy < lab.energyCapacity) {
-                        if (!(loadEnergyKey in jobs)) {
-                            jobs[loadEnergyKey] = this._getJobTransferDict(loadEnergyKey, storage, lab, RESOURCE_ENERGY);
-                        }
+            var outLabName = reaction.labs[2];
+            /** @type StructureLab */
+            var outLab = Game.getObjectById(this.labNameToId[outLabName]);
 
-                        jobs[loadEnergyKey].amount = lab.energyCapacity - lab.energy;
-                    }
-                    else {
-                        delete jobs[loadEnergyKey];
-                    }
-                })
+            var resultResource = REACTIONS[reaction.load[0]][reaction.load[1]];
+
+            let emptyJobKey = `labs-${outLabName}-empty-${outLab.mineralType}`;
+
+            if(outLab.mineralType && outLab.mineralType != resultResource ) {
+                if(!(emptyJobKey in jobs)) {
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLabName, terminal, outLabName.mineralType);
+                }
+
+                jobs[emptyJobKey].amount = outLab.mineralAmount;
             }
+            else {
+                delete jobs[emptyJobKey];
+            }
+        });
 
-            createMoveMineralToStorageJob() {
-                if(Game.time % 15 != 12) {
-                    return;
+        _.each(_.get(this.config, 'labs.boost', {}), (resource, labName) => {
+            /** @type StructureLab */
+            var lab = Game.getObjectById(this.labNameToId[labName]);
+
+            let emptyJobKey = `labs-${labName}-empty-${lab.mineralType}`;
+            let loadEnergyKey = `labs-${labName}-load-energy`;
+
+            if(lab.mineralType && lab.mineralType != resource) {
+                if(!(emptyJobKey in jobs)) {
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType);
                 }
 
-                /** @type Mineral */
-                var mineral = _.first(this.room.find(FIND_MINERALS));
-                var jobs = this.state.jobs;
+                jobs[emptyJobKey].amount = lab.mineralAmount;
+            }
+            else {
+                delete jobs[emptyJobKey];
 
-                var target = this.room.getTerminal();
-                if(!target) {
-                    target = this.room.getStorage();
-                }
+                let key = `labs-${labName}-load-boost-${resource}`;
 
-                var container = _.first(mineral.pos.findInRange(this.room.getContainers(), 1));
-
-                var key = `mineralMove-${mineral.mineralType}`;
-                if(container && container.store[mineral.mineralType] > 400) {
-                    if(!(key in jobs)) {
-                        jobs[key] = {
-                            key: key,
-                            room: this.room.customName,
-                            type: 'transfer',
-                            sourceId: container.id,
-                            sourcePos: container.pos,
-                            resource: mineral.mineralType,
-                            targetId: target.id,
-                            targetPos: target.pos,
-                            takenBy: null,
-                            amount: 0,
-                        }
+                if(lab.mineralAmount < lab.mineralCapacity && terminal.store[resource] > 0) {
+                    if (!(key in jobs)) {
+                        jobs[key] = this._getJobTransferDict(key, terminal, lab, resource);
                     }
 
-                    jobs[key].amount = container.store[mineral.mineralType];
+                    jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
                 }
                 else {
                     delete jobs[key];
                 }
             }
 
-            _getJobTransferDict(key, source, target, resource) {
-                return {
+            if(lab.energy < lab.energyCapacity) {
+                if (!(loadEnergyKey in jobs)) {
+                    jobs[loadEnergyKey] = this._getJobTransferDict(loadEnergyKey, storage, lab, RESOURCE_ENERGY);
+                }
+
+                jobs[loadEnergyKey].amount = lab.energyCapacity - lab.energy;
+            }
+            else {
+                delete jobs[loadEnergyKey];
+            }
+        })
+    }
+
+    createMoveMineralToStorageJob() {
+        /** @type Mineral */
+        var mineral = _.first(this.room.find(FIND_MINERALS));
+        var jobs = this.state.jobs;
+
+        var target = this.room.getTerminal();
+        if(!target) {
+            target = this.room.getStorage();
+        }
+
+        var container = _.first(mineral.pos.findInRange(this.room.getContainers(), 1));
+
+        var key = `mineralMove-${mineral.mineralType}`;
+        if(container && container.store[mineral.mineralType] > 400) {
+            if(!(key in jobs)) {
+                jobs[key] = {
                     key: key,
                     room: this.room.customName,
                     type: 'transfer',
-                    sourceId: source.id,
-                    sourcePos: source.pos,
-                    resource: resource,
+                    sourceId: container.id,
+                    sourcePos: container.pos,
+                    resource: mineral.mineralType,
                     targetId: target.id,
                     targetPos: target.pos,
                     takenBy: null,
@@ -426,80 +403,106 @@ module.exports = (function() {
                 }
             }
 
-            maintainPopulation(type, blueprint, priority) {
-                var amount = _.get(this.config, ['creeps', type], 0);
-                this.maintainPopulationAmount(type, amount, blueprint, priority);
-            }
-
-            maintainHarvesterPopulation() {
-                var sources = this.room.getAllSources().filter(source => source instanceof Source);
-                var minerals = this.room.getAllSources().filter(source => {
-                    if(source instanceof Mineral) {
-                        if(source.ticksToRegeneration) {
-                            return false;
-                        }
-
-                        return source.pos.lookFor(LOOK_STRUCTURES).length > 0;
-                    }
-                    return false;
-                });
-
-                this.maintainPopulationAmount('harvester', sources.length, config.blueprints.colonyHarvester,
-                    spawnQueue.PRIORITY_CRITICAL);
-
-                if(!this.config.noMinerals) {
-                    this.maintainPopulationAmount('mineralHarvester', minerals.length, config.blueprints.colonyHarvesterMineral,
-                        spawnQueue.PRIORITY_NORMAL);
-                }
-            }
-
-            maintainPopulationAmount(type, amount, blueprint, priority) {
-                if(amount <= 0) {
-                    return;
-                }
-
-                var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
-
-                var creeps = this.findCreeps(blueprint.role);
-
-                creeps = creeps.filter(c => {
-                    if(c.spawning) {
-                        return true;
-                    }
-
-                    let creepSpawnTime = c.memory.spawnTime? c.memory.spawnTime : spawnTime;
-
-                    return c.ticksToLive > creepSpawnTime * 0.75
-                });
-
-                if(creeps.length < amount) {
-
-                    var memo = _.defaults({
-                        room: this.room.name,
-                        role: blueprint.role,
-                    }, blueprint.memo);
-
-                    spawnQueue.enqueueCreep(priority, this.room, this.getCreepName(type),
-                        blueprint.body, memo, null, this.config.spawnRooms);
-                }
-            }
-
-            getCreepName(type) {
-                return this.type+'_'+this.roomName+'_'+type+'_';
-            }
-
-            autobuildExtensions() {
-                return;
-
-                var flags = _.groupBy(Game.flags, 'pos.roomName')[this.room.name];
-                if(!_.first(flags.filter(/**Flag*/f => f.color == COLOR_BROWN && f.secondaryColor == COLOR_YELLOW))) {
-                    return;
-                }
-
-                // this.debug('autobuild flag set!');
-            }
+            jobs[key].amount = container.store[mineral.mineralType];
         }
+        else {
+            delete jobs[key];
+        }
+    }
+
+    _getJobTransferDict(key, source, target, resource) {
+        return {
+            key: key,
+            room: this.room.customName,
+            type: 'transfer',
+            sourceId: source.id,
+            sourcePos: source.pos,
+            resource: resource,
+            targetId: target.id,
+            targetPos: target.pos,
+            takenBy: null,
+            amount: 0,
+        }
+    }
+
+    maintainPopulation(type, blueprint, priority) {
+        var amount = _.get(this.config, ['creeps', type], 0);
+        this.maintainPopulationAmount(type, amount, blueprint, priority);
+    }
+
+    maintainHarvesterPopulation() {
+        var sources = this.room.getAllSources().filter(source => source instanceof Source);
+        var minerals = this.room.getAllSources().filter(source => {
+            if(source instanceof Mineral) {
+                if(source.ticksToRegeneration) {
+                    return false;
+                }
+
+                return source.pos.lookFor(LOOK_STRUCTURES).length > 0;
+            }
+            return false;
+        });
+
+        this.maintainPopulationAmount('harvester', sources.length, config.blueprints.colonyHarvester,
+            spawnQueue.PRIORITY_CRITICAL);
+
+        if(!this.config.noMinerals) {
+            this.maintainPopulationAmount('mineralHarvester', minerals.length, config.blueprints.colonyHarvesterMineral,
+                spawnQueue.PRIORITY_NORMAL);
+        }
+    }
+
+    maintainPopulationAmount(type, amount, blueprint, priority) {
+        if(amount <= 0) {
+            return;
+        }
+
+        var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
+
+        var creeps = this.findCreeps(blueprint.role);
+
+        creeps = creeps.filter(c => {
+            if(c.spawning) {
+                return true;
+            }
+
+            let creepSpawnTime = c.memory.spawnTime? c.memory.spawnTime : spawnTime;
+
+            return c.ticksToLive > creepSpawnTime * 0.75
+        });
+
+        if(creeps.length < amount) {
+
+            var memo = _.defaults({
+                room: this.room.name,
+                role: blueprint.role,
+            }, blueprint.memo);
+
+            spawnQueue.enqueueCreep(priority, this.room, this.getCreepName(type),
+                blueprint.body, memo, null, this.config.spawnRooms);
+        }
+    }
+
+    getCreepName(type) {
+        return this.type+'_'+this.roomName+'_'+type+'_';
+    }
+
+    autobuildExtensions() {
+
+        var flags = _.groupBy(Game.flags, 'pos.roomName')[this.room.name];
+        if(!_.first(flags.filter(/**Flag*/f => f.color == COLOR_BROWN && f.secondaryColor == COLOR_YELLOW))) {
+            return;
+        }
+
+        // this.debug('autobuild flag set!');
+    }
+}
+
+
+module.exports = (function() {
+    return {
+        handler: ColonyRoomHandler
     }
 })();
 
-profiler.registerClass(module.exports.handler, 'ColonyRoomHandler');
+profiler.registerClass(ColonyRoomHandler, 'ColonyRoomHandler');

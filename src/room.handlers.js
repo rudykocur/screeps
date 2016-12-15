@@ -7,7 +7,7 @@ const actionCombat = require('./action.combat');
 
 const roomModules = ['outpost', 'colony', 'sourceKeeper'];
 
-class RoomHander {
+class RoomHandler {
     constructor(roomName, state, config) {
         this.roomName = roomName;
         this.room = Room.byCustomName(roomName);
@@ -298,10 +298,14 @@ module.exports = (function() {
     }
 
     return {
-        RoomHander: RoomHander,
+        RoomHandler: RoomHandler,
 
         getCreeps(roomId, role) {
             refreshCreepsCache();
+
+            if(!(roomId in creepCache)) {
+                return [];
+            }
 
             return creepCache[roomId][role] || [];
         },
@@ -347,4 +351,4 @@ module.exports = (function() {
     }
 })();
 
-profiler.registerClass(module.exports.RoomHander, 'BaseRoomHandler');
+profiler.registerClass(RoomHandler, 'RoomHandler');

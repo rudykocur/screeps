@@ -82,4 +82,4 @@ module.exports = (function() {
     }
 })();
 
-profiler.registerObject(MoveTask, 'task-move-class');
+profiler.registerClass(MoveTask, 'task-move-class');

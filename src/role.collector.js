@@ -25,7 +25,7 @@ class CollectorRole extends CreepRole {
                 return;
             }
 
-            /** @type RoomHander */
+            /** @type RoomHandler */
             let handler = this.creep.workRoomHandler;
 
             let jobs = handler.searchJobs({type: 'pickup'}).filter(job => job.amount > 50 && job.resource == RESOURCE_ENERGY);
@@ -91,4 +91,4 @@ module.exports = (function() {
 })();
 
 profiler.registerObject(module.exports, 'role-collector');
-profiler.registerClass(CollectorRole, 'role-class-collector');
+profiler.registerClass(CollectorRole, 'CollectorRole');

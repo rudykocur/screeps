@@ -27,7 +27,7 @@ class MoverRole extends CreepRole {
         let job = this.creep.getJob();
         let shouldHarvest;
         if(job) {
-            shouldHarvest = job == 'pickup';
+            shouldHarvest = job.type == 'pickup';
         }
         else {
             shouldHarvest = actionUtils.shouldHarvestEnergy(this.creep);
@@ -190,7 +190,7 @@ class MoverRole extends CreepRole {
         }
 
         if(job && job.type == 'pickup') {
-            logger.error('OMG CREEP', this.creep.name, 'HAS PICKUP JOB HERE', JSON.stringify(job));
+            logger.error('OMG CREEP', this.creep.name, '::', this.creep.memory.harvesting, 'HAS PICKUP JOB HERE', JSON.stringify(job));
             this.creep.releasePartialJob();
         }
 
@@ -230,4 +230,4 @@ module.exports = (function() {
 })();
 
 profiler.registerObject(module.exports, 'role-mover');
-profiler.registerClass(MoverRole);
+profiler.registerClass(MoverRole, 'MoverRole');

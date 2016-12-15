@@ -4,6 +4,26 @@ const actionHarvest = require('./action.harvest');
 const actionBuld = require('./action.build');
 const actionUtils = require('./action.utils');
 
+const MoveTask = require('./task.move').MoveTask;
+const CreepRole = require('./role').CreepRole;
+
+class SettlerRole extends CreepRole {
+    constructor(creep) {
+        super(creep);
+    }
+
+    scheduleTask() {
+        let task = this.getFleeTask();
+
+        if (task) {
+            this.creep.addTask(task);
+            return;
+        }
+
+
+    }
+}
+
 module.exports = (function() {
 
 
@@ -133,3 +153,4 @@ module.exports = (function() {
 })();
 
 profiler.registerObject(module.exports, 'role-settler');
+profiler.registerClass(SettlerRole, 'SettlerRole');

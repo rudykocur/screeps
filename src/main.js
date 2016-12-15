@@ -66,6 +66,8 @@ module.exports = (function() {
         runLoop: function () {
             Game.stat = printDiagnostics;
             Game.killBrot = killBrot;
+            Game.testPath = testPath;
+            Game.cleanPath = cleanPath;
 
             gang.extendGame();
             combatAction.extendGame();
@@ -203,4 +205,70 @@ function killBrot() {
     action.addOrders(orders);
 
     logger.log(logger.fmt.orange("Combat action killBrot started"));
+}
+
+
+function testPath() {
+    var src = Game.getObjectById('57ef9ebe86f108ae6e60fd81');
+    var dst = Game.flags.holyGrail;
+
+    var flagsByRoom = _.groupBy(Game.flags, 'pos.roomName');
+
+    var blockRange = 5;
+
+    var path = PathFinder.search(src.pos, dst.pos, {
+        maxOps: 20000,
+        roomCallback: function(roomName) {
+            var flags = flagsByRoom[roomName] || [];
+
+            console.log('Got flags in room', roomName, '::', flags.length);
+
+            var keeperFlags = flags.filter(f => f.color == COLOR_RED && f.secondaryColor == COLOR_ORANGE);
+
+            var matrix = new PathFinder.CostMatrix();
+
+            keeperFlags.forEach(/**Flag*/flag => {
+                for(let i = blockRange*-1; i <= blockRange; i++) {
+                    for(let j = blockRange*-1; j <= blockRange; j++) {
+                        matrix.set(flag.pos.x + i, flag.pos.y + j, 255);
+                    }
+                }
+            })
+        }
+    });
+
+    let lastRoom = path.path[0].roomName;
+    let points = [];
+
+    path.path.forEach(coord => {
+        let room = coord.roomName;
+
+        if(room != lastRoom) {
+            console.log(points.join(', '));
+            console.log('Then go to room', room);
+            points = [];
+        }
+
+        lastRoom = room;
+
+        points.push(`${coord.x}-${coord.y}`);
+        // let name = `fff-${coord.roomName}-${coord.x}-${coord.y}`;
+        //
+        // if(!Game.rooms[coord.roomName]) {
+        //     return;
+        // }
+        // let pos = RoomPosition.fromDict(coord);
+        //
+        // pos.createFlag(name, COLOR_CYAN, COLOR_WHITE);
+    });
+
+    console.log('OMG PATH', path.path.length, '::', path.incomplete);
+}
+
+function cleanPath() {
+    _.each(Game.flags, /**Flag*/f => {
+        if(f.color == COLOR_CYAN && f.secondaryColor == COLOR_WHITE) {
+            f.remove();
+        }
+    })
 }

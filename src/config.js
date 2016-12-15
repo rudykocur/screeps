@@ -17,6 +17,7 @@ module.exports = (function() {
             E69N43: "kmRight",
             E66N44: "lair1",
             E67N44: "orphan",
+            E65N43: "underKeepers",
         },
         rooms: {
             home: {
@@ -133,7 +134,8 @@ module.exports = (function() {
             },
             homeTopTop: {
                 type:"outpost",
-                homeRoom:"home",
+                homeRoom:"moria",
+                spawnRooms: ['home', 'moria'],
                 creeps: {
                     claimer: 1,
                     settler: 1,
@@ -213,6 +215,16 @@ module.exports = (function() {
                     claimer: 1,
                 }
             },
+            underKeepers: {
+                type: "outpost",
+                homeRoom: "moria",
+                spawnRooms: ['home', 'moria'],
+                creeps: {
+                    settler: 1,
+                    claimer: 1,
+                    collector: 1,
+                }
+            },
             // lair1: {
             //     type: "sourceKeeper",
             //     homeRoom: "home",
@@ -257,21 +269,6 @@ module.exports = (function() {
                     }
                 },
 
-                testBoost: {
-                    minimum: 0,
-                    priority: 'critical',
-                    body: [MOVE,MOVE],
-                    memo: {
-                        role: 'brawler',
-                        room: 'E66N44',
-                        guardFlag: 'skIdleFlag',
-                        boost: [
-                            {part: MOVE, resource: RESOURCE_ZYNTHIUM_ALKALIDE, amount: 1},
-                            // {part: HEAL, resource: RESOURCE_LEMERGIUM_ALKALIDE, amount: 1},
-                        ]
-                    }
-                },
-
                 fighter: {
                     minimum: 0,
                     priority: 'critical',
@@ -286,7 +283,7 @@ module.exports = (function() {
                         // room: 'E68N42',
                         // room: 'E67N42',
 
-                        room: 'E64N43'
+                        room: 'E63N39'
                     }
                 },
             },
