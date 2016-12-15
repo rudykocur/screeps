@@ -116,8 +116,8 @@ module.exports = (function() {
                 panicMode: true,
                 wallsHp: 10000,
                 creeps: {
-                    upgrader: 5,
-                    builder: 1,
+                    upgrader: 3,
+                    builder: 2,
                     mover: 3,
                 }
             },

@@ -14,8 +14,9 @@ class MoveTask extends creepExt.CreepTask {
      *
      * @param {Creep} creep
      * @param {StructureStorage} target
+     * @param range
      */
-    static create(creep, target) {
+    static create(creep, target, range = 0) {
         var path;
         var pos;
 
@@ -37,6 +38,7 @@ class MoveTask extends creepExt.CreepTask {
 
         return new module.exports.task(creep, {
             path: path,
+            range: range,
             // multiroom: (pos.roomName != creep.pos.roomName),
             multiroom: false,
         })
@@ -44,6 +46,7 @@ class MoveTask extends creepExt.CreepTask {
 
     run() {
         var result;
+        var range = this.state.range || 0;
         // if(this.state.multiroom) {
         //     let step = this.state.path[0];
         //     result = this.creep.move(this.creep.pos.getDirectionTo(step));
@@ -58,7 +61,7 @@ class MoveTask extends creepExt.CreepTask {
 
         if(result == OK) {
             this.state.path.splice(0, 1);
-            if(this.state.path.length <= 0) {
+            if(this.state.path.length <= range) {
                 this.finish();
             }
             return;
@@ -74,6 +77,7 @@ module.exports = (function() {
 
     return {
         task: MoveTask,
+        MoveTask: MoveTask,
 
     }
 })();

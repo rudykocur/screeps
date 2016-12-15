@@ -78,7 +78,10 @@ Creep.prototype.releasePartialJob = function() {
     var job = this.memory.job;
     if(job) {
         var room = Room.byCustomName(job.room);
-        delete room.handlerMemory.jobs[job.key].reservations[this.id];
+        var roomJob = room.handlerMemory.jobs[job.key];
+        if(roomJob && roomJob.reservations && this.id in roomJob.reservations) {
+            delete room.handlerMemory.jobs[job.key].reservations[this.id];
+        }
     }
 
     delete this.memory.job;

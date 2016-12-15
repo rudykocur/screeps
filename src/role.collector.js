@@ -1,8 +1,7 @@
-
 const profiler = require('./profiler-impl');
 const _ = require('lodash');
 
-const MoveTask = require('./task.move').task;
+const MoveTask = require('./task.move').MoveTask;
 
 const CreepRole = require('./role').CreepRole;
 
@@ -40,16 +39,19 @@ class CollectorRole extends CreepRole {
                 if(this.creep.pos.isNearTo(pos)) {
                     this.creep.setPrespawnTime();
 
-                    this.creep.pickup(source);
+                    if(this.creep.pickup(source) == OK) {
+                        let storage = this.getStorage();
+                        this.creep.addTask(MoveTask.create(this.creep, storage, 1));
+                    }
                 }
                 else {
-                    this.creep.addTask(MoveTask.create(this.creep, source))
+                    this.creep.addTask(MoveTask.create(this.creep, source, 1));
                 }
             }
             else {
                 var idlePos = this.creep.getIdlePosition();
                 if(idlePos) {
-                    this.creep.addTask(MoveTask.create(this.creep, idlePos));
+                    this.creep.addTask(MoveTask.create(this.creep, idlePos, 1));
                 }
             }
         }
@@ -60,7 +62,7 @@ class CollectorRole extends CreepRole {
                 this.creep.transfer(storage, RESOURCE_ENERGY);
             }
             else {
-                this.creep.addTask(MoveTask.create(this.creep, storage));
+                this.creep.addTask(MoveTask.create(this.creep, storage, 1));
             }
         }
     }
