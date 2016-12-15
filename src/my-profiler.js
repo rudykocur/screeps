@@ -172,6 +172,18 @@ module.exports = (function() {
             hookUpPrototypes();
         },
 
+        begin(name) {
+            if(enabled) {
+                profilerInstance.begin(name);
+            }
+        },
+
+        end() {
+            if(enabled) {
+                profilerInstance.end();
+            }
+        },
+
         print() {
             if(enabled) {
                 profilerInstance.flattenAndPrint();

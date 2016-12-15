@@ -1,85 +1,92 @@
+
 const profiler = require('./profiler-impl');
+const _ = require('lodash');
 
-const actionHarvest = require('./action.harvest');
-const actionUtils = require('./action.utils');
-const bookmarks = require('./bookmarks');
+const MoveTask = require('./task.move').task;
 
-const creepExt = require('./creepExt');
-const taskMove = require('./task.move');
+const CreepRole = require('./role').CreepRole;
 
-module.exports = (function() {
-    function queueTaskForDroppedEnergy(creep) {
+class CollectorRole extends CreepRole {
+    constructor(creep) {
+        super(creep);
+    }
 
-        var targetRoom = Game.rooms[creep.memory.room];
+    scheduleTask() {
+        let task = this.getFleeTask();
 
-        if(!targetRoom) {
+        if(task) {
+            this.creep.addTask(task);
             return;
         }
 
-        var sources = targetRoom.find(FIND_DROPPED_RESOURCES, {
-            filter: s => s.resourceType == RESOURCE_ENERGY && s.amount > 50
-        });
+        if(this.creep.carryTotal < this.creep.carryCapacity) {
+            let room = this.creep.workRoom;
 
-        var source = _.first(_.sortBy(sources, s => s.amount * -1));
+            if(!room) {
+                return;
+            }
 
-        if(source) {
-            if(creep.pos.inRangeTo(source, 1)) {
-                creep.setPrespawnTime();
+            /** @type RoomHander */
+            let handler = this.creep.workRoomHandler;
 
-                creep.pickup(source);
+            let jobs = handler.searchJobs({type: 'pickup'}).filter(job => job.amount > 50 && job.resource == RESOURCE_ENERGY);
+
+            let job = _.first(_.sortBy(jobs, job => job.amount*-1));
+
+            if(job) {
+                let pos = RoomPosition.fromDict(job.sourcePos);
+                let source = Game.getObjectById(job.sourceId);
+
+                if(this.creep.pos.isNearTo(pos)) {
+                    this.creep.setPrespawnTime();
+
+                    this.creep.pickup(source);
+                }
+                else {
+                    this.creep.addTask(MoveTask.create(this.creep, source))
+                }
             }
             else {
-                creepExt.addTask(creep, taskMove.task.create(creep, source));
+                var idlePos = this.creep.getIdlePosition();
+                if(idlePos) {
+                    this.creep.addTask(MoveTask.create(this.creep, idlePos));
+                }
             }
         }
         else {
-            var idlePos = creep.getIdlePosition();
-            if(idlePos) {
-                creepExt.addTask(creep, taskMove.task.create(creep, idlePos));
+            let storage = this.getStorage();
+
+            if(this.creep.pos.inRangeTo(storage, 1)) {
+                this.creep.transfer(storage, RESOURCE_ENERGY);
+            }
+            else {
+                this.creep.addTask(MoveTask.create(this.creep, storage));
             }
         }
     }
+
+    getStorage() {
+        var roomName = this.creep.memory.unloadRoom;
+
+        if(roomName) {
+            return Room.byCustomName(roomName).getStorage();
+        }
+
+        return Game.getObjectById(this.creep.memory.storageId);
+    }
+}
+
+module.exports = (function() {
 
     return {
         /**
          * @param {Creep} creep
          */
         scheduleTask: function(creep) {
-            if(creep.memory.fleePoint) {
-                creep.addTask(taskMove.task.create(creep, RoomPosition.fromDict(creep.memory.fleePoint)));
-                return;
-            }
-
-            if(_.sum(creep.carry) < creep.carryCapacity) {
-
-                queueTaskForDroppedEnergy(creep);
-            }
-            else {
-                var target = Game.getObjectById(creep.memory.storageId);
-
-                if(creep.pos.inRangeTo(target, 1)) {
-                    creep.transfer(target, RESOURCE_ENERGY);
-                    queueTaskForDroppedEnergy(creep)
-                }
-                else {
-                    creepExt.addTask(creep, taskMove.task.create(creep, target));
-                }
-            }
-        },
-
-        /**
-         * @param {Room} room
-         */
-        findTargetContainer: function(room) {
-            var target = room.getStorage();
-
-            if(!target) {
-                target = _.first(room.getContainers());
-            }
-
-            return target;
+            new CollectorRole(creep).scheduleTask();
         }
     }
 })();
 
 profiler.registerObject(module.exports, 'role-collector');
+profiler.registerClass(CollectorRole, 'role-class-collector');

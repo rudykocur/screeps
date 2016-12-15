@@ -112,6 +112,10 @@ module.exports = (function() {
             }
 
             processStorageSurplusJobs(storage, terminal) {
+                if(Game.time % 10 != 3) {
+                    return;
+                }
+
                 var reserves = _.get(this.config, 'minerals.reserve', {});
                 var jobs = this.state.jobs;
 
@@ -143,6 +147,10 @@ module.exports = (function() {
             }
 
             createTerminalToStorageJobs(storage, terminal) {
+                if(Game.time % 10 != 4) {
+                    return;
+                }
+
                 var reserves = _.get(this.config, 'minerals.reserve', {});
                 var requires = _.get(this.config, 'terminal.require', {});
 
@@ -364,6 +372,10 @@ module.exports = (function() {
             }
 
             createMoveMineralToStorageJob() {
+                if(Game.time % 15 != 12) {
+                    return;
+                }
+
                 /** @type Mineral */
                 var mineral = _.first(this.room.find(FIND_MINERALS));
                 var jobs = this.state.jobs;
@@ -448,7 +460,9 @@ module.exports = (function() {
 
                 var spawnTime = blueprint.body.length * CREEP_SPAWN_TIME;
 
-                var creeps = this.findCreeps(blueprint.role).filter(c => {
+                var creeps = this.findCreeps(blueprint.role);
+
+                creeps = creeps.filter(c => {
                     if(c.spawning) {
                         return true;
                     }
@@ -475,6 +489,8 @@ module.exports = (function() {
             }
 
             autobuildExtensions() {
+                return;
+
                 var flags = _.groupBy(Game.flags, 'pos.roomName')[this.room.name];
                 if(!_.first(flags.filter(/**Flag*/f => f.color == COLOR_BROWN && f.secondaryColor == COLOR_YELLOW))) {
                     return;

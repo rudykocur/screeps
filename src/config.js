@@ -96,10 +96,9 @@ module.exports = (function() {
             kaerMorhen: {
                 type: "colony",
                 wallsHp: 120000,
-                noMinerals: true,
                 creeps: {
-                    upgrader: 5,
-                    builder: 2,
+                    upgrader: 4,
+                    builder: 1,
                     mover: 2,
                 }
             },
@@ -117,7 +116,7 @@ module.exports = (function() {
                 panicMode: true,
                 wallsHp: 10000,
                 creeps: {
-                    upgrader: 7,
+                    upgrader: 5,
                     builder: 1,
                     mover: 3,
                 }
@@ -125,7 +124,7 @@ module.exports = (function() {
             homeTop: {
                 type:"outpost",
                 homeRoom:"home",
-                spawnRooms: ['home', 'moria'],
+                spawnRooms: ['home'],
                 creeps: {
                     claimer: 1,
                     settler: 1,
@@ -138,7 +137,7 @@ module.exports = (function() {
                 creeps: {
                     claimer: 1,
                     settler: 1,
-                    collector: 1,
+                    collector: 2,
                 },
             },
             homeLeft:{
@@ -163,7 +162,7 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"kaerMorhen",
                 creeps: {
-                    collector: 1,
+                    collector: 2,
                     claimer: 1,
                     settler: 1,
                 }
@@ -171,9 +170,9 @@ module.exports = (function() {
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['moria'],
+                spawnRooms: ['home'],
                 creeps: {
-                    settler: 2,
+                    settler: 1,
                     claimer: 1,
                     collector: 1,
                 }
@@ -181,7 +180,7 @@ module.exports = (function() {
             moriaBottom: {
                 type: "outpost",
                 homeRoom: "moria",
-                spawnRooms: ['home', 'moria'],
+                spawnRooms: ['home'],
                 offroad: true,
                 creeps: {
                     settler: 1,
@@ -193,7 +192,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "moria",
                 offroad: true,
-                spawnRooms: ['home', 'moria'],
+                spawnRooms: ['home'],
                 creeps: {
                     collector: 1,
                 },
@@ -307,7 +306,16 @@ module.exports = (function() {
                 },
             },
 
-            "Kaer Morhen": {},
+            "Kaer Morhen": {
+                mineralTransfer: {
+                    minimum: 1,
+                    body: 'mineralTransfer',
+                    priority: 'low',
+                    memo: {
+                        role: 'transfer',
+                    }
+                },
+            },
         },
 
         blueprints: {

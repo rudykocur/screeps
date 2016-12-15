@@ -46,8 +46,6 @@ module.exports = (function() {
                 this.pingCollectors();
                 this.pingClaimers();
                 this.pingSettlers();
-
-                this.autobuildExtensions();
             }
 
             discoverSources() {
@@ -97,6 +95,7 @@ module.exports = (function() {
 
                 var blueprint = JSON.parse(JSON.stringify(config.blueprints.outpostCollector));
                 blueprint.memo.storageId = storage.id;
+                blueprint.memo.unloadRoom = this.config.homeRoom;
 
                 if(this.config.offroad) {
                     blueprint.body = blueprint.bodyOffroad;
