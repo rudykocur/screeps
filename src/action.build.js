@@ -1,3 +1,6 @@
+const profiler = require('./profiler-impl');
+const _ = require('lodash');
+
 module.exports = {
     /**
      * @param {Creep} creep
@@ -93,3 +96,5 @@ module.exports = {
     },
 
 };
+
+profiler.registerObject(module.exports, 'action-build');

@@ -1,3 +1,7 @@
+const profiler = require('./profiler-impl');
+const _ = require('lodash');
+
+
 const actionHarvest = require('./action.harvest');
 const actionBuld = require('./action.build');
 const actionUtils = require('./action.utils');
@@ -85,3 +89,5 @@ module.exports = (function() {
 
     }
 })();
+
+profiler.registerObject(module.exports, 'action-combat');

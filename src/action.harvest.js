@@ -1,4 +1,5 @@
 const profiler = require('./profiler-impl');
+const _ = require('lodash');
 
 module.exports = (function() {
 

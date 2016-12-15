@@ -1,3 +1,6 @@
+const profiler = require('./profiler-impl');
+const _ = require('lodash');
+
 module.exports = (function() {
     function routeWithAvoid(roomName, matrix) {
         var allFlags = _.groupBy(Game.flags, 'room.name')[roomName];
@@ -132,3 +135,5 @@ module.exports = (function() {
         }
     }
 })();
+
+profiler.registerObject(module.exports, 'action-utils');
