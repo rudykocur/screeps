@@ -45,6 +45,7 @@ module.exports = (function() {
                 }
 
                 if(result == ERR_NOT_IN_RANGE) {
+                    this.creep.repair(_.first(this.creep.pos.lookFor(LOOK_STRUCTURES)));
                     return this.move();
                 }
 

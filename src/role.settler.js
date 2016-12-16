@@ -125,6 +125,7 @@ module.exports = (function() {
                         if(creep.upgradeController(ctrl) == ERR_NOT_IN_RANGE) {
                             creep.moveTo(ctrl);
                         }
+                        return;
                     }
                     else {
 
@@ -140,12 +141,19 @@ module.exports = (function() {
                                     creep.moveTo(ctrl);
                                 }
                             }
-
+                            return;
                         }
                     }
                     // if(creep.room.controller.my && creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE) {
                     //     creep.moveTo(creep.room.controller);
                     // }
+                }
+
+                var idlePos = creep.getIdlePosition();
+                if(idlePos) {
+                    if(!creep.pos.isNearTo(idlePos)) {
+                        creep.moveTo(idlePos);
+                    }
                 }
             }
         }

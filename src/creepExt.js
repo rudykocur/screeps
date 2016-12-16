@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const actionHarvest = require('./action.harvest');
 const actionUtils = require('./action.utils');
 const bookmarks = require('./bookmarks');

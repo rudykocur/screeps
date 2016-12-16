@@ -1,4 +1,6 @@
 const profiler = require('./profiler-impl');
+const _ = require('lodash');
+const logger = require('./logger');
 
 const actionHarvest = require('./action.harvest');
 const actionUtils = require('./action.utils');
@@ -7,6 +9,9 @@ const bookmarks = require('./bookmarks');
 module.exports = (function() {
 
     return {
+        /**
+         * @param {Creep} creep
+         */
         run:  function(creep) {
             if(actionUtils.tryDespawn(creep)) {
                 return
@@ -15,6 +20,7 @@ module.exports = (function() {
             var resource = creep.memory.transferResource || RESOURCE_ENERGY;
 
             var storage = creep.room.getStorage();
+            var terminal = creep.room.getTerminal();
 
             var job = creep.getJob();
 
@@ -28,6 +34,24 @@ module.exports = (function() {
 
 
             if(job) {
+                // If you have resources other than required for job - empty them to terminal or storage
+                if(creep.carryTotal > creep.carry[job.resource]) {
+                    let toEmpty = _.omit(creep.carry, job.resource);
+
+                    if(toEmpty.energy > 0) {
+                        if(creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(storage);
+                        }
+                    }
+                    else {
+                        let toEmptyResource = _.keys(toEmpty)[0];
+                        if(creep.transfer(terminal, toEmptyResource) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(terminal);
+                        }
+                    }
+
+                    return;
+                }
 
                 if(!creep.carry[job.resource]) {
                     var sourcePos = RoomPosition.fromDict(job.sourcePos);

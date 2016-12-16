@@ -1,4 +1,5 @@
 const profiler = require('./profiler-impl');
+const _ = require('lodash');
 
 const config = require('./config');
 const logger = require('./logger');
@@ -102,13 +103,13 @@ class ColonyRoomHandler extends RoomHandler {
         var terminal = this.room.getTerminal();
 
         if(storage && terminal) {
-            if(Game.time % 10 != 3) {
+            // if(Game.time % 10 != 3) {
                 this.processStorageSurplusJobs(storage, terminal);
-            }
+            // }
 
-            if(Game.time % 10 == 4) {
-                this.createTerminalToStorageJobs(storage, terminal);
-            }
+            // if(Game.time % 10 == 4) {
+            this.createTerminalToStorageJobs(storage, terminal);
+            // }
 
             this.createTerminalRequirementsJobs(storage, terminal);
         }

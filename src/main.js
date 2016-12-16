@@ -41,7 +41,7 @@ var roleModules = {
     none: {run: function() {}},
 };
 
-profiler.enable();
+// profiler.enable();
 
 profiler.registerClass(Game, 'Game');
 
@@ -53,14 +53,14 @@ module.exports = (function() {
 
     return {
         loop: function() {
-            profiler.wrap(function() {
-                module.exports.runLoop();
-            });
+            // profiler.wrap(function() {
+            //     module.exports.runLoop();
+            // });
 
             // if(profiler.print) {
             //     profiler.print();
             // }
-            // module.exports.runLoop();
+            module.exports.runLoop();
         },
 
         runLoop: function () {

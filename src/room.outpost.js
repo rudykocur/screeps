@@ -1,4 +1,5 @@
 const profiler = require('./profiler-impl');
+const _ = require('lodash');
 
 const config = require('./config');
 const logger = require('./logger');

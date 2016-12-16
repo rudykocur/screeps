@@ -24,7 +24,9 @@ module.exports = (function() {
                 return;
             }
 
-            creep.addTask(taskMove.task.create(creep, scoutFlag.pos));
+            if(!creep.pos.isEqualTo(scoutFlag)) {
+                creep.addTask(taskMove.task.create(creep, scoutFlag.pos));
+            }
         }
         // run:  function(creep) {
         //

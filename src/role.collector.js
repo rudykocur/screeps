@@ -51,7 +51,9 @@ class CollectorRole extends CreepRole {
             else {
                 var idlePos = this.creep.getIdlePosition();
                 if(idlePos) {
-                    this.creep.addTask(MoveTask.create(this.creep, idlePos, 1));
+                    if(!this.creep.pos.isNearTo(idlePos)) {
+                        this.creep.addTask(MoveTask.create(this.creep, idlePos, 1));
+                    }
                 }
             }
         }

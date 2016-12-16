@@ -33,12 +33,12 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_ZYNTHIUM]: 0,
                         [RESOURCE_OXYGEN]: 0,
-                        // [RESOURCE_ENERGY]: 500000,
+                        [RESOURCE_ENERGY]: 500000,
                     }
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 20000,
+                        // [RESOURCE_ENERGY]: 20000,
                     }
                 },
                 labs: {
@@ -88,11 +88,11 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 0,
                     }
                 },
-                terminal: {
-                    require: {
-                        [RESOURCE_ENERGY]: 100000,
-                    }
-                }
+                // terminal: {
+                //     require: {
+                //         [RESOURCE_ENERGY]: 100000,
+                //     }
+                // }
             },
             kaerMorhen: {
                 type: "colony",
@@ -101,6 +101,12 @@ module.exports = (function() {
                     upgrader: 4,
                     builder: 1,
                     mover: 2,
+                },
+                minerals: {
+                    reserve: {
+                        [RESOURCE_LEMERGIUM]: 0,
+                        [RESOURCE_ENERGY]: 50000,
+                    }
                 }
             },
             brot: {
@@ -118,7 +124,7 @@ module.exports = (function() {
                 wallsHp: 10000,
                 creeps: {
                     upgrader: 3,
-                    builder: 2,
+                    builder: 1,
                     mover: 3,
                 }
             },
@@ -194,9 +200,11 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "moria",
                 offroad: true,
-                spawnRooms: ['home'],
+                spawnRooms: ['home', 'moria'],
                 creeps: {
                     collector: 1,
+                    claimer: 1,
+                    settler: 1,
                 },
             },
             loneOutpost:{
@@ -204,6 +212,7 @@ module.exports = (function() {
                 homeRoom:"home",
                 creeps: {
                     // collector: 2,
+                    claimer: 1,
                 }
             },
             kmRight: {
@@ -220,9 +229,9 @@ module.exports = (function() {
                 homeRoom: "moria",
                 spawnRooms: ['home', 'moria'],
                 creeps: {
-                    settler: 1,
+                    settler: 0,
                     claimer: 1,
-                    collector: 1,
+                    collector: 2,
                 }
             },
             // lair1: {
