@@ -149,11 +149,12 @@ function memoryClean() {
 }
 
 function printDiagnostics() {
-    _.each(_.groupBy(Game.creeps, 'pos.roomName'), function(creeps, roomName) {
-        //var room = Game.rooms[roomName];
-        console.log(roomName + ': ' + creeps.map(c => c.name+':'+c.memory.group+':'+c.ticksToLive).join(', '));
-    })
-    var room = Game.spawns.Rabbithole.room;
+    _.each(_.groupBy(Game.creeps, 'memory.room'), function(creeps, roomName) {
+
+        let roles = _.map(_.groupBy(creeps, 'memory.role'), (roleCreeps, roleName) => roleName + ': ' + roleCreeps.length);
+        console.log(Game.rooms[roomName].customName + ': ' + roles.join(', '));
+    });
+
     console.log('Spawn power: ' + _.map(Game.spawns, s => s.name + ' ' + s.room.energyAvailable + '/' + s.room.energyCapacityAvailable ).join(', '));
 }
 

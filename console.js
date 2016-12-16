@@ -2,7 +2,24 @@
 const ScreepsAPI = require('screeps-api');
 const readline = require('readline');
 const util = require('util');
-const colors = require('colors');
+const c = require('colors');
+
+const htmlRegex = /<\w+\s*(?:style=(?:"|')(?:color\s*:\s*([^"]+))?(?:"|'))?>([^<]*)<\/\w+>/g;
+
+const htmlToColor = {
+  '#edc222': c.yellow,
+  'gray': c.gray,
+  'red': c.red,
+  '#27c135': c.green,
+};
+
+var mapColorToTerminal = function(color, message) {
+  if(color in htmlToColor) {
+    return htmlToColor[color](message);
+  }
+
+  return c.magenta(color+'-'+message);
+};
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -74,9 +91,6 @@ function getPassword (auth) {
 function run () {
   rl.on('line', (line) => {
     line = line.trim();
-    if(!line) {
-      return;
-    }
     if (line == 'exit') {
       console.log('Bye');
       process.exit();
@@ -102,12 +116,11 @@ function run () {
   api.on('console', (msg) => {
     let [user, data] = msg;
     let d = new Date();
-    let prefix = d.toISOString().slice(11).split('.')[0] + ' ';
-    if (data.messages) data.messages.log.forEach(l => {console.log(prefix + l); prefix = ''});
-    if (data.messages) data.messages.results.forEach(l => console.log('>', l.gray));
+    let prefix = c.gray(d.toISOString().slice(11).split('.')[0] + ' ');
+    if (data.messages) data.messages.log.forEach(l => {logData(prefix + l);});
+    if (data.messages) data.messages.results.forEach(l => logData('>', l.gray));
     if (data.error) {
       console.log(prefix + data.error.red);
-      prefix = '';
     }
   })
 }
@@ -120,6 +133,12 @@ var fu = function (type, args) {
   rl.output.write(text + '\n');
   rl.output.write(new Array(t).join('\n\x1B[E'));
   rl._refreshLine()
+};
+
+var logData = function(data) {
+  data = data.replace(htmlRegex, (matched, color, content) => mapColorToTerminal(color, content));
+
+  console.log(data);
 };
 
 console.log = function () {
