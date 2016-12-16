@@ -1,8 +1,9 @@
 const profiler = require('./profiler-impl');
 const _ = require('lodash');
 
-const MoveTask = require('./task.move').MoveTask;
+const actionUtils = require('./action.utils');
 
+const MoveTask = require('./task.move').MoveTask;
 const CreepRole = require('./role').CreepRole;
 
 class CollectorRole extends CreepRole {
@@ -18,7 +19,7 @@ class CollectorRole extends CreepRole {
             return;
         }
 
-        if(this.creep.carryTotal < this.creep.carryCapacity) {
+        if(actionUtils.shouldHarvestEnergy(this.creep)) {
             let room = this.creep.workRoom;
 
             if(!room) {

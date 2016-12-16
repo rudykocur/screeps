@@ -199,10 +199,10 @@ module.exports = (function() {
             mork: {
                 type: "outpost",
                 homeRoom: "moria",
-                offroad: true,
+                offroad: false,
                 spawnRooms: ['home', 'moria'],
                 creeps: {
-                    collector: 1,
+                    collector: 2,
                     claimer: 1,
                     settler: 1,
                 },

@@ -41,7 +41,7 @@ var roleModules = {
     none: {run: function() {}},
 };
 
-// profiler.enable();
+profiler.enable();
 
 profiler.registerClass(Game, 'Game');
 
@@ -53,14 +53,14 @@ module.exports = (function() {
 
     return {
         loop: function() {
-            // profiler.wrap(function() {
-            //     module.exports.runLoop();
-            // });
+            profiler.wrap(function() {
+                module.exports.runLoop();
+            });
 
             // if(profiler.print) {
             //     profiler.print();
             // }
-            module.exports.runLoop();
+            // module.exports.runLoop();
         },
 
         runLoop: function () {
@@ -149,13 +149,38 @@ function memoryClean() {
 }
 
 function printDiagnostics() {
-    _.each(_.groupBy(Game.creeps, 'memory.room'), function(creeps, roomName) {
+    var creepsByRoom = _.groupBy(Game.creeps, 'memory.room');
 
-        let roles = _.map(_.groupBy(creeps, 'memory.role'), (roleCreeps, roleName) => roleName + ': ' + roleCreeps.length);
-        console.log(Game.rooms[roomName].customName + ': ' + roles.join(', '));
+    _.each(_.sortBy(_.keys(creepsByRoom)), roomName => {
+        var creeps = creepsByRoom[roomName];
+        var room = Game.rooms[roomName];
+
+        var creepsByRole = _.groupBy(creeps, 'memory.role');
+
+        var sources = room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_ENERGY}});
+        var total = _.sum(sources.map(s => s.amount));
+
+        if(total < 3000) {
+            total = logger.fmt.green(total);
+        }
+        else if(total < 5000) {
+            total = logger.fmt.orange(total);
+        }
+        else {
+            total = logger.fmt.red(total);
+        }
+
+        let roles = _.map(_.sortBy(_.keys(creepsByRole)), (roleName) => roleName + ': ' + creepsByRole[roleName].length);
+
+        console.log(Game.rooms[roomName].customName + ': ' + roles.join(', ') + '; Resources on ground: ' + total);
     });
 
-    console.log('Spawn power: ' + _.map(Game.spawns, s => s.name + ' ' + s.room.energyAvailable + '/' + s.room.energyCapacityAvailable ).join(', '));
+    var spawnsByRoom = _.groupBy(Game.spawns, 'room.name');
+
+    console.log('Power: ' + _.map(_.keys(spawnsByRoom), r => {
+            var room = Game.rooms[r];
+            return `${room.customName} ${room.energyAvailable}/${room.energyCapacityAvailable}`;
+        }).join(', '));
 }
 
 function killBrot() {

@@ -77,9 +77,9 @@ class MoveTask extends creepExt.CreepTask {
         if(result == OK) {
 
 
-            // if(this.state.multiroom) {
-            //     range = 0;
-            // }
+            if(this.state.multiroom) {
+                range = 0;
+            }
             // let lastStep = this.state.path[this.state.path.length - 1];
             // if(this.creep.pos.inRangeTo(lastStep, range)) {
             //     this.finish();
