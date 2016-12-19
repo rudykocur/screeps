@@ -18,13 +18,15 @@ module.exports = (function() {
             E66N44: "lair1",
             E67N44: "orphan",
             E65N43: "underKeepers",
+            E67N45: "brokilonTop",
+            E69N41: "corner",
         },
         rooms: {
             home: {
                 type: "colony",
                 creeps: {
                     upgrader: 3,
-                    builder: 1,
+                    builder: 0,
                     mover: 2,
                 },
                 minerals: {
@@ -38,7 +40,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        // [RESOURCE_ENERGY]: 20000,
+                        //[RESOURCE_ENERGY]: 20000,
                     }
                 },
                 labs: {
@@ -79,7 +81,7 @@ module.exports = (function() {
                 panicMode: false,
                 creeps: {
                     upgrader: 3,
-                    builder: 1,
+                    builder: 0,
                     mover: 2,
                 },
                 minerals: {
@@ -88,11 +90,11 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 0,
                     }
                 },
-                // terminal: {
-                //     require: {
-                //         [RESOURCE_ENERGY]: 100000,
-                //     }
-                // }
+                terminal: {
+                    require: {
+                        [RESOURCE_ENERGY]: 50000,
+                    }
+                }
             },
             kaerMorhen: {
                 type: "colony",
@@ -105,7 +107,12 @@ module.exports = (function() {
                 minerals: {
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 0,
-                        [RESOURCE_ENERGY]: 50000,
+                        //[RESOURCE_ENERGY]: 50000,
+                    }
+                },
+                terminal: {
+                    require: {
+                        [RESOURCE_ENERGY]: 100000,
                     }
                 }
             },
@@ -114,28 +121,28 @@ module.exports = (function() {
                 homeRoom:"home",
                 creeps: {
                     claimer: 1,
-                    settler: 1,
+                    settler: 0,
                     collector: 3,
                 },
             },
             orphan: {
                 type: "colony",
-                panicMode: true,
+                panicMode: false,
                 wallsHp: 10000,
                 creeps: {
                     upgrader: 3,
                     builder: 1,
-                    mover: 3,
+                    mover: 4,
                 }
             },
             homeTop: {
                 type:"outpost",
                 homeRoom:"home",
-                spawnRooms: ['home'],
+                spawnRooms: ['home', 'moria'],
                 creeps: {
                     claimer: 1,
-                    settler: 1,
-                    // collector: 2,
+                    settler: 0,
+                    collector: 2,
                 },
             },
             homeTopTop: {
@@ -144,7 +151,7 @@ module.exports = (function() {
                 spawnRooms: ['home', 'moria'],
                 creeps: {
                     claimer: 1,
-                    settler: 1,
+                    settler: 0,
                     collector: 2,
                 },
             },
@@ -152,9 +159,9 @@ module.exports = (function() {
                 type:"outpost",
                 homeRoom:"home",
                 creeps: {
-                    // collector: 3,
+                    collector: 2,
                     claimer: 1,
-                    settler: 1,
+                    settler: 0,
                 },
             },
             moriaRight:{
@@ -162,8 +169,8 @@ module.exports = (function() {
                 homeRoom:"moria",
                 creeps: {
                     claimer: 1,
-                    collector: 2,
-                    settler: 1,
+                    collector: 3,
+                    settler: 0,
                 }
             },
             kmLower:{
@@ -172,15 +179,14 @@ module.exports = (function() {
                 creeps: {
                     collector: 2,
                     claimer: 1,
-                    settler: 1,
+                    settler: 0,
                 }
             },
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['home'],
+                spawnRooms: ['moria', 'home'],
                 creeps: {
-                    settler: 1,
                     claimer: 1,
                     collector: 1,
                 }
@@ -188,10 +194,9 @@ module.exports = (function() {
             moriaBottom: {
                 type: "outpost",
                 homeRoom: "moria",
-                spawnRooms: ['home'],
-                offroad: true,
+                spawnRooms: ['home', 'moria'],
                 creeps: {
-                    settler: 1,
+                    settler: 0,
                     collector: 2,
                     claimer: 1,
                 },
@@ -204,7 +209,7 @@ module.exports = (function() {
                 creeps: {
                     collector: 2,
                     claimer: 1,
-                    settler: 1,
+                    settler: 0,
                 },
             },
             loneOutpost:{
@@ -220,7 +225,7 @@ module.exports = (function() {
                 homeRoom: "kaerMorhen",
                 creeps: {
                     collector: 3,
-                    settler: 1,
+                    settler: 0,
                     claimer: 1,
                 }
             },
@@ -232,6 +237,23 @@ module.exports = (function() {
                     settler: 0,
                     claimer: 1,
                     collector: 2,
+                }
+            },
+            brokilonTop: {
+                type: "outpost",
+                homeRoom: "orphan",
+                creeps: {
+                    collector: 1,
+                    claimer: 1,
+                    settler: 0,
+                }
+            },
+            corner: {
+                type: "outpost",
+                homeRoom: "moria",
+                creeps: {
+                    collector: 2,
+                    claimer: 1,
                 }
             },
             // lair1: {

@@ -41,6 +41,8 @@ class CollectorRole extends CreepRole {
                     this.creep.setPrespawnTime();
 
                     if(this.creep.pickup(source) == OK) {
+                        this.creep.memory.harvesting = false;
+                        
                         let storage = this.getStorage();
                         this.creep.addTask(MoveTask.create(this.creep, storage, 1));
                     }

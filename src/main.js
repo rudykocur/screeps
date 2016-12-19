@@ -4,6 +4,7 @@ const profiler = require('./profiler-impl');
 require('./prototype.Room');
 require('./prototype.RoomPosition');
 
+
 const creepSpawn = require('./creepSpawn');
 const creepExt = require('./creepExt');
 const config = require('./config');
@@ -156,6 +157,10 @@ function printDiagnostics() {
         var room = Game.rooms[roomName];
 
         var creepsByRole = _.groupBy(creeps, 'memory.role');
+        if(!room) {
+            console.log(room, '::  no access');
+            return;
+        }
 
         var sources = room.find(FIND_DROPPED_RESOURCES, {filter: {resourceType: RESOURCE_ENERGY}});
         var total = _.sum(sources.map(s => s.amount));
