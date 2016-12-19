@@ -11,6 +11,23 @@ class CollectorRole extends CreepRole {
         super(creep);
     }
 
+    registerIncome(creep, income) {
+        var stats = Memory.stats = Memory.stats || {};
+
+        stats.expenses = stats.expenses || [];
+
+        var room = Game.rooms[creep.memory.room];
+
+        stats.expenses.push({
+            room: room.customName,
+            income: income,
+            type: 'collector',
+            tick: Game.time,
+            role: creep.memory.role,
+            eventDate: new Date().toISOString(),
+        });
+    }
+
     scheduleTask() {
         let task = this.getFleeTask();
 
@@ -64,7 +81,11 @@ class CollectorRole extends CreepRole {
             let storage = this.getStorage();
 
             if(this.creep.pos.inRangeTo(storage, 1)) {
-                this.creep.transfer(storage, RESOURCE_ENERGY);
+                let creepEnergy = this.creep.carry.energy;
+
+                if(this.creep.transfer(storage, RESOURCE_ENERGY) == OK) {
+                    this.registerIncome(this.creep, creepEnergy);
+                }
             }
             else {
                 this.creep.addTask(MoveTask.create(this.creep, storage, 1));

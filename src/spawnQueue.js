@@ -12,6 +12,27 @@ module.exports = (function() {
 
     var getCreepId = _.partial(utils.getNextId, 'creepId');
 
+    /**
+     *
+     * @param {roomName, name, body, memo} request
+     */
+    function registerCreepExpense(request) {
+        var stats = Memory.stats = Memory.stats || {};
+
+        stats.expenses = stats.expenses || [];
+
+        var cost = _.sum(request.body.map(part => BODYPART_COST[part]));
+
+        stats.expenses.push({
+            room: request.roomName,
+            expense: cost,
+            type: 'spawn',
+            tick: Game.time,
+            role: request.memo.role,
+            eventDate: new Date().toISOString(),
+        });
+    }
+
     return {
         // required for colony to function - movers, harvesters
         PRIORITY_CRITICAL: 'critical',
@@ -96,6 +117,8 @@ module.exports = (function() {
                                 logger.mail(logger.error(`Spawn ${freeSpawn.name} - cant find body for ${bodyName}`));
                                 return;
                             }
+
+                            request.body = body;
                         }
 
                         if(freeSpawn.canCreateCreep(body) != OK ) {
@@ -105,10 +128,13 @@ module.exports = (function() {
                         request.memo.room = request.memo.room || handler.room.name;
                         request.memo.spawnTime = body.length * CREEP_SPAWN_TIME;
 
-                        var newCreepName = freeSpawn.createCreep(body, request.name, request.memo);
+                        var newCreepName = freeSpawn.createCreep(request.body, request.name, request.memo);
 
                         if(newCreepName != request.name) {
                             logger.error('Failed to spawn creep', request.name);
+                        }
+                        else {
+                            registerCreepExpense(request);
                         }
 
                         if(request.callback) {

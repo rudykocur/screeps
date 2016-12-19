@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "lodash": "3.10.1",
-    "screeps-api": "latest"
+    "screeps-api": "latest",
+    "elasticsearch": "latest"
   }
 }
