@@ -70,10 +70,21 @@ class MoverRole extends CreepRole {
                     }
                     else {
                         var carryEnergy = this.creep.carry.energy;
+                        var transferredEnergy = carryEnergy;
+                        if(target instanceof StructureTower) {
+                            transferredEnergy = Math.min(transferredEnergy, target.energyCapacity - target.energy);
+                        }
+
                         this.creep.transfer(target, RESOURCE_ENERGY);
 
+                        var roomName = this.creep.room.customName;
+                        var creepRole = this.creep.memory.role;
+
                         if(target instanceof StructureStorage) {
-                            stats.registerIncome(this.creep.room.customName, 'mover', this.creep.memory.role, carryEnergy);
+                            stats.registerIncome(roomName, 'mover', creepRole, carryEnergy);
+                        }
+                        if(target instanceof StructureTower) {
+                            stats.registerExpense(roomName, 'tower', creepRole, transferredEnergy);
                         }
                     }
 

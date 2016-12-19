@@ -3,6 +3,7 @@ const profiler = require('./profiler-impl');
 const stats = require('./stats');
 const creepExt = require('./creepExt');
 const CreepTask = require('./creepExt').CreepTask;
+const cache = require('./cache');
 
 const actionUtils = require('./action.utils');
 
@@ -19,9 +20,12 @@ class WithdrawFromStorageTask extends CreepTask {
      * @param {StructureStorage} target
      */
     static create(creep, target) {
-        var path = creep.pos.findPathTo(target.pos, {
+
+        var path = cache.getPath(creep.pos, target.pos, () => {
+            return creep.pos.findPathTo(target.pos, {
                 costCallback: actionUtils.costCallback
             });
+        })
 
         return new module.exports.task(creep, {
             target: target.id,

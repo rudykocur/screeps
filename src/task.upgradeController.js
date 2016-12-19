@@ -1,6 +1,7 @@
 const profiler = require('./profiler-impl');
 const creepExt = require('./creepExt');
 
+const cache = require('./cache');
 const actionUtils = require('./action.utils');
 
 module.exports = (function() {
@@ -18,9 +19,11 @@ module.exports = (function() {
              * @param {Creep} creep
              */
             static create(creep) {
-                var path = creep.pos.findPathTo(creep.room.controller, {
+                var path = cache.getPath(creep.pos, creep.room.controller.pos, () => {
+                    return creep.pos.findPathTo(creep.room.controller, {
                         costCallback: actionUtils.costCallback
                     });
+                });
 
                 return new module.exports.task(creep, {
                     target: creep.room.controller.id,

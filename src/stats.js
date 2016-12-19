@@ -1,4 +1,10 @@
+const _ = require("lodash");
+const profiler = require('./profiler-impl');
+
 module.exports = (function() {
+    var queueSize = 200;
+    var trimAt = 300;
+
     return {
         registerIncome(roomName, type, role, amount) {
             var stats = Memory.stats = Memory.stats || {};
@@ -55,14 +61,16 @@ module.exports = (function() {
         manageRegisters() {
             var stats = Memory.stats = Memory.stats || {};
 
-            if(stats.expenses && stats.expenses.length > 1500) {
-                var result = stats.expenses.splice(0, stats.expenses.length - 1300);
+            if(stats.expenses && stats.expenses.length > trimAt) {
+                var result = stats.expenses.splice(0, stats.expenses.length - queueSize);
                 console.log('trimmed', result.length, 'expense events');
             }
 
-            if(stats.cpu && stats.cpu.length > 1500) {
-                stats.cpu.splice(0, stats.expenses.length - 1300);
+            if(stats.cpu && stats.cpu.length > trimAt) {
+                stats.cpu.splice(0, stats.cpu.length - queueSize);
             }
         }
     }
 })();
+
+profiler.registerObject(module.exports, 'stats');

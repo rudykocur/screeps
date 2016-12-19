@@ -1,6 +1,7 @@
 const _ = require("lodash");
 const profiler = require('./profiler-impl');
 const stats = require('./stats');
+const cache = require('./cache');
 
 require('./prototype.Room');
 require('./prototype.RoomPosition');
@@ -78,6 +79,8 @@ module.exports = (function() {
                 end: null,
             };
 
+            Memory; // to kick memory loading process
+
             Game.stat = printDiagnostics;
             Game.killBrot = killBrot;
             Game.testPath = testPath;
@@ -88,6 +91,7 @@ module.exports = (function() {
 
             memoryClean();
             stats.manageRegisters();
+            cache.pruneCache();
 
             taskModules.forEach(function(taskModule) {
                 creepExt.register(taskModule.task);
@@ -171,6 +175,8 @@ module.exports = (function() {
     }
 
 })();
+
+profiler.registerObject(module.exports, 'main');
 
 function memoryClean() {
     for(var i in Memory.creeps) {
@@ -271,23 +277,43 @@ function killBrot() {
 
 
 function testPath() {
-    var src = Game.getObjectById('57ef9ebe86f108ae6e60fd81');
+    var src = Game.getObjectById('57ef9ed286f108ae6e60ffee');
     var dst = Game.flags.holyGrail;
+
+    cleanPath();
 
     var flagsByRoom = _.groupBy(Game.flags, 'pos.roomName');
 
-    var blockRange = 5;
+    var blockRange = 6;
 
+
+    // var flags = flagsByRoom['E66N45'] || [];
+    // var keeperFlags = flags.filter(f => f.color == COLOR_RED && f.secondaryColor == COLOR_ORANGE);
+    // keeperFlags.forEach(/**Flag*/flag => {
+    //     // let pos = RoomPosition.fromDict(coord);
+    //
+    //     for (let i = blockRange * -1; i <= blockRange; i++) {
+    //         for (let j = blockRange * -1; j <= blockRange; j++) {
+    //             let pos = new RoomPosition(flag.pos.x + i, flag.pos.y + j, 'E66N45');
+    //             // matrix.set(flag.pos.x + i, flag.pos.y + j, 255);
+    //             let name = `fff-block-${pos.roomName}-${pos.x}-${pos.y}`;
+    //             pos.createFlag(name, COLOR_CYAN, COLOR_RED);
+    //         }
+    //     }
+    // });
+
+
+    let t1 = Game.cpu.getUsed();
     var path = PathFinder.search(src.pos, dst.pos, {
         maxOps: 20000,
         roomCallback: function(roomName) {
             var flags = flagsByRoom[roomName] || [];
 
-            console.log('Got flags in room', roomName, '::', flags.length);
-
             var keeperFlags = flags.filter(f => f.color == COLOR_RED && f.secondaryColor == COLOR_ORANGE);
 
             var matrix = new PathFinder.CostMatrix();
+
+            console.log('Got keeper flags in room', roomName, '::', keeperFlags.length);
 
             keeperFlags.forEach(/**Flag*/flag => {
                 for(let i = blockRange*-1; i <= blockRange; i++) {
@@ -295,9 +321,15 @@ function testPath() {
                         matrix.set(flag.pos.x + i, flag.pos.y + j, 255);
                     }
                 }
-            })
+            });
+
+            return matrix;
         }
     });
+    let t2 = Game.cpu.getUsed();
+
+
+
 
     let lastRoom = path.path[0].roomName;
     let points = [];
@@ -314,22 +346,23 @@ function testPath() {
         lastRoom = room;
 
         points.push(`${coord.x}-${coord.y}`);
-        // let name = `fff-${coord.roomName}-${coord.x}-${coord.y}`;
-        //
-        // if(!Game.rooms[coord.roomName]) {
-        //     return;
-        // }
-        // let pos = RoomPosition.fromDict(coord);
-        //
-        // pos.createFlag(name, COLOR_CYAN, COLOR_WHITE);
+
+        let name = `fff-${coord.roomName}-${coord.x}-${coord.y}`;
+
+        if(!Game.rooms[coord.roomName]) {
+            return;
+        }
+        let pos = RoomPosition.fromDict(coord);
+
+        pos.createFlag(name, COLOR_CYAN, COLOR_WHITE);
     });
 
-    console.log('OMG PATH', path.path.length, '::', path.incomplete);
+    console.log('OMG PATH', path.path.length, '::', path.incomplete, '::', t2-t1);
 }
 
 function cleanPath() {
     _.each(Game.flags, /**Flag*/f => {
-        if(f.color == COLOR_CYAN && f.secondaryColor == COLOR_WHITE) {
+        if(f.color == COLOR_CYAN && (f.secondaryColor == COLOR_WHITE || f.secondaryColor == COLOR_RED)) {
             f.remove();
         }
     })

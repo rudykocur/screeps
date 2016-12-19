@@ -1,6 +1,7 @@
 const profiler = require('./profiler-impl');
 const creepExt = require('./creepExt');
 
+const cache = require('./cache');
 const actionUtils = require('./action.utils');
 
 class MoveTask extends creepExt.CreepTask {
@@ -31,16 +32,12 @@ class MoveTask extends creepExt.CreepTask {
             pos = target;
         }
 
-        // if(pos.roomName == creep.pos.roomName) {
-            path = creep.pos.findPathTo(pos, {
+        path = cache.getPath(creep.pos, pos, () => {
+            return creep.pos.findPathTo(pos, {
                 costCallback: actionUtils.costCallback
-            });
-        // }
-        // else {
-        //     path = actionUtils.findRoomRoute(creep, pos).path;
-        // }
+            })
+        });
 
-        // console.log('OMG PAtH', creep.name, ':;', JSON.stringify(path));
         let isRoomBoudary = false;
         if(path.length > 0) {
             let ls = path[path.length - 1];

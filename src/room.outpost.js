@@ -107,6 +107,9 @@ class OutpostRoomHandler extends RoomHandler {
     }
 
     pingClaimers() {
+        if(!this.room.controller) {
+            return;
+        }
         var reservation = this.room.controller.reservation;
         if(reservation && reservation.ticksToEnd > 1000) {
             return;

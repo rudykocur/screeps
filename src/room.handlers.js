@@ -73,7 +73,13 @@ class RoomHandler {
             }
         });
 
-        let toDelete = _.filter(jobs, job => job.sourceId && Game.getObjectById(job.sourceId) == null).map(job => job.key);
+        let toDelete = _.filter(jobs, job => {
+            if(job.permanent) {
+                return false;
+            }
+
+            return job.sourceId && Game.getObjectById(job.sourceId) == null;
+        }).map(job => job.key);
 
         if(toDelete.length > 0) {
             toDelete.forEach(key => delete jobs[key]);
@@ -100,6 +106,7 @@ class RoomHandler {
                 jobs[key] = {
                     key: key,
                     room: this.room.customName,
+                    permanent: true,
                     type: 'harvest',
                     subtype: 'energy',
                     sourceId: s.id,

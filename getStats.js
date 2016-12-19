@@ -5,7 +5,8 @@ const fs = require('fs');
 
 var elasticsearch = require('elasticsearch');
 var client = new elasticsearch.Client({
-  host: 'localhost:9201',
+  // host: 'localhost:9201',
+  host: '192.168.0.3:9200',
   // log: 'trace'
 });
 
@@ -74,6 +75,6 @@ Promise.resolve()
                         })
                     })
                 })
-        }, 10000);
+        }, 30000);
     })
     .catch(err=>console.error(err));

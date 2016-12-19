@@ -16,6 +16,7 @@ module.exports = (function() {
             E68N41: "mork",
             E69N43: "kmRight",
             E66N44: "lair1",
+            E66N45: "lair2",
             E67N44: "orphan",
             E65N43: "underKeepers",
             E67N45: "brokilonTop",
@@ -224,7 +225,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
                 creeps: {
-                    collector: 3,
+                    collector: 2,
                     settler: 0,
                     claimer: 1,
                 }
@@ -248,6 +249,16 @@ module.exports = (function() {
                     settler: 0,
                 }
             },
+            // lair2: {
+            //     type: "outpost",
+            //     homeRoom: "orphan",
+            //     disableHarvesting: true,
+            //     creeps: {
+            //         collector: 0,
+            //         claimer: 0,
+            //         settler: 0,
+            //     }
+            // },
             corner: {
                 type: "outpost",
                 homeRoom: "moria",
