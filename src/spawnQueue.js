@@ -22,9 +22,10 @@ module.exports = (function() {
         stats.expenses = stats.expenses || [];
 
         var cost = _.sum(request.body.map(part => BODYPART_COST[part]));
+        var roomName = Room.idToCustomName(request.memo.room);
 
         stats.expenses.push({
-            room: request.roomName,
+            room: roomName,
             expense: cost,
             type: 'spawn',
             tick: Game.time,

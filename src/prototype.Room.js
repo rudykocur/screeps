@@ -22,6 +22,10 @@ Room.customNameToId = function(roomName) {
     return customNameToRoomId[roomName];
 };
 
+Room.idToCustomName = function(roomId) {
+    return config.roomNames[roomId];
+};
+
 Room.prototype.refreshStructures = function() {
     var state = this.handlerMemory;
 

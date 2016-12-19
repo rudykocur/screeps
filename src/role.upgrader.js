@@ -1,11 +1,13 @@
 const profiler = require('./profiler-impl');
 
+const stats = require('./stats');
 const actionHarvest = require('./action.harvest');
 const actionUtils = require('./action.utils');
 const bookmarks = require('./bookmarks');
 const creepExt = require('./creepExt');
 const taskUpgrade = require('./task.upgradeController');
 const taskWithdraw = require('./task.withdrawFromStorage');
+const TaskWithdraw = require('./task.withdrawFromStorage').WithdrawFromStorageTask;
 
 module.exports = (function() {
 
@@ -26,11 +28,11 @@ module.exports = (function() {
 
                 if(!target) {
                     let targets = _(creep.room.getContainers({resource: RESOURCE_ENERGY, amount: creep.carryCapacity}));
-                    target = target.sortBy(t => creep.pos.getRangeTo(t)).first();
+                    target = targets.sortBy(t => creep.pos.getRangeTo(t)).first();
                 }
 
                 if(target) {
-                    creepExt.addTask(creep, taskWithdraw.task.create(creep, target));
+                    creepExt.addTask(creep, TaskWithdraw.create(creep, target));
                 }
             }
             else {

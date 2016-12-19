@@ -1,9 +1,9 @@
 const _ = require("lodash");
 const profiler = require('./profiler-impl');
+const stats = require('./stats');
 
 require('./prototype.Room');
 require('./prototype.RoomPosition');
-
 
 const creepSpawn = require('./creepSpawn');
 const creepExt = require('./creepExt');
@@ -65,6 +65,19 @@ module.exports = (function() {
         },
 
         runLoop: function () {
+
+            var timer = {
+                begin: Game.cpu.getUsed(),
+                init: null,
+                combatActions: null,
+                rooms: null,
+                spawn: null,
+                creeps: null,
+                towers: null,
+                gangs: null,
+                end: null,
+            };
+
             Game.stat = printDiagnostics;
             Game.killBrot = killBrot;
             Game.testPath = testPath;
@@ -74,6 +87,7 @@ module.exports = (function() {
             combatAction.extendGame();
 
             memoryClean();
+            stats.manageRegisters();
 
             taskModules.forEach(function(taskModule) {
                 creepExt.register(taskModule.task);
@@ -81,13 +95,21 @@ module.exports = (function() {
 
             spawnQueue.reset();
 
+            timer.init = Game.cpu.getUsed();
+
             Game.combatActions.processCombatActions();
+
+            timer.combatActions = Game.cpu.getUsed();
 
             creepSpawn.autospawn(Game.spawns.Rabbithole);
 
             roomHanders.processRoomHandlers();
 
+            timer.rooms = Game.cpu.getUsed();
+
             spawnQueue.spawnCreeps();
+
+            timer.spawn = Game.cpu.getUsed();
 
             for (var name in Game.creeps) {
                 /** @type Creep */
@@ -130,12 +152,21 @@ module.exports = (function() {
                 }
             }
 
+            timer.creeps = Game.cpu.getUsed();
+
             _.each(getStructures(STRUCTURE_TOWER), function(tower) {
                 roleTower.run(tower);
             });
 
+            timer.towers = Game.cpu.getUsed();
 
             Game.gangs.processGangs();
+
+            timer.gangs = Game.cpu.getUsed();
+
+            timer.end = Game.cpu.getUsed();
+
+            stats.registerCpuTick(timer);
         },
     }
 

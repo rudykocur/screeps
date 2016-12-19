@@ -1,5 +1,6 @@
 const profiler = require('./profiler-impl');
 const _ = require('lodash');
+const stats = require('./stats');
 
 const actionUtils = require('./action.utils');
 
@@ -11,21 +12,13 @@ class CollectorRole extends CreepRole {
         super(creep);
     }
 
+    /**
+     *
+     * @param {Creep} creep
+     * @param income
+     */
     registerIncome(creep, income) {
-        var stats = Memory.stats = Memory.stats || {};
-
-        stats.expenses = stats.expenses || [];
-
-        var room = Game.rooms[creep.memory.room];
-
-        stats.expenses.push({
-            room: room.customName,
-            income: income,
-            type: 'collector',
-            tick: Game.time,
-            role: creep.memory.role,
-            eventDate: new Date().toISOString(),
-        });
+        stats.registerIncome(Room.idToCustomName(creep.memory.room), 'collector', creep.memory.role, income);
     }
 
     scheduleTask() {

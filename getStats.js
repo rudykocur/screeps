@@ -19,34 +19,61 @@ let api = new ScreepsAPI(auth);
 
 Promise.resolve()
     .then(()=>api.connect())
-    .then(()=>api.memory.get('stats'))
-    .then(memory=> {
-        fs.writeFileSync('memory.json', JSON.stringify(memory));
-        console.log(JSON.stringify(memory, null, '\t'));
+    .then(() => {
+        setInterval(() => {
+            api.memory.get('stats')
+                .then(memory=> {
 
-        memory.expenses.forEach(data => {
-            var esId = `${data.tick}-${data.eventDate}`;
+                    console.log(new Date(), 'Fetched', memory.expenses.length, 'balance events,', memory.cpu.length, 'cpu events');
 
-            client.exists({
-                index: 'screeps_test',
-                type: 'balance',
-                id: esId,
-            }, (error, exists) => {
-                if(exists === false) {
-                    client.create({
-                        index: 'screeps_test',
-                        type: 'balance',
-                        id: esId,
-                        body: data
-                    }, (error, resp) => {
-                        if(error) {
-                            console.log('OMG OMG', error);
-                        }
+                    memory.expenses.forEach(data => {
+                        var esId = `${data.tick}-${data.eventDate}`;
+
+                        client.exists({
+                            index: 'screeps_test',
+                            type: 'balance',
+                            id: esId,
+                            refresh: "wait_for",
+                        }, (error, exists) => {
+                            if(exists === false) {
+                                client.create({
+                                    index: 'screeps_test',
+                                    type: 'balance',
+                                    id: esId,
+                                    body: data
+                                }, (error, resp) => {
+                                    if(error) {
+                                        console.log('OMG OMG', error);
+                                    }
+                                });
+                            }
+                        })
                     });
-                }
-            })
 
+                    memory.cpu.forEach(data => {
+                        var esId = `${data.tick}-cpu-${data.eventDate}`;
 
-        });
+                        client.exists({
+                            index: 'screeps_test',
+                            type: 'cpu',
+                            id: esId,
+                            refresh: "wait_for",
+                        }, (error, exists) => {
+                            if(exists === false) {
+                                client.create({
+                                    index: 'screeps_test',
+                                    type: 'cpu',
+                                    id: esId,
+                                    body: data
+                                }, (error, resp) => {
+                                    if(error) {
+                                        console.log('OMG OMG', error);
+                                    }
+                                });
+                            }
+                        })
+                    })
+                })
+        }, 10000);
     })
     .catch(err=>console.error(err));

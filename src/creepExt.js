@@ -127,6 +127,29 @@ Creep.prototype.getIdlePosition = function() {
     }
 };
 
+class CreepTask {
+    move() {
+        var moveResult = this.creep.moveByPath(this.state.path);
+
+        if(moveResult == ERR_TIRED) {
+            return true;
+        }
+
+        if(moveResult == OK) {
+            this.state.path.splice(0, 1);
+            return true;
+        }
+
+        this.creep.say('ERR M ' + moveResult);
+        module.exports.endTask(this.creep);
+        return false;
+    }
+
+    finish() {
+        module.exports.endTask(this.creep);
+    }
+}
+
 module.exports = (function() {
 
     var getTaskId = _.partial(utils.getNextId, 'taskId');
@@ -135,28 +158,7 @@ module.exports = (function() {
 
         tasks: {},
 
-        CreepTask: class CreepTask {
-            move() {
-                var moveResult = this.creep.moveByPath(this.state.path);
-
-                if(moveResult == ERR_TIRED) {
-                    return true;
-                }
-
-                if(moveResult == OK) {
-                    this.state.path.splice(0, 1);
-                    return true;
-                }
-
-                this.creep.say('ERR M ' + moveResult);
-                module.exports.endTask(this.creep);
-                return false;
-            }
-
-            finish() {
-                module.exports.endTask(this.creep);
-            }
-        },
+        CreepTask: CreepTask,
 
         register: function(taskClass) {
             module.exports.tasks[taskClass.name] = taskClass;

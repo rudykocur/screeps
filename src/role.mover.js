@@ -1,6 +1,6 @@
 const profiler = require('./profiler-impl');
 const _ = require('lodash');
-
+const stats = require('./stats');
 const logger = require('./logger');
 
 const actionHarvest = require('./action.harvest');
@@ -69,7 +69,12 @@ class MoverRole extends CreepRole {
                         this.creep.drop(RESOURCE_ENERGY);
                     }
                     else {
+                        var carryEnergy = this.creep.carry.energy;
                         this.creep.transfer(target, RESOURCE_ENERGY);
+
+                        if(target instanceof StructureStorage) {
+                            stats.registerIncome(this.creep.room.customName, 'mover', this.creep.memory.role, carryEnergy);
+                        }
                     }
 
                     this.creep.finishJob();
