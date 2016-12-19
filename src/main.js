@@ -79,7 +79,7 @@ module.exports = (function() {
                 end: null,
             };
 
-            Memory; // to kick memory loading process
+            Memory; // to kick in memory loading process
 
             Game.stat = printDiagnostics;
             Game.killBrot = killBrot;

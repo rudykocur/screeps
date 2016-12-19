@@ -1,5 +1,6 @@
 const profiler = require('./profiler-impl');
 const _ = require('lodash');
+const cache = require('./cache');
 
 module.exports = (function() {
     function routeWithAvoid(roomName, matrix) {
@@ -53,6 +54,21 @@ module.exports = (function() {
          */
         tryChangeRoom: function(creep, targetRoom, via) {
 
+            if(creep.pos.roomName != targetRoom) {
+                var flag = _.first(_.filter(Game.flags, /**Flag*/f=> f.color == COLOR_ORANGE && f.pos.roomName == targetRoom));
+
+                if(flag) {
+                    let path = cache.getPath(creep.pos, flag.pos, () => {
+                        return creep.pos.findPathTo(flag.pos, {
+                            costCallback: module.exports.costCallback
+                        })
+                    });
+
+                    creep.moveByPath(path);
+                    return;
+                }
+            }
+
             var exit = module.exports.findRoomExit(creep, targetRoom, via);
 
             if(exit) {
@@ -91,11 +107,22 @@ module.exports = (function() {
         },
 
         costCallback: function(roomName, matrix) {
+            var blockRange = 7;
+
             var flags = _.groupBy(Game.flags, 'pos.roomName')[roomName];
             var blockFlags = _.filter(flags, {color: COLOR_GREY});
+            var keeperFlags = (flags || []).filter(f => f.color == COLOR_RED && f.secondaryColor == COLOR_ORANGE);
 
             blockFlags.forEach(f => {
                 matrix.set(f.pos.x, f.pos.y, 255);
+            });
+
+            keeperFlags.forEach(/**Flag*/flag => {
+                for(let i = blockRange*-1; i <= blockRange; i++) {
+                    for(let j = blockRange*-1; j <= blockRange; j++) {
+                        matrix.set(flag.pos.x + i, flag.pos.y + j, 255);
+                    }
+                }
             });
         },
 

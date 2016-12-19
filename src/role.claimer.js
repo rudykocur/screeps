@@ -22,6 +22,10 @@ module.exports = (function() {
 
             var room = Game.rooms[creep.memory.room];
 
+            if(!room) {
+                return;
+            }
+
             var ctrl = room.controller;
 
             if(creep.memory.claim) {

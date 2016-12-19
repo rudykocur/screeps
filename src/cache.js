@@ -54,3 +54,5 @@ module.exports = (function() {
         },
     };
 })();
+
+profiler.registerObject(module.exports, 'cache');

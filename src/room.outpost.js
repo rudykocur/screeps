@@ -80,7 +80,7 @@ class OutpostRoomHandler extends RoomHandler {
             return;
         }
 
-        let needed = this.state.sources.length;
+        let needed =  _.get(this.config, ['creeps', 'harvester'], this.state.sources.length);
         this.maintainPopulationAmount('miner', needed, config.blueprints.outpostMiner, spawnQueue.PRIORITY_HIGH, true);
     }
 
@@ -123,6 +123,10 @@ class OutpostRoomHandler extends RoomHandler {
     }
 
     spawnDefenders(hostiles) {
+        if(this.config.disableDefenders) {
+            return;
+        }
+
         var needed = hostiles.length;
         this.maintainPopulationAmount('defender', needed, config.blueprints.outpostDefender,
             spawnQueue.PRIORITY_DEFENCE);

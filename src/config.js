@@ -21,12 +21,13 @@ module.exports = (function() {
             E65N43: "underKeepers",
             E67N45: "brokilonTop",
             E69N41: "corner",
+            E65N45: "middle",
         },
         rooms: {
             home: {
                 type: "colony",
                 creeps: {
-                    upgrader: 3,
+                    upgrader: 4,
                     builder: 0,
                     mover: 2,
                 },
@@ -66,7 +67,7 @@ module.exports = (function() {
                         {
                             labs: ['tleft', 'bleft', 'tmiddle'],
                             load: [RESOURCE_OXYGEN, RESOURCE_HYDROGEN],
-                            amount: 1500,
+                            amount: 3000,
                         },
                         // {
                         //     labs: ['tmiddle', 'bmiddle', 'bright'],
@@ -81,7 +82,7 @@ module.exports = (function() {
                 type: "colony",
                 panicMode: false,
                 creeps: {
-                    upgrader: 3,
+                    upgrader: 4,
                     builder: 0,
                     mover: 2,
                 },
@@ -93,7 +94,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 50000,
+                        [RESOURCE_ENERGY]: 150000,
                     }
                 }
             },
@@ -225,7 +226,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
                 creeps: {
-                    collector: 2,
+                    collector: 3,
                     settler: 0,
                     claimer: 1,
                 }
@@ -246,7 +247,7 @@ module.exports = (function() {
                 creeps: {
                     collector: 1,
                     claimer: 1,
-                    settler: 0,
+                    settler: 1,
                 }
             },
             // lair2: {
@@ -267,6 +268,19 @@ module.exports = (function() {
                     claimer: 1,
                 }
             },
+            middle: {
+                type: "outpost",
+                homeRoom: "orphan",
+                spawnRooms: ["moria"],
+                // disableHarvesting: true,
+                // disableDefenders: true,
+                offroad: true,
+                creeps: {
+                    settler: 2,
+                    collector: 5,
+                    // harvester: 2,
+                }
+            }
             // lair1: {
             //     type: "sourceKeeper",
             //     homeRoom: "home",
