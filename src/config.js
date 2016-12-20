@@ -150,7 +150,7 @@ module.exports = (function() {
             homeTopTop: {
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['home', 'moria'],
+                spawnRooms: ['moria'],
                 creeps: {
                     claimer: 1,
                     settler: 0,
@@ -276,7 +276,7 @@ module.exports = (function() {
                 // disableDefenders: true,
                 offroad: true,
                 creeps: {
-                    settler: 2,
+                    settler: 1,
                     collector: 5,
                     // harvester: 2,
                 }
@@ -345,7 +345,18 @@ module.exports = (function() {
             },
 
             Cheshire: {},
-            Brokilon: {},
+            Brokilon: {
+                // middlePaver: {
+                //     minimum: 1,
+                //     body: 'settler',
+                //     priority: 'normal',
+                //     memo: {
+                //         role: 'settler',
+                //         harvestRoom: 'E65N45',
+                //         workRoom: 'E66N45',
+                //     }
+                // }
+            },
             Ys: {},
 
             Moria: {

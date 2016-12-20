@@ -65,7 +65,7 @@ module.exports = (function() {
                     });
 
                     creep.moveByPath(path);
-                    return;
+                    return true;
                 }
             }
 

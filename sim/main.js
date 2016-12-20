@@ -1,6 +1,9 @@
 const creepSpawn = require('creepSpawn');
 const creepExt = require('creepExt');
 
+require('./prototype.Room');
+require('./prototype.RoomPosition');
+
 const gang = require('gang');
 const combatAction = require('combatAction');
 
@@ -36,7 +39,9 @@ module.exports = (function() {
             gang.extendGame();
             combatAction.extendGame();
 
-            creepSpawn.reset();
+            taskModules.forEach(function(taskModule) {
+                creepExt.register(taskModule.task);
+            });
 
             Game.combatActions.processCombatActions();
 
@@ -66,7 +71,7 @@ module.exports = (function() {
                     }
                 }
                 else {
-                    console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
+                    // console.log("WARNING!! Creep " + creep.name + " has unknown role: "+role+"!");
                 }
 
                 task = creepExt.getTask(creep);

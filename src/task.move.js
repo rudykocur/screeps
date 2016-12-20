@@ -75,26 +75,18 @@ class MoveTask extends creepExt.CreepTask {
             if(this.state.multiroom) {
                 range = 0;
             }
-            // let lastStep = this.state.path[this.state.path.length - 1];
-            // if(this.creep.pos.inRangeTo(lastStep, range)) {
-            //     this.finish();
-            // }
 
-            this.state.path.splice(0, 1);
-            if(this.state.path.length <= range) {
+            var lastPoint = this.state.path[this.state.path.length-1];
+
+            if(this.creep.pos.inRangeTo(lastPoint.x, lastPoint.y, range+1)) {
                 this.finish();
             }
             return;
         }
 
-        // if(!lastError) {
-        //     this.creep.say('ERR temp ' + result);
-        //     this.state.lastError = result;
-        // }
-        // else {
-            this.creep.say('ERR M ' + result);
-            this.finish();
-        // }
+        this.creep.say('ERR M ' + result);
+        this.finish();
+
     }
 }
 
