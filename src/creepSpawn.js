@@ -1,7 +1,7 @@
-const config = require('./config');
-const utils = require('./utils');
+var config = require('./config');
+var utils = require('./utils');
 
-const spawnQueue = require('./spawnQueue');
+var spawnQueue = require('./spawnQueue');
 
 module.exports = (function() {
     return {

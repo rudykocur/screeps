@@ -1,15 +1,15 @@
-const profiler = require('./profiler-impl');
-const _ = require('lodash');
-const stats = require('./stats');
-const logger = require('./logger');
+var profiler = require('./profiler-impl');
+var _ = require('lodash');
+var stats = require('./stats');
+var logger = require('./logger');
 
-const actionHarvest = require('./action.harvest');
-const actionUtils = require('./action.utils');
+var actionHarvest = require('./action.harvest');
+var actionUtils = require('./action.utils');
 
-const taskMove = require('./task.move');
+var taskMove = require('./task.move');
 
-const MoveTask = require('./task.move').MoveTask;
-const CreepRole = require('./role').CreepRole;
+var MoveTask = require('./task.move').MoveTask;
+var CreepRole = require('./role').CreepRole;
 
 class MoverRole extends CreepRole {
     constructor(creep) {

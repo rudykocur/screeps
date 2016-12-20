@@ -1,6 +1,6 @@
-const creepSpawn = require('./creepSpawn');
-const spawnQueue = require('./spawnQueue');
-const creepGang = require('./gang');
+var creepSpawn = require('./creepSpawn');
+var spawnQueue = require('./spawnQueue');
+var creepGang = require('./gang');
 
 module.exports = (function() {
 

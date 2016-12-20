@@ -1,11 +1,11 @@
-const profiler = require('./profiler-impl');
-const _ = require('lodash');
-const stats = require('./stats');
+var profiler = require('./profiler-impl');
+var _ = require('lodash');
+var stats = require('./stats');
 
-const actionUtils = require('./action.utils');
+var actionUtils = require('./action.utils');
 
-const MoveTask = require('./task.move').MoveTask;
-const CreepRole = require('./role').CreepRole;
+var MoveTask = require('./task.move').MoveTask;
+var CreepRole = require('./role').CreepRole;
 
 class CollectorRole extends CreepRole {
     constructor(creep) {

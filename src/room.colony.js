@@ -1,13 +1,13 @@
-const profiler = require('./profiler-impl');
-const _ = require('lodash');
+var profiler = require('./profiler-impl');
+var _ = require('lodash');
 
-const config = require('./config');
-const logger = require('./logger');
-const roomHandlers = require('./room.handlers');
+var config = require('./config');
+var logger = require('./logger');
+var roomHandlers = require('./room.handlers');
 
-const RoomHandler = require('./room.handlers').RoomHandler;
+var RoomHandler = require('./room.handlers').RoomHandler;
 
-const spawnQueue = require('./spawnQueue');
+var spawnQueue = require('./spawnQueue');
 
 class ColonyRoomHandler extends RoomHandler {
     constructor(roomName, state, config) {

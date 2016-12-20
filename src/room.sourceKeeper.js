@@ -1,13 +1,13 @@
-const profiler = require('./profiler-impl');
+var profiler = require('./profiler-impl');
 
-const config = require('./config');
-const logger = require('./logger');
-const creepSpawn = require('./creepSpawn');
-const roomHandlers = require('./room.handlers');
-const spawnQueue = require('./spawnQueue');
-const RoomHandler = require('./room.handlers').RoomHandler;
+var config = require('./config');
+var logger = require('./logger');
+var creepSpawn = require('./creepSpawn');
+var roomHandlers = require('./room.handlers');
+var spawnQueue = require('./spawnQueue');
+var RoomHandler = require('./room.handlers').RoomHandler;
 
-const roleCollector = require('./role.collector');
+var roleCollector = require('./role.collector');
 
 class SourceKeeperRoom extends RoomHandler {
     constructor(roomName, state, config) {

@@ -1,4 +1,4 @@
-const actionCombat = require('./action.combat');
+var actionCombat = require('./action.combat');
 
 module.exports = (function() {
 

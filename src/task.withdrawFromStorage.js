@@ -1,11 +1,11 @@
 
-const profiler = require('./profiler-impl');
-const stats = require('./stats');
-const creepExt = require('./creepExt');
-const CreepTask = require('./creepExt').CreepTask;
-const cache = require('./cache');
+var profiler = require('./profiler-impl');
+var stats = require('./stats');
+var creepExt = require('./creepExt');
+var CreepTask = require('./creepExt').CreepTask;
+var cache = require('./cache');
 
-const actionUtils = require('./action.utils');
+var actionUtils = require('./action.utils');
 
 class WithdrawFromStorageTask extends CreepTask {
     constructor(creep, state) {

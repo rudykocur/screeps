@@ -1,11 +1,11 @@
-const _ = require("lodash");
-const profiler = require('./profiler-impl');
+var _ = require("lodash");
+var profiler = require('./profiler-impl');
 
-const logger = require('./logger');
-const utils = require('./utils');
-const bodyConfig = require('./config.body');
+var logger = require('./logger');
+var utils = require('./utils');
+var bodyConfig = require('./config.body');
 
-const roomHandlers = require('./room.handlers');
+var roomHandlers = require('./room.handlers');
 
 module.exports = (function() {
     var queues = {};

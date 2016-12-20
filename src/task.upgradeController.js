@@ -1,8 +1,8 @@
-const profiler = require('./profiler-impl');
-const creepExt = require('./creepExt');
+var profiler = require('./profiler-impl');
+var creepExt = require('./creepExt');
 
-const cache = require('./cache');
-const actionUtils = require('./action.utils');
+var cache = require('./cache');
+var actionUtils = require('./action.utils');
 
 module.exports = (function() {
 

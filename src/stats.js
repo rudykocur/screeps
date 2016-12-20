@@ -1,5 +1,5 @@
-const _ = require("lodash");
-const profiler = require('./profiler-impl');
+var _ = require("lodash");
+var profiler = require('./profiler-impl');
 
 module.exports = (function() {
     var queueSize = 200;

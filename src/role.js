@@ -1,4 +1,4 @@
-const taskMove = require('./task.move');
+var taskMove = require('./task.move');
 
 class CreepRole {
 

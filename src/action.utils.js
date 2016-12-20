@@ -1,6 +1,6 @@
-const profiler = require('./profiler-impl');
-const _ = require('lodash');
-const cache = require('./cache');
+var profiler = require('./profiler-impl');
+var _ = require('lodash');
+var cache = require('./cache');
 
 module.exports = (function() {
     function routeWithAvoid(roomName, matrix) {

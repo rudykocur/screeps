@@ -1,5 +1,5 @@
-const profiler = require('./profiler-impl');
-const creepExt = require('./creepExt');
+var profiler = require('./profiler-impl');
+var creepExt = require('./creepExt');
 
 module.exports = (function() {
 

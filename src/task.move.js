@@ -1,8 +1,8 @@
-const profiler = require('./profiler-impl');
-const creepExt = require('./creepExt');
+var profiler = require('./profiler-impl');
+var creepExt = require('./creepExt');
 
-const cache = require('./cache');
-const actionUtils = require('./action.utils');
+var cache = require('./cache');
+var actionUtils = require('./action.utils');
 
 class MoveTask extends creepExt.CreepTask {
     /**
@@ -64,7 +64,7 @@ class MoveTask extends creepExt.CreepTask {
         // }
         // else {
         this.creep.repair(_.first(this.creep.pos.lookFor(LOOK_STRUCTURES)));
-            result = this.creep.moveByPath(this.state.path);
+        result = this.creep.moveByPath(this.state.path);
         // }
 
         if(result == ERR_TIRED) {
@@ -72,8 +72,6 @@ class MoveTask extends creepExt.CreepTask {
         }
 
         if(result == OK) {
-
-
             if(this.state.multiroom) {
                 range = 0;
             }
@@ -97,7 +95,6 @@ class MoveTask extends creepExt.CreepTask {
             this.creep.say('ERR M ' + result);
             this.finish();
         // }
-
     }
 }
 

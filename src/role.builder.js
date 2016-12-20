@@ -1,8 +1,8 @@
-const profiler = require('./profiler-impl');
+var profiler = require('./profiler-impl');
 
-const actionHarvest = require('./action.harvest');
-const actionUtils = require('./action.utils');
-const actionBuild = require('./action.build');
+var actionHarvest = require('./action.harvest');
+var actionUtils = require('./action.utils');
+var actionBuild = require('./action.build');
 
 module.exports = (function() {
 

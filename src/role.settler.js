@@ -1,11 +1,11 @@
-const profiler = require('./profiler-impl');
+var profiler = require('./profiler-impl');
 
-const actionHarvest = require('./action.harvest');
-const actionBuld = require('./action.build');
-const actionUtils = require('./action.utils');
+var actionHarvest = require('./action.harvest');
+var actionBuld = require('./action.build');
+var actionUtils = require('./action.utils');
 
-const MoveTask = require('./task.move').MoveTask;
-const CreepRole = require('./role').CreepRole;
+var MoveTask = require('./task.move').MoveTask;
+var CreepRole = require('./role').CreepRole;
 
 class SettlerRole extends CreepRole {
     constructor(creep) {

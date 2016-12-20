@@ -1,10 +1,10 @@
-const profiler = require('./profiler-impl');
-const _ = require('lodash');
-const logger = require('./logger');
+var profiler = require('./profiler-impl');
+var _ = require('lodash');
+var logger = require('./logger');
 
-const actionHarvest = require('./action.harvest');
-const actionUtils = require('./action.utils');
-const bookmarks = require('./bookmarks');
+var actionHarvest = require('./action.harvest');
+var actionUtils = require('./action.utils');
+var bookmarks = require('./bookmarks');
 
 module.exports = (function() {
 

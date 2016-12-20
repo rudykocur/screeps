@@ -1,12 +1,12 @@
-const profiler = require('./profiler-impl');
-const _ = require('lodash');
+var profiler = require('./profiler-impl');
+var _ = require('lodash');
 
-const config = require('./config');
-const logger = require('./logger');
+var config = require('./config');
+var logger = require('./logger');
 
-const actionCombat = require('./action.combat');
+var actionCombat = require('./action.combat');
 
-const roomModules = ['outpost', 'colony', 'sourceKeeper'];
+var roomModules = ['outpost', 'colony', 'sourceKeeper'];
 
 class RoomHandler {
     constructor(roomName, state, config) {

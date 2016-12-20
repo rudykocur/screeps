@@ -1,15 +1,15 @@
-const profiler = require('./profiler-impl');
-const _ = require('lodash');
+var profiler = require('./profiler-impl');
+var _ = require('lodash');
 
-const config = require('./config');
-const logger = require('./logger');
-const creepSpawn = require('./creepSpawn');
-const roomHandlers = require('./room.handlers');
-const spawnQueue = require('./spawnQueue');
+var config = require('./config');
+var logger = require('./logger');
+var creepSpawn = require('./creepSpawn');
+var roomHandlers = require('./room.handlers');
+var spawnQueue = require('./spawnQueue');
 
-const RoomHandler = require('./room.handlers').RoomHandler;
+var RoomHandler = require('./room.handlers').RoomHandler;
 
-const roleCollector = require('./role.collector');
+var roleCollector = require('./role.collector');
 
 class OutpostRoomHandler extends RoomHandler {
     constructor(roomName, state, config) {

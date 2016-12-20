@@ -1,20 +1,20 @@
-const _ = require("lodash");
-const profiler = require('./profiler-impl');
-const stats = require('./stats');
-const cache = require('./cache');
+var _ = require("lodash");
+var profiler = require('./profiler-impl');
+var stats = require('./stats');
+var cache = require('./cache');
 
 require('./prototype.Room');
 require('./prototype.RoomPosition');
 
-const creepSpawn = require('./creepSpawn');
-const creepExt = require('./creepExt');
-const config = require('./config');
-const logger = require('./logger');
-const spawnQueue = require('./spawnQueue');
+var creepSpawn = require('./creepSpawn');
+var creepExt = require('./creepExt');
+var config = require('./config');
+var logger = require('./logger');
+var spawnQueue = require('./spawnQueue');
 
-const gang = require('./gang');
-const combatAction = require('./combatAction');
-const roomHanders = require('./room.handlers');
+var gang = require('./gang');
+var combatAction = require('./combatAction');
+var roomHanders = require('./room.handlers');
 
 var roleTower = require('./role.tower');
 

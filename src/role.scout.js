@@ -1,9 +1,9 @@
-const actionHarvest = require('./action.harvest');
-const actionBuld = require('./action.build');
-const actionUtils = require('./action.utils');
+var actionHarvest = require('./action.harvest');
+var actionBuld = require('./action.build');
+var actionUtils = require('./action.utils');
 
-const logger = require('./logger');
-const taskMove = require('./task.move');
+var logger = require('./logger');
+var taskMove = require('./task.move');
 
 module.exports = (function() {
 
