@@ -104,7 +104,7 @@ class ColonyRoomHandler extends RoomHandler {
 
         if(storage && terminal) {
             // if(Game.time % 10 != 3) {
-                this.processStorageSurplusJobs(storage, terminal);
+            //     this.processStorageSurplusJobs(storage, terminal);
             // }
 
             // if(Game.time % 10 == 4) {
@@ -121,41 +121,40 @@ class ColonyRoomHandler extends RoomHandler {
         }
     }
 
-    processStorageSurplusJobs(storage, terminal) {
-
-        var reserves = _.get(this.config, 'minerals.reserve', {});
-        var jobs = this.state.jobs;
-
-        _.each(storage.store, (amount, resource) => {
-            var key = `market-${this.room.customName}-${resource}`;
-
-            if (reserves[resource] >= 0 && amount > reserves[resource]) {
-                if (!(key in jobs)) {
-                    jobs[key] = {
-                        key: key,
-                        room: this.room.customName,
-                        type: 'transfer',
-                        sourceId: storage.id,
-                        sourcePos: storage.pos,
-                        resource: resource,
-                        targetId: terminal.id,
-                        targetPos: terminal.pos,
-                        takenBy: null,
-                        amount: 0,
-                    }
-                }
-
-                jobs[key].amount = amount - reserves[resource];
-            }
-            else {
-                delete jobs[key];
-            }
-        });
-    }
+    // processStorageSurplusJobs(storage, terminal) {
+    //
+    //     var reserves = _.get(this.config, 'minerals.reserve', {});
+    //     var jobs = this.state.jobs;
+    //
+    //     _.each(storage.store, (amount, resource) => {
+    //         var key = `market-${this.room.customName}-${resource}`;
+    //
+    //         if (reserves[resource] >= 0 && amount > reserves[resource]) {
+    //             if (!(key in jobs)) {
+    //                 jobs[key] = {
+    //                     key: key,
+    //                     room: this.room.customName,
+    //                     type: 'transfer',
+    //                     sourceId: storage.id,
+    //                     sourcePos: storage.pos,
+    //                     resource: resource,
+    //                     targetId: terminal.id,
+    //                     targetPos: terminal.pos,
+    //                     takenBy: null,
+    //                     amount: 0,
+    //                 }
+    //             }
+    //
+    //             jobs[key].amount = amount - reserves[resource];
+    //         }
+    //         else {
+    //             delete jobs[key];
+    //         }
+    //     });
+    // }
 
     createTerminalToStorageJobs(storage, terminal) {
 
-        var reserves = _.get(this.config, 'minerals.reserve', {});
         var requires = _.get(this.config, 'terminal.require', {});
 
         var jobs = this.state.jobs;
@@ -163,10 +162,9 @@ class ColonyRoomHandler extends RoomHandler {
         _.each(terminal.store, (amount, resource) => {
             var key = `terminal-withdraw-${this.room.customName}-${resource}`;
 
-            var storageDemand = (reserves[resource] || 0) - (storage.store[resource] || 0);
             var availableAmount = amount - (requires[resource] || 0);
 
-            if(availableAmount > 0 && storageDemand > 0) {
+            if(availableAmount > 0) {
                 if(!(key in jobs)) {
                     jobs[key] = {
                         key: key,
@@ -286,7 +284,7 @@ class ColonyRoomHandler extends RoomHandler {
                 if(lab.mineralType && lab.mineralType != resource) {
 
                     if(!(emptyJobKey in jobs)) {
-                        jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType) ;
+                        jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, storage, lab.mineralType) ;
                     }
 
                     jobs[emptyJobKey].amount = lab.mineralAmount;
@@ -321,7 +319,7 @@ class ColonyRoomHandler extends RoomHandler {
 
             if(outLab.mineralType && outLab.mineralType != resultResource ) {
                 if(!(emptyJobKey in jobs)) {
-                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLabName, terminal, outLabName.mineralType);
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLab, storage, outLab.mineralType);
                 }
 
                 jobs[emptyJobKey].amount = outLab.mineralAmount;
@@ -340,7 +338,7 @@ class ColonyRoomHandler extends RoomHandler {
 
             if(lab.mineralType && lab.mineralType != resource) {
                 if(!(emptyJobKey in jobs)) {
-                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, terminal, lab.mineralType);
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, storage, lab.mineralType);
                 }
 
                 jobs[emptyJobKey].amount = lab.mineralAmount;
@@ -350,9 +348,9 @@ class ColonyRoomHandler extends RoomHandler {
 
                 let key = `labs-${labName}-load-boost-${resource}`;
 
-                if(lab.mineralAmount < lab.mineralCapacity && terminal.store[resource] > 0) {
+                if(lab.mineralAmount < lab.mineralCapacity && storage.store[resource] > 0) {
                     if (!(key in jobs)) {
-                        jobs[key] = this._getJobTransferDict(key, terminal, lab, resource);
+                        jobs[key] = this._getJobTransferDict(key, storage, lab, resource);
                     }
 
                     jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
@@ -380,28 +378,14 @@ class ColonyRoomHandler extends RoomHandler {
         var mineral = _.first(this.room.find(FIND_MINERALS));
         var jobs = this.state.jobs;
 
-        var target = this.room.getTerminal();
-        if(!target) {
-            target = this.room.getStorage();
-        }
+        let storage = this.room.getStorage();
 
         var container = _.first(mineral.pos.findInRange(this.room.getContainers(), 1));
 
         var key = `mineralMove-${mineral.mineralType}`;
         if(container && container.store[mineral.mineralType] > 400) {
             if(!(key in jobs)) {
-                jobs[key] = {
-                    key: key,
-                    room: this.room.customName,
-                    type: 'transfer',
-                    sourceId: container.id,
-                    sourcePos: container.pos,
-                    resource: mineral.mineralType,
-                    targetId: target.id,
-                    targetPos: target.pos,
-                    takenBy: null,
-                    amount: 0,
-                }
+                jobs[key] = this._getJobTransferDict(key, container, storage, mineral.mineralType);
             }
 
             jobs[key].amount = container.store[mineral.mineralType];

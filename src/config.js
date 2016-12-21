@@ -22,6 +22,7 @@ module.exports = (function() {
             E67N45: "brokilonTop",
             E69N41: "corner",
             E65N45: "middle",
+            E67N46: "brokilon2t",
         },
         rooms: {
             home: {
@@ -33,16 +34,17 @@ module.exports = (function() {
                 },
                 minerals: {
                     reserve: {
-                        [RESOURCE_ZYNTHIUM_OXIDE]: 0,
-                        [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
-                        [RESOURCE_ZYNTHIUM]: 0,
-                        [RESOURCE_OXYGEN]: 0,
-                        [RESOURCE_ENERGY]: 500000,
+                        // [RESOURCE_ZYNTHIUM_OXIDE]: 0,
+                        // [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
+                        // [RESOURCE_ZYNTHIUM]: 0,
+                        // [RESOURCE_OXYGEN]: 0,
+                        // [RESOURCE_ENERGY]: 500000,
                     }
                 },
                 terminal: {
                     require: {
-                        //[RESOURCE_ENERGY]: 20000,
+                        [RESOURCE_ENERGY]: 20000,
+                        [RESOURCE_OXYGEN]: 30000,
                     }
                 },
                 labs: {
@@ -55,26 +57,15 @@ module.exports = (function() {
                         '584e1616459b5b8d7e42983a': 'bright',
                     },
                     boost: {
-                        bright: RESOURCE_LEMERGIUM_ALKALIDE,
-                        tright: RESOURCE_ZYNTHIUM_ALKALIDE,
+                        // bright: RESOURCE_LEMERGIUM_ALKALIDE,
+                        // tright: RESOURCE_ZYNTHIUM_ALKALIDE,
                     },
                     reactions: [
                         {
-                            labs: ['tmiddle', 'bmiddle', 'tright'],
-                            load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
+                            labs: ['bmiddle', 'bright', 'bleft'],
+                            load: [RESOURCE_CATALYST, RESOURCE_LEMERGIUM_ALKALIDE],
                             amount: 2000,
                         },
-                        {
-                            labs: ['tleft', 'bleft', 'tmiddle'],
-                            load: [RESOURCE_OXYGEN, RESOURCE_HYDROGEN],
-                            amount: 3000,
-                        },
-                        // {
-                        //     labs: ['tmiddle', 'bmiddle', 'bright'],
-                        //     // load: [RESOURCE_HYDROXIDE, RESOURCE_ZYNTHIUM_OXIDE],
-                        //     load: [RESOURCE_HYDROXIDE, RESOURCE_LEMERGIUM_OXIDE],
-                        //     amount: 2000,
-                        // },
                     ],
                 }
             },
@@ -89,12 +80,13 @@ module.exports = (function() {
                 minerals: {
                     reserve: {
                         // [RESOURCE_ENERGY]: 1000000,
-                        [RESOURCE_ZYNTHIUM]: 0,
+                        // [RESOURCE_ZYNTHIUM]: 0,
                     }
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 150000,
+                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ZYNTHIUM]: 30000,
                     }
                 }
             },
@@ -108,7 +100,7 @@ module.exports = (function() {
                 },
                 minerals: {
                     reserve: {
-                        [RESOURCE_LEMERGIUM]: 0,
+                        // [RESOURCE_LEMERGIUM]: 0,
                         //[RESOURCE_ENERGY]: 50000,
                     }
                 },
@@ -268,6 +260,14 @@ module.exports = (function() {
                     claimer: 1,
                 }
             },
+            brokilon2t: {
+                type: "outpost",
+                homeRoom: "orphan",
+                creeps: {
+                    collector: 0,
+                    settler: 1,
+                }
+            },
             middle: {
                 type: "outpost",
                 homeRoom: "orphan",
@@ -276,8 +276,8 @@ module.exports = (function() {
                 // disableDefenders: true,
                 offroad: true,
                 creeps: {
-                    settler: 1,
-                    collector: 8,
+                    settler: 0,
+                    collector: 0,
                     // harvester: 2,
                 }
             }

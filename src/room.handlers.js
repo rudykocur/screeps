@@ -143,6 +143,8 @@ class RoomHandler {
         var resources = this.room.getDroppedResources();
         var jobs = this.state.jobs;
 
+        var storage = this.room.getStorage();
+
         resources.forEach(/**{id,amount,resourceType,pos}*/ res => {
             var key = `pickup-${res.resourceType}-${res.id}`;
 
@@ -158,6 +160,8 @@ class RoomHandler {
                         resource:res.resourceType,
                         sourceId: res.id,
                         sourcePos: res.pos,
+                        targetId: storage && storage.id,
+                        targetPos: storage && storage.pos,
                         reservations: {},
                         amount: 0,
                     }

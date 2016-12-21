@@ -25,7 +25,11 @@ module.exports = (function() {
             var job = creep.getJob();
 
             if(!job) {
-                job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer'}));
+                job = _.first(creep.workRoomHandler.searchJobs({type: 'pickup'}).filter(j => j.resource != RESOURCE_ENERGY));
+
+                if(!job) {
+                    job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer'}));
+                }
 
                 if(job) {
                     creep.takeJob(job);
@@ -35,19 +39,13 @@ module.exports = (function() {
 
             if(job) {
                 // If you have resources other than required for job - empty them to terminal or storage
-                if(creep.carryTotal > creep.carry[job.resource]) {
+
+                if(creep.carryTotal > (creep.carry[job.resource] || 0)) {
                     let toEmpty = _.omit(creep.carry, job.resource);
 
-                    if(toEmpty.energy > 0) {
-                        if(creep.transfer(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(storage);
-                        }
-                    }
-                    else {
-                        let toEmptyResource = _.keys(toEmpty)[0];
-                        if(creep.transfer(terminal, toEmptyResource) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(terminal);
-                        }
+                    let toEmptyResource = _.keys(toEmpty)[0];
+                    if(creep.transfer(storage, toEmptyResource) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(storage);
                     }
 
                     return;
@@ -71,7 +69,16 @@ module.exports = (function() {
                     }
 
                     var toWithdraw = Math.min(creep.carryCapacity, job.amount, sourceAmount);
-                    creep.withdraw(Game.getObjectById(job.sourceId), job.resource, toWithdraw);
+
+                    if(source instanceof Resource) {
+                        creep.pickup(source);
+                    }
+                    else {
+                        let result = creep.withdraw(source, job.resource, toWithdraw);
+                        if(result == ERR_NOT_ENOUGH_RESOURCES) {
+                            job.finishJob();
+                        }
+                    }
                 }
                 else {
                     var target = RoomPosition.fromDict(job.targetPos);
