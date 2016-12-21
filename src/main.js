@@ -195,7 +195,7 @@ function printDiagnostics() {
 
         var creepsByRole = _.groupBy(creeps, 'memory.role');
         if(!room) {
-            console.log(room, '::  no access');
+            console.log(config.roomNames[roomName], '::  no access');
             return;
         }
 

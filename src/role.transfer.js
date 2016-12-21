@@ -98,6 +98,7 @@ module.exports = (function() {
 
                 if(!creep.pos.isNearTo(storage)) {
                     creep.moveTo(storage);
+                    return;
                 }
 
 
@@ -106,6 +107,13 @@ module.exports = (function() {
                         creep.transfer(storage, resource);
                     }
                 });
+            }
+
+            var idlePos = creep.getIdlePosition();
+            if(idlePos) {
+                if(!creep.pos.isNearTo(idlePos)) {
+                    creep.moveTo(idlePos);
+                }
             }
         }
     }

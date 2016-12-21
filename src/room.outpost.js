@@ -95,7 +95,6 @@ class OutpostRoomHandler extends RoomHandler {
         }
 
         var blueprint = JSON.parse(JSON.stringify(config.blueprints.outpostCollector));
-        blueprint.memo.storageId = storage.id;
         blueprint.memo.unloadRoom = this.config.homeRoom;
 
         if(this.config.offroad) {

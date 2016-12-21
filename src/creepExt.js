@@ -127,6 +127,14 @@ Creep.prototype.getIdlePosition = function() {
     }
 };
 
+Creep.prototype.debugPath = function() {
+    var path = _.get(this.memory, 'tasks[0].data.path', []);
+
+    path.forEach(p => {
+        this.room.createFlag(p.x, p.y, null, COLOR_CYAN, COLOR_WHITE);
+    })
+};
+
 class CreepTask {
     move() {
         var moveResult = this.creep.moveByPath(this.state.path);

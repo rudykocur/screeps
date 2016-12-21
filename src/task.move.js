@@ -1,10 +1,11 @@
 var profiler = require('./profiler-impl');
-var creepExt = require('./creepExt');
+var logFmt = require('./logger').fmt;
+var CreepTask = require('./creepExt').CreepTask;
 
 var cache = require('./cache');
 var actionUtils = require('./action.utils');
 
-class MoveTask extends creepExt.CreepTask {
+class MoveTask extends CreepTask {
     /**
      * @param {Creep} creep
      * @param state
@@ -56,16 +57,25 @@ class MoveTask extends creepExt.CreepTask {
     run() {
         var result;
         var range = this.state.range || 0;
-        var lastError = this.state.lastError;
-        delete this.state.lastError;
-        // if(this.state.multiroom) {
-        //     let step = this.state.path[0];
-        //     result = this.creep.move(this.creep.pos.getDirectionTo(step));
-        // }
-        // else {
+
+        var lastPos = this.state.lastPosition ? RoomPosition.fromDict(this.state.lastPosition) : this.creep.pos;
+        if(this.creep.pos.isEqualTo(lastPos)) {
+            this.state.standingCounter = (this.state.standingCounter || 0) + 1;
+        }
+        else {
+            this.state.standingCounter = 0;
+        }
+        this.state.lastPosition = this.creep.pos;
+
+        if(this.state.standingCounter > 5) {
+            console.log(logFmt.orange('Creep', this.creep, 'is stuck for', this.state.standingCounter, 'ticks'));
+            this.creep.say('ERR MST');
+            this.finish();
+            return;
+        }
+
         this.creep.repair(_.first(this.creep.pos.lookFor(LOOK_STRUCTURES)));
         result = this.creep.moveByPath(this.state.path);
-        // }
 
         if(result == ERR_TIRED) {
             return;

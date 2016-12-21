@@ -13,12 +13,10 @@ class CollectorRole extends CreepRole {
     }
 
     /**
-     *
-     * @param {Creep} creep
      * @param income
      */
-    registerIncome(creep, income) {
-        stats.registerIncome(Room.idToCustomName(creep.memory.room), 'collector', creep.memory.role, income);
+    registerIncome(income) {
+        stats.registerIncome(Room.idToCustomName(this.creep.memory.room), 'collector', this.creep.memory.role, income);
     }
 
     scheduleTask() {
@@ -51,10 +49,12 @@ class CollectorRole extends CreepRole {
                     this.creep.setPrespawnTime();
 
                     if(this.creep.pickup(source) == OK) {
-                        this.creep.memory.harvesting = false;
-                        
-                        let storage = this.getStorage();
-                        this.creep.addTask(MoveTask.create(this.creep, storage, 1));
+                        if(this.creep.carryTotal >= this.creep.carryCapacity) {
+                            this.creep.memory.harvesting = false;
+
+                            let storage = this.getStorage();
+                            this.creep.addTask(MoveTask.create(this.creep, storage, 1));
+                        }
                     }
                 }
                 else {
@@ -77,7 +77,7 @@ class CollectorRole extends CreepRole {
                 let creepEnergy = this.creep.carry.energy;
 
                 if(this.creep.transfer(storage, RESOURCE_ENERGY) == OK) {
-                    this.registerIncome(this.creep, creepEnergy);
+                    this.registerIncome(creepEnergy);
                 }
             }
             else {
@@ -87,13 +87,7 @@ class CollectorRole extends CreepRole {
     }
 
     getStorage() {
-        var roomName = this.creep.memory.unloadRoom;
-
-        if(roomName) {
-            return Room.byCustomName(roomName).getStorage();
-        }
-
-        return Game.getObjectById(this.creep.memory.storageId);
+        return Room.byCustomName(this.creep.memory.unloadRoom).getStorage();
     }
 }
 
