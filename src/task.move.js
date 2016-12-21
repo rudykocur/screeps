@@ -59,13 +59,6 @@ class MoveTask extends CreepTask {
         var range = this.state.range || 0;
 
         var lastPos = this.state.lastPosition ? RoomPosition.fromDict(this.state.lastPosition) : this.creep.pos;
-        if(this.creep.pos.isEqualTo(lastPos)) {
-            this.state.standingCounter = (this.state.standingCounter || 0) + 1;
-        }
-        else {
-            this.state.standingCounter = 0;
-        }
-        this.state.lastPosition = this.creep.pos;
 
         if(this.state.standingCounter > 5) {
             console.log(logFmt.orange('Creep', this.creep, 'is stuck for', this.state.standingCounter, 'ticks'));
@@ -80,6 +73,14 @@ class MoveTask extends CreepTask {
         if(result == ERR_TIRED) {
             return;
         }
+
+        if(this.creep.pos.isEqualTo(lastPos)) {
+            this.state.standingCounter = (this.state.standingCounter || 0) + 1;
+        }
+        else {
+            this.state.standingCounter = 0;
+        }
+        this.state.lastPosition = this.creep.pos;
 
         if(result == OK) {
             if(this.state.multiroom) {

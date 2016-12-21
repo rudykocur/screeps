@@ -181,7 +181,7 @@ module.exports = (function() {
                 creeps: {
                     collector: 2,
                     claimer: 1,
-                    settler: 0,
+                    settler: 1,
                 }
             },
             moriaTop:{
@@ -271,13 +271,13 @@ module.exports = (function() {
             middle: {
                 type: "outpost",
                 homeRoom: "orphan",
-                spawnRooms: ["moria"],
+                spawnRooms: ["moria", "orphan"],
                 // disableHarvesting: true,
                 // disableDefenders: true,
                 offroad: true,
                 creeps: {
                     settler: 1,
-                    collector: 5,
+                    collector: 8,
                     // harvester: 2,
                 }
             }
