@@ -25,20 +25,26 @@ module.exports = (function() {
             var job = creep.getJob();
 
             if(!job) {
-                job = _.first(creep.workRoomHandler.searchJobs({type: 'pickup'}).filter(j => j.resource != RESOURCE_ENERGY));
+                let jobs = creep.workRoomHandler.searchJobs({type: 'pickup', freeReserve: 200});
+                job = _.first(_.sortBy(jobs, j=>j.amount * -1));
 
                 if(!job) {
                     job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer'}));
                 }
 
                 if(job) {
-                    creep.takeJob(job);
+                    if(job.type == 'pickup') {
+                        creep.takePartialJob(job, creep.carryCapacity);
+                    }
+                    else {
+                        creep.takeJob(job);
+                    }
                 }
             }
 
 
             if(job) {
-                // If you have resources other than required for job - empty them to terminal or storage
+                // If you have resources other than required for job - empty them to storage
 
                 if(creep.carryTotal > (creep.carry[job.resource] || 0)) {
                     let toEmpty = _.omit(creep.carry, job.resource);
@@ -76,7 +82,7 @@ module.exports = (function() {
                     else {
                         let result = creep.withdraw(source, job.resource, toWithdraw);
                         if(result == ERR_NOT_ENOUGH_RESOURCES) {
-                            job.finishJob();
+                            creep.finishJob();
                         }
                     }
                 }
@@ -94,7 +100,12 @@ module.exports = (function() {
                     }
                     else if(result != ERR_NOT_IN_RANGE) {
                         logger.mail(logger.error('OMG TRANSFER 22 ERROR', creep, '::', result));
-                        creep.releaseJob();
+                        if(job.type == 'pickup') {
+                            creep.releasePartialJob()
+                        }
+                        else {
+                            creep.releaseJob();
+                        }
                     }
                 }
 

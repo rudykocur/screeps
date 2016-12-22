@@ -34,7 +34,7 @@ class ColonyRoomHandler extends RoomHandler {
         this.maintainHarvesterPopulation();
         this.maintainMovers();
         this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
-        this.maintainPopulation('upgrader', config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
+        this.maintainUpgraders();
         this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
     }
 
@@ -67,6 +67,15 @@ class ColonyRoomHandler extends RoomHandler {
         }
 
         this.maintainPopulationAmount('mover', needed, config.blueprints.colonyMover, spawnQueue.PRIORITY_CRITICAL);
+    }
+
+    maintainUpgraders() {
+        var amount = _.get(this.config, ['creeps', 'upgrader'], 0);
+        if(this.room.controller.level == 8) {
+            amount = 1;
+        }
+
+        this.maintainPopulationAmount('upgrader', amount, config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
     }
 
     runReactions() {
@@ -152,6 +161,43 @@ class ColonyRoomHandler extends RoomHandler {
     //         }
     //     });
     // }
+
+
+    createResourcePickupJobs() {
+        super.createResourcePickupJobs();
+
+        var jobs = this.state.jobs;
+        var storage = this.room.getStorage();
+
+        if(storage) {
+            this.room.getContainers().forEach(/**StructureContainer*/container => {
+                var key = `move-container-${this.room.customName}-${container.id}`;
+
+                if (container.store[RESOURCE_ENERGY] > 400) {
+                    if (!(key in jobs)) {
+                        jobs[key] = {
+                            key: key,
+                            room: this.room.customName,
+                            type: 'pickup',
+                            subtype: 'container',
+                            resource: RESOURCE_ENERGY,
+                            sourceId: container.id,
+                            sourcePos: container.pos,
+                            targetId: storage.id,
+                            targetPos: storage.pos,
+                            reservations: {},
+                            amount: 0,
+                        }
+                    }
+
+                    jobs[key].amount = container.store[RESOURCE_ENERGY];
+                }
+                else {
+                    delete jobs[key];
+                }
+            });
+        }
+    }
 
     createTerminalToStorageJobs(storage, terminal) {
 

@@ -11,6 +11,7 @@ var roomModules = ['outpost', 'colony', 'sourceKeeper'];
 class RoomHandler {
     constructor(roomName, state, config) {
         this.roomName = roomName;
+        /**@type Room*/
         this.room = Room.byCustomName(roomName);
         this.state = state;
         this.config = config;
@@ -157,6 +158,7 @@ class RoomHandler {
                         key: key,
                         room: this.room.customName,
                         type: 'pickup',
+                        subtype: 'source',
                         resource:res.resourceType,
                         sourceId: res.id,
                         sourcePos: res.pos,

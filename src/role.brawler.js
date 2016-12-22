@@ -126,6 +126,7 @@ module.exports = (function() {
                     creep.attack(target);
                 }
                 else {
+                    creep.rangedAttack(target);
                     let result = creep.moveTo(target);
 
                     if(creep.getActiveBodyparts(HEAL) > 0) {

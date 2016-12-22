@@ -66,6 +66,11 @@ module.exports = (function() {
                             load: [RESOURCE_CATALYST, RESOURCE_LEMERGIUM_ALKALIDE],
                             amount: 2000,
                         },
+                        {
+                            labs: ['bmiddle', 'tright', 'tleft'],
+                            load: [RESOURCE_CATALYST, RESOURCE_ZYNTHIUM_ALKALIDE],
+                            amount: 2000,
+                        },
                     ],
                 }
             },
@@ -126,7 +131,7 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 3,
                     builder: 1,
-                    mover: 4,
+                    mover: 2,
                 }
             },
             homeTop: {
@@ -239,7 +244,7 @@ module.exports = (function() {
                 creeps: {
                     collector: 1,
                     claimer: 1,
-                    settler: 1,
+                    settler: 0,
                 }
             },
             // lair2: {
@@ -264,23 +269,11 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "orphan",
                 creeps: {
-                    collector: 0,
-                    settler: 1,
+                    collector: 2,
+                    settler: 0,
+                    claimer: 1,
                 }
             },
-            middle: {
-                type: "outpost",
-                homeRoom: "orphan",
-                spawnRooms: ["moria", "orphan"],
-                // disableHarvesting: true,
-                // disableDefenders: true,
-                offroad: true,
-                creeps: {
-                    settler: 0,
-                    collector: 0,
-                    // harvester: 2,
-                }
-            }
             // lair1: {
             //     type: "sourceKeeper",
             //     homeRoom: "home",
@@ -297,9 +290,9 @@ module.exports = (function() {
         spawn: {
             Rabbithole: {
                 mineralTransfer: {
-                    minimum: 1,
+                    minimum: 2,
                     body: 'mineralTransfer',
-                    priority: 'low',
+                    priority: 'high',
                     memo: {
                         role: 'transfer',
                     }
@@ -346,6 +339,14 @@ module.exports = (function() {
 
             Cheshire: {},
             Brokilon: {
+                brokilonMineralTransfer: {
+                    minimum: 3,
+                    body: 'mineralTransfer',
+                    priority: 'high',
+                    memo: {
+                        role: 'transfer',
+                    }
+                },
                 // middlePaver: {
                 //     minimum: 1,
                 //     body: 'settler',
@@ -361,9 +362,9 @@ module.exports = (function() {
 
             Moria: {
                 moriaMineralTransfer: {
-                    minimum: 1,
+                    minimum: 2,
                     body: 'mineralTransfer',
-                    priority: 'normal',
+                    priority: 'high',
                     memo: {
                         role: 'transfer',
                     }
@@ -372,9 +373,9 @@ module.exports = (function() {
 
             "Kaer Morhen": {
                 mineralTransfer: {
-                    minimum: 1,
+                    minimum: 2,
                     body: 'mineralTransfer',
-                    priority: 'low',
+                    priority: 'high',
                     memo: {
                         role: 'transfer',
                     }

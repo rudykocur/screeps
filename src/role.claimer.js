@@ -16,10 +16,6 @@ module.exports = (function() {
                 return;
             }
 
-            if(actionUtils.tryChangeRoom(creep, creep.memory.room, creep.memory.via)) {
-                return;
-            }
-
             var room = Game.rooms[creep.memory.room];
 
             if(!room) {
