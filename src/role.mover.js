@@ -96,11 +96,11 @@ class MoverRole extends CreepRole {
         let source;
 
         if(!source) {
-            source = this.findContainerWithEnergy();
+            source = this.creep.room.getStorage();
         }
 
         if(!source) {
-            source = this.creep.room.getStorage();
+            source = this.findContainerWithEnergy();
         }
 
         return source;

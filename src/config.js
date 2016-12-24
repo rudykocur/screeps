@@ -27,6 +27,7 @@ module.exports = (function() {
         rooms: {
             home: {
                 type: "colony",
+                wallsHp: 600000,
                 creeps: {
                     upgrader: 4,
                     builder: 0,
@@ -43,7 +44,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 20000,
+                        [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_OXYGEN]: 30000,
                     }
                 },
@@ -79,7 +80,7 @@ module.exports = (function() {
                 panicMode: false,
                 creeps: {
                     upgrader: 4,
-                    builder: 0,
+                    builder: 1,
                     mover: 2,
                 },
                 minerals: {
@@ -97,9 +98,9 @@ module.exports = (function() {
             },
             kaerMorhen: {
                 type: "colony",
-                wallsHp: 120000,
+                wallsHp: 200000,
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 6,
                     builder: 1,
                     mover: 2,
                 },
@@ -127,16 +128,17 @@ module.exports = (function() {
             orphan: {
                 type: "colony",
                 panicMode: false,
-                wallsHp: 10000,
+                wallsHp: 100000,
+                spawnRooms: ['orphan'],
                 creeps: {
-                    upgrader: 3,
+                    upgrader: 5,
                     builder: 1,
                     mover: 2,
                 }
             },
             homeTop: {
                 type:"outpost",
-                homeRoom:"home",
+                homeRoom:"moria",
                 spawnRooms: ['home', 'moria'],
                 creeps: {
                     claimer: 1,
@@ -156,7 +158,8 @@ module.exports = (function() {
             },
             homeLeft:{
                 type:"outpost",
-                homeRoom:"home",
+                homeRoom:"moria",
+                spawnRooms: ['home', 'moria'],
                 creeps: {
                     collector: 2,
                     claimer: 1,
@@ -184,7 +187,7 @@ module.exports = (function() {
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['moria', 'home'],
+                spawnRooms: ['moria'],
                 creeps: {
                     claimer: 1,
                     collector: 1,
@@ -338,6 +341,7 @@ module.exports = (function() {
             },
 
             Cheshire: {},
+            "Cirith Ungol": {},
             Brokilon: {
                 brokilonMineralTransfer: {
                     minimum: 3,
