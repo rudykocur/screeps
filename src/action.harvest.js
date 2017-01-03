@@ -45,6 +45,10 @@ module.exports = (function() {
 
             if(job) {
                 let source = Game.getObjectById(job.sourceId);
+                if(!source) {
+                    return false;
+                }
+
                 if(creep.pickup(source) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source);
                 }

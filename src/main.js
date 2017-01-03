@@ -83,6 +83,7 @@ module.exports = (function() {
 
             Game.stat = printDiagnostics;
             Game.killBrot = killBrot;
+            Game.killDragon2 = killDragoon2;
             Game.testPath = testPath;
             Game.cleanPath = cleanPath;
 
@@ -229,10 +230,11 @@ function killBrot() {
     var gangs = {
         fighters: [
             {
-                count: 2,
-                body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                    MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK]            }
+                count: 3,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                    HEAL,HEAL,HEAL,HEAL,HEAL]
+            }
         ]
     };
 
@@ -258,21 +260,89 @@ function killBrot() {
                 target: 'w3',
             },
         },
-        {
-            fighters: {
-                action: 'attack',
-                range: 0,
-                target: 'w4',
-            },
-        },
+        // {
+        //     fighters: {
+        //         action: 'attack',
+        //         range: 0,
+        //         target: 'w4',
+        //     },
+        // },
     ];
 
-    var action = Game.combatActions.get('killBrot');
+    var action = Game.combatActions.get('dragoon1');
     // action.spawnGangs(Game.spawns.Moria, moriaGangs);
-    action.spawnGangs(Room.byCustomName('home'), gangs);
+    action.spawnGangs(Room.byCustomName('moria'), gangs);
     action.addOrders(orders);
 
-    logger.log(logger.fmt.orange("Combat action killBrot started"));
+    logger.log(logger.fmt.orange("Combat action dragoon1 started"));
+}
+
+function killDragoon2() {
+    var gangsHome = {
+        fighters2: [
+            {
+                count: 3,
+                body: [MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK]
+            }
+        ],
+    };
+
+    var gangsMoria = {
+        fighters3: [
+            {
+                count: 3,
+                body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK]
+            }
+        ]
+    };
+
+    var orders = [
+        {
+            fighters2: {
+                action: 'move',
+                target: 'w1'
+            },
+            fighters3: {
+                action: 'move',
+                target: 'w11'
+            }
+        },
+
+        {
+            fighters2: {
+                action: 'attack',
+                range: 0,
+                target: 'w3',
+            },
+            fighters3: {
+                action: 'attack',
+                range: 0,
+                target: 'w3',
+            },
+        },
+        // {
+        //     fighters: {
+        //         action: 'attack',
+        //         range: 0,
+        //         target: 'w3',
+        //     },
+        // },
+        // {
+        //     fighters: {
+        //         action: 'attack',
+        //         range: 0,
+        //         target: 'w4',
+        //     },
+        // },
+    ];
+
+    var action = Game.combatActions.get('dragoon2');
+    // action.spawnGangs(Game.spawns.Moria, moriaGangs);
+    action.spawnGangs(Room.byCustomName('home'), gangsHome);
+    action.spawnGangs(Room.byCustomName('moria'), gangsMoria);
+    action.addOrders(orders);
+
+    logger.log(logger.fmt.orange("Combat action dragoon2 started"));
 }
 
 

@@ -26,7 +26,9 @@ class ColonyRoomHandler extends RoomHandler {
     process() {
         super.process();
 
-        // if(Game.time % 100) {
+        if(this.config.autobuyMinerals && (Game.time % 1000 == 362)) {
+            this.autobuyMinerals();
+        }
         // this.autobuildExtensions();
 
         this.runReactions();
@@ -439,6 +441,59 @@ class ColonyRoomHandler extends RoomHandler {
         else {
             delete jobs[key];
         }
+    }
+
+    autobuyMinerals() {
+        var minerals = [RESOURCE_OXYGEN, RESOURCE_HYDROGEN, RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM, RESOURCE_LEMERGIUM,
+            RESOURCE_UTRIUM, RESOURCE_CATALYST];
+
+        var storage = this.room.getStorage();
+        var terminal = this.room.getTerminal();
+
+        var sources = [storage, terminal];
+
+        var orders = Game.market.getAllOrders();
+
+        minerals.forEach(mineral => {
+            var total = _.sum(sources, /**StructureStorage*/s => s.store[mineral] || 0);
+
+            var needed = 10000 - total;
+
+            if(needed > 0) {
+                let maxPrice = config.market.minerals[mineral].buyPriceMax;
+                let mineralOrders = _.filter(orders, o => {
+                    if(o.type != ORDER_SELL) {
+                        return false;
+                    }
+                    if(!o.roomName) {
+                        return false;
+                    }
+                    if(o.resourceType != mineral) {
+                        return false;
+                    }
+                    if(o.amount < needed) {
+                        return false;
+                    }
+                    if(o.price > maxPrice) {
+                        return false;
+                    }
+
+                    let distance = Game.map.getRoomLinearDistance(this.room.name, o.roomName, true);
+                    return distance < config.market.maxTradeRange;
+                });
+
+                let closestOrder = _.first(_.sortBy(mineralOrders, o => {
+                    return Game.map.getRoomLinearDistance(this.room.name, o.roomName, true)
+                }));
+
+                if(closestOrder) {
+                    this.debug('Would execute order', mineral, '::', JSON.stringify(closestOrder));
+                }
+                else {
+                    this.debug('No sell orders for mineral', mineral);
+                }
+            }
+        });
     }
 
     _getJobTransferDict(key, source, target, resource) {

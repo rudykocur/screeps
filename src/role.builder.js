@@ -14,11 +14,12 @@ module.exports = (function() {
             }
 
             if(actionUtils.shouldHarvestEnergy(creep)) {
-                if(actionHarvest.tryHarvestDroppedSource(creep)) {
+                if(actionHarvest.tryHarvestStorage(creep, {reserve: 5000, types: [STRUCTURE_STORAGE]})) {
+
                     return;
                 }
 
-                if(actionHarvest.tryHarvestStorage(creep, {reserve: 5000, types: [STRUCTURE_STORAGE]})) {
+                if(actionHarvest.tryHarvestDroppedSource(creep)) {
                     return;
                 }
 

@@ -24,13 +24,41 @@ module.exports = (function() {
             E65N45: "middle",
             E67N46: "brokilon2t",
         },
+        market: {
+            maxTradeRange: 30,
+            minerals: {
+                [RESOURCE_OXYGEN]: {
+                    buyPriceMax: 0.55,
+                    sellPriceMin: 0.5,
+                },
+                [RESOURCE_HYDROGEN]: {
+                    buyPriceMax: 0.85,
+                },
+                [RESOURCE_LEMERGIUM]: {
+                    buyPriceMax: 0.5,
+                },
+                [RESOURCE_ZYNTHIUM]: {
+                    buyPriceMax: 0.5,
+                },
+                [RESOURCE_KEANIUM]: {
+                    buyPriceMax: 0.5,
+                },
+                [RESOURCE_UTRIUM]: {
+                    buyPriceMax: 0.5,
+                },
+                [RESOURCE_CATALYST]: {
+                    buyPriceMax: 0.7,
+                },
+            }
+        },
         rooms: {
             home: {
                 type: "colony",
-                wallsHp: 600000,
+                wallsHp: 1600000,
+                // autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
-                    builder: 0,
+                    builder: 1,
                     mover: 2,
                 },
                 minerals: {
@@ -78,6 +106,8 @@ module.exports = (function() {
             moria: {
                 type: "colony",
                 panicMode: false,
+                // autobuyMinerals: true,
+                wallsHp: 1600000,
                 creeps: {
                     upgrader: 4,
                     builder: 1,
@@ -91,7 +121,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_ZYNTHIUM]: 30000,
                     }
                 }
@@ -100,7 +130,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 200000,
                 creeps: {
-                    upgrader: 6,
+                    upgrader: 4,
                     builder: 1,
                     mover: 2,
                 },
@@ -112,7 +142,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 100000,
+                        // [RESOURCE_ENERGY]: 100000,
                     }
                 }
             },
@@ -131,14 +161,14 @@ module.exports = (function() {
                 wallsHp: 100000,
                 spawnRooms: ['orphan'],
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 4,
                     builder: 1,
                     mover: 2,
                 }
             },
             homeTop: {
                 type:"outpost",
-                homeRoom:"moria",
+                homeRoom:"home",
                 spawnRooms: ['home', 'moria'],
                 creeps: {
                     claimer: 1,
@@ -158,8 +188,8 @@ module.exports = (function() {
             },
             homeLeft:{
                 type:"outpost",
-                homeRoom:"moria",
-                spawnRooms: ['home', 'moria'],
+                homeRoom:"home",
+                spawnRooms: ['home'],
                 creeps: {
                     collector: 2,
                     claimer: 1,
@@ -178,6 +208,7 @@ module.exports = (function() {
             kmLower:{
                 type:"outpost",
                 homeRoom:"kaerMorhen",
+                // spawnRooms: ['moria'],
                 creeps: {
                     collector: 2,
                     claimer: 1,
@@ -225,6 +256,7 @@ module.exports = (function() {
             kmRight: {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
+                // spawnRooms: ['moria'],
                 creeps: {
                     collector: 3,
                     settler: 0,
@@ -342,6 +374,9 @@ module.exports = (function() {
 
             Cheshire: {},
             "Cirith Ungol": {},
+            "Kaer Trolde": {},
+            Blaviken: {},
+            Shaerrawedd: {},
             Brokilon: {
                 brokilonMineralTransfer: {
                     minimum: 3,
@@ -366,7 +401,7 @@ module.exports = (function() {
 
             Moria: {
                 moriaMineralTransfer: {
-                    minimum: 2,
+                    minimum: 3,
                     body: 'mineralTransfer',
                     priority: 'high',
                     memo: {

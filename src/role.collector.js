@@ -71,17 +71,24 @@ class CollectorRole extends CreepRole {
             }
         }
         else {
+            /** @type StructureStorage */
             let storage = this.getStorage();
 
-            if(this.creep.pos.inRangeTo(storage, 1)) {
-                let creepEnergy = this.creep.carry.energy;
+            if(_.sum(storage.store) + 5000 < storage.storeCapacity) {
 
-                if(this.creep.transfer(storage, RESOURCE_ENERGY) == OK) {
-                    this.registerIncome(creepEnergy);
+                if (this.creep.pos.inRangeTo(storage, 1)) {
+                    let creepEnergy = this.creep.carry.energy;
+
+                    if (this.creep.transfer(storage, RESOURCE_ENERGY) == OK) {
+                        this.registerIncome(creepEnergy);
+                    }
+                }
+                else {
+                    this.creep.addTask(MoveTask.create(this.creep, storage, 1));
                 }
             }
             else {
-                this.creep.addTask(MoveTask.create(this.creep, storage, 1));
+                this.creep.say('nospace :(');
             }
         }
     }

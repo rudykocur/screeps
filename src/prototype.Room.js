@@ -26,6 +26,10 @@ Room.idToCustomName = function(roomId) {
     return config.roomNames[roomId];
 };
 
+Room.prototype.sendResources = function(resource, amount, roomName) {
+    return this.terminal.send(resource, amount, Room.byCustomName(roomName).name);
+};
+
 Room.prototype.refreshStructures = function() {
     var state = this.handlerMemory;
 

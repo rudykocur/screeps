@@ -61,16 +61,21 @@ class MoverRole extends CreepRole {
                                 transferredEnergy = Math.min(transferredEnergy, target.energyCapacity - target.energy);
                             }
 
-                            this.creep.transfer(target, RESOURCE_ENERGY);
+                            let result = this.creep.transfer(target, RESOURCE_ENERGY);
 
-                            var roomName = this.creep.room.customName;
-                            var creepRole = this.creep.memory.role;
+                            if(result == OK) {
+                                var roomName = this.creep.room.customName;
+                                var creepRole = this.creep.memory.role;
 
-                            if (target instanceof StructureStorage) {
-                                stats.registerIncome(roomName, 'mover', creepRole, carryEnergy);
+                                if (target instanceof StructureStorage) {
+                                    stats.registerIncome(roomName, 'mover', creepRole, carryEnergy);
+                                }
+                                if (target instanceof StructureTower) {
+                                    stats.registerExpense(roomName, 'tower', creepRole, transferredEnergy);
+                                }
                             }
-                            if (target instanceof StructureTower) {
-                                stats.registerExpense(roomName, 'tower', creepRole, transferredEnergy);
+                            else {
+                                logger.mail(logger.error(this.creep, 'failed to transfer resources', result));
                             }
                         }
 
@@ -96,7 +101,11 @@ class MoverRole extends CreepRole {
         let source;
 
         if(!source) {
-            source = this.creep.room.getStorage();
+            /** @type StructureStorage */
+            let storage = this.creep.room.getStorage();
+            if(storage && storage.store.energy > 0) {
+                source = storage;
+            }
         }
 
         if(!source) {
