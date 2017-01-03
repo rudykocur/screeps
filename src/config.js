@@ -25,20 +25,23 @@ module.exports = (function() {
             E67N46: "brokilon2t",
         },
         market: {
+            processInterval: 30,
             maxTradeRange: 30,
             minerals: {
                 [RESOURCE_OXYGEN]: {
                     buyPriceMax: 0.55,
-                    sellPriceMin: 0.5,
+                    sellPriceMin: 0.45,
                 },
                 [RESOURCE_HYDROGEN]: {
                     buyPriceMax: 0.85,
                 },
                 [RESOURCE_LEMERGIUM]: {
                     buyPriceMax: 0.5,
+                    sellPriceMin: 0.15,
                 },
                 [RESOURCE_ZYNTHIUM]: {
                     buyPriceMax: 0.5,
+                    sellPriceMin: 0.10,
                 },
                 [RESOURCE_KEANIUM]: {
                     buyPriceMax: 0.5,
@@ -66,14 +69,15 @@ module.exports = (function() {
                         // [RESOURCE_ZYNTHIUM_OXIDE]: 0,
                         // [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
                         // [RESOURCE_ZYNTHIUM]: 0,
-                        // [RESOURCE_OXYGEN]: 0,
+                        [RESOURCE_OXYGEN]: 50000,
                         // [RESOURCE_ENERGY]: 500000,
                     }
                 },
                 terminal: {
+                    autosell: [RESOURCE_OXYGEN],
                     require: {
                         [RESOURCE_ENERGY]: 200000,
-                        [RESOURCE_OXYGEN]: 30000,
+                        [RESOURCE_OXYGEN]: 50000,
                     }
                 },
                 labs: {
@@ -116,10 +120,11 @@ module.exports = (function() {
                 minerals: {
                     reserve: {
                         // [RESOURCE_ENERGY]: 1000000,
-                        // [RESOURCE_ZYNTHIUM]: 0,
+                        [RESOURCE_ZYNTHIUM]: 50000,
                     }
                 },
                 terminal: {
+                    autosell: [RESOURCE_ZYNTHIUM],
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_ZYNTHIUM]: 30000,
@@ -136,13 +141,15 @@ module.exports = (function() {
                 },
                 minerals: {
                     reserve: {
-                        // [RESOURCE_LEMERGIUM]: 0,
+                        [RESOURCE_LEMERGIUM]: 50000,
                         //[RESOURCE_ENERGY]: 50000,
                     }
                 },
                 terminal: {
+                    autosell: [RESOURCE_LEMERGIUM],
                     require: {
-                        // [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_LEMERGIUM]: 50000,
+                        [RESOURCE_ENERGY]: 25000,
                     }
                 }
             },

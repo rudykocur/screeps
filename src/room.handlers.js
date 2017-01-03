@@ -42,6 +42,8 @@ class RoomHandler {
         return logger.error(`${this.type} ${this.roomName}: ${messages.join(' ')}`);
     }
 
+    processMarket(orders) {}
+
     process() {
         this.cleanDeadJobs();
 
@@ -332,6 +334,12 @@ module.exports = (function() {
                 handlers[modName] = require('./room.' + modName);
             });
 
+            var marketOrders = null;
+
+            if(Game.time % config.market.processInterval == 0) {
+                marketOrders = Game.market.getAllOrders();
+            }
+
             _.each(config.rooms, (roomConfig, roomName) => {
                 try {
                     Memory.rooms[roomName] = Memory.rooms[roomName] || {};
@@ -339,6 +347,10 @@ module.exports = (function() {
                     var clz = handlers[roomConfig.type].handler;
                     var state = Memory.rooms[roomName];
                     var handler = new clz(roomName, state, roomConfig);
+
+                    if(marketOrders) {
+                        handler.processMarket(marketOrders);
+                    }
 
                     handler.process();
                 }

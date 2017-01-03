@@ -187,47 +187,6 @@ class OutpostRoomHandler extends RoomHandler {
             }));
         }
     }
-
-    autobuildExtensions() {
-        var flags = _.groupBy(Game.flags, 'pos.roomName')[this.room.name];
-        var autobuildStart = _.first(flags.filter(/**Flag*/f => f.color == COLOR_BROWN && f.secondaryColor == COLOR_YELLOW));
-        if(!autobuildStart) {
-            return;
-        }
-
-        var markerFlags = flags.filter(/**Flag*/f => f.color == COLOR_PURPLE);
-        markerFlags.forEach(f => f.remove());
-
-        return;
-
-        var totalExtensions = 5;
-        var width = Math.ceil(Math.sqrt(totalExtensions*2));
-
-        var p = autobuildStart.pos;
-
-        var flagsPut = 0;
-
-        for(let x = 0; x < width; x++) {
-            // let arr = [];
-            for(let y = 0; y < width; y++) {
-                let isRoad = (((x == 0) || (x % 2 == 0)) && ((y > 0) && y % 2 != 0)) ||
-                    ( (x > 0 && x % 2 != 0) && ((y == 0) || (y%2 == 0) ));
-
-                // arr.push(isRoad ? 'x' : ' ');
-
-                if(!isRoad) {
-                    flagsPut ++;
-                    this.room.createFlag(p.x + x, p.y + y, `ab_${this.room.name}_${x}_${y}`, COLOR_PURPLE, COLOR_YELLOW);
-                }
-            }
-
-            // console.log(arr.join(''))
-        }
-
-        // console.log('flags', flagsPut);
-
-        // this.debug('autobuild flag set!');
-    }
 }
 
 

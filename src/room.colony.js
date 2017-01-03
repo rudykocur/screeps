@@ -23,13 +23,20 @@ class ColonyRoomHandler extends RoomHandler {
         });
     }
 
+
+    processMarket(orders) {
+        if(this.config.autobuyMinerals) {
+            this.autobuyMinerals(orders);
+        }
+
+        var autosell = _.get(this.config, 'terminal.autosell', []);
+        if(autosell.length > 0) {
+            this.autosellMinerals(autosell, orders);
+        }
+    }
+
     process() {
         super.process();
-
-        if(this.config.autobuyMinerals && (Game.time % 1000 == 362)) {
-            this.autobuyMinerals();
-        }
-        // this.autobuildExtensions();
 
         this.runReactions();
 
@@ -238,12 +245,15 @@ class ColonyRoomHandler extends RoomHandler {
 
     createTerminalRequirementsJobs(storage, terminal) {
         var requires = _.get(this.config, 'terminal.require', {});
+        var reserves = _.get(this.config, 'minerals.reserve', {});
         var jobs = this.state.jobs;
 
         _.each(requires, (amount, resource) => {
             var key = `terminal-require-${this.room.customName}-${resource}`;
 
-            if(storage.store[resource] > 10000 && (terminal.store[resource] || 0) < amount) {
+            var available = storage.store[resource] - _.get(reserves, resource, 10000);
+
+            if(available > 0 && (terminal.store[resource] || 0) < amount) {
                 if(!(key in jobs)) {
                     jobs[key] = {
                         key: key,
@@ -259,7 +269,7 @@ class ColonyRoomHandler extends RoomHandler {
                     }
                 }
 
-                jobs[key].amount = amount - terminal.store[resource];
+                jobs[key].amount = Math.max(0, Math.min(available, amount - terminal.store[resource]));
             }
             else {
                 delete jobs[key];
@@ -443,7 +453,7 @@ class ColonyRoomHandler extends RoomHandler {
         }
     }
 
-    autobuyMinerals() {
+    autobuyMinerals(orders) {
         var minerals = [RESOURCE_OXYGEN, RESOURCE_HYDROGEN, RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM, RESOURCE_LEMERGIUM,
             RESOURCE_UTRIUM, RESOURCE_CATALYST];
 
@@ -451,8 +461,6 @@ class ColonyRoomHandler extends RoomHandler {
         var terminal = this.room.getTerminal();
 
         var sources = [storage, terminal];
-
-        var orders = Game.market.getAllOrders();
 
         minerals.forEach(mineral => {
             var total = _.sum(sources, /**StructureStorage*/s => s.store[mineral] || 0);
@@ -494,6 +502,61 @@ class ColonyRoomHandler extends RoomHandler {
                 }
             }
         });
+    }
+
+    autosellMinerals(minerals, orders) {
+        /** @type StructureTerminal */
+        var terminal = this.room.getTerminal();
+
+        minerals.forEach(resource => {
+            if(terminal.store[resource] > 2000) {
+                let minPrice = config.market.minerals[resource].sellPriceMin;
+
+                let mineralOrders = _.filter(orders, o => {
+                    if(o.type != ORDER_BUY) {
+                        return false;
+                    }
+                    if(!o.roomName) {
+                        return false;
+                    }
+                    if(o.resourceType != resource) {
+                        return false;
+                    }
+                    if(o.amount < 2000) {
+                        return false;
+                    }
+                    if(o.price < minPrice) {
+                        return false;
+                    }
+
+                    let distance = Game.map.getRoomLinearDistance(this.room.name, o.roomName, true);
+                    return distance < config.market.maxTradeRange;
+                });
+
+                let closestOrder = _.first(_.sortBy(mineralOrders, o => {
+                    return Game.map.getRoomLinearDistance(this.room.name, o.roomName, true)
+                }));
+
+                if(closestOrder) {
+
+                    let amount = closestOrder.amount;
+                    while(amount > 0) {
+                        if(terminal.store.energy >= Game.market.calcTransactionCost(amount, this.room.name, closestOrder.roomName)) {
+                            let result = Game.market.deal(closestOrder.id, amount, this.room.name);
+                            if (result == OK) {
+                                this.info('Sold', resource, 'x' + amount, 'units. OrderID:', closestOrder.id);
+                                break;
+                            }
+                        }
+
+                        amount -= 2000;
+                    }
+                }
+                else {
+                    // this.debug('Nowhere to sell', resource);
+                }
+            }
+        })
     }
 
     _getJobTransferDict(key, source, target, resource) {
@@ -571,16 +634,6 @@ class ColonyRoomHandler extends RoomHandler {
 
     getCreepName(type) {
         return this.type+'_'+this.roomName+'_'+type+'_';
-    }
-
-    autobuildExtensions() {
-
-        var flags = _.groupBy(Game.flags, 'pos.roomName')[this.room.name];
-        if(!_.first(flags.filter(/**Flag*/f => f.color == COLOR_BROWN && f.secondaryColor == COLOR_YELLOW))) {
-            return;
-        }
-
-        // this.debug('autobuild flag set!');
     }
 }
 
