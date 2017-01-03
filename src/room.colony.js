@@ -3,6 +3,7 @@ var _ = require('lodash');
 
 var config = require('./config');
 var logger = require('./logger');
+var F = logger.fmt;
 var roomHandlers = require('./room.handlers');
 
 var RoomHandler = require('./room.handlers').RoomHandler;
@@ -496,6 +497,10 @@ class ColonyRoomHandler extends RoomHandler {
 
                 if(closestOrder) {
                     this.debug('Would execute order', mineral, '::', JSON.stringify(closestOrder));
+                    let result = this._completeDeal(terminal, closestOrder, needed);
+                    if(result) {
+                        this.info(F.green('Bought', mineral, 'x' + result, 'units. OrderID:', closestOrder.id));
+                    }
                 }
                 else {
                     this.debug('No sell orders for mineral', mineral);
@@ -538,18 +543,9 @@ class ColonyRoomHandler extends RoomHandler {
                 }));
 
                 if(closestOrder) {
-
-                    let amount = closestOrder.amount;
-                    while(amount > 0) {
-                        if(terminal.store.energy >= Game.market.calcTransactionCost(amount, this.room.name, closestOrder.roomName)) {
-                            let result = Game.market.deal(closestOrder.id, amount, this.room.name);
-                            if (result == OK) {
-                                this.info('Sold', resource, 'x' + amount, 'units. OrderID:', closestOrder.id);
-                                break;
-                            }
-                        }
-
-                        amount -= 2000;
+                    let result = this._completeDeal(terminal, closestOrder);
+                    if(result) {
+                        this.info(F.green('Sold', resource, 'x' + result, 'units. OrderID:', closestOrder.id));
                     }
                 }
                 else {
@@ -557,6 +553,20 @@ class ColonyRoomHandler extends RoomHandler {
                 }
             }
         })
+    }
+
+    _completeDeal(terminal, order, maxAmountToBuy) {
+        let amount = maxAmountToBuy || order.amount;
+        while(amount > 0) {
+            if(terminal.store.energy >= Game.market.calcTransactionCost(amount, this.room.name, order.roomName)) {
+                let result = Game.market.deal(order.id, amount, this.room.name);
+                if (result == OK) {
+                    return amount;
+                }
+            }
+
+            amount -= 2000;
+        }
     }
 
     _getJobTransferDict(key, source, target, resource) {

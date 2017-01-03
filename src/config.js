@@ -68,16 +68,17 @@ module.exports = (function() {
                     reserve: {
                         // [RESOURCE_ZYNTHIUM_OXIDE]: 0,
                         // [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
-                        // [RESOURCE_ZYNTHIUM]: 0,
+                        [RESOURCE_ZYNTHIUM]: 10000,
                         [RESOURCE_OXYGEN]: 50000,
                         // [RESOURCE_ENERGY]: 500000,
                     }
                 },
                 terminal: {
-                    autosell: [RESOURCE_OXYGEN],
+                    autosell: [RESOURCE_OXYGEN, RESOURCE_ZYNTHIUM],
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_OXYGEN]: 50000,
+                        [RESOURCE_ZYNTHIUM]: 20000,
                     }
                 },
                 labs: {
