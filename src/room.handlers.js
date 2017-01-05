@@ -366,7 +366,7 @@ module.exports = (function() {
                 try {
 
                     if(marketOrders) {
-                        if(handler.room.terminal) {
+                        if(handler.room && handler.room.terminal) {
                             handler.processRoomTransfers(_.without(withTerminal, handler));
                         }
                         handler.processMarket(marketOrders);

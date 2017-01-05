@@ -32,7 +32,7 @@ class ColonyRoomHandler extends RoomHandler {
 
         var threshold = 10000;
         var wanted = {
-            [RESOURCE_ENERGY]: 50000,
+            [RESOURCE_ENERGY]: 100000,
         };
 
         for(let resource of _.keys(wanted)) {
