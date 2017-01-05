@@ -313,8 +313,9 @@ class ColonyRoomHandler extends RoomHandler {
             var key = `terminal-require-${this.room.customName}-${resource}`;
 
             var available = storage.store[resource] - _.get(reserves, resource, 10000);
+            let terminalAmount = (terminal.store[resource] || 0);
 
-            if(available > 0 && (terminal.store[resource] || 0) < amount) {
+            if(available > 0 && terminalAmount < amount) {
                 if(!(key in jobs)) {
                     jobs[key] = {
                         key: key,
@@ -330,7 +331,7 @@ class ColonyRoomHandler extends RoomHandler {
                     }
                 }
 
-                jobs[key].amount = Math.max(0, Math.min(available, amount - terminal.store[resource]));
+                jobs[key].amount = Math.max(0, Math.min(available, amount - terminalAmount));
             }
             else {
                 delete jobs[key];
@@ -515,11 +516,12 @@ class ColonyRoomHandler extends RoomHandler {
         unusedLabs = _.without(unusedLabs, ..._.keys(_.get(this.config, 'labs.boost')));
 
         allLabs.forEach(labName => {
+            /** @type StructureLab */
             var lab = Game.getObjectById(this.labNameToId[labName]);
 
             let key = `labs-${labName}-empty-all`;
 
-            if(unusedLabs.indexOf(labName) >= 0 && lab.mineralType) {
+            if(unusedLabs.indexOf(labName) >= 0 && lab.mineralType && lab.mineralAmount > 500) {
                 if(!(key in jobs)) {
                     jobs[key] = this._getJobTransferDict(key, lab, storage, lab.mineralType);
                 }
@@ -595,7 +597,8 @@ class ColonyRoomHandler extends RoomHandler {
                     let toBuy = Math.min(closestOrder.amount, needed);
                     let result = this._completeDeal(terminal, closestOrder, toBuy);
                     if(result) {
-                        this.info(F.green('Bought', mineral, 'x' + result, 'units. OrderID:', closestOrder.id));
+                        let loss = result * closestOrder.price;
+                        this.info(F.green(`Bought ${mineral} x${result} units for ${loss} credits. OrderID: ${closestOrder.id}`));
                     }
                 }
             }
@@ -637,8 +640,9 @@ class ColonyRoomHandler extends RoomHandler {
 
                 if(closestOrder) {
                     let result = this._completeDeal(terminal, closestOrder);
+                    var gain = result * closestOrder.price;
                     if(result) {
-                        this.info(F.green('Sold', resource, 'x' + result, 'units. OrderID:', closestOrder.id));
+                        this.info(F.green(`Sold ${resource} x${result} units for ${gain} credits. OrderID: ${closestOrder.id}`));
                     }
                 }
             }

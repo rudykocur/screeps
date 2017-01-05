@@ -70,11 +70,8 @@ module.exports = (function() {
                         [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                     },
                     reserve: {
-                        // [RESOURCE_ZYNTHIUM_OXIDE]: 0,
-                        // [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_ZYNTHIUM]: 10000,
                         [RESOURCE_OXYGEN]: 50000,
-                        // [RESOURCE_ENERGY]: 500000,
                     }
                 },
                 terminal: {
@@ -99,7 +96,7 @@ module.exports = (function() {
                         '586172d62c660f9d020f7d58': 'D3',
                     },
                     boost: {
-                        // bright: RESOURCE_LEMERGIUM_ALKALIDE,
+                        D3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
                         // tright: RESOURCE_ZYNTHIUM_ALKALIDE,
                     },
                     reactions: [
@@ -129,7 +126,7 @@ module.exports = (function() {
             moria: {
                 type: "colony",
                 panicMode: false,
-                // autobuyMinerals: true,
+                autobuyMinerals: true,
                 wallsHp: 1600000,
                 creeps: {
                     upgrader: 4,
@@ -137,8 +134,10 @@ module.exports = (function() {
                     mover: 2,
                 },
                 minerals: {
+                    wants: {
+                        [RESOURCE_OXYGEN]: 13000,
+                    },
                     reserve: {
-                        // [RESOURCE_ENERGY]: 1000000,
                         [RESOURCE_ZYNTHIUM]: 50000,
                     }
                 },
@@ -160,6 +159,9 @@ module.exports = (function() {
                     mover: 2,
                 },
                 minerals: {
+                    wants: {
+                        [RESOURCE_ZYNTHIUM]: 13000,
+                    },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ZYNTHIUM_KEANITE]: 0,
@@ -265,7 +267,7 @@ module.exports = (function() {
                 creeps: {
                     collector: 2,
                     claimer: 1,
-                    settler: 1,
+                    settler: 0,
                 }
             },
             moriaTop:{
@@ -311,7 +313,7 @@ module.exports = (function() {
                 homeRoom: "kaerMorhen",
                 // spawnRooms: ['moria'],
                 creeps: {
-                    collector: 3,
+                    collector: 2,
                     settler: 0,
                     claimer: 1,
                 }
@@ -410,6 +412,7 @@ module.exports = (function() {
                     minimum: 0,
                     priority: 'critical',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
@@ -419,8 +422,9 @@ module.exports = (function() {
                         role: 'brawler',
                         // room: 'E68N42',
                         // room: 'E67N42',
-
-                        room: 'E63N39'
+                        // boost: [{part: HEAL,resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,amount: 8}],
+                        room: 'E71N41',
+                        // moveFlag: 'McSmashFlag',
                     }
                 },
             },
@@ -459,6 +463,25 @@ module.exports = (function() {
                     priority: 'high',
                     memo: {
                         role: 'transfer',
+                    }
+                },
+                fighter: {
+                    minimum: 0,
+                    priority: 'critical',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
+                    // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                    //     TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                    //     ATTACK,ATTACK,ATTACK],
+                    memo: {
+                        role: 'brawler',
+                        // room: 'E68N42',
+                        // room: 'E67N42',
+                        // boost: [{part: HEAL,resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,amount: 8}],
+                        room: 'E71N41',
+                        // moveFlag: 'McSmashFlag',
                     }
                 },
             },

@@ -73,24 +73,17 @@ module.exports = (function() {
                 return;
             }
 
-            if(creep.memory.room && creep.pos.room != creep.memory.room) {
-                var targetRoom = Game.rooms[creep.memory.room];
-                if(!targetRoom) {
-                    var roomFlag = _.first(_.filter(Game.flags, f => {
-                        return f.pos.roomName == creep.memory.room && f.color == COLOR_ORANGE
-                    }));
+            if(creep.memory.room && creep.pos.roomName != creep.memory.room) {
+                var roomFlag = _.first(_.filter(Game.flags, f => {
+                    return f.pos.roomName == creep.memory.room && f.color == COLOR_ORANGE
+                }));
 
-                    if(roomFlag) {
-                        creep.moveTo(roomFlag, {
-                            costCallback: actionUtils.costCallback
-                        });
-                        return;
-                    }
+                if(roomFlag) {
+                    creep.moveTo(roomFlag, {
+                        costCallback: actionUtils.costCallback
+                    });
+                    return;
                 }
-            }
-
-            if(actionUtils.tryChangeRoom(creep, creep.memory.room)) {
-                return;
             }
 
             if(creep.getActiveBodyparts(MOVE) == 0 && creep.getActiveBodyparts(HEAL) > 0) {
@@ -123,7 +116,13 @@ module.exports = (function() {
             if(target) {
 
                 if(creep.pos.isNearTo(target)) {
-                    creep.attack(target);
+                    let result = creep.attack(target);
+
+                    if(result != OK) {
+                        if(creep.getActiveBodyparts(HEAL) > 0) {
+                            creep.heal(creep);
+                        }
+                    }
                 }
                 else {
                     creep.rangedAttack(target);
