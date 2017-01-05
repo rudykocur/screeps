@@ -29,7 +29,7 @@ module.exports = (function() {
             maxTradeRange: 30,
             minerals: {
                 [RESOURCE_OXYGEN]: {
-                    buyPriceMax: 0.55,
+                    buyPriceMax: 0.7,
                     sellPriceMin: 0.45,
                 },
                 [RESOURCE_HYDROGEN]: {
@@ -135,8 +135,9 @@ module.exports = (function() {
             kaerMorhen: {
                 type: "colony",
                 wallsHp: 200000,
+                autobuyMinerals: true,
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 6,
                     builder: 1,
                     mover: 2,
                 },
@@ -152,7 +153,29 @@ module.exports = (function() {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ENERGY]: 25000,
                     }
-                }
+                },
+                labs: {
+                    names: {
+                        '5859d6bbd63f522f68c1d9c3': 'A1',
+                        '586c39c397fe7e92738e225f': 'A2',
+                        '586c5554e4217aa237a3e5b2': 'A3',
+                        '5859bd145057e7a84687d66f': 'B1',
+                        '5859f9dbabb1542d67aaa762': 'B2',
+                        '586c3e9d5f1a64b15d4151b8': 'B3',
+                    },
+                    reactions: [
+                        {
+                            labs: ['A1', 'A2', 'A3'],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            amount: 3000,
+                        },
+                        {
+                            labs: ['B1', 'B2', 'B3'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                            amount: 3000,
+                        },
+                    ],
+                },
             },
             brot: {
                 type:"outpost",
@@ -166,10 +189,10 @@ module.exports = (function() {
             orphan: {
                 type: "colony",
                 panicMode: false,
-                wallsHp: 100000,
+                wallsHp: 200000,
                 spawnRooms: ['orphan'],
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 6,
                     builder: 1,
                     mover: 2,
                 }

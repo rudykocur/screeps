@@ -43,8 +43,6 @@ var roleModules = {
     none: {run: function() {}},
 };
 
-global.p = (...args) => {console.log.apply(console, args)};
-
 // profiler.enable();
 
 profiler.registerClass(Game, 'Game');

@@ -73,16 +73,26 @@ Room.prototype.refreshStructures = function() {
     }
 };
 
+/**
+ * @return {StructureTerminal}
+ */
 Room.prototype.getTerminal = function() {
     this.refreshStructures();
     return Game.getObjectById(this.handlerMemory.structures.terminal);
 };
 
+/**
+ * @return {StructureStorage}
+ */
 Room.prototype.getStorage = function() {
     this.refreshStructures();
     return Game.getObjectById(this.handlerMemory.structures.storage);
 };
 
+/**
+ *
+ * @return {Array<StructureSpawn>}
+ */
 Room.prototype.getSpawns = function() {
     this.refreshStructures();
     return this.handlerMemory.structures.spawns.map(sId => Game.getObjectById(sId));

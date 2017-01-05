@@ -25,6 +25,10 @@ class RoomHandler {
         });
     }
 
+    toString() {
+        return `[Handler ${this.type} - ${this.roomName}]`;
+    }
+
     get roomId() {
         return Room.customNameToId(this.roomName);
     }
@@ -42,6 +46,7 @@ class RoomHandler {
         return logger.error(`${this.type} ${this.roomName}: ${messages.join(' ')}`);
     }
 
+    processRoomTransfers(otherRooms) {}
     processMarket(orders) {}
 
     process() {
@@ -283,6 +288,12 @@ class RoomHandler {
             }));
         }
     }
+
+    getResourceTotal(resource) {
+        var structures = [this.room.getStorage(), this.room.getTerminal()];
+
+        return _.sum(structures, struct => struct && (struct.store[resource] || 0));
+    }
 }
 
 module.exports = (function() {
@@ -329,9 +340,9 @@ module.exports = (function() {
         processRoomHandlers: function() {
             Memory.rooms = Memory.rooms || {};
 
-            var handlers = {};
+            var handlerModules = {};
             roomModules.forEach(modName => {
-                handlers[modName] = require('./room.' + modName);
+                handlerModules[modName] = require('./room.' + modName);
             });
 
             var marketOrders = null;
@@ -340,22 +351,31 @@ module.exports = (function() {
                 marketOrders = Game.market.getAllOrders();
             }
 
-            _.each(config.rooms, (roomConfig, roomName) => {
-                try {
-                    Memory.rooms[roomName] = Memory.rooms[roomName] || {};
+            var handlers = _.map(config.rooms, (roomConfig, roomName) => {
+                Memory.rooms[roomName] = Memory.rooms[roomName] || {};
 
-                    var clz = handlers[roomConfig.type].handler;
-                    var state = Memory.rooms[roomName];
-                    var handler = new clz(roomName, state, roomConfig);
+                var clz = handlerModules[roomConfig.type].handler;
+                var state = Memory.rooms[roomName];
+
+                return new clz(roomName, state, roomConfig);
+            });
+
+            var withTerminal = handlers.filter(/**RoomHandler*/handler => handler.room && handler.room.terminal);
+
+            _.each(handlers, /**RoomHandler*/handler => {
+                try {
 
                     if(marketOrders) {
+                        if(handler.room.terminal) {
+                            handler.processRoomTransfers(_.without(withTerminal, handler));
+                        }
                         handler.processMarket(marketOrders);
                     }
 
                     handler.process();
                 }
                 catch(e) {
-                    logger.error('Failure at processing room', roomName,'-', e, '::', e.stack);
+                    logger.error('Failure at processing room', handler.roomName,'-', e, '::', e.stack);
                 }
             });
 

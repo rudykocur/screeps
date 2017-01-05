@@ -48,6 +48,9 @@ module.exports = (function() {
 
                 if(creep.carryTotal > (creep.carry[job.resource] || 0)) {
                     let toEmpty = _.omit(creep.carry, job.resource);
+                    if(toEmpty.energy == 0) {
+                        toEmpty = _.omit(toEmpty, RESOURCE_ENERGY);
+                    }
 
                     let toEmptyResource = _.keys(toEmpty)[0];
                     if(creep.transfer(storage, toEmptyResource) == ERR_NOT_IN_RANGE) {

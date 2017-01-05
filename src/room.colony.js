@@ -24,6 +24,51 @@ class ColonyRoomHandler extends RoomHandler {
         });
     }
 
+    /**
+     * @param {Array<RoomHandler>} otherRooms
+     */
+    processRoomTransfers(otherRooms) {
+        var terminal = this.room.getTerminal();
+
+        var threshold = 10000;
+        var wanted = {
+            [RESOURCE_ENERGY]: 50000,
+        };
+
+        for(let resource of _.keys(wanted)) {
+            let wantAmount = wanted[resource];
+
+            let hasResourceTotal = this.getResourceTotal(resource);
+            let terminalAvailable = this.room.getTerminal().storeCapacity - _.sum(this.room.getTerminal().store);
+
+            if(hasResourceTotal + threshold < wantAmount) {
+                let needed = wantAmount - hasResourceTotal;
+                let handlers = _.sortByOrder(otherRooms, /**RoomHandler*/handler => handler.getResourceTotal(resource), 'desc');
+
+                for(let /**RoomHandler*/handler of handlers) {
+                    let toTransfer = Math.min(needed, handler.room.terminal.store[resource], terminalAvailable);
+
+                    if(handler.room.terminal.send(resource, toTransfer, this.room.name) == OK) {
+                        needed -= toTransfer;
+                        terminalAvailable -= toTransfer;
+                        this.info(F.green(`Transferred ${toTransfer}x ${resource} from ${handler}`));
+                    }
+
+                    if(needed <=0) {
+                        break;
+                    }
+                    if(terminalAvailable <= 0) {
+                        this.debug('No space left in terminal. Giving up for now');
+                        break;
+                    }
+                }
+            }
+
+            if(terminalAvailable <= 0) {
+                break;
+            }
+        }
+    }
 
     processMarket(orders) {
         if(this.config.autobuyMinerals) {
@@ -480,15 +525,12 @@ class ColonyRoomHandler extends RoomHandler {
                     if(o.resourceType != mineral) {
                         return false;
                     }
-                    if(o.amount < needed) {
-                        return false;
-                    }
                     if(o.price > maxPrice) {
                         return false;
                     }
 
                     let distance = Game.map.getRoomLinearDistance(this.room.name, o.roomName, true);
-                    return distance < config.market.maxTradeRange;
+                    return distance <= config.market.maxTradeRange;
                 });
 
                 let closestOrder = _.first(_.sortBy(mineralOrders, o => {
@@ -496,14 +538,11 @@ class ColonyRoomHandler extends RoomHandler {
                 }));
 
                 if(closestOrder) {
-                    this.debug('Would execute order', mineral, '::', JSON.stringify(closestOrder));
-                    let result = this._completeDeal(terminal, closestOrder, needed);
+                    let toBuy = Math.min(closestOrder.amount, needed);
+                    let result = this._completeDeal(terminal, closestOrder, toBuy);
                     if(result) {
                         this.info(F.green('Bought', mineral, 'x' + result, 'units. OrderID:', closestOrder.id));
                     }
-                }
-                else {
-                    this.debug('No sell orders for mineral', mineral);
                 }
             }
         });
@@ -547,9 +586,6 @@ class ColonyRoomHandler extends RoomHandler {
                     if(result) {
                         this.info(F.green('Sold', resource, 'x' + result, 'units. OrderID:', closestOrder.id));
                     }
-                }
-                else {
-                    // this.debug('Nowhere to sell', resource);
                 }
             }
         })

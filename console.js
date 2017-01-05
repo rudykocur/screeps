@@ -3,6 +3,7 @@ const ScreepsAPI = require('screeps-api');
 const readline = require('readline');
 const util = require('util');
 const c = require('colors');
+const fs = require('fs');
 
 const htmlRegex = /<\w+\s*(?:style=(?:"|')(?:color\s*:\s*([^"]+))?(?:"|'))?>([^<]*)<\/\w+>/g;
 
@@ -118,7 +119,7 @@ function run () {
     let d = new Date();
     let prefix = c.gray(d.toISOString().slice(11).split('.')[0] + ' ');
     if (data.messages) data.messages.log.forEach(l => {logData(prefix + l);});
-    if (data.messages) data.messages.results.forEach(l => logData('>', l.gray));
+    if (data.messages) data.messages.results.forEach(l => logData('> ' + l.gray));
     if (data.error) {
       console.log(prefix + data.error.red);
     }
