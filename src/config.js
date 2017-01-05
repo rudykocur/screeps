@@ -65,6 +65,10 @@ module.exports = (function() {
                     mover: 2,
                 },
                 minerals: {
+                    wants: {
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
+                    },
                     reserve: {
                         // [RESOURCE_ZYNTHIUM_OXIDE]: 0,
                         // [RESOURCE_ZYNTHIUM_ALKALIDE]: 0,
@@ -83,12 +87,16 @@ module.exports = (function() {
                 },
                 labs: {
                     names: {
-                        '584cdc59d9c0e3e84cb9135f': 'tleft',
-                        '584e0af645e985bf11b55745': 'tmiddle',
-                        '584c538f866164475da08cbf': 'tright',
-                        '584e59971c56de6e3ae4c2b0': 'bleft',
-                        '584c72e76ca81b64248b3829': 'bmiddle',
-                        '584e1616459b5b8d7e42983a': 'bright',
+                        '584cdc59d9c0e3e84cb9135f': 'A1',
+                        '584e0af645e985bf11b55745': 'A2',
+                        '584c538f866164475da08cbf': 'A3',
+                        '584e59971c56de6e3ae4c2b0': 'B1',
+                        '584c72e76ca81b64248b3829': 'B2',
+                        '584e1616459b5b8d7e42983a': 'B3',
+                        '5861320a7ceda6a4422def39': 'C2',
+                        '5861fba52bf54c796d15a096': 'D1',
+                        '5861b11eb03d4fb4059da29f': 'D2',
+                        '586172d62c660f9d020f7d58': 'D3',
                     },
                     boost: {
                         // bright: RESOURCE_LEMERGIUM_ALKALIDE,
@@ -96,13 +104,23 @@ module.exports = (function() {
                     },
                     reactions: [
                         {
-                            labs: ['bmiddle', 'bright', 'bleft'],
-                            load: [RESOURCE_CATALYST, RESOURCE_LEMERGIUM_ALKALIDE],
+                            labs: ['A1', 'A2', 'A3'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
                             amount: 2000,
                         },
                         {
-                            labs: ['bmiddle', 'tright', 'tleft'],
-                            load: [RESOURCE_CATALYST, RESOURCE_ZYNTHIUM_ALKALIDE],
+                            labs: ['A3', 'B1', 'B2'],
+                            load: [RESOURCE_GHODIUM, RESOURCE_HYDROGEN],
+                            amount: 2000,
+                        },
+                        {
+                            labs: ['B2', 'B3', 'C2'],
+                            load: [RESOURCE_GHODIUM_HYDRIDE, RESOURCE_HYDROXIDE],
+                            amount: 2000,
+                        },
+                        {
+                            labs: ['C2', 'D1', 'D2'],
+                            load: [RESOURCE_GHODIUM_ACID, RESOURCE_CATALYST],
                             amount: 2000,
                         },
                     ],

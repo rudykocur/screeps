@@ -36,7 +36,11 @@ class ColonyRoomHandler extends RoomHandler {
      * @param {Array<RoomHandler>} otherRooms
      */
     processRoomTransfers(otherRooms) {
-        this.importWantedResources(otherRooms);
+        var wanted = _.defaults(_.get(this.config, 'minerals.wants', {}), {
+            [RESOURCE_ENERGY]: 100000,
+        });
+
+        this.importWantedResources(otherRooms, wanted);
     }
 
     processMarket(orders) {
@@ -102,12 +106,8 @@ class ColonyRoomHandler extends RoomHandler {
         this.maintainPopulationAmount('upgrader', amount, config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
     }
 
-    importWantedResources(otherRooms) {
+    importWantedResources(otherRooms, wanted) {
         var terminal = this.room.getTerminal();
-
-        var wanted = {
-            [RESOURCE_ENERGY]: 100000,
-        };
 
         for(let resource of _.keys(wanted)) {
             let wantAmount = wanted[resource];
