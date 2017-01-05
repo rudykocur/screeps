@@ -10,6 +10,14 @@ var RoomHandler = require('./room.handlers').RoomHandler;
 
 var spawnQueue = require('./spawnQueue');
 
+class ReactionConfig {
+    constructor() {
+        this.labs = [];
+        this.load = [];
+        this.amount = 0;
+    }
+}
+
 class ColonyRoomHandler extends RoomHandler {
     constructor(roomName, state, config) {
         super(roomName, state, config);
@@ -28,46 +36,7 @@ class ColonyRoomHandler extends RoomHandler {
      * @param {Array<RoomHandler>} otherRooms
      */
     processRoomTransfers(otherRooms) {
-        var terminal = this.room.getTerminal();
-
-        var threshold = 10000;
-        var wanted = {
-            [RESOURCE_ENERGY]: 100000,
-        };
-
-        for(let resource of _.keys(wanted)) {
-            let wantAmount = wanted[resource];
-
-            let hasResourceTotal = this.getResourceTotal(resource);
-            let terminalAvailable = this.room.getTerminal().storeCapacity - _.sum(this.room.getTerminal().store);
-
-            if(hasResourceTotal + threshold < wantAmount) {
-                let needed = wantAmount - hasResourceTotal;
-                let handlers = _.sortByOrder(otherRooms, /**RoomHandler*/handler => handler.getResourceTotal(resource), 'desc');
-
-                for(let /**RoomHandler*/handler of handlers) {
-                    let toTransfer = Math.min(needed, handler.room.terminal.store[resource], terminalAvailable);
-
-                    if(handler.room.terminal.send(resource, toTransfer, this.room.name) == OK) {
-                        needed -= toTransfer;
-                        terminalAvailable -= toTransfer;
-                        this.info(F.green(`Transferred ${toTransfer}x ${resource} from ${handler}`));
-                    }
-
-                    if(needed <=0) {
-                        break;
-                    }
-                    if(terminalAvailable <= 0) {
-                        this.debug('No space left in terminal. Giving up for now');
-                        break;
-                    }
-                }
-            }
-
-            if(terminalAvailable <= 0) {
-                break;
-            }
-        }
+        this.importWantedResources(otherRooms);
     }
 
     processMarket(orders) {
@@ -133,6 +102,50 @@ class ColonyRoomHandler extends RoomHandler {
         this.maintainPopulationAmount('upgrader', amount, config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
     }
 
+    importWantedResources(otherRooms) {
+        var terminal = this.room.getTerminal();
+
+        var wanted = {
+            [RESOURCE_ENERGY]: 100000,
+        };
+
+        for(let resource of _.keys(wanted)) {
+            let wantAmount = wanted[resource];
+
+            let hasResourceTotal = this.getResourceTotal(resource);
+            let terminalAvailable = this.room.getTerminal().storeCapacity - _.sum(this.room.getTerminal().store);
+
+            let threshold = wantAmount * 0.1;
+
+            if(hasResourceTotal + threshold < wantAmount) {
+                let needed = wantAmount - hasResourceTotal;
+                let handlers = _.sortByOrder(otherRooms, /**RoomHandler*/handler => handler.getResourceTotal(resource), 'desc');
+
+                for(let /**RoomHandler*/handler of handlers) {
+                    let toTransfer = Math.min(needed, handler.room.terminal.store[resource], terminalAvailable);
+
+                    if(handler.room.terminal.send(resource, toTransfer, this.room.name) == OK) {
+                        needed -= toTransfer;
+                        terminalAvailable -= toTransfer;
+                        this.info(F.green(`Transferred ${toTransfer}x ${resource} from ${handler}`));
+                    }
+
+                    if(needed <=0) {
+                        break;
+                    }
+                    if(terminalAvailable <= 0) {
+                        this.debug('No space left in terminal. Giving up for now');
+                        break;
+                    }
+                }
+            }
+
+            if(terminalAvailable <= 0) {
+                break;
+            }
+        }
+    }
+
     runReactions() {
         _.get(this.config, 'labs.reactions', []).forEach(reaction => {
             let [in1, in2, /**StructureLab*/ out] = reaction.labs;
@@ -142,6 +155,8 @@ class ColonyRoomHandler extends RoomHandler {
             in2 = Game.getObjectById(this.labNameToId[in2]);
             out = Game.getObjectById(this.labNameToId[out]);
 
+            let outResource = REACTIONS[in1Resource][in2Resouce];
+
             if(in1.mineralType != in1Resource) {
                 return;
             }
@@ -150,7 +165,7 @@ class ColonyRoomHandler extends RoomHandler {
                 return;
             }
 
-            if(out.mineralAmount < reaction.amount && out.cooldown == 0) {
+            if(this.getResourceTotal(outResource) < reaction.amount && out.cooldown == 0) {
                 out.runReaction(in1, in2);
             }
         });
@@ -433,6 +448,15 @@ class ColonyRoomHandler extends RoomHandler {
             }
         });
 
+        this.createLabBoostJobs();
+        this.createUnusedLabsEmptyJobs();
+    }
+
+    createLabBoostJobs() {
+        var jobs = this.state.jobs;
+
+        var storage = this.room.getStorage();
+
         _.each(_.get(this.config, 'labs.boost', {}), (resource, labName) => {
             /** @type StructureLab */
             var lab = Game.getObjectById(this.labNameToId[labName]);
@@ -473,6 +497,36 @@ class ColonyRoomHandler extends RoomHandler {
             }
             else {
                 delete jobs[loadEnergyKey];
+            }
+        })
+    }
+
+    createUnusedLabsEmptyJobs() {
+        var jobs = this.state.jobs;
+        var storage = this.room.getStorage();
+
+        var allLabs = _.values(_.get(this.config, 'labs.names', {}));
+        var unusedLabs = _.values(_.get(this.config, 'labs.names', {}));
+
+        _.get(this.config, 'labs.reactions', []).forEach(/**ReactionConfig*/reaction => {
+            unusedLabs = _.without(unusedLabs, reaction.labs[0], reaction.labs[1]);
+        });
+
+        unusedLabs = _.without(unusedLabs, ..._.keys(_.get(this.config, 'labs.boost')));
+
+        allLabs.forEach(labName => {
+            var lab = Game.getObjectById(this.labNameToId[labName]);
+
+            let key = `labs-${labName}-empty-all`;
+
+            if(unusedLabs.indexOf(labName) >= 0 && lab.mineralType) {
+                if(!(key in jobs)) {
+                    jobs[key] = this._getJobTransferDict(key, lab, storage, lab.mineralType);
+                }
+                jobs[key].amount = lab.mineralAmount;
+            }
+            else {
+                delete jobs[key];
             }
         })
     }

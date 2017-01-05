@@ -144,6 +144,8 @@ module.exports = (function() {
                 minerals: {
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 0,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 0,
                         //[RESOURCE_ENERGY]: 50000,
                     }
                 },
@@ -152,6 +154,8 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ENERGY]: 25000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 3000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 3000,
                     }
                 },
                 labs: {
@@ -443,7 +447,7 @@ module.exports = (function() {
 
             "Kaer Morhen": {
                 mineralTransfer: {
-                    minimum: 2,
+                    minimum: 3,
                     body: 'mineralTransfer',
                     priority: 'high',
                     memo: {
