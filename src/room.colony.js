@@ -24,7 +24,7 @@ class ColonyRoomHandler extends RoomHandler {
 
         this.type = 'colony';
 
-        _.defaults(this.state, {});
+        _.defaults(this.state, {constructionProgressLeft: 0});
 
         this.labNameToId = {};
         _.each(_.get(config, 'labs.names', {}), (labName, labId) => {
@@ -61,7 +61,7 @@ class ColonyRoomHandler extends RoomHandler {
 
         this.maintainHarvesterPopulation();
         this.maintainMovers();
-        this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
+        this.maintainBuilders();
         this.maintainUpgraders();
         this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
 
@@ -117,6 +117,49 @@ class ColonyRoomHandler extends RoomHandler {
         }
 
         this.maintainPopulationAmount('upgrader', amount, config.blueprints.colonyUpgrader, spawnQueue.PRIORITY_LOW);
+    }
+
+    maintainBuilders() {
+        if(Game.time % 30 == 0) {
+            var sites = _.groupBy(Game.constructionSites, 'pos.roomName')[this.room.name];
+            this.state.constructionProgressLeft = _.sum(sites, /**ConstructionSite*/ s => s.progressTotal - s.progress);
+        }
+
+        var amount = _.get(this.config, ['creeps', 'builder'], 0);
+
+        var expectedBuildersAmount = Math.floor(this.state.constructionProgressLeft / 20000);
+        if(expectedBuildersAmount > amount) {
+            amount = Math.min(expectedBuildersAmount, 2); // spawn up to 2 builders if there is lot to build
+        }
+
+        this.maintainPopulationAmount('builder', amount, config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
+    }
+
+    /**
+     * Return lab which can boost given part, giving desired result. See {BOOSTS} constant for available results
+     * @param partType
+     * @param wantedEffect
+     * @returns {StructureLab}
+     */
+    getLabToBoost(partType, wantedEffect) {
+        var resources = [];
+        _.each(BOOSTS[partType], (effects, resource) => {
+            if(effects[wantedEffect]) {
+                resources.push(resource);
+            }
+        });
+
+        var boosts = _.get(this.config, 'labs.boost', {});
+        for(let labName of _.keys(boosts)) {
+            let resource = boosts[labName];
+
+            let lab = Game.getObjectById(this.labNameToId[labName]);
+            if (resources.indexOf(resource) >= 0 && lab.mineralAmount > 0) {
+                return lab;
+            }
+        }
+
+        return null;
     }
 
     importWantedResources(otherRooms, wanted) {

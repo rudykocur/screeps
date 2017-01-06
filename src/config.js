@@ -62,7 +62,7 @@ module.exports = (function() {
                 // autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
-                    builder: 1,
+                    builder: 0,
                     mover: 2,
                 },
                 observeRoom: 'E69N49',
@@ -99,7 +99,7 @@ module.exports = (function() {
                         '586172d62c660f9d020f7d58': 'D3',
                     },
                     boost: {
-                        D3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        D3: RESOURCE_CATALYZED_GHODIUM_ACID,
                         // tright: RESOURCE_ZYNTHIUM_ALKALIDE,
                     },
                     reactions: [
@@ -133,7 +133,7 @@ module.exports = (function() {
                 wallsHp: 1600000,
                 creeps: {
                     upgrader: 3,
-                    builder: 2,
+                    builder: 0,
                     mover: 2,
                 },
                 minerals: {
@@ -176,7 +176,7 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 creeps: {
                     upgrader: 3,
-                    builder: 1,
+                    builder: 0,
                     mover: 2,
                 },
                 minerals: {
@@ -225,13 +225,14 @@ module.exports = (function() {
             },
             east: {
                 type: "colony",
+                panicMode: true,
                 // homeRoom: "orphan",
-                spawnRooms: ['east', 'orphan'],
+                // spawnRooms: ['east', 'orphan'],
                 creeps: {
                     // claimer: 0,
                     settler: 2,
-                    upgrader: 1,
-                    builder: 2,
+                    upgrader: 2,
+                    builder: 0,
                     // collector: 0,
                 }
             },
@@ -345,9 +346,8 @@ module.exports = (function() {
             kmRight: {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
-                // spawnRooms: ['moria'],
                 creeps: {
-                    collector: 2,
+                    collector: 3,
                     settler: 0,
                     claimer: 1,
                 }
@@ -629,3 +629,12 @@ module.exports = (function() {
         },
     }
 })();
+
+global.BOOST_RESULT_UPGRADE_CONTROLLER = 'upgradeController'; // increased controller upgrade rate
+global.BOOST_RESULT_DISMANTLE = 'dismantle'; // faster dismantle
+global.BOOST_RESULT_ATTACK = 'attack'; //stronger attack
+global.BOOST_RESULT_RANGED_ATTACK = 'rangedAttack';
+global.BOOST_RESULT_HEAL = 'heal'; // better healing
+global.BOOST_RESULT_CAPACITY = 'capacity'; // increased capacity
+global.BOOST_RESULT_FATIGUE = 'fatigue'; // faster fatigue reduction
+global.BOOST_RESULT_DAMAGE = 'damage'; // increased resistance

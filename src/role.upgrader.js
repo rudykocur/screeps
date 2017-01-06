@@ -8,6 +8,7 @@ var creepExt = require('./creepExt');
 var taskUpgrade = require('./task.upgradeController');
 var taskWithdraw = require('./task.withdrawFromStorage');
 var TaskWithdraw = require('./task.withdrawFromStorage').WithdrawFromStorageTask;
+var MoveTask = require('./task.move').MoveTask;
 
 module.exports = (function() {
 
@@ -16,6 +17,24 @@ module.exports = (function() {
          * @param {Creep} creep
          */
         scheduleTask: function(creep) {
+            if(creep.ticksToLive > (CREEP_LIFE_TIME - 200)) {
+                if(creep.canBoostParts(WORK)) {
+
+                    let lab = creep.workRoomHandler.getLabToBoost(WORK, BOOST_RESULT_UPGRADE_CONTROLLER);
+                    if(lab) {
+                        console.log('Will try to boost WORK for', creep);
+
+                        if(creep.pos.isNearTo(lab)) {
+                            lab.boostCreep(creep);
+                        }
+                        else {
+                            creep.addTask(MoveTask.create(creep, lab, 1));
+                            return;
+                        }
+                    }
+                }
+            }
+
             if(creep.carry.energy == 0) {
                 var target;
 

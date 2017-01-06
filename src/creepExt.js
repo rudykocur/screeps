@@ -112,6 +112,15 @@ Creep.prototype.bodypartHpLeft = function(partType) {
     return hp / (parts.size() * 100);
 };
 
+Creep.prototype.canBoostParts = function(partType) {
+    for(let part of this.body) {
+        if(part.type == partType && !part.boost) {
+            return true;
+        }
+    }
+    return false;
+};
+
 Creep.prototype.getIdlePosition = function() {
     var flags = _.filter(Game.flags, f => f.color != COLOR_GREY && f.color != COLOR_RED);
     var flag = _.first(_.groupBy(flags, 'pos.roomName')[this.memory.room]);
