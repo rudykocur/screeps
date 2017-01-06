@@ -39,6 +39,7 @@ Room.prototype.refreshStructures = function() {
         state.structures = {
             storage: null,
             terminal: null,
+            observer: null,
             containers: [],
             towers: [],
             spawns: [],
@@ -48,6 +49,10 @@ Room.prototype.refreshStructures = function() {
         this.find(FIND_STRUCTURES).forEach(/**Structure*/struct => {
             if(struct.structureType == STRUCTURE_STORAGE) {
                 state.structures.storage = struct.id;
+            }
+
+            if(struct.structureType == STRUCTURE_OBSERVER) {
+                state.structures.observer = struct.id;
             }
 
             if(struct.structureType == STRUCTURE_CONTAINER) {
@@ -87,6 +92,14 @@ Room.prototype.getTerminal = function() {
 Room.prototype.getStorage = function() {
     this.refreshStructures();
     return Game.getObjectById(this.handlerMemory.structures.storage);
+};
+
+/**
+ * @return {StructureObserver}
+ */
+Room.prototype.getObserver = function() {
+    this.refreshStructures();
+    return Game.getObjectById(this.handlerMemory.structures.observer);
 };
 
 /**

@@ -25,7 +25,9 @@ module.exports = (function() {
             var ctrl = room.controller;
 
             if(creep.memory.claim) {
-                creep.claimController(ctrl);
+                if(creep.claimController(ctrl) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(ctrl);
+                }
                 return;
             }
 

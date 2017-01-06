@@ -184,7 +184,15 @@ class RoomHandler {
         })
     }
 
-
+    /**
+     *
+     * @param {Object} options
+     * @param options.type
+     * @param options.freeReserve
+     * @param options.subtype
+     * @param options.onlyFree
+     * @returns {*}
+     */
     searchJobs(options) {
         _.defaults(options, {
             type: null,

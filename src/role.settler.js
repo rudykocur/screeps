@@ -53,6 +53,10 @@ module.exports = (function() {
                     return;
                 }
 
+                if(actionHarvest.tryHarvestStorage(creep, {reserve: 300, types: [STRUCTURE_CONTAINER]})) {
+                    return
+                }
+
                 actionHarvest.run(creep);
             }
 

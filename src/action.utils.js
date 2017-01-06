@@ -53,6 +53,9 @@ module.exports = (function() {
          * @param {String} targetRoom
          */
         tryChangeRoom: function(creep, targetRoom, via) {
+            if(!targetRoom) {
+                return false;
+            }
 
             if(creep.pos.roomName != targetRoom) {
                 var flag = _.first(_.filter(Game.flags, /**Flag*/f=> f.color == COLOR_ORANGE && f.pos.roomName == targetRoom));

@@ -64,6 +64,19 @@ class ColonyRoomHandler extends RoomHandler {
         this.maintainPopulation('builder', config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
         this.maintainUpgraders();
         this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
+
+        this.observeRoom();
+    }
+
+    observeRoom() {
+        var roomId = _.get(this.config, 'observeRoom');
+
+        if(roomId) {
+            let observer = this.room.getObserver();
+            if(observer) {
+                observer.observeRoom(roomId);
+            }
+        }
     }
 
     maintainMovers() {

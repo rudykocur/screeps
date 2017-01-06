@@ -23,6 +23,7 @@ module.exports = (function() {
             E69N41: "corner",
             E65N45: "middle",
             E67N46: "brokilon2t",
+            E69N49: "east",
         },
         market: {
             processInterval: 30,
@@ -64,22 +65,24 @@ module.exports = (function() {
                     builder: 1,
                     mover: 2,
                 },
+                observeRoom: 'E69N49',
                 minerals: {
                     wants: {
+                        [RESOURCE_ZYNTHIUM]: 13000,
+                        [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
                         [RESOURCE_UTRIUM_LEMERGITE]: 5000,
+                        [RESOURCE_HYDROXIDE]: 5000,
                     },
                     reserve: {
-                        [RESOURCE_ZYNTHIUM]: 10000,
                         [RESOURCE_OXYGEN]: 50000,
                     }
                 },
                 terminal: {
-                    autosell: [RESOURCE_OXYGEN, RESOURCE_ZYNTHIUM],
+                    autosell: [RESOURCE_OXYGEN],
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_OXYGEN]: 50000,
-                        [RESOURCE_ZYNTHIUM]: 20000,
                     }
                 },
                 labs: {
@@ -118,7 +121,7 @@ module.exports = (function() {
                         {
                             labs: ['C2', 'D1', 'D2'],
                             load: [RESOURCE_GHODIUM_ACID, RESOURCE_CATALYST],
-                            amount: 2000,
+                            amount: 10000,
                         },
                     ],
                 }
@@ -129,16 +132,18 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 wallsHp: 1600000,
                 creeps: {
-                    upgrader: 4,
-                    builder: 1,
+                    upgrader: 3,
+                    builder: 2,
                     mover: 2,
                 },
                 minerals: {
                     wants: {
                         [RESOURCE_OXYGEN]: 13000,
+                        [RESOURCE_LEMERGIUM]: 13000,
                     },
                     reserve: {
                         [RESOURCE_ZYNTHIUM]: 50000,
+                        [RESOURCE_HYDROXIDE]: 0,
                     }
                 },
                 terminal: {
@@ -146,21 +151,38 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_ZYNTHIUM]: 30000,
+                        [RESOURCE_HYDROXIDE]: 10000,
                     }
-                }
+                },
+                labs: {
+                    names: {
+                        '586ebce3944a78637dd854b9': 'A1',
+                        '586efb9754bb3cba7d255d2e': 'A2',
+                        '586edae852779cff21d2fe53': 'B1',
+                        '586f1c575d1229ca49bafd72': 'B2',
+                    },
+                    reactions: [
+                        {
+                            labs: ['A1', 'A2', 'B1'],
+                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
+                            amount: 3000,
+                        },
+                    ],
+                },
             },
             kaerMorhen: {
                 type: "colony",
                 wallsHp: 200000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 6,
+                    upgrader: 3,
                     builder: 1,
                     mover: 2,
                 },
                 minerals: {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
+                        [RESOURCE_OXYGEN]: 13000,
                     },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
@@ -201,6 +223,18 @@ module.exports = (function() {
                     ],
                 },
             },
+            east: {
+                type: "colony",
+                // homeRoom: "orphan",
+                spawnRooms: ['east', 'orphan'],
+                creeps: {
+                    // claimer: 0,
+                    settler: 2,
+                    upgrader: 1,
+                    builder: 2,
+                    // collector: 0,
+                }
+            },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
@@ -216,7 +250,7 @@ module.exports = (function() {
                 wallsHp: 200000,
                 spawnRooms: ['orphan'],
                 creeps: {
-                    upgrader: 6,
+                    upgrader: 4,
                     builder: 1,
                     mover: 2,
                 }
@@ -434,6 +468,7 @@ module.exports = (function() {
             "Kaer Trolde": {},
             Blaviken: {},
             Shaerrawedd: {},
+            Tokyo: {},
             Brokilon: {
                 brokilonMineralTransfer: {
                     minimum: 3,
@@ -443,6 +478,35 @@ module.exports = (function() {
                         role: 'transfer',
                     }
                 },
+                claimEast: {
+                    minimum: 0,
+                    body: 'claimer',
+                    priority: 'critical',
+                    memo: {
+                        role: 'claimer',
+                        room: 'E69N49',
+                        claim: true,
+                    }
+                },
+                workerEast: {
+                    minimum: 3,
+                    body: 'settler',
+                    priority: 'high',
+                    memo: {
+                        role: 'settler',
+                        room: 'E69N49',
+                    }
+                },
+                fighter: {
+                    minimum: 0,
+                    priority: 'critical',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E68N48',
+                    }
+                },
+                // E68N48
                 // middlePaver: {
                 //     minimum: 1,
                 //     body: 'settler',
@@ -469,19 +533,9 @@ module.exports = (function() {
                     minimum: 0,
                     priority: 'critical',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
-                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
-                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK],
-                    // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
-                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                    //     TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                    //     ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
-                        // room: 'E68N42',
-                        // room: 'E67N42',
-                        // boost: [{part: HEAL,resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,amount: 8}],
                         room: 'E71N41',
-                        // moveFlag: 'McSmashFlag',
                     }
                 },
             },

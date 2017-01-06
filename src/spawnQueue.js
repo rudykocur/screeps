@@ -110,7 +110,7 @@ module.exports = (function() {
                         var body = request.body;
 
                         if(typeof body == "string") {
-                            var rcl = bodyConfig.getEffectiveRcl(handler.room);
+                            var rcl = bodyConfig.getEffectiveRcl(spawnHandler.room);
                             var bodyName = body;
                             body = bodyConfig.getBody(bodyName, rcl);
 
