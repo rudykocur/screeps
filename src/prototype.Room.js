@@ -121,6 +121,12 @@ Room.prototype.getTowers = function() {
     return this.handlerMemory.structures.towers.map(sId => Game.getObjectById(sId));
 };
 
+/**
+ *
+ * @param {Object} options
+ * @param {String} options.resource
+ * @returns {Array.<Resource>}
+ */
 Room.prototype.getDroppedResources = function(options) {
     var state = this.handlerMemory;
 
@@ -145,8 +151,13 @@ Room.prototype.getDroppedResources = function(options) {
     return result.map(r => Game.getObjectById(r.id)).filter(r => r != null);
 };
 
+/**
+ *
+ * @param options
+ * @returns {Array<StructureContainer>}
+ */
 Room.prototype.getContainers = function(options) {
-    options = options || {}
+    options = options || {};
     _.defaults(options, {
         resource: null,
         amount: 0,

@@ -24,6 +24,9 @@ module.exports = (function() {
             E65N45: "middle",
             E67N46: "brokilon2t",
             E69N49: "east",
+            E69N48: "eastBottom",
+            E68N48: "septis",
+            E69N47: "eastBottomFar",
         },
         market: {
             processInterval: 30,
@@ -64,6 +67,7 @@ module.exports = (function() {
                     upgrader: 4,
                     builder: 0,
                     mover: 2,
+                    transfer: 2,
                 },
                 observeRoom: 'E69N49',
                 minerals: {
@@ -135,6 +139,7 @@ module.exports = (function() {
                     upgrader: 3,
                     builder: 0,
                     mover: 2,
+                    transfer: 3,
                 },
                 minerals: {
                     wants: {
@@ -151,7 +156,7 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_ZYNTHIUM]: 30000,
-                        [RESOURCE_HYDROXIDE]: 10000,
+                        [RESOURCE_HYDROXIDE]: 5000,
                     }
                 },
                 labs: {
@@ -175,9 +180,10 @@ module.exports = (function() {
                 wallsHp: 200000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 3,
+                    upgrader: 7,
                     builder: 0,
                     mover: 2,
+                    transfer: 2,
                 },
                 minerals: {
                     wants: {
@@ -225,178 +231,101 @@ module.exports = (function() {
             },
             east: {
                 type: "colony",
-                panicMode: true,
+                panicMode: false,
+                 wallsHp: 100000,
                 // homeRoom: "orphan",
                 // spawnRooms: ['east', 'orphan'],
                 creeps: {
-                    // claimer: 0,
-                    settler: 2,
-                    upgrader: 2,
+                    mover: 2,
+                    settler: 0,
+                    upgrader: 7,
                     builder: 0,
+                    transfer: 2,
                     // collector: 0,
                 }
+            },
+            eastBottom: {
+                type: "outpost",
+                homeRoom: "east",
+            },
+            eastBottomFar: {
+                type: "outpost",
+                homeRoom: "east",
+            },
+            septis: {
+                type: "outpost",
+                homeRoom: "east",
             },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
-                creeps: {
-                    claimer: 1,
-                    settler: 0,
-                    collector: 3,
-                },
             },
             orphan: {
                 type: "colony",
                 panicMode: false,
-                wallsHp: 200000,
-                spawnRooms: ['orphan'],
+                wallsHp: 800000,
                 creeps: {
-                    upgrader: 4,
-                    builder: 1,
+                    upgrader: 7,
+                    builder: 0,
                     mover: 2,
+                    transfer: 3,
                 }
             },
             homeTop: {
                 type:"outpost",
                 homeRoom:"home",
-                spawnRooms: ['home', 'moria'],
-                creeps: {
-                    claimer: 1,
-                    settler: 0,
-                    collector: 2,
-                },
             },
             homeTopTop: {
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['moria'],
-                creeps: {
-                    claimer: 1,
-                    settler: 0,
-                    collector: 2,
-                },
             },
             homeLeft:{
                 type:"outpost",
                 homeRoom:"home",
-                spawnRooms: ['home'],
-                creeps: {
-                    collector: 2,
-                    claimer: 1,
-                    settler: 0,
-                },
             },
             moriaRight:{
                 type:"outpost",
                 homeRoom:"moria",
-                creeps: {
-                    claimer: 1,
-                    collector: 3,
-                    settler: 0,
-                }
             },
             kmLower:{
                 type:"outpost",
                 homeRoom:"kaerMorhen",
-                // spawnRooms: ['moria'],
-                creeps: {
-                    collector: 2,
-                    claimer: 1,
-                    settler: 0,
-                }
             },
             moriaTop:{
                 type:"outpost",
                 homeRoom:"moria",
-                spawnRooms: ['moria'],
-                creeps: {
-                    claimer: 1,
-                    collector: 1,
-                }
             },
             moriaBottom: {
                 type: "outpost",
                 homeRoom: "moria",
-                spawnRooms: ['home', 'moria'],
-                creeps: {
-                    settler: 0,
-                    collector: 2,
-                    claimer: 1,
-                },
             },
             mork: {
                 type: "outpost",
                 homeRoom: "moria",
-                offroad: false,
-                spawnRooms: ['home', 'moria'],
-                creeps: {
-                    collector: 2,
-                    claimer: 1,
-                    settler: 0,
-                },
             },
             loneOutpost:{
                 type:"outpost",
                 homeRoom:"home",
-                creeps: {
-                    // collector: 2,
-                    claimer: 1,
-                }
             },
             kmRight: {
                 type: "outpost",
                 homeRoom: "kaerMorhen",
-                creeps: {
-                    collector: 3,
-                    settler: 0,
-                    claimer: 1,
-                }
             },
             underKeepers: {
                 type: "outpost",
                 homeRoom: "moria",
-                spawnRooms: ['home', 'moria'],
-                creeps: {
-                    settler: 0,
-                    claimer: 1,
-                    collector: 2,
-                }
             },
             brokilonTop: {
                 type: "outpost",
                 homeRoom: "orphan",
-                creeps: {
-                    collector: 1,
-                    claimer: 1,
-                    settler: 0,
-                }
             },
-            // lair2: {
-            //     type: "outpost",
-            //     homeRoom: "orphan",
-            //     disableHarvesting: true,
-            //     creeps: {
-            //         collector: 0,
-            //         claimer: 0,
-            //         settler: 0,
-            //     }
-            // },
             corner: {
                 type: "outpost",
                 homeRoom: "moria",
-                creeps: {
-                    collector: 2,
-                    claimer: 1,
-                }
             },
             brokilon2t: {
                 type: "outpost",
                 homeRoom: "orphan",
-                creeps: {
-                    collector: 2,
-                    settler: 0,
-                    claimer: 1,
-                }
             },
             // lair1: {
             //     type: "sourceKeeper",
@@ -413,15 +342,6 @@ module.exports = (function() {
 
         spawn: {
             Rabbithole: {
-                mineralTransfer: {
-                    minimum: 2,
-                    body: 'mineralTransfer',
-                    priority: 'high',
-                    memo: {
-                        role: 'transfer',
-                    }
-                },
-
                 keeperKiller: {
                     minimum: 0,
                     priority: 'critical',
@@ -470,65 +390,19 @@ module.exports = (function() {
             Shaerrawedd: {},
             Tokyo: {},
             Brokilon: {
-                brokilonMineralTransfer: {
-                    minimum: 3,
-                    body: 'mineralTransfer',
-                    priority: 'high',
-                    memo: {
-                        role: 'transfer',
-                    }
-                },
-                claimEast: {
-                    minimum: 0,
-                    body: 'claimer',
-                    priority: 'critical',
-                    memo: {
-                        role: 'claimer',
-                        room: 'E69N49',
-                        claim: true,
-                    }
-                },
-                workerEast: {
-                    minimum: 3,
-                    body: 'settler',
-                    priority: 'high',
-                    memo: {
-                        role: 'settler',
-                        room: 'E69N49',
-                    }
-                },
                 fighter: {
                     minimum: 0,
                     priority: 'critical',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
-                        room: 'E68N48',
+                        room: 'E69N48',
                     }
                 },
-                // E68N48
-                // middlePaver: {
-                //     minimum: 1,
-                //     body: 'settler',
-                //     priority: 'normal',
-                //     memo: {
-                //         role: 'settler',
-                //         harvestRoom: 'E65N45',
-                //         workRoom: 'E66N45',
-                //     }
-                // }
             },
             Ys: {},
 
             Moria: {
-                moriaMineralTransfer: {
-                    minimum: 3,
-                    body: 'mineralTransfer',
-                    priority: 'high',
-                    memo: {
-                        role: 'transfer',
-                    }
-                },
                 fighter: {
                     minimum: 0,
                     priority: 'critical',
@@ -540,16 +414,7 @@ module.exports = (function() {
                 },
             },
 
-            "Kaer Morhen": {
-                mineralTransfer: {
-                    minimum: 3,
-                    body: 'mineralTransfer',
-                    priority: 'high',
-                    memo: {
-                        role: 'transfer',
-                    }
-                },
-            },
+            "Kaer Morhen": {},
         },
 
         blueprints: {
@@ -594,6 +459,11 @@ module.exports = (function() {
             colonyMover: {
                 body: 'mover',
                 role: 'mover',
+                memo: {}
+            },
+            colonyTransfer: {
+                body: 'mineralTransfer',
+                role: 'transfer',
                 memo: {}
             },
             colonyHarvester: {

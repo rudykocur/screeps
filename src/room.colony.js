@@ -64,6 +64,7 @@ class ColonyRoomHandler extends RoomHandler {
         this.maintainBuilders();
         this.maintainUpgraders();
         this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
+        this.maintainPopulation('transfer', config.blueprints.colonyTransfer, spawnQueue.PRIORITY_HIGH);
 
         this.observeRoom();
     }
@@ -128,6 +129,10 @@ class ColonyRoomHandler extends RoomHandler {
         var amount = _.get(this.config, ['creeps', 'builder'], 0);
 
         var expectedBuildersAmount = Math.floor(this.state.constructionProgressLeft / 20000);
+        if(this.state.constructionProgressLeft > 0) {
+            expectedBuildersAmount = Math.max(expectedBuildersAmount, 1);
+        }
+        
         if(expectedBuildersAmount > amount) {
             amount = Math.min(expectedBuildersAmount, 2); // spawn up to 2 builders if there is lot to build
         }

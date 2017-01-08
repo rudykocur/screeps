@@ -75,7 +75,9 @@ class MoverRole extends CreepRole {
                                 }
                             }
                             else {
-                                logger.mail(logger.error(this.creep, 'failed to transfer resources', result));
+                                if(result != ERR_FULL) {
+                                    logger.mail(logger.error(this.creep, 'failed to transfer resources', result));
+                                }
                             }
                         }
 
@@ -117,6 +119,12 @@ class MoverRole extends CreepRole {
 
     findContainerWithEnergy() {
         let containers = this.creep.room.getContainers({resource: RESOURCE_ENERGY, amount: this.creep.carryCapacity});
+
+        let containerNear = _.first(containers.filter(c => this.creep.pos.isNearTo(c)));
+        if(containerNear) {
+            return containerNear;
+        }
+
         containers = _.sortBy(containers, /** StructureContainer*/c => _.sum(c.store) * -1);
         return _.first(containers);
     }

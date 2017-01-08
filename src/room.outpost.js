@@ -85,7 +85,16 @@ class OutpostRoomHandler extends RoomHandler {
     }
 
     pingCollectors() {
+        if(Game.time % 40 == 0) {
+            var resources = this.room.getDroppedResources({resource: RESOURCE_ENERGY});
+
+            this.state.energyOnGround = _.sum(resources, /**Resource*/r => r.amount);
+        }
+
         let needed = _.get(this.config, 'creeps.collector', this.state.sources.length);
+        let additional = Math.min(4, Math.floor((this.state.energyOnGround || 0) / 2000));
+
+        needed += additional;
 
         let storage = this.homeRoom().getStorage();
 
@@ -114,11 +123,24 @@ class OutpostRoomHandler extends RoomHandler {
             return;
         }
 
-        this.maintainPopulation('claimer', config.blueprints.outpostClaimer, spawnQueue.PRIORITY_CLAIMERS);
+        var amount = _.get(this.config, ['creeps', 'claimer'], 1);
+
+        this.maintainPopulationAmount('claimer', amount, config.blueprints.outpostClaimer, spawnQueue.PRIORITY_CLAIMERS);
     }
 
     pingSettlers() {
-        this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
+        if(Game.time % 30 == 0) {
+            var sites = _.groupBy(Game.constructionSites, 'pos.roomName')[this.room.name];
+            this.state.constructionProgressLeft = _.sum(sites, /**ConstructionSite*/ s => s.progressTotal - s.progress);
+        }
+
+        let defaultSettlers = 0;
+        if(this.state.constructionProgressLeft > 0) {
+            defaultSettlers = 1;
+        }
+
+        var amount = _.get(this.config, ['creeps', 'settler'], defaultSettlers);
+        this.maintainPopulationAmount('settler', amount, config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
     }
 
     spawnDefenders(hostiles) {
