@@ -26,6 +26,7 @@ module.exports = (function() {
             E69N49: "east",
             E69N48: "eastBottom",
             E68N48: "septis",
+            E68N47: "septisBottom",
             E69N47: "eastBottomFar",
         },
         market: {
@@ -79,6 +80,7 @@ module.exports = (function() {
                     },
                     reserve: {
                         [RESOURCE_OXYGEN]: 50000,
+                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 3000,
                     }
                 },
                 terminal: {
@@ -86,6 +88,7 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_OXYGEN]: 50000,
+                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 500,
                     }
                 },
                 labs: {
@@ -142,6 +145,7 @@ module.exports = (function() {
                     wants: {
                         [RESOURCE_OXYGEN]: 13000,
                         [RESOURCE_LEMERGIUM]: 13000,
+                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
                     reserve: {
                         [RESOURCE_ZYNTHIUM]: 50000,
@@ -162,6 +166,11 @@ module.exports = (function() {
                         '586efb9754bb3cba7d255d2e': 'A2',
                         '586edae852779cff21d2fe53': 'B1',
                         '586f1c575d1229ca49bafd72': 'B2',
+                        '586fdef3a477391853ff79d4': 'C1',
+                        '58713e69f1135a40674916ff': 'C2',
+                    },
+                    boost: {
+                        C1: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     reactions: [
                         {
@@ -177,7 +186,7 @@ module.exports = (function() {
                 wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 7,
+                    upgrader: 5,
                     mover: 2,
                     transfer: 2,
                 },
@@ -225,6 +234,15 @@ module.exports = (function() {
                     ],
                 },
             },
+            orphan: {
+                type: "colony",
+                wallsHp: 1000000,
+                creeps: {
+                    upgrader: 5,
+                    mover: 2,
+                    transfer: 3,
+                }
+            },
             east: {
                 type: "colony",
                 panicMode: false,
@@ -247,18 +265,13 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "east",
             },
+            septisBottom: {
+                type: "outpost",
+                homeRoom: "east",
+            },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
-            },
-            orphan: {
-                type: "colony",
-                wallsHp: 1000000,
-                creeps: {
-                    upgrader: 7,
-                    mover: 2,
-                    transfer: 3,
-                }
             },
             homeTop: {
                 type:"outpost",

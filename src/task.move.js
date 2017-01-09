@@ -1,4 +1,5 @@
 var profiler = require('./profiler-impl');
+var _ = require('lodash');
 var logFmt = require('./logger').fmt;
 var CreepTask = require('./creepExt').CreepTask;
 

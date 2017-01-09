@@ -123,7 +123,7 @@ Room.prototype.getTowers = function() {
 
 /**
  *
- * @param {Object} options
+ * @param {Object} [options]
  * @param {String} options.resource
  * @returns {Array.<Resource>}
  */

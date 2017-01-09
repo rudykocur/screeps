@@ -16,6 +16,8 @@ class RoomHandler {
         this.state = state;
         this.config = config;
 
+        this.jobGenerators = [];
+
         this.type = 'unknown';
 
         _.defaults(this.state, {
@@ -97,6 +99,10 @@ class RoomHandler {
     prepareJobBoard() {
         this.createMiningJobs();
         this.createResourcePickupJobs();
+
+        for(var /**JobGenerator*/ gen of this.jobGenerators) {
+            gen.generate();
+        }
     }
 
     createMiningJobs() {

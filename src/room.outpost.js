@@ -157,11 +157,6 @@ class OutpostRoomHandler extends RoomHandler {
         return Room.byCustomName(this.config.homeRoom);
     }
 
-    maintainPopulation(type, blueprint, priority) {
-        var amount = _.get(this.config, ['creeps', type], 0);
-        this.maintainPopulationAmount(type, amount, blueprint, priority);
-    }
-
     maintainPopulationAmount(type, amount, blueprint, priority, ignorePrespawn) {
         if(amount <= 0) {
             return;
