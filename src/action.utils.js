@@ -109,6 +109,10 @@ module.exports = (function() {
             }
         },
 
+        /**
+         * @param roomName
+         * @param {PathFinder.CostMatrix} matrix
+         */
         costCallback: function(roomName, matrix) {
             var blockRange = 7;
 

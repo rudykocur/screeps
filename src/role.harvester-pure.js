@@ -7,7 +7,6 @@ var logger = require('./logger');
 
 var creepExt = require('./creepExt');
 var taskMove = require('./task.move');
-var HarvestTask = require('./task.harvest').HarvestTask;
 
 module.exports = (function() {
 
@@ -51,7 +50,8 @@ module.exports = (function() {
                 }
 
                 creep.setPrespawnTime();
-                creepExt.addTask(creep, HarvestTask.create(creep, source));
+
+                creep.harvest(source);
             }
             else {
                 var targetRoom = Game.rooms[pos.roomName];

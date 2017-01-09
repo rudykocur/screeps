@@ -239,7 +239,7 @@ module.exports = (function() {
                 wallsHp: 350000,
                 creeps: {
                     upgrader: 5,
-                    mover: 2,
+                    mover: 3,
                     transfer: 3,
                 }
             },
@@ -333,10 +333,11 @@ module.exports = (function() {
                 type: "sourceKeeper",
                 homeRoom: "orphan",
                 creeps: {
-                    defender: 1,
-                    settler: 1,
                     harvester: 2,
-                    collector: 1,
+                    collector: 2,
+
+                    defender: 0,
+                    rangedDefender: 1,
                 },
             }
         },
@@ -492,6 +493,10 @@ module.exports = (function() {
             lairDefender: {
                 body: 'lairDefender',
                 role: 'lairDefender',
+            },
+            rangedDefender: {
+                body: 'rangedDefender',
+                role: 'rangedDefender',
             },
             lairHarvester: {
                 body: 'harvesterLair',

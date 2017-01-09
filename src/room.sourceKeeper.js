@@ -38,6 +38,7 @@ class SourceKeeperRoom extends RoomHandler {
         }
 
         this.maintainPopulation('defender', config.blueprints.lairDefender, spawnQueue.PRIORITY_HIGH);
+        this.maintainPopulation('rangedDefender', config.blueprints.rangedDefender, spawnQueue.PRIORITY_HIGH);
         this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
         this.maintainPopulation('harvester', config.blueprints.lairHarvester, spawnQueue.PRIORITY_NORMAL);
         this.maintainCollectors();
@@ -59,7 +60,7 @@ class SourceKeeperRoom extends RoomHandler {
         var blueprint = JSON.parse(JSON.stringify(config.blueprints.outpostCollector));
         blueprint.memo.storageId = storage.id;
 
-        this.maintainPopulation('collector', blueprint, spawnQueue.PRIORITY_NORMAL)
+        this.maintainPopulation('collector', blueprint, spawnQueue.PRIORITY_NORMAL);
     }
 
     getObjectsAroundFlags() {
@@ -209,7 +210,7 @@ class SourceKeeperRoom extends RoomHandler {
 
             let prespawnTime = 0;
             if(!ignorePrespawn) {
-                prespawnTime = Math.min(c.memory.prespawnTime || 0, 300) * 0.9;
+                prespawnTime = Math.min(c.memory.prespawnTime || 0, 200) * 0.9;
             }
 
             let creepSpawnTime = c.memory.spawnTime? c.memory.spawnTime : spawnTime;

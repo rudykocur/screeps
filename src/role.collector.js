@@ -48,8 +48,6 @@ class CollectorRole extends CreepRole {
                 if(this.creep.pos.isNearTo(pos)) {
                     this.creep.setPrespawnTime();
 
-                    this.creep.repair(_.first(this.creep.pos.lookFor(LOOK_STRUCTURES)));
-
                     if(this.creep.pickup(source) == OK) {
                         if(this.creep.carryTotal >= this.creep.carryCapacity) {
                             this.creep.memory.harvesting = false;
@@ -58,6 +56,8 @@ class CollectorRole extends CreepRole {
                             this.creep.addTask(MoveTask.create(this.creep, storage, 1));
                         }
                     }
+
+                    this.creep.repair(_.first(this.creep.pos.lookFor(LOOK_STRUCTURES)));
                 }
                 else {
                     this.creep.addTask(MoveTask.create(this.creep, source, 1));

@@ -22,7 +22,6 @@ var taskModules = [
     require('./task.withdrawFromStorage'),
     require('./task.upgradeController'),
     require('./task.move'),
-    require('./task.harvest'),
 ];
 
 var roleModules = {
@@ -33,6 +32,7 @@ var roleModules = {
     builder: require('./role.builder'),
     brawler: require('./role.brawler'),
     lairDefender: require('./role.lairDefender'),
+    rangedDefender: require('./role.rangedDefender'),
     transfer: require('./role.transfer'),
     collector: require('./role.collector'),
     claimer: require('./role.claimer'),

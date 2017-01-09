@@ -182,6 +182,12 @@ module.exports = (function() {
 
             var taskData = creep.memory.tasks[0];
             var clz = module.exports.tasks[taskData.type];
+            if(!clz) {
+                console.log('INVALID TASK', taskData.type, 'for', creep);
+                creep.memory.tasks = [];
+                return null;
+            }
+
             var obj = new clz(creep, taskData.data);
             obj.taskId = taskData.id;
 
