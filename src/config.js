@@ -30,7 +30,7 @@ module.exports = (function() {
         },
         market: {
             processInterval: 30,
-            maxTradeRange: 30,
+            maxTradeRange: 35,
             minerals: {
                 [RESOURCE_OXYGEN]: {
                     buyPriceMax: 0.7,
@@ -61,11 +61,10 @@ module.exports = (function() {
         rooms: {
             home: {
                 type: "colony",
-                wallsHp: 1600000,
-                // autobuyMinerals: true,
+                wallsHp: 2000000,
+                autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
-                    builder: 0,
                     mover: 2,
                     transfer: 2,
                 },
@@ -104,7 +103,6 @@ module.exports = (function() {
                     },
                     boost: {
                         D3: RESOURCE_CATALYZED_GHODIUM_ACID,
-                        // tright: RESOURCE_ZYNTHIUM_ALKALIDE,
                     },
                     reactions: [
                         {
@@ -134,10 +132,9 @@ module.exports = (function() {
                 type: "colony",
                 panicMode: false,
                 autobuyMinerals: true,
-                wallsHp: 1600000,
+                wallsHp: 2000000,
                 creeps: {
                     upgrader: 3,
-                    builder: 0,
                     mover: 2,
                     transfer: 3,
                 },
@@ -177,11 +174,10 @@ module.exports = (function() {
             },
             kaerMorhen: {
                 type: "colony",
-                wallsHp: 200000,
+                wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
                     upgrader: 7,
-                    builder: 0,
                     mover: 2,
                     transfer: 2,
                 },
@@ -232,16 +228,11 @@ module.exports = (function() {
             east: {
                 type: "colony",
                 panicMode: false,
-                 wallsHp: 100000,
-                // homeRoom: "orphan",
-                // spawnRooms: ['east', 'orphan'],
+                wallsHp: 100000,
                 creeps: {
                     mover: 2,
-                    settler: 0,
-                    upgrader: 7,
-                    builder: 0,
+                    upgrader: 5,
                     transfer: 2,
-                    // collector: 0,
                 }
             },
             eastBottom: {
@@ -262,11 +253,9 @@ module.exports = (function() {
             },
             orphan: {
                 type: "colony",
-                panicMode: false,
-                wallsHp: 800000,
+                wallsHp: 1000000,
                 creeps: {
                     upgrader: 7,
-                    builder: 0,
                     mover: 2,
                     transfer: 3,
                 }

@@ -659,7 +659,7 @@ class ColonyRoomHandler extends RoomHandler {
                     let result = this._completeDeal(terminal, closestOrder, toBuy);
                     if(result) {
                         let loss = result * closestOrder.price;
-                        this.info(F.green(`Bought ${mineral} x${result} units for ${loss} credits. OrderID: ${closestOrder.id}`));
+                        this.info(F.green(`Bought ${mineral} x${result} units for ${loss} credits (${closestOrder.price}/u). OrderID: ${closestOrder.id}`));
                     }
                 }
             }
