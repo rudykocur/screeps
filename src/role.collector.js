@@ -96,6 +96,9 @@ class CollectorRole extends CreepRole {
     }
 
     getStorage() {
+        if(this.creep.memory.storageId) {
+            return Game.getObjectById(this.creep.memory.storageId);
+        }
         return Room.byCustomName(this.creep.memory.unloadRoom).getStorage();
     }
 }

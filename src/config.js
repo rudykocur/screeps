@@ -69,7 +69,7 @@ module.exports = (function() {
                     mover: 2,
                     transfer: 2,
                 },
-                observeRoom: 'E69N49',
+                observeRoom: 'E66N44',
                 minerals: {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
@@ -236,7 +236,7 @@ module.exports = (function() {
             },
             orphan: {
                 type: "colony",
-                wallsHp: 1000000,
+                wallsHp: 350000,
                 creeps: {
                     upgrader: 5,
                     mover: 2,
@@ -329,17 +329,16 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "orphan",
             },
-            // lair1: {
-            //     type: "sourceKeeper",
-            //     homeRoom: "home",
-            //     spawnRooms: ['home', 'moria'],
-            //     creeps: {
-            //         defender: 1,
-            //         settler: 1,
-            //         harvester: 2,
-            //         collector: 4,
-            //     },
-            // }
+            lair1: {
+                type: "sourceKeeper",
+                homeRoom: "orphan",
+                creeps: {
+                    defender: 1,
+                    settler: 1,
+                    harvester: 2,
+                    collector: 1,
+                },
+            }
         },
 
         spawn: {

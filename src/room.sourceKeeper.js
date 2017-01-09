@@ -94,6 +94,10 @@ class SourceKeeperRoom extends RoomHandler {
      * Override from base class - completely different logic
      */
     createMiningJobs() {
+        if(!this.state.lairs) {
+            return;
+        }
+
         var jobs = this.state.jobs;
 
         var flags = this.getObjectsAroundFlags();
