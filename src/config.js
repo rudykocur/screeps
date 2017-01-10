@@ -238,7 +238,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 350000,
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 4,
                     mover: 3,
                     transfer: 3,
                 }
@@ -249,7 +249,7 @@ module.exports = (function() {
                 wallsHp: 100000,
                 creeps: {
                     mover: 2,
-                    upgrader: 5,
+                    upgrader: 4,
                     transfer: 2,
                 }
             },
@@ -329,17 +329,17 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "orphan",
             },
-            lair1: {
-                type: "sourceKeeper",
-                homeRoom: "orphan",
-                creeps: {
-                    harvester: 2,
-                    collector: 2,
-
-                    defender: 0,
-                    rangedDefender: 1,
-                },
-            }
+            // lair1: {
+            //     type: "sourceKeeper",
+            //     homeRoom: "orphan",
+            //     creeps: {
+            //         harvester: 0,
+            //         collector: 0,
+            //
+            //         defender: 0,
+            //         rangedDefender: 0,
+            //     },
+            // }
         },
 
         spawn: {

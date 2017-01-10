@@ -92,7 +92,7 @@ class OutpostRoomHandler extends RoomHandler {
         }
 
         let needed = _.get(this.config, 'creeps.collector', this.state.sources.length);
-        let additional = Math.min(4, Math.floor((this.state.energyOnGround || 0) / 2000));
+        let additional = Math.min(5, Math.floor((this.state.energyOnGround || 0) / 2000));
 
         needed += additional;
 
