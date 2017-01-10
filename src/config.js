@@ -186,7 +186,7 @@ module.exports = (function() {
                 wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 1,
                     mover: 2,
                     transfer: 2,
                 },
@@ -391,6 +391,7 @@ module.exports = (function() {
             Blaviken: {},
             Shaerrawedd: {},
             Tokyo: {},
+            Cintra: {},
             Brokilon: {
                 fighter: {
                     minimum: 0,
