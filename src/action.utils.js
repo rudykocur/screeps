@@ -51,10 +51,20 @@ module.exports = (function() {
         /**
          * @param {Creep} creep
          * @param {String} targetRoom
+         * @param via
          */
         tryChangeRoom: function(creep, targetRoom, via) {
             if(!targetRoom) {
                 return false;
+            }
+
+            if(via) {
+                var exit = module.exports.findRoomExit(creep, targetRoom, via);
+
+                if(exit) {
+                    creep.moveTo(exit);
+                    return true;
+                }
             }
 
             if(creep.pos.roomName != targetRoom) {
@@ -72,12 +82,7 @@ module.exports = (function() {
                 }
             }
 
-            var exit = module.exports.findRoomExit(creep, targetRoom, via);
 
-            if(exit) {
-                creep.moveTo(exit);
-                return true;
-            }
 
             return false;
         },

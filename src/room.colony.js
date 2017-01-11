@@ -83,6 +83,10 @@ class ColonyRoomHandler extends RoomHandler {
         this.maintainPopulation('transfer', config.blueprints.colonyTransfer, spawnQueue.PRIORITY_HIGH);
 
         this.observeRoom();
+
+        if(Game.time % 100 == 0) {
+            this.autobuildConstructionSites();
+        }
     }
 
     observeRoom() {
@@ -391,6 +395,21 @@ class ColonyRoomHandler extends RoomHandler {
                     }
                 }
             }
+        })
+    }
+
+    autobuildConstructionSites() {
+        this.placeConstructionSites(COLOR_PURPLE, COLOR_YELLOW, STRUCTURE_EXTENSION);
+        this.placeConstructionSites(COLOR_PURPLE, COLOR_RED, STRUCTURE_TOWER);
+        this.placeConstructionSites(COLOR_PURPLE, COLOR_CYAN, STRUCTURE_TERMINAL);
+        this.placeConstructionSites(COLOR_PURPLE, COLOR_BLUE, STRUCTURE_EXTRACTOR);
+    }
+
+    placeConstructionSites(flagColor, flagSecondaryColor, structureType) {
+        var flags = _.filter(Game.flags, /**Flag*/ f => f.color == flagColor && f.secondaryColor == flagSecondaryColor);
+
+        flags.forEach(f => {
+            this.room.createConstructionSite(f.pos.x, f.pos.y, structureType);
         })
     }
 

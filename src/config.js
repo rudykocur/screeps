@@ -187,7 +187,7 @@ module.exports = (function() {
                 wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 8,
                     mover: 2,
                     transfer: 2,
                 },
@@ -431,6 +431,27 @@ module.exports = (function() {
                         role: 'settler',
                         room: 'E66N47',
                         via: ['E67N44', 'E67N45', 'E67N46', 'E67N47', 'E66N47'],
+                    }
+                },
+                upgradeH2: {
+                    minimum: 3,
+                    priority: 'normal',
+                    body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK],
+                    memo: {
+                        role: 'settler',
+                        room: 'E66N47',
+                        disableBuild: true,
+                        disableSpawn: true,
+                        via: ['E67N44', 'E67N45', 'E67N46', 'E67N47', 'E66N47'],
+                    }
+                },
+                defendH2: {
+                    minimum: 1,
+                    priority: 'normal',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E66N47',
                     }
                 }
             },
