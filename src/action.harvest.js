@@ -228,7 +228,7 @@ module.exports = (function() {
             source = Game.getObjectById(creep.memory.energySource);
 
             if(!source) {
-                source = creep.pos.findClosestByRange(FIND_SOURCES);
+                source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
             }
 
             if (source instanceof Structure) {

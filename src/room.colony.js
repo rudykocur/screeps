@@ -86,9 +86,14 @@ class ColonyRoomHandler extends RoomHandler {
     }
 
     observeRoom() {
+        let observer = this.room.getObserver();
+
+        if(observer) {
+            observer.observeRoom('E66N47');
+        }
+
         return;
 
-        let observer = this.room.getObserver();
         if(observer) {
             let state = this.state.observer;
             let rooms = state.rooms || [];

@@ -28,6 +28,7 @@ module.exports = (function() {
             E68N48: "septis",
             E68N47: "septisBottom",
             E69N47: "eastBottomFar",
+            E66N47: "h2",
         },
         market: {
             processInterval: 30,
@@ -186,7 +187,7 @@ module.exports = (function() {
                 wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 1,
+                    upgrader: 4,
                     mover: 2,
                     transfer: 2,
                 },
@@ -252,6 +253,15 @@ module.exports = (function() {
                     upgrader: 4,
                     transfer: 2,
                 }
+            },
+            h2: {
+                type: "colony",
+                creeps: {
+                    mover: 0,
+                    upgrader: 0,
+                    transfer: 0,
+                    settler: 2,
+                },
             },
             eastBottom: {
                 type: "outpost",
@@ -390,8 +400,19 @@ module.exports = (function() {
             "Kaer Trolde": {},
             Blaviken: {},
             Shaerrawedd: {},
-            Tokyo: {},
+            Tokyo: {
+                claimH2: {
+                    minimum: 0,
+                    priority: 'critical',
+                    body: [CLAIM],
+                    memo: {
+                        role: 'claimer',
+                        claim: true,
+                    }
+                }
+            },
             Cintra: {},
+            Oxygen: {},
             Brokilon: {
                 fighter: {
                     minimum: 0,
@@ -402,6 +423,16 @@ module.exports = (function() {
                         room: 'E69N48',
                     }
                 },
+                workH2: {
+                    minimum: 4,
+                    priority: 'normal',
+                    body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK],
+                    memo: {
+                        role: 'settler',
+                        room: 'E66N47',
+                        via: ['E67N44', 'E67N45', 'E67N46', 'E67N47', 'E66N47'],
+                    }
+                }
             },
             Ys: {},
 
