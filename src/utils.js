@@ -25,10 +25,8 @@ module.exports = (function() {
                 let room = toCheck.pop();
 
                 let aroundRooms = _.values(Game.map.describeExits(room));
-                console.log('exits for', room, '::', aroundRooms);
 
                 for(let neighbour of aroundRooms) {
-                    console.log('  exit test', neighbour, '::', Game.map.getRoomLinearDistance(startRoom, neighbour));
                     if(checked.indexOf(neighbour) < 0 && Game.map.getRoomLinearDistance(startRoom, neighbour) <= range) {
                         toCheck.push(neighbour);
                         result.push(neighbour);
@@ -37,9 +35,7 @@ module.exports = (function() {
                 checked.push(room);
             }
 
-            result = _.uniq(result);
-
-            console.log('Rooms:', result.length, '::', JSON.stringify(_.sortBy(result)));
+            return _.sortBy(_.uniq(result));
         }
     }
 

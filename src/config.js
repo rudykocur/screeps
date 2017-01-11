@@ -80,7 +80,7 @@ module.exports = (function() {
                     },
                     reserve: {
                         [RESOURCE_OXYGEN]: 50000,
-                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 3000,
+                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
                     }
                 },
                 terminal: {
