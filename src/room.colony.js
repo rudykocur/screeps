@@ -93,7 +93,7 @@ class ColonyRoomHandler extends RoomHandler {
         let observer = this.room.getObserver();
 
         if(observer) {
-            observer.observeRoom('E66N47');
+            observer.observeRoom('E68N45');
         }
 
         return;

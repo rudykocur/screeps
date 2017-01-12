@@ -62,7 +62,7 @@ module.exports = (function() {
 
             if(!target) {
                 target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
-                    filter: c => module.exports.hasCombatParts(c) > 0 && creep.pos.getRangeTo(c) > 0
+                    filter: c => creep.pos.getRangeTo(c) > 0
                 });
             }
 

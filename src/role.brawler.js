@@ -50,7 +50,7 @@ module.exports = (function() {
 
             if(creep.pos.isNearTo(lab)) {
                 console.log('trying to boost', lab, '::', lab.mineralType, '::', toBoost.amount);
-                lab.boostCreep(creep, toBoost.amount);
+                lab.boostCreep(creep);
             }
             else {
                 creep.moveTo(lab);
@@ -79,6 +79,7 @@ module.exports = (function() {
                 }));
 
                 if(roomFlag) {
+                    creep.heal(creep);
                     creep.moveTo(roomFlag, {
                         costCallback: actionUtils.costCallback
                     });
@@ -95,6 +96,10 @@ module.exports = (function() {
 
             if(creep.memory.attackTarget) {
                 target = Game.getObjectById(creep.memory.attackTarget);
+                if(!target) {
+                    console.log(creep,'attack target is no longer existing!');
+                    delete creep.memory.attackTarget;
+                }
             }
             else if(creep.memory.moveFlag) {
                 target = Game.flags[creep.memory.moveFlag];
@@ -113,6 +118,24 @@ module.exports = (function() {
                 target = actionCombat.findAttackTarget(creep);
             }
 
+            if(creep.hits > creep.hitsMax * 0.85) {
+                let wounded = _.first(_.filter(creep.pos.findInRange(FIND_MY_CREEPS, 2), /**Creep*/ c=> c.hits < c.hitsMax * 0.6));
+                if(wounded) {
+                    if(creep.heal(wounded) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(wounded);
+                    }
+
+                    creep.rangedHeal(wounded);
+
+                    return;
+                }
+            }
+
+            if(creep.hits < creep.hitsMax * 0.6 && creep.getActiveBodyparts(HEAL)) {
+                creep.heal(creep);
+                return;
+            }
+
             if(target) {
 
                 if(creep.pos.isNearTo(target)) {
@@ -126,7 +149,7 @@ module.exports = (function() {
                 }
                 else {
                     creep.rangedAttack(target);
-                    let result = creep.moveTo(target);
+                    let result = creep.moveTo(target, {ignoreDestructibleStructures: true});
 
                     if(creep.getActiveBodyparts(HEAL) > 0) {
                         creep.heal(creep);
@@ -164,7 +187,7 @@ module.exports = (function() {
                 }
 
                 if(idleFlag) {
-                    creep.moveTo(idleFlag.pos);
+                    creep.moveTo(idleFlag.pos, {ignoreDestructibleStructures: true});
                 }
             }
         }

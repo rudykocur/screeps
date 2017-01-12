@@ -101,7 +101,7 @@ module.exports = (function() {
                     if(result == OK) {
                         creep.finishJob();
                     }
-                    else if(result != ERR_NOT_IN_RANGE) {
+                    else if(result != ERR_NOT_IN_RANGE && result != ERR_FULL) {
                         logger.mail(logger.error('OMG TRANSFER 22 ERROR', creep, '::', result));
                         if(job.type == 'pickup') {
                             creep.releasePartialJob()
