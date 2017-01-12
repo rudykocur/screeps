@@ -406,7 +406,9 @@ class ColonyRoomHandler extends RoomHandler {
     }
 
     placeConstructionSites(flagColor, flagSecondaryColor, structureType) {
-        var flags = _.filter(Game.flags, /**Flag*/ f => f.color == flagColor && f.secondaryColor == flagSecondaryColor);
+        var flags = _.filter(Game.flags, /**Flag*/ f => {
+            return f.pos.roomName == this.room.name && f.color == flagColor && f.secondaryColor == flagSecondaryColor;
+        });
 
         flags.forEach(/**Flag*/ f => {
             if(this.room.createConstructionSite(f.pos.x, f.pos.y, structureType) == OK) {

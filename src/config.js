@@ -68,13 +68,14 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 4,
                     mover: 2,
-                    transfer: 2,
+                    transfer: 3,
                 },
                 observeRoom: 'E66N44',
                 minerals: {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_LEMERGIUM]: 13000,
+                        [RESOURCE_HYDROGEN]: 12000,
                         [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
                         [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                         [RESOURCE_HYDROXIDE]: 2000,
@@ -84,6 +85,7 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
+                        [RESOURCE_CATALYZED_UTRIUM_ACID]: 0,
                     }
                 },
                 terminal: {
@@ -94,6 +96,7 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 500,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 1000,
+                        [RESOURCE_CATALYZED_UTRIUM_ACID]: 1000,
                     }
                 },
                 labs: {
@@ -110,28 +113,38 @@ module.exports = (function() {
                         '586172d62c660f9d020f7d58': 'D3',
                     },
                     boost: {
-                        D3: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        // D3: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     reactions: [
                         {
-                            labs: ['A1', 'A2', 'A3'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                            labs: ['A1', 'A2', 'B1'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_HYDROGEN],
                             amount: 2000,
                         },
                         {
-                            labs: ['A3', 'B1', 'B2'],
-                            load: [RESOURCE_GHODIUM, RESOURCE_HYDROGEN],
+                            labs: ['A1', 'A2', 'B2'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_HYDROGEN],
                             amount: 2000,
                         },
                         {
-                            labs: ['B2', 'B3', 'C2'],
-                            load: [RESOURCE_GHODIUM_HYDRIDE, RESOURCE_HYDROXIDE],
+                            labs: ['B1', 'A3', 'C2'],
+                            load: [RESOURCE_UTRIUM_HYDRIDE, RESOURCE_HYDROXIDE],
                             amount: 2000,
                         },
                         {
-                            labs: ['C2', 'D1', 'D2'],
-                            load: [RESOURCE_GHODIUM_ACID, RESOURCE_CATALYST],
-                            amount: 10000,
+                            labs: ['B2', 'A3', 'B3'],
+                            load: [RESOURCE_UTRIUM_HYDRIDE, RESOURCE_HYDROXIDE],
+                            amount: 2000,
+                        },
+                        {
+                            labs: ['D1', 'C2', 'D2'],
+                            load: [RESOURCE_CATALYST, RESOURCE_UTRIUM_ACID],
+                            amount: 3000,
+                        },
+                        {
+                            labs: ['D1', 'B3', 'D3'],
+                            load: [RESOURCE_CATALYST, RESOURCE_UTRIUM_ACID],
+                            amount: 3000,
                         },
                     ],
                 }
@@ -150,6 +163,7 @@ module.exports = (function() {
                     wants: {
                         [RESOURCE_OXYGEN]: 13000,
                         [RESOURCE_LEMERGIUM]: 13000,
+                        [RESOURCE_HYDROGEN]: 12000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
                     reserve: {
@@ -191,7 +205,7 @@ module.exports = (function() {
                 wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 8,
+                    upgrader: 12,
                     mover: 2,
                     transfer: 2,
                 },
@@ -199,6 +213,7 @@ module.exports = (function() {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
+                        [RESOURCE_HYDROGEN]: 12000,
                     },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
@@ -250,8 +265,19 @@ module.exports = (function() {
                 minerals: {
                     wants: {
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 1000,
-                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 1000,
+                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,
+                        [RESOURCE_CATALYZED_UTRIUM_ACID]: 5000,
                     },
+                    reserve: {
+                        [RESOURCE_LEMERGIUM]: 50000,
+                    }
+                },
+                terminal: {
+                    autosell: [RESOURCE_LEMERGIUM],
+                    require: {
+                        [RESOURCE_LEMERGIUM]: 50000,
+                        [RESOURCE_ENERGY]: 25000,
+                    }
                 },
                 labs: {
                     names: {
@@ -262,6 +288,7 @@ module.exports = (function() {
                     boost: {
                         A3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
                         A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        A1: RESOURCE_CATALYZED_UTRIUM_ACID,
                     }
                 }
             },
@@ -271,12 +298,24 @@ module.exports = (function() {
                 wallsHp: 100000,
                 creeps: {
                     mover: 2,
-                    upgrader: 4,
+                    upgrader: 8,
                     transfer: 2,
-                }
+                },
+                minerals: {
+                    reserve: {
+                        [RESOURCE_HYDROGEN]: 0,
+                    }
+                },
+                terminal: {
+                    require: {
+                        [RESOURCE_HYDROGEN]: 5000,
+                        [RESOURCE_ENERGY]: 25000,
+                    }
+                },
             },
             h2: {
                 type: "colony",
+                wallsHp: 20000,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
