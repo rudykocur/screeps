@@ -210,7 +210,7 @@ class ColonyRoomHandler extends RoomHandler {
         }
         
         if(expectedBuildersAmount > amount) {
-            amount = Math.min(expectedBuildersAmount, 2); // spawn up to 2 builders if there is lot to build
+            amount = Math.min(expectedBuildersAmount, 3); // spawn up to 3 builders if there is lot to build
         }
 
         this.maintainPopulationAmount('builder', amount, config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);

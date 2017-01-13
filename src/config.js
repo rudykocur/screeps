@@ -76,8 +76,6 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_HYDROGEN]: 12000,
-                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
-                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                         [RESOURCE_HYDROXIDE]: 2000,
                     },
                     reserve: {
@@ -86,6 +84,8 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 0,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 0,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 0,
                     }
                 },
                 terminal: {
@@ -97,6 +97,8 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 1000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                     }
                 },
                 labs: {
@@ -165,6 +167,8 @@ module.exports = (function() {
                         [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_HYDROGEN]: 12000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
                     },
                     reserve: {
                         [RESOURCE_ZYNTHIUM]: 50000,
@@ -187,9 +191,13 @@ module.exports = (function() {
                         '586f1c575d1229ca49bafd72': 'B2',
                         '586fdef3a477391853ff79d4': 'C1',
                         '58713e69f1135a40674916ff': 'C2',
+                        '5877fac66a8ecb074b81b7c7': 'D3',
+                        '587782547d605c8f52426ab8': 'E1',
+                        '5877b8418f95b66a7c763fd3': 'E2',
+                        '587824f74da28eeb27895216': 'E3',
                     },
                     boost: {
-                        C1: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        // C1: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     reactions: [
                         {
@@ -207,6 +215,21 @@ module.exports = (function() {
                             load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
                             amount: 3000,
                         },
+                        {
+                            labs: ['E1', 'E2', 'E3'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                            amount: 10000,
+                        },
+                        {
+                            labs: ['E1', 'E2', 'D3'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                            amount: 10000,
+                        },
+                        {
+                            labs: ['E1', 'E2', 'C1'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                            amount: 10000,
+                        },
                     ],
                 },
             },
@@ -215,7 +238,7 @@ module.exports = (function() {
                 wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 12,
+                    upgrader: 5,
                     mover: 2,
                     transfer: 2,
                 },
@@ -254,18 +277,23 @@ module.exports = (function() {
                     reactions: [
                         {
                             labs: ['A1', 'A2', 'A3'],
-                            load: [RESOURCE_LEMERGIUM, RESOURCE_OXYGEN],
-                            amount: 3000,
-                        },
-                        {
-                            labs: ['A3', 'B3', 'B2'],
-                            load: [RESOURCE_LEMERGIUM_OXIDE, RESOURCE_HYDROXIDE],
-                            amount: 6000,
+                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
+                            amount: 10000,
                         },
                         {
                             labs: ['A1', 'A2', 'B1'],
-                            load: [RESOURCE_LEMERGIUM, RESOURCE_OXYGEN],
-                            amount: 3000,
+                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
+                            amount: 10000,
+                        },
+                        {
+                            labs: ['A1', 'A2', 'B2'],
+                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
+                            amount: 10000,
+                        },
+                        {
+                            labs: ['A1', 'A2', 'B3'],
+                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
+                            amount: 10000,
                         },
                     ],
                 },
@@ -275,7 +303,7 @@ module.exports = (function() {
                 wallsHp: 700000,
                 creeps: {
                     upgrader: 4,
-                    mover: 3,
+                    mover: 2,
                     transfer: 3,
                 },
                 minerals: {
@@ -314,7 +342,7 @@ module.exports = (function() {
                 wallsHp: 100000,
                 creeps: {
                     mover: 2,
-                    upgrader: 10,
+                    upgrader: 3,
                     transfer: 2,
                 },
                 minerals: {
@@ -325,7 +353,7 @@ module.exports = (function() {
                 terminal: {
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 25000,
+                        [RESOURCE_ENERGY]: 100000,
                     }
                 },
             },
@@ -339,22 +367,22 @@ module.exports = (function() {
                     settler: 2,
                 },
             },
-            // eastBottom: {
-            //     type: "outpost",
-            //     homeRoom: "east",
-            // },
-            // eastBottomFar: {
-            //     type: "outpost",
-            //     homeRoom: "east",
-            // },
-            // septis: {
-            //     type: "outpost",
-            //     homeRoom: "east",
-            // },
-            // septisBottom: {
-            //     type: "outpost",
-            //     homeRoom: "east",
-            // },
+            eastBottom: {
+                type: "outpost",
+                homeRoom: "east",
+            },
+            eastBottomFar: {
+                type: "outpost",
+                homeRoom: "east",
+            },
+            septis: {
+                type: "outpost",
+                homeRoom: "east",
+            },
+            septisBottom: {
+                type: "outpost",
+                homeRoom: "east",
+            },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
@@ -555,7 +583,7 @@ module.exports = (function() {
                     }
                 },
                 dragonPunch: {
-                    minimum: 3,
+                    minimum: 0,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
@@ -566,7 +594,7 @@ module.exports = (function() {
                     }
                 },
                 dragonSniper: {
-                    minimum: 1,
+                    minimum: 0,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK],
                     memo: {

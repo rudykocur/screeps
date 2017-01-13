@@ -3,10 +3,8 @@ var profiler = require('./profiler-impl');
 var stats = require('./stats');
 var actionHarvest = require('./action.harvest');
 var actionUtils = require('./action.utils');
-var bookmarks = require('./bookmarks');
 var creepExt = require('./creepExt');
 var taskUpgrade = require('./task.upgradeController');
-var taskWithdraw = require('./task.withdrawFromStorage');
 var TaskWithdraw = require('./task.withdrawFromStorage').WithdrawFromStorageTask;
 var MoveTask = require('./task.move').MoveTask;
 
