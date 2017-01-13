@@ -71,13 +71,21 @@ module.exports = (function() {
             }
 
             if(!target) {
+                target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {
+                    filter: s => s.structureType == STRUCTURE_EXTENSION
+                });
+            }
+
+            if(!target) {
                 target = creep.pos.findClosestByPath(FIND_HOSTILE_CREEPS, {
                     filter: c => creep.pos.getRangeTo(c) > 0
                 });
             }
 
             if(!target) {
-                target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES);
+                target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {
+                    filter: s => s.structureType != STRUCTURE_RAMPART && s.structureType != STRUCTURE_WALL
+                });
             }
 
             if(!target) {

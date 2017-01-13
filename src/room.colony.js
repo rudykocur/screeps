@@ -93,7 +93,7 @@ class ColonyRoomHandler extends RoomHandler {
         let observer = this.room.getObserver();
 
         if(observer) {
-            observer.observeRoom('E68N45');
+            observer.observeRoom('E68N44');
         }
 
         return;
@@ -428,21 +428,6 @@ class ColonyRoomHandler extends RoomHandler {
             }
 
             amount -= 2000;
-        }
-    }
-
-    _getJobTransferDict(key, source, target, resource) {
-        return {
-            key: key,
-            room: this.room.customName,
-            type: 'transfer',
-            sourceId: source.id,
-            sourcePos: source.pos,
-            resource: resource,
-            targetId: target.id,
-            targetPos: target.pos,
-            takenBy: null,
-            amount: 0,
         }
     }
 

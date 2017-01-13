@@ -139,12 +139,12 @@ module.exports = (function() {
                         {
                             labs: ['D1', 'C2', 'D2'],
                             load: [RESOURCE_CATALYST, RESOURCE_UTRIUM_ACID],
-                            amount: 3000,
+                            amount: 6000,
                         },
                         {
                             labs: ['D1', 'B3', 'D3'],
                             load: [RESOURCE_CATALYST, RESOURCE_UTRIUM_ACID],
-                            amount: 3000,
+                            amount: 6000,
                         },
                     ],
                 }
@@ -197,6 +197,16 @@ module.exports = (function() {
                             load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
                             amount: 3000,
                         },
+                        {
+                            labs: ['A1', 'A2', 'B2'],
+                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
+                            amount: 3000,
+                        },
+                        {
+                            labs: ['A1', 'A2', 'C2'],
+                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
+                            amount: 3000,
+                        },
                     ],
                 },
             },
@@ -214,6 +224,7 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
                         [RESOURCE_HYDROGEN]: 12000,
+                        [RESOURCE_HYDROXIDE]: 3000,
                     },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
@@ -243,12 +254,17 @@ module.exports = (function() {
                     reactions: [
                         {
                             labs: ['A1', 'A2', 'A3'],
-                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            load: [RESOURCE_LEMERGIUM, RESOURCE_OXYGEN],
                             amount: 3000,
                         },
                         {
-                            labs: ['B1', 'B2', 'B3'],
-                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                            labs: ['A3', 'B3', 'B2'],
+                            load: [RESOURCE_LEMERGIUM_OXIDE, RESOURCE_HYDROXIDE],
+                            amount: 6000,
+                        },
+                        {
+                            labs: ['A1', 'A2', 'B1'],
+                            load: [RESOURCE_LEMERGIUM, RESOURCE_OXYGEN],
                             amount: 3000,
                         },
                     ],
@@ -298,7 +314,7 @@ module.exports = (function() {
                 wallsHp: 100000,
                 creeps: {
                     mover: 2,
-                    upgrader: 8,
+                    upgrader: 10,
                     transfer: 2,
                 },
                 minerals: {
@@ -319,26 +335,26 @@ module.exports = (function() {
                 creeps: {
                     mover: 2,
                     upgrader: 4,
-                    transfer: 0,
+                    transfer: 2,
                     settler: 2,
                 },
             },
-            eastBottom: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            eastBottomFar: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            septis: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            septisBottom: {
-                type: "outpost",
-                homeRoom: "east",
-            },
+            // eastBottom: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // eastBottomFar: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // septis: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // septisBottom: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
@@ -484,7 +500,7 @@ module.exports = (function() {
                     }
                 },
                 workH2: {
-                    minimum: 4,
+                    minimum: 0,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK],
                     memo: {
@@ -494,7 +510,7 @@ module.exports = (function() {
                     }
                 },
                 upgradeH2: {
-                    minimum: 3,
+                    minimum: 0,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK],
                     memo: {
@@ -517,45 +533,58 @@ module.exports = (function() {
                 dragonEngage: {
                     minimum: 0,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL],
                     memo: {
                         role: 'brawler',
                         room: 'E68N45',
-                        guardFlag: 'Flag51',
-                        boost: [{part: HEAL, resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE, amount: 5}]
+                        guardFlag: 'Flag117',
+                        boost: [
+                            {part: HEAL, resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE, amount: 5},
+                            {part: MOVE, resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE, amount: 10},
+                        ]
                     }
                 },
                 dragonHealer: {
-                    minimum: 0,
+                    minimum:0,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
                     memo: {
                         role: 'brawler',
                         room: 'E68N45',
-                        guardFlag: 'Flag117',
+                        guardFlag: 'Flag107',
                     }
                 },
                 dragonPunch: {
-                    minimum: 0,
+                    minimum: 3,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
                         room: 'E68N45',
-                        guardFlag: 'Flag51',
-                        boost: [{part: MOVE, resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE, amount: 10}]
+                        // guardFlag: 'Flag51',
+                        // boost: [{part: MOVE, resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE, amount: 8}]
                     }
                 },
                 dragonSniper: {
-                    minimum: 0,
+                    minimum: 1,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK],
                     memo: {
                         role: 'brawler',
-                        room: 'E68N45',
-                        guardFlag: 'Flag102'
+                        room: 'E68N44',
+                        guardFlag: 'dragonSniper'
                     }
-                }
+                },
+                testCleaner: {
+                    minimum: 0,
+                    priority: 'normal',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E67N45',
+                        guardFlag: 'w11',
+                    }
+                },
             },
             Ys: {},
 

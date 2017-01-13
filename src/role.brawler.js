@@ -109,8 +109,12 @@ module.exports = (function() {
 
                 target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 5));
 
+                if(!target) {
+                    target = _.first(flag.pos.lookFor(LOOK_STRUCTURES));
+                }
+
                 if(target) {
-                    console.log("GUARD", creep.name, 'found enemy', target);
+                    // console.log("GUARD", creep.name, 'found enemy', target);
                 }
             }
 
@@ -138,7 +142,7 @@ module.exports = (function() {
 
             if(target) {
 
-                if(creep.pos.isNearTo(target)) {
+                if(creep.pos.isNearTo(target) && creep.getActiveBodyparts(ATTACK) > 0) {
                     let result = creep.attack(target);
 
                     if(result != OK) {
@@ -149,7 +153,7 @@ module.exports = (function() {
                 }
                 else {
                     creep.rangedAttack(target);
-                    let result = creep.moveTo(target, {ignoreDestructibleStructures: true});
+                    let result = creep.moveTo(target);
 
                     if(creep.getActiveBodyparts(HEAL) > 0) {
                         creep.heal(creep);
@@ -187,7 +191,7 @@ module.exports = (function() {
                 }
 
                 if(idleFlag) {
-                    creep.moveTo(idleFlag.pos, {ignoreDestructibleStructures: true});
+                    creep.moveTo(idleFlag.pos);
                 }
             }
         }

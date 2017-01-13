@@ -36,6 +36,9 @@ class CollectorRole extends CreepRole {
 
             /** @type RoomHandler */
             let handler = this.creep.workRoomHandler;
+            if(!handler) {
+                return;
+            }
 
             let jobs = handler.searchJobs({type: 'pickup'}).filter(job => job.amount > 50 && job.resource == RESOURCE_ENERGY);
 

@@ -403,6 +403,10 @@ module.exports = (function() {
 
             var room = Room.byCustomName(roomName);
 
+            if(!(roomName in config.rooms)) {
+                return null;
+            }
+
             var roomConfig = config.rooms[roomName];
             var clz = handlers[roomConfig.type].handler;
             var state = Memory.rooms[roomName];

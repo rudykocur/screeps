@@ -18,6 +18,9 @@ module.exports = (function() {
             }
 
             var handler = creep.workRoomHandler;
+            if(!handler) {
+                return;
+            }
 
             var job = creep.memory.job;
 
