@@ -16,6 +16,8 @@ class RoomHandler {
         this.state = state;
         this.config = config;
 
+        this.importEnabled = _.get(this.config, 'importEnabled', true);
+
         this.jobGenerators = [];
 
         this.type = 'unknown';
@@ -374,13 +376,15 @@ module.exports = (function() {
                 return new clz(roomName, state, roomConfig);
             });
 
-            var withTerminal = handlers.filter(/**RoomHandler*/handler => handler.room && handler.room.terminal);
+            var withTerminal = handlers.filter(/**RoomHandler*/handler => {
+                return handler.room && handler.room.terminal && handler.importEnabled
+            });
 
             _.each(handlers, /**RoomHandler*/handler => {
                 try {
 
                     if(marketOrders) {
-                        if(handler.room && handler.room.terminal) {
+                        if(handler.room && handler.room.terminal && handler.importEnabled) {
                             handler.processRoomTransfers(_.without(withTerminal, handler));
                         }
                         handler.processMarket(marketOrders);

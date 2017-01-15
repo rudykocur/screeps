@@ -29,6 +29,8 @@ module.exports = (function() {
             E68N47: "septisBottom",
             E69N47: "eastBottomFar",
             E66N47: "h2",
+            E67N47: "h2Right",
+            E65N47: "h2Left",
         },
         market: {
             processInterval: 30,
@@ -47,7 +49,7 @@ module.exports = (function() {
                 },
                 [RESOURCE_ZYNTHIUM]: {
                     buyPriceMax: 0.5,
-                    sellPriceMin: 0.10,
+                    sellPriceMin: 0.15,
                 },
                 [RESOURCE_KEANIUM]: {
                     buyPriceMax: 0.5,
@@ -81,11 +83,11 @@ module.exports = (function() {
                     reserve: {
                         [RESOURCE_OXYGEN]: 50000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
+                        [RESOURCE_UTRIUM]: 12000,
+                        [RESOURCE_GHODIUM]: 0,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 0,
-                        [RESOURCE_ZYNTHIUM_KEANITE]: 0,
-                        [RESOURCE_UTRIUM_LEMERGITE]: 0,
                     }
                 },
                 terminal: {
@@ -97,8 +99,8 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 1000,
-                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
-                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
+                        [RESOURCE_UTRIUM]: 1000,
+                        [RESOURCE_GHODIUM]: 10000,
                     }
                 },
                 labs: {
@@ -119,34 +121,34 @@ module.exports = (function() {
                     },
                     reactions: [
                         {
-                            labs: ['A1', 'A2', 'B1'],
-                            load: [RESOURCE_UTRIUM, RESOURCE_HYDROGEN],
+                            labs: ['D1', 'D3', 'D2'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
                             amount: 2000,
                         },
                         {
-                            labs: ['A1', 'A2', 'B2'],
-                            load: [RESOURCE_UTRIUM, RESOURCE_HYDROGEN],
+                            labs: ['D1', 'D3', 'C2'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
                             amount: 2000,
                         },
                         {
-                            labs: ['B1', 'A3', 'C2'],
-                            load: [RESOURCE_UTRIUM_HYDRIDE, RESOURCE_HYDROXIDE],
+                            labs: ['A1', 'B1', 'A2'],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
                             amount: 2000,
                         },
                         {
-                            labs: ['B2', 'A3', 'B3'],
-                            load: [RESOURCE_UTRIUM_HYDRIDE, RESOURCE_HYDROXIDE],
+                            labs: ['A1', 'B1', 'B2'],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
                             amount: 2000,
                         },
                         {
-                            labs: ['D1', 'C2', 'D2'],
-                            load: [RESOURCE_CATALYST, RESOURCE_UTRIUM_ACID],
-                            amount: 6000,
+                            labs: ['D2', 'B2', 'B3'],
+                            load: [RESOURCE_UTRIUM_LEMERGITE, RESOURCE_ZYNTHIUM_KEANITE],
+                            amount: 10000,
                         },
                         {
-                            labs: ['D1', 'B3', 'D3'],
-                            load: [RESOURCE_CATALYST, RESOURCE_UTRIUM_ACID],
-                            amount: 6000,
+                            labs: ['C2', 'A2', 'A3'],
+                            load: [RESOURCE_UTRIUM_LEMERGITE, RESOURCE_ZYNTHIUM_KEANITE],
+                            amount: 10000,
                         },
                     ],
                 }
@@ -167,12 +169,13 @@ module.exports = (function() {
                         [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_HYDROGEN]: 12000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
-                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
-                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
+                        // [RESOURCE_UTRIUM_LEMERGITE]: 5000,
+                        // [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
                     },
                     reserve: {
                         [RESOURCE_ZYNTHIUM]: 50000,
                         [RESOURCE_HYDROXIDE]: 0,
+                        [RESOURCE_GHODIUM]: 0,
                     }
                 },
                 terminal: {
@@ -180,7 +183,8 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_ZYNTHIUM]: 30000,
-                        [RESOURCE_HYDROXIDE]: 5000,
+                        [RESOURCE_GHODIUM]: 10000,
+                        [RESOURCE_HYDROXIDE]: 3000,
                     }
                 },
                 labs: {
@@ -203,31 +207,21 @@ module.exports = (function() {
                         {
                             labs: ['A1', 'A2', 'B1'],
                             load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
-                            amount: 3000,
+                            amount: 10000,
                         },
                         {
                             labs: ['A1', 'A2', 'B2'],
                             load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
-                            amount: 3000,
+                            amount: 10000,
+                        },
+                        {
+                            labs: ['A1', 'A2', 'C1'],
+                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
+                            amount: 10000,
                         },
                         {
                             labs: ['A1', 'A2', 'C2'],
                             load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
-                            amount: 3000,
-                        },
-                        {
-                            labs: ['E1', 'E2', 'E3'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['E1', 'E2', 'D3'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['E1', 'E2', 'C1'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
                             amount: 10000,
                         },
                     ],
@@ -238,7 +232,7 @@ module.exports = (function() {
                 wallsHp: 1000000,
                 autobuyMinerals: true,
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 1,
                     mover: 2,
                     transfer: 2,
                 },
@@ -248,11 +242,14 @@ module.exports = (function() {
                         [RESOURCE_OXYGEN]: 13000,
                         [RESOURCE_HYDROGEN]: 12000,
                         [RESOURCE_HYDROXIDE]: 3000,
+                        [RESOURCE_UTRIUM]: 12000,
                     },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
-                        [RESOURCE_ZYNTHIUM_KEANITE]: 0,
-                        [RESOURCE_UTRIUM_LEMERGITE]: 0,
+                        // [RESOURCE_ZYNTHIUM_KEANITE]: 0,
+                        // [RESOURCE_UTRIUM_LEMERGITE]: 0,
+                        [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
+                        [RESOURCE_GHODIUM]: 0,
                         //[RESOURCE_ENERGY]: 50000,
                     }
                 },
@@ -261,38 +258,54 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ENERGY]: 25000,
-                        [RESOURCE_ZYNTHIUM_KEANITE]: 3000,
-                        [RESOURCE_UTRIUM_LEMERGITE]: 3000,
+                        [RESOURCE_GHODIUM]: 10000,
+                        // [RESOURCE_ZYNTHIUM_KEANITE]: 3000,
+                        // [RESOURCE_UTRIUM_LEMERGITE]: 3000,
+                        [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 5000,
                     }
                 },
                 labs: {
                     names: {
-                        '5859d6bbd63f522f68c1d9c3': 'A1',
-                        '586c39c397fe7e92738e225f': 'A2',
-                        '586c5554e4217aa237a3e5b2': 'A3',
-                        '5859bd145057e7a84687d66f': 'B1',
-                        '5859f9dbabb1542d67aaa762': 'B2',
-                        '586c3e9d5f1a64b15d4151b8': 'B3',
+                        '587a91d021d930e15c7ebaef': 'A1',
+                        '587a9cd0922d375b084534e6': 'A2',
+                        '5859d6bbd63f522f68c1d9c3': 'B1',
+                        '586c39c397fe7e92738e225f': 'B2',
+                        '586c5554e4217aa237a3e5b2': 'B3',
+                        '587acb6680b0ff072fbb4c6f': 'B4',
+                        '5859bd145057e7a84687d66f': 'C1',
+                        '5859f9dbabb1542d67aaa762': 'C2',
+                        '586c3e9d5f1a64b15d4151b8': 'C3',
+                        '587ac22cb3bcbfa352090062': 'C4',
                     },
                     reactions: [
                         {
-                            labs: ['A1', 'A2', 'A3'],
-                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['A1', 'A2', 'B1'],
-                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
-                            amount: 10000,
-                        },
-                        {
                             labs: ['A1', 'A2', 'B2'],
-                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
-                            amount: 10000,
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            amount: 2000,
                         },
                         {
                             labs: ['A1', 'A2', 'B3'],
-                            load: [RESOURCE_LEMERGIUM_ALKALIDE, RESOURCE_CATALYST],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            amount: 2000,
+                        },
+                        {
+                            labs: ['B1', 'C1', 'C2'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                            amount: 2000,
+                        },
+                        {
+                            labs: ['B1', 'C1', 'C3'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                            amount: 2000,
+                        },
+                        {
+                            labs: ['B2', 'C2', 'B4'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                            amount: 10000,
+                        },
+                        {
+                            labs: ['B3', 'C3', 'C4'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
                             amount: 10000,
                         },
                     ],
@@ -301,6 +314,7 @@ module.exports = (function() {
             orphan: {
                 type: "colony",
                 wallsHp: 700000,
+                autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
                     mover: 2,
@@ -308,12 +322,17 @@ module.exports = (function() {
                 },
                 minerals: {
                     wants: {
-                        [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 1000,
+                        [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 5000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 5000,
+                        [RESOURCE_UTRIUM]: 13000,
+                        [RESOURCE_ZYNTHIUM]: 13000,
+                        [RESOURCE_OXYGEN]: 13000,
+                        [RESOURCE_HYDROGEN]: 13000,
                     },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
+                        [RESOURCE_GHODIUM]: 0,
                     }
                 },
                 terminal: {
@@ -321,31 +340,75 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ENERGY]: 25000,
+                        [RESOURCE_GHODIUM]: 10000,
                     }
                 },
                 labs: {
                     names: {
-                        '5874aa0cc25743766a254ce4': 'A1',
-                        '587496eca58304ea3021ea3f': 'A2',
-                        '58748ad4f08e19527647993d': 'A3',
+                        '5878ad685caf13ac3b377652': 'A1',
+                        '58789f364d3fe11215fdb7d3': 'A2',
+                        '5874aa0cc25743766a254ce4': 'B1',
+                        '587496eca58304ea3021ea3f': 'B2',
+                        '58748ad4f08e19527647993d': 'B3',
+                        '587897392720055772704860': 'B4',
+                        '5878c1049c2486c141720614': 'C1',
+                        '5878ba2c97fc78d21e5f054f': 'C2',
+                        '5878b1023f7fc2b67913acd0': 'C3',
+                        '5878a65ce54d939f08188257': 'C4',
                     },
                     boost: {
-                        A3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
-                        A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        A1: RESOURCE_CATALYZED_UTRIUM_ACID,
-                    }
+                        // B3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        // B2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        // B1: RESOURCE_CATALYZED_UTRIUM_ACID,
+                    },
+                    reactions: [
+                        {
+                            labs: ['A1', 'A2', 'B1'],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            amount: 3000,
+                        },
+                        {
+                            labs: ['A1', 'A2', 'B2'],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            amount: 3000,
+                        },
+                        {
+                            labs: ['B4', 'C4', 'B3'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                            amount: 3000,
+                        },
+                        {
+                            labs: ['B4', 'C4', 'C3'],
+                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                            amount: 3000,
+                        },
+                        {
+                            labs: ['B1', 'B3', 'C1'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                            amount: 10000,
+                        },
+                        {
+                            labs: ['B2', 'C3', 'C2'],
+                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                            amount: 10000,
+                        },
+                    ],
                 }
             },
             east: {
                 type: "colony",
                 panicMode: false,
                 wallsHp: 100000,
+                // importEnabled: false,
                 creeps: {
                     mover: 2,
-                    upgrader: 3,
+                    upgrader: 5,
                     transfer: 2,
                 },
                 minerals: {
+                    wants: {
+                        [RESOURCE_ENERGY]: 0,
+                    },
                     reserve: {
                         [RESOURCE_HYDROGEN]: 0,
                     }
@@ -362,9 +425,9 @@ module.exports = (function() {
                 wallsHp: 20000,
                 creeps: {
                     mover: 2,
-                    upgrader: 4,
-                    transfer: 2,
-                    settler: 2,
+                    upgrader: 8,
+                    transfer: 1,
+                    settler: 0,
                 },
             },
             eastBottom: {
@@ -382,6 +445,14 @@ module.exports = (function() {
             septisBottom: {
                 type: "outpost",
                 homeRoom: "east",
+            },
+            h2Right: {
+                type: "outpost",
+                homeRoom: "h2",
+            },
+            h2Left: {
+                type: "outpost",
+                homeRoom: "h2",
             },
             brot: {
                 type:"outpost",

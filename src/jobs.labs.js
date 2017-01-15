@@ -143,9 +143,13 @@ class LabsJobGenerator extends JobGenerator {
 
         var allLabs = _.values(_.get(this.config, 'labs.names', {}));
         var unusedLabs = _.values(_.get(this.config, 'labs.names', {}));
+        var outputLabs = [];
 
         _.get(this.config, 'labs.reactions', []).forEach(/**ReactionConfig*/reaction => {
             unusedLabs = _.without(unusedLabs, reaction.labs[0], reaction.labs[1]);
+            if(outputLabs.indexOf(reaction.labs[2]) < 0) {
+                outputLabs.push(reaction.labs[2]);
+            }
         });
 
         unusedLabs = _.without(unusedLabs, ..._.keys(_.get(this.config, 'labs.boost')));
@@ -156,7 +160,14 @@ class LabsJobGenerator extends JobGenerator {
 
             let key = `labs-${labName}-empty-all`;
 
-            if(unusedLabs.indexOf(labName) >= 0 && lab.mineralType && lab.mineralAmount > 500) {
+            let shouldEmpty = (unusedLabs.indexOf(labName) >= 0 && lab.mineralType);
+            if(shouldEmpty) {
+                if(outputLabs.indexOf(labName) >= 0 && lab.mineralAmount < 500) {
+                    shouldEmpty = false;
+                }
+            }
+
+            if(shouldEmpty) {
                 if(!(key in jobs)) {
                     jobs[key] = this._getJobTransferDict(key, lab, storage, lab.mineralType);
                 }

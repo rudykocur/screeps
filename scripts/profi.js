@@ -22,7 +22,7 @@ class Foo {
 
 
 
-var profiler = require('./src/my-profiler');
+var profiler = require('./../src/my-profiler');
 
 profiler.registerClass(Foo, 'FooClass');
 
