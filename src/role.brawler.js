@@ -140,7 +140,7 @@ module.exports = (function() {
                 return;
             }
 
-            if(target) {
+            if(target && (creep.getActiveBodyparts(ATTACK) > 0 || creep.getActiveBodyparts(RANGED_ATTACK) > 0)) {
 
                 if(creep.pos.isNearTo(target) && creep.getActiveBodyparts(ATTACK) > 0) {
                     let result = creep.attack(target);

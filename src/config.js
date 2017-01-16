@@ -65,7 +65,7 @@ module.exports = (function() {
         rooms: {
             home: {
                 type: "colony",
-                wallsHp: 2000000,
+                wallsHp: 3000000,
                 autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
@@ -157,7 +157,7 @@ module.exports = (function() {
                 type: "colony",
                 panicMode: false,
                 autobuyMinerals: true,
-                wallsHp: 2000000,
+                wallsHp: 3000000,
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -357,41 +357,41 @@ module.exports = (function() {
                         '5878a65ce54d939f08188257': 'C4',
                     },
                     boost: {
-                        // B3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
-                        // B2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        B3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        B2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
                         // B1: RESOURCE_CATALYZED_UTRIUM_ACID,
                     },
                     reactions: [
-                        {
-                            labs: ['A1', 'A2', 'B1'],
-                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
-                            amount: 3000,
-                        },
-                        {
-                            labs: ['A1', 'A2', 'B2'],
-                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
-                            amount: 3000,
-                        },
-                        {
-                            labs: ['B4', 'C4', 'B3'],
-                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
-                            amount: 3000,
-                        },
-                        {
-                            labs: ['B4', 'C4', 'C3'],
-                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
-                            amount: 3000,
-                        },
-                        {
-                            labs: ['B1', 'B3', 'C1'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['B2', 'C3', 'C2'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
-                            amount: 10000,
-                        },
+                        // {
+                        //     labs: ['A1', 'A2', 'B1'],
+                        //     load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                        //     amount: 3000,
+                        // },
+                        // {
+                        //     labs: ['A1', 'A2', 'B2'],
+                        //     load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                        //     amount: 3000,
+                        // },
+                        // {
+                        //     labs: ['B4', 'C4', 'B3'],
+                        //     load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                        //     amount: 3000,
+                        // },
+                        // {
+                        //     labs: ['B4', 'C4', 'C3'],
+                        //     load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
+                        //     amount: 3000,
+                        // },
+                        // {
+                        //     labs: ['B1', 'B3', 'C1'],
+                        //     load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                        //     amount: 10000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C3', 'C2'],
+                        //     load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
+                        //     amount: 10000,
+                        // },
                     ],
                 }
             },
@@ -632,24 +632,27 @@ module.exports = (function() {
                 dragonEngage: {
                     minimum: 0,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
                     memo: {
                         role: 'brawler',
-                        room: 'E68N45',
-                        guardFlag: 'Flag117',
+                        room: 'E69N44',
+                        guardFlag: 'Flag107',
                         boost: [
-                            {part: HEAL, resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE, amount: 5},
+                            {part: HEAL, resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE, amount: 7},
                             {part: MOVE, resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE, amount: 10},
                         ]
                     }
                 },
                 dragonHealer: {
-                    minimum:0,
+                    minimum: 0,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
                     memo: {
                         role: 'brawler',
-                        room: 'E68N45',
+                        room: 'E69N44',
                         guardFlag: 'Flag107',
                     }
                 },

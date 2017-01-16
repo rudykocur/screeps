@@ -52,6 +52,12 @@ module.exports = (function() {
         },
 
         findAttackTarget: function(creep) {
+            var avoidStructures = [
+                STRUCTURE_WALL,
+                STRUCTURE_RAMPART,
+                STRUCTURE_STORAGE,
+                STRUCTURE_TERMINAL,
+            ];
             var target;
 
             if(!target) {
@@ -84,7 +90,7 @@ module.exports = (function() {
 
             if(!target) {
                 target = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {
-                    filter: s => s.structureType != STRUCTURE_RAMPART && s.structureType != STRUCTURE_WALL
+                    filter: s => avoidStructures.indexOf(s.structureType) < 0
                 });
             }
 
