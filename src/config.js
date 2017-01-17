@@ -65,7 +65,7 @@ module.exports = (function() {
         rooms: {
             home: {
                 type: "colony",
-                wallsHp: 3000000,
+                wallsHp: 2800000,
                 autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
@@ -157,7 +157,7 @@ module.exports = (function() {
                 type: "colony",
                 panicMode: false,
                 autobuyMinerals: true,
-                wallsHp: 3000000,
+                wallsHp: 2800000,
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -176,6 +176,7 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 50000,
                         [RESOURCE_HYDROXIDE]: 0,
                         [RESOURCE_GHODIUM]: 0,
+                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
                     }
                 },
                 terminal: {
@@ -185,6 +186,7 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 30000,
                         [RESOURCE_GHODIUM]: 10000,
                         [RESOURCE_HYDROXIDE]: 3000,
+                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,
                     }
                 },
                 labs: {
@@ -206,22 +208,17 @@ module.exports = (function() {
                     reactions: [
                         {
                             labs: ['A1', 'A2', 'B1'],
-                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_OXYGEN],
                             amount: 10000,
                         },
                         {
-                            labs: ['A1', 'A2', 'B2'],
-                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
+                            labs: ['B1', 'B2', 'C1'],
+                            load: [RESOURCE_ZYNTHIUM_OXIDE, RESOURCE_HYDROXIDE],
                             amount: 10000,
                         },
                         {
-                            labs: ['A1', 'A2', 'C1'],
-                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['A1', 'A2', 'C2'],
-                            load: [RESOURCE_HYDROGEN, RESOURCE_OXYGEN],
+                            labs: ['C1', 'C2', 'E1'],
+                            load: [RESOURCE_ZYNTHIUM_ALKALIDE, RESOURCE_CATALYST],
                             amount: 10000,
                         },
                     ],
@@ -249,6 +246,7 @@ module.exports = (function() {
                         // [RESOURCE_ZYNTHIUM_KEANITE]: 0,
                         // [RESOURCE_UTRIUM_LEMERGITE]: 0,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
+                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_GHODIUM]: 0,
                         //[RESOURCE_ENERGY]: 50000,
                     }
@@ -262,6 +260,7 @@ module.exports = (function() {
                         // [RESOURCE_ZYNTHIUM_KEANITE]: 3000,
                         // [RESOURCE_UTRIUM_LEMERGITE]: 3000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 5000,
+                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,
                     }
                 },
                 labs: {
@@ -279,34 +278,19 @@ module.exports = (function() {
                     },
                     reactions: [
                         {
-                            labs: ['A1', 'A2', 'B2'],
-                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            labs: ['A1', 'A2', 'B1'],
+                            load: [RESOURCE_ZYNTHIUM, RESOURCE_OXYGEN],
                             amount: 2000,
                         },
                         {
-                            labs: ['A1', 'A2', 'B3'],
-                            load: [RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM],
+                            labs: ['B1', 'B2', 'B3'],
+                            load: [RESOURCE_ZYNTHIUM_OXIDE, RESOURCE_HYDROXIDE],
                             amount: 2000,
                         },
                         {
-                            labs: ['B1', 'C1', 'C2'],
-                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
-                            amount: 2000,
-                        },
-                        {
-                            labs: ['B1', 'C1', 'C3'],
-                            load: [RESOURCE_UTRIUM, RESOURCE_LEMERGIUM],
-                            amount: 2000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'B4'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['B3', 'C3', 'C4'],
-                            load: [RESOURCE_ZYNTHIUM_KEANITE, RESOURCE_UTRIUM_LEMERGITE],
-                            amount: 10000,
+                            labs: ['B3', 'B4', 'C4'],
+                            load: [RESOURCE_ZYNTHIUM_ALKALIDE, RESOURCE_CATALYST],
+                            amount: 4000,
                         },
                     ],
                 },
@@ -359,7 +343,7 @@ module.exports = (function() {
                     boost: {
                         B3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
                         B2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        // B1: RESOURCE_CATALYZED_UTRIUM_ACID,
+                        B1: RESOURCE_CATALYZED_UTRIUM_ACID,
                     },
                     reactions: [
                         // {
@@ -678,13 +662,14 @@ module.exports = (function() {
                     }
                 },
                 testCleaner: {
-                    minimum: 0,
+                    minimum: 1,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
-                        room: 'E67N45',
-                        guardFlag: 'w11',
+                        room: 'E69N46',
+                        guardFlag: 'Flag109',
                     }
                 },
             },

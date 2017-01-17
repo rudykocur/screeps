@@ -87,6 +87,8 @@ module.exports = (function() {
                 }
             }
 
+            let canAttack = creep.getActiveBodyparts(ATTACK) > 0 || creep.getActiveBodyparts(RANGED_ATTACK) > 0;
+
             if(creep.getActiveBodyparts(MOVE) == 0 && creep.getActiveBodyparts(HEAL) > 0) {
                 creep.heal(creep);
                 return;
@@ -123,7 +125,8 @@ module.exports = (function() {
             }
 
             if(creep.hits > creep.hitsMax * 0.85) {
-                let wounded = _.first(_.filter(creep.pos.findInRange(FIND_MY_CREEPS, 2), /**Creep*/ c=> c.hits < c.hitsMax * 0.6));
+                let healUnderFactor = canAttack ? 0.6 : 0.9;
+                let wounded = _.first(_.filter(creep.pos.findInRange(FIND_MY_CREEPS, 2), /**Creep*/ c=> c.hits < c.hitsMax * healUnderFactor));
                 if(wounded) {
                     if(creep.heal(wounded) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(wounded);
@@ -140,7 +143,7 @@ module.exports = (function() {
                 return;
             }
 
-            if(target && (creep.getActiveBodyparts(ATTACK) > 0 || creep.getActiveBodyparts(RANGED_ATTACK) > 0)) {
+            if(target && canAttack) {
 
                 if(creep.pos.isNearTo(target) && creep.getActiveBodyparts(ATTACK) > 0) {
                     let result = creep.attack(target);
