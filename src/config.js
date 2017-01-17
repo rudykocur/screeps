@@ -65,7 +65,7 @@ module.exports = (function() {
         rooms: {
             home: {
                 type: "colony",
-                wallsHp: 2800000,
+                wallsHp: 3000000,
                 autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
@@ -84,7 +84,7 @@ module.exports = (function() {
                         [RESOURCE_OXYGEN]: 50000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
                         [RESOURCE_UTRIUM]: 12000,
-                        [RESOURCE_GHODIUM]: 0,
+                        [RESOURCE_GHODIUM]: 10000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 0,
@@ -100,7 +100,7 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 1000,
                         [RESOURCE_UTRIUM]: 1000,
-                        [RESOURCE_GHODIUM]: 10000,
+                        // [RESOURCE_GHODIUM]: 10000,
                     }
                 },
                 labs: {
@@ -186,7 +186,7 @@ module.exports = (function() {
                     reserve: {
                         [RESOURCE_ZYNTHIUM]: 50000,
                         [RESOURCE_HYDROXIDE]: 0,
-                        [RESOURCE_GHODIUM]: 0,
+                        [RESOURCE_GHODIUM]: 10000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
                     }
                 },
@@ -195,7 +195,7 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_ZYNTHIUM]: 30000,
-                        [RESOURCE_GHODIUM]: 10000,
+                        // [RESOURCE_GHODIUM]: 10000,
                         [RESOURCE_HYDROXIDE]: 3000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,
                     }
@@ -258,7 +258,7 @@ module.exports = (function() {
                         // [RESOURCE_UTRIUM_LEMERGITE]: 0,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 0,
-                        [RESOURCE_GHODIUM]: 0,
+                        [RESOURCE_GHODIUM]: 10000,
                         //[RESOURCE_ENERGY]: 50000,
                     }
                 },
@@ -267,7 +267,7 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ENERGY]: 25000,
-                        [RESOURCE_GHODIUM]: 10000,
+                        // [RESOURCE_GHODIUM]: 10000,
                         // [RESOURCE_ZYNTHIUM_KEANITE]: 3000,
                         // [RESOURCE_UTRIUM_LEMERGITE]: 3000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 5000,
@@ -327,7 +327,7 @@ module.exports = (function() {
                     },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
-                        [RESOURCE_GHODIUM]: 0,
+                        [RESOURCE_GHODIUM]: 10000,
                     }
                 },
                 terminal: {
@@ -335,7 +335,7 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ENERGY]: 25000,
-                        [RESOURCE_GHODIUM]: 10000,
+                        // [RESOURCE_GHODIUM]: 10000,
                     }
                 },
                 labs: {

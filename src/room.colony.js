@@ -16,6 +16,7 @@ var ContainerToStorageJobGenerator = require('./jobs.containerToStorage').Contai
 var SpawnRefillJobGenerator = require('./jobs.spawnRefill').SpawnRefillJobGenerator;
 var MineralToStorageJobGenerator = require('./jobs.mineralToStorage').MineralToStorageJobGenerator;
 var LabsJobGenerator = require('./jobs.labs').LabsJobGenerator;
+var LoadNukeJobGenerator = require('./jobs.loadNuke').LoadNukeJobGenerator;
 
 class ReactionConfig {
     constructor() {
@@ -39,7 +40,8 @@ class ColonyRoomHandler extends RoomHandler {
             new ContainerToStorageJobGenerator(this),
             new SpawnRefillJobGenerator(this),
             new MineralToStorageJobGenerator(this),
-            new LabsJobGenerator(this)
+            new LabsJobGenerator(this),
+            new LoadNukeJobGenerator(this)
         );
 
         this.labNameToId = {};

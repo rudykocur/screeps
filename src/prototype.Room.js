@@ -40,6 +40,7 @@ Room.prototype.refreshStructures = function() {
             storage: null,
             terminal: null,
             observer: null,
+            nuke: null,
             containers: [],
             towers: [],
             spawns: [],
@@ -61,6 +62,10 @@ Room.prototype.refreshStructures = function() {
 
             if(struct.structureType == STRUCTURE_TERMINAL) {
                 state.structures.terminal = struct.id;
+            }
+
+            if(struct.structureType == STRUCTURE_NUKER) {
+                state.structures.nuke = struct.id;
             }
 
             if(struct.structureType == STRUCTURE_TOWER) {
@@ -100,6 +105,14 @@ Room.prototype.getStorage = function() {
 Room.prototype.getObserver = function() {
     this.refreshStructures();
     return Game.getObjectById(this.handlerMemory.structures.observer);
+};
+
+/**
+ * @returns {StructureNuker}
+ */
+Room.prototype.getNuke = function() {
+    this.refreshStructures();
+    return Game.getObjectById(this.handlerMemory.structures.nuke);
 };
 
 /**
