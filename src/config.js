@@ -340,9 +340,8 @@ module.exports = (function() {
                 wallsHp: 20000,
                 creeps: {
                     mover: 2,
-                    upgrader: 2,
-                    transfer: 1,
-                    settler: 0,
+                    upgrader: 4,
+                    transfer: 2,
                 },
             },
             eastBottom: {

@@ -203,6 +203,8 @@ function reverseReactions(reactions) {
 
 function getNextReaction(resource, amount, store) {
 
+    store = _.omit(store, resource);
+
     if(store[resource] > amount) {
         return null;
     }
@@ -234,7 +236,7 @@ let storage = {
     [RESOURCE_GHODIUM]: 2000,
     [RESOURCE_HYDROXIDE]: 2000,
     // [RESOURCE_GHODIUM_OXIDE]: 2000,
-    // [RESOURCE_GHODIUM_ALKALIDE]: 2000,
+    [RESOURCE_GHODIUM_ALKALIDE]: 2000,
 };
 let nextReaction = getNextReaction(RESOURCE_GHODIUM_ALKALIDE, 1000, storage);
 

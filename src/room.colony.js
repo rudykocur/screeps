@@ -326,6 +326,7 @@ class ColonyRoomHandler extends RoomHandler {
     }
 
     updateLabsTarget() {
+        let batchSize = 3000;
         let target = _.get(this.config, 'labs.produce');
 
         if(!target) {
@@ -341,7 +342,7 @@ class ColonyRoomHandler extends RoomHandler {
 
         let finalResult = target.result;
 
-        if(!finalResult) {
+        if(!finalResult || (storage.store[finalResult] || 0) > target.amount) {
             this.state.lab = {
                 currentReaction: null,
                 target: null,
@@ -350,17 +351,17 @@ class ColonyRoomHandler extends RoomHandler {
             return;
         }
 
-        if(finalResult == this.state.lab.target && this.state.lab.batchProgress < 3000) {
+        if(finalResult == this.state.lab.target && this.state.lab.batchProgress < batchSize) {
             return;
         }
 
-        let currentTarget = this.getNextReaction(finalResult, target.amount, storage.store);
+        let currentReaction = this.getNextReaction(finalResult, batchSize, storage.store);
 
-        this.debug(`New lab target for ${finalResult} is: ${currentTarget}`);
+        this.debug(`New lab target for ${finalResult} is: ${currentReaction}`);
 
         this.state.lab = {
-            currentReaction: currentTarget,
-            currentResult: REACTIONS[currentTarget[0]][currentTarget[1]],
+            currentReaction: currentReaction,
+            currentResult: REACTIONS[currentReaction[0]][currentReaction[1]],
             target: finalResult,
             batchProgress: 0,
         };
@@ -368,7 +369,9 @@ class ColonyRoomHandler extends RoomHandler {
 
     getNextReaction(resource, amount, store) {
 
-        if(store[resource] > amount) {
+        store = _.omit(store, resource);
+
+        if((store[resource] || 0) > amount) {
             return null;
         }
 
