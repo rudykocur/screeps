@@ -270,7 +270,7 @@ class ColonyRoomHandler extends RoomHandler {
                 let handlers = _.sortByOrder(otherRooms, /**RoomHandler*/handler => handler.getResourceTotal(resource), 'desc');
 
                 for(let /**RoomHandler*/handler of handlers) {
-                    let toTransfer = Math.min(needed, handler.room.terminal.store[resource], terminalAvailable);
+                    let toTransfer = Math.min(100000, needed, handler.room.terminal.store[resource], terminalAvailable);
 
                     if(handler.room.terminal.send(resource, toTransfer, this.room.name) == OK) {
                         needed -= toTransfer;
@@ -298,6 +298,30 @@ class ColonyRoomHandler extends RoomHandler {
         if(Game.time % 3 == 0) {
             this.updateLabsTarget();
         }
+
+        let target = this.state.lab;
+        let config = _.get(this.config, 'labs.produce', null);
+
+        if(!target || !target.currentReaction) {
+            return;
+        }
+
+        let labIn1 = Game.getObjectById(this.labNameToId[config.input[0]]),
+            labIn2 = Game.getObjectById(this.labNameToId[config.input[1]]);
+
+        config.output.forEach(labName => {
+            /** @type StructureLab */
+            var outLab = Game.getObjectById(this.labNameToId[labName]);
+
+            let result = outLab.runReaction(labIn1, labIn2);
+            if(result == OK) {
+                target.batchProgress += 5;
+            }
+            else if(result != ERR_FULL && result != ERR_NOT_ENOUGH_RESOURCES && result != ERR_TIRED) {
+                logger.mail(this.error(`Unable to run reaction on ${labName}: ${result}`));
+            }
+        });
+
     }
 
     updateLabsTarget() {
@@ -325,8 +349,7 @@ class ColonyRoomHandler extends RoomHandler {
             return;
         }
 
-        if(finalResult == this.state.lab.target || this.state.lab.batchProgress < 3000) {
-            // this.debug('FFFF')
+        if(finalResult == this.state.lab.target && this.state.lab.batchProgress < 3000) {
             return;
         }
 
@@ -335,7 +358,8 @@ class ColonyRoomHandler extends RoomHandler {
         this.debug(`New lab target for ${finalResult} is: ${currentTarget}`);
 
         this.state.lab = {
-            currentReaction: currentReaction,
+            currentReaction: currentTarget,
+            currentResult: REACTIONS[currentTarget[0]][currentTarget[1]],
             target: finalResult,
             batchProgress: 0,
         };

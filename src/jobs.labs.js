@@ -19,8 +19,76 @@ class LabsJobGenerator extends JobGenerator {
 
     generateJobs() {
         this.createLabTransfers();
+        this.createLabTransfers2();
         this.createBoostTransfers();
         this.createEmptyUnusedLabTransfers();
+    }
+
+    createLabTransfers2() {
+        var jobs = this.state.jobs;
+        let reaction = this.handler.state.lab.currentReaction;
+        let resultResource = this.handler.state.lab.currentResult;
+        let config = _.get(this.config, 'labs.produce', null);
+        var storage = this.room.getStorage();
+
+        if(!reaction || !config) {
+            return;
+        }
+
+        config.input.forEach((labName, index) => {
+            let resource = reaction[index];
+
+            var labId = this.labNameToId[labName];
+            /** @type StructureLab */
+            var lab = Game.getObjectById(labId);
+
+            let emptyJobKey = `labs-${labName}-empty-${this.room.customName}`;
+
+            if (lab.mineralType && lab.mineralType != resource) {
+
+                if (!(emptyJobKey in jobs)) {
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, storage, lab.mineralType);
+                }
+
+                jobs[emptyJobKey].amount = lab.mineralAmount;
+            }
+            else {
+                delete jobs[emptyJobKey];
+
+                var key = `labs-${labName}-withdraw-${storage.structureType}-${resource}`;
+                if (lab.mineralAmount < 2000 && storage.store[resource] > 0) {
+
+                    if (!(key in jobs)) {
+                        jobs[key] = this._getJobTransferDict(key, storage, lab, resource);
+                    }
+
+                    jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
+                }
+                else {
+                    delete jobs[key];
+                }
+            }
+        });
+
+        config.output.forEach(labName => {
+            /** @type StructureLab */
+            var outLab = Game.getObjectById(this.labNameToId[labName]);
+
+            // var resultResource = REACTIONS[reaction.load[0]][reaction.load[1]];
+
+            let emptyJobKey = `labs-${labName}-empty-${outLab.mineralType}`;
+
+            if (outLab.mineralType && outLab.mineralType != resultResource) {
+                if (!(emptyJobKey in jobs)) {
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLab, storage, outLab.mineralType);
+                }
+
+                jobs[emptyJobKey].amount = outLab.mineralAmount;
+            }
+            else {
+                delete jobs[emptyJobKey];
+            }
+        })
     }
 
     createLabTransfers() {
@@ -152,7 +220,10 @@ class LabsJobGenerator extends JobGenerator {
             }
         });
 
+        unusedLabs = _.without(unusedLabs, ..._.get(this.config, 'labs.produce.input', []));
         unusedLabs = _.without(unusedLabs, ..._.keys(_.get(this.config, 'labs.boost')));
+
+        outputLabs.push(..._.get(this.config, 'labs.produce.output', []));
 
         allLabs.forEach(labName => {
             /** @type StructureLab */

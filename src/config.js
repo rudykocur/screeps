@@ -125,49 +125,7 @@ module.exports = (function() {
                         result: RESOURCE_GHODIUM,
                         amount: 10000,
                     },
-                    reactions: [
-                        // {
-                        //     labs: ['B2', 'C2', 'A1'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-                        // {
-                        //     labs: ['B2', 'C2', 'A2'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-                        // {
-                        //     labs: ['B2', 'C2', 'A3'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-                        // {
-                        //     labs: ['B2', 'C2', 'B1'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-                        // {
-                        //     labs: ['B2', 'C2', 'B3'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-                        // {
-                        //     labs: ['B2', 'C2', 'D1'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-                        // {
-                        //     labs: ['B2', 'C2', 'D2'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-                        // {
-                        //     labs: ['B2', 'C2', 'D3'],
-                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                        //     amount: 15000,
-                        // },
-
-                    ],
+                    reactions: [],
                 }
             },
             moria: {
@@ -222,23 +180,13 @@ module.exports = (function() {
                     boost: {
                         // C1: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
-                    reactions: [
-                        {
-                            labs: ['A1', 'A2', 'B1'],
-                            load: [RESOURCE_ZYNTHIUM, RESOURCE_OXYGEN],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['B1', 'B2', 'C1'],
-                            load: [RESOURCE_ZYNTHIUM_OXIDE, RESOURCE_HYDROXIDE],
-                            amount: 10000,
-                        },
-                        {
-                            labs: ['C1', 'C2', 'E1'],
-                            load: [RESOURCE_ZYNTHIUM_ALKALIDE, RESOURCE_CATALYST],
-                            amount: 10000,
-                        },
-                    ],
+                    produce: {
+                        input: ['C1', 'C2'],
+                        output: ['A1', 'A2', 'B1', 'B2', 'D3', 'E1', 'E2', 'E3'],
+                        result: RESOURCE_GHODIUM,
+                        amount: 6000,
+                    },
+                    reactions: [],
                 },
             },
             kaerMorhen: {
@@ -293,23 +241,13 @@ module.exports = (function() {
                         '586c3e9d5f1a64b15d4151b8': 'C3',
                         '587ac22cb3bcbfa352090062': 'C4',
                     },
-                    reactions: [
-                        {
-                            labs: ['A1', 'A2', 'B1'],
-                            load: [RESOURCE_ZYNTHIUM, RESOURCE_OXYGEN],
-                            amount: 2000,
-                        },
-                        {
-                            labs: ['B1', 'B2', 'B3'],
-                            load: [RESOURCE_ZYNTHIUM_OXIDE, RESOURCE_HYDROXIDE],
-                            amount: 2000,
-                        },
-                        {
-                            labs: ['B3', 'B4', 'C4'],
-                            load: [RESOURCE_ZYNTHIUM_ALKALIDE, RESOURCE_CATALYST],
-                            amount: 4000,
-                        },
-                    ],
+                    produce: {
+                        input: ['B2', 'B3'],
+                        output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
+                        result: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        amount: 6000,
+                    },
+                    reactions: [],
                 },
             },
             orphan: {
@@ -330,6 +268,7 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
+                        [RESOURCE_ENERGY]: 500000,
                     },
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
