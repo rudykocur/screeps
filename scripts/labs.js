@@ -201,51 +201,39 @@ function reverseReactions(reactions) {
     return results;
 }
 
-function getRequiredReactions(resource, revResources) {
-    var toCheck = [resource];
-    var result = [];
+function getNextReaction(resource, amount, store) {
+
+    if(store[resource] > amount) {
+        return null;
+    }
+
+    let toCheck = [REACTIONS_REVERSE[resource]];
 
     while(toCheck.length > 0) {
-        let res = toCheck.pop();
-        let requirements = revResources[res];
+        let reaction = toCheck.pop();
 
-
-        if(RESOURCES_BASE.indexOf(res) < 0) {
-            toCheck.push(...requirements);
-            result.push(requirements);
+        if((store[reaction[0]] || 0) < amount && RESOURCES_BASE.indexOf(reaction[0]) < 0) {
+            toCheck.push(REACTIONS_REVERSE[reaction[0]]);
+            continue;
         }
-    }
 
-    return result;
-}
-
-function getNextReaction(resource, amount, storage) {
-    let reactions = getRequiredReactions(resource, REACTIONS_REVERSE);
-    _(reactions).reverse().value();
-    for(let reaction of reactions) {
-
-        for(let res of reaction) {
-            if(RESOURCES_BASE.indexOf(res) >= 0) {
-                continue;
-            }
-
-            if((storage[res] || 0) < amount) {
-                return REACTIONS_REVERSE[res];
-            }
+        if((store[reaction[1]] || 0) < amount && RESOURCES_BASE.indexOf(reaction[1]) < 0) {
+            toCheck.push(REACTIONS_REVERSE[reaction[1]]);
+            continue;
         }
-    }
 
-    return _.last(reactions);
+        return reaction;
+    }
 }
 
 global.REACTIONS_REVERSE = reverseReactions(REACTIONS);
 
 let storage = {
-    [RESOURCE_ZYNTHIUM_KEANITE]: 2000,
-    [RESOURCE_UTRIUM_LEMERGITE]: 2000,
+    // [RESOURCE_ZYNTHIUM_KEANITE]: 2000,
+    // [RESOURCE_UTRIUM_LEMERGITE]: 2000,
     [RESOURCE_GHODIUM]: 2000,
     [RESOURCE_HYDROXIDE]: 2000,
-    [RESOURCE_GHODIUM_OXIDE]: 2000,
+    // [RESOURCE_GHODIUM_OXIDE]: 2000,
     // [RESOURCE_GHODIUM_ALKALIDE]: 2000,
 };
 let nextReaction = getNextReaction(RESOURCE_GHODIUM_ALKALIDE, 1000, storage);

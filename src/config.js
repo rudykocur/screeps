@@ -119,47 +119,53 @@ module.exports = (function() {
                     boost: {
                         // D3: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
+                    produce: {
+                        input: ['B2', 'C2'],
+                        output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
+                        result: RESOURCE_GHODIUM,
+                        amount: 10000,
+                    },
                     reactions: [
-                        {
-                            labs: ['B2', 'C2', 'A1'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'A2'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'A3'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'B1'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'B3'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'D1'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'D2'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
-                        {
-                            labs: ['B2', 'C2', 'D3'],
-                            load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
-                            amount: 15000,
-                        },
+                        // {
+                        //     labs: ['B2', 'C2', 'A1'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C2', 'A2'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C2', 'A3'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C2', 'B1'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C2', 'B3'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C2', 'D1'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C2', 'D2'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
+                        // {
+                        //     labs: ['B2', 'C2', 'D3'],
+                        //     load: [RESOURCE_UTRIUM_ACID, RESOURCE_CATALYST],
+                        //     amount: 15000,
+                        // },
 
                     ],
                 }
@@ -420,7 +426,7 @@ module.exports = (function() {
                 wallsHp: 20000,
                 creeps: {
                     mover: 2,
-                    upgrader: 8,
+                    upgrader: 2,
                     transfer: 1,
                     settler: 0,
                 },
@@ -796,3 +802,34 @@ global.BOOST_RESULT_HEAL = 'heal'; // better healing
 global.BOOST_RESULT_CAPACITY = 'capacity'; // increased capacity
 global.BOOST_RESULT_FATIGUE = 'fatigue'; // faster fatigue reduction
 global.BOOST_RESULT_DAMAGE = 'damage'; // increased resistance
+
+if(!('REACTIONS_REVERSE' in global)) {
+    function reverseReactions(reactions) {
+        var results = {};
+
+        _.each(reactions, (other, firstResource) => {
+            _.each(other, (finalResource, secondResource) => {
+                if(finalResource in results) {
+                    return;
+                }
+                results[finalResource] = [firstResource, secondResource];
+            })
+        });
+
+        return results;
+    }
+
+    global.REACTIONS_REVERSE = reverseReactions(REACTIONS);
+}
+
+if(!('RESOURCES_BASE' in global)) {
+    global.RESOURCES_BASE = [
+        RESOURCE_UTRIUM,
+        RESOURCE_KEANIUM,
+        RESOURCE_ZYNTHIUM,
+        RESOURCE_LEMERGIUM,
+        RESOURCE_OXYGEN,
+        RESOURCE_HYDROGEN,
+        RESOURCE_CATALYST,
+    ];
+}

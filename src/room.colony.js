@@ -32,7 +32,15 @@ class ColonyRoomHandler extends RoomHandler {
 
         this.type = 'colony';
 
-        _.defaults(this.state, {constructionProgressLeft: 0, observer: {}});
+        _.defaults(this.state, {
+            constructionProgressLeft: 0,
+            observer: {},
+            lab: {
+                currentReaction: null,
+                target: null,
+                batchProgress: null,
+            },
+        });
 
         this.jobGenerators.push(
             new TerminalToStorageJobGenerator(this),
@@ -75,6 +83,7 @@ class ColonyRoomHandler extends RoomHandler {
     process() {
         super.process();
 
+        this.runLabProcessing();
         this.runReactions();
 
         this.maintainHarvesterPopulation();
@@ -284,6 +293,79 @@ class ColonyRoomHandler extends RoomHandler {
             }
         }
     }
+
+    runLabProcessing() {
+        if(Game.time % 3 == 0) {
+            this.updateLabsTarget();
+        }
+    }
+
+    updateLabsTarget() {
+        let target = _.get(this.config, 'labs.produce');
+
+        if(!target) {
+            this.state.lab = {
+                currentReaction: null,
+                target: null,
+                batchProgress: null
+            };
+            return;
+        }
+
+        let storage = this.room.getStorage();
+
+        let finalResult = target.result;
+
+        if(!finalResult) {
+            this.state.lab = {
+                currentReaction: null,
+                target: null,
+                batchProgress: null,
+            };
+            return;
+        }
+
+        if(finalResult == this.state.lab.target || this.state.lab.batchProgress < 3000) {
+            // this.debug('FFFF')
+            return;
+        }
+
+        let currentTarget = this.getNextReaction(finalResult, target.amount, storage.store);
+
+        this.debug(`New lab target for ${finalResult} is: ${currentTarget}`);
+
+        this.state.lab = {
+            currentReaction: currentReaction,
+            target: finalResult,
+            batchProgress: 0,
+        };
+    }
+
+    getNextReaction(resource, amount, store) {
+
+        if(store[resource] > amount) {
+            return null;
+        }
+
+        let toCheck = [REACTIONS_REVERSE[resource]];
+
+        while(toCheck.length > 0) {
+            let reaction = toCheck.pop();
+
+            if((store[reaction[0]] || 0) < amount && RESOURCES_BASE.indexOf(reaction[0]) < 0) {
+                toCheck.push(REACTIONS_REVERSE[reaction[0]]);
+                continue;
+            }
+
+            if((store[reaction[1]] || 0) < amount && RESOURCES_BASE.indexOf(reaction[1]) < 0) {
+                toCheck.push(REACTIONS_REVERSE[reaction[1]]);
+                continue;
+            }
+
+            return reaction;
+        }
+    }
+
 
     runReactions() {
         _.get(this.config, 'labs.reactions', []).forEach(reaction => {
