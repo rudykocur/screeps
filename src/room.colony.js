@@ -317,7 +317,8 @@ class ColonyRoomHandler extends RoomHandler {
             if(result == OK) {
                 target.batchProgress += 5;
             }
-            else if(result != ERR_FULL && result != ERR_NOT_ENOUGH_RESOURCES && result != ERR_TIRED) {
+            else if(result != ERR_FULL && result != ERR_NOT_ENOUGH_RESOURCES &&
+                result != ERR_TIRED && result != ERR_INVALID_ARGS) {
                 logger.mail(this.error(`Unable to run reaction on ${labName}: ${result}`));
             }
         });
