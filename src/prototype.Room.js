@@ -41,6 +41,12 @@ Room.prototype.refreshStructures = function() {
             terminal: null,
             observer: null,
             nuke: null,
+            extractor: {
+                resource: null,
+                extractorId: null,
+                mineralId: null,
+                containerId: null,
+            },
             containers: [],
             towers: [],
             spawns: [],
@@ -79,7 +85,24 @@ Room.prototype.refreshStructures = function() {
             if(struct.structureType == STRUCTURE_SPAWN) {
                 state.structures.spawns.push(struct.id);
             }
+
+            if(struct.structureType == STRUCTURE_EXTRACTOR) {
+                let mineral = _.first(struct.pos.lookFor(LOOK_MINERALS));
+                state.structures.extractor = {
+                    resource: mineral.mineralType,
+                    extractorId: struct.id,
+                    mineralId: mineral.id,
+                    containerId: null,
+                }
+            }
         });
+
+        if(state.structures.extractor.mineralId) {
+            let mineral = Game.getObjectById(state.structures.extractor.mineralId);
+            let containers = mineral.pos.findInRange(state.structures.containers.map(sId => Game.getObjectById(sId)), 1);
+
+            state.structures.extractor.containerId = _.get(_.first(containers), 'id');
+        }
     }
 };
 
@@ -113,6 +136,25 @@ Room.prototype.getObserver = function() {
 Room.prototype.getNuke = function() {
     this.refreshStructures();
     return Game.getObjectById(this.handlerMemory.structures.nuke);
+};
+
+/**
+ *
+ * @returns {{extractor: StructureExtractor, container: StructureContainer, resource:String}}
+ */
+Room.prototype.getExtractor = function() {
+    this.refreshStructures();
+
+    if(!this.handlerMemory.structures.extractor.extractorId) {
+        return null;
+    }
+
+    return {
+        extractor: Game.getObjectById(this.handlerMemory.structures.extractor.extractorId),
+        container: Game.getObjectById(this.handlerMemory.structures.extractor.containerId),
+        mineral: Game.getObjectById(this.handlerMemory.structures.extractor.mineralId),
+        resource: this.handlerMemory.structures.extractor.resource,
+    }
 };
 
 /**

@@ -12,21 +12,25 @@ class MineralToStorageJobGenerator extends JobGenerator {
     }
 
     generateJobs() {
-        /** @type Mineral */
-        var mineral = _.first(this.room.find(FIND_MINERALS));
+        var extractor = this.room.getExtractor();
+
+        if(!extractor) {
+            return;
+        }
+
         var jobs = this.state.jobs;
 
         let storage = this.room.getStorage();
 
-        var container = _.first(mineral.pos.findInRange(this.room.getContainers(), 1));
+        var container = extractor.container;
 
-        var key = `mineralMove-${mineral.mineralType}`;
-        if(container && container.store[mineral.mineralType] > 400) {
+        var key = `mineralMove-${extractor.resource}`;
+        if(container && container.store[extractor.mineral] > 400) {
             if(!(key in jobs)) {
-                jobs[key] = this._getJobTransferDict(key, container, storage, mineral.mineralType);
+                jobs[key] = this._getJobTransferDict(key, container, storage, extractor.resource);
             }
 
-            jobs[key].amount = container.store[mineral.mineralType];
+            jobs[key].amount = container.store[extractor.resource];
         }
         else {
             delete jobs[key];
