@@ -38,10 +38,11 @@ module.exports = (function() {
             minerals: {
                 [RESOURCE_OXYGEN]: {
                     buyPriceMax: 0.7,
-                    sellPriceMin: 0.45,
+                    sellPriceMin: 0.41,
                 },
                 [RESOURCE_HYDROGEN]: {
                     buyPriceMax: 0.85,
+                    sellPriceMin: 0.71,
                 },
                 [RESOURCE_LEMERGIUM]: {
                     buyPriceMax: 0.5,
@@ -329,6 +330,7 @@ module.exports = (function() {
                     }
                 },
                 terminal: {
+                    autosell: [RESOURCE_HYDROGEN],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
                         [RESOURCE_ENERGY]: 100000,
@@ -337,11 +339,26 @@ module.exports = (function() {
             },
             h2: {
                 type: "colony",
-                wallsHp: 20000,
+                wallsHp: 50000,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
                     transfer: 2,
+                },
+                minerals: {
+                    wants: {
+                        [RESOURCE_ENERGY]: 0,
+                    },
+                    reserve: {
+                        [RESOURCE_HYDROGEN]: 0,
+                    }
+                },
+                terminal: {
+                    // autosell: [RESOURCE_HYDROGEN],
+                    require: {
+                        [RESOURCE_HYDROGEN]: 5000,
+                        [RESOURCE_ENERGY]: 30000,
+                    }
                 },
             },
             eastBottom: {
