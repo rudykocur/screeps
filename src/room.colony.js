@@ -326,7 +326,7 @@ class ColonyRoomHandler extends RoomHandler {
     }
 
     updateLabsTarget() {
-        let batchSize = 3000;
+        let batchSize = 4000;
         let target = _.get(this.config, 'labs.produce');
 
         if(!target) {

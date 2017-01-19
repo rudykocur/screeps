@@ -21,7 +21,7 @@ module.exports = (function() {
             }
 
             if(tower.energy > 300) {
-                var towerHp = config.rooms[tower.room.customName].wallsHp || 230000;
+                var wallsHp = config.rooms[tower.room.customName].wallsHp || 20000;
 
                 var toRepair = tower.room.find(FIND_STRUCTURES, {
                     /**
@@ -29,7 +29,7 @@ module.exports = (function() {
                      */
                     filter: function(struct) {
                         if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
-                            return struct.hits < towerHp;
+                            return struct.hits < wallsHp;
                         }
 
                         return (struct.hits / struct.hitsMax) < 0.75;

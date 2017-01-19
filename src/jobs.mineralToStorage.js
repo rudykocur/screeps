@@ -25,7 +25,8 @@ class MineralToStorageJobGenerator extends JobGenerator {
         var container = extractor.container;
 
         var key = `mineralMove-${extractor.resource}`;
-        if(container && container.store[extractor.mineral] > 400) {
+
+        if(container && container.store[extractor.resource] > 400) {
             if(!(key in jobs)) {
                 jobs[key] = this._getJobTransferDict(key, container, storage, extractor.resource);
             }

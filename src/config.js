@@ -37,7 +37,7 @@ module.exports = (function() {
             maxTradeRange: 35,
             minerals: {
                 [RESOURCE_OXYGEN]: {
-                    buyPriceMax: 0.7,
+                    buyPriceMax: 0.4,
                     sellPriceMin: 0.41,
                 },
                 [RESOURCE_HYDROGEN]: {
@@ -53,7 +53,7 @@ module.exports = (function() {
                     sellPriceMin: 0.15,
                 },
                 [RESOURCE_KEANIUM]: {
-                    buyPriceMax: 0.5,
+                    buyPriceMax: 0.35,
                 },
                 [RESOURCE_UTRIUM]: {
                     buyPriceMax: 0.5,
@@ -123,7 +123,7 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'C2'],
                         output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
-                        result: RESOURCE_GHODIUM,
+                        result: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
                         amount: 15000,
                     },
                     reactions: [],
@@ -197,7 +197,7 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 1,
                     mover: 2,
-                    transfer: 2,
+                    transfer: 3,
                 },
                 minerals: {
                     wants: {
@@ -218,10 +218,9 @@ module.exports = (function() {
                     }
                 },
                 terminal: {
-                    autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 50000,
-                        [RESOURCE_ENERGY]: 25000,
+                        [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_GHODIUM]: 10000,
                         // [RESOURCE_ZYNTHIUM_KEANITE]: 3000,
                         // [RESOURCE_UTRIUM_LEMERGITE]: 3000,
@@ -245,8 +244,8 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
-                        result: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        amount: 6000,
+                        result: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        amount: 10000,
                     },
                     reactions: [],
                 },
@@ -262,9 +261,9 @@ module.exports = (function() {
                 },
                 minerals: {
                     wants: {
-                        [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 5000,
-                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,
-                        [RESOURCE_CATALYZED_UTRIUM_ACID]: 5000,
+                        [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 8000,
+                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 8000,
+                        [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
                         [RESOURCE_UTRIUM]: 13000,
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
@@ -274,6 +273,7 @@ module.exports = (function() {
                     reserve: {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_GHODIUM]: 5000,
+                        [RESOURCE_HYDROXIDE]: 0,
                     }
                 },
                 terminal: {
@@ -282,6 +282,7 @@ module.exports = (function() {
                         [RESOURCE_LEMERGIUM]: 50000,
                         [RESOURCE_ENERGY]: 25000,
                         [RESOURCE_GHODIUM]: 10000,
+                        [RESOURCE_HYDROXIDE]: 10000,
                     }
                 },
                 labs: {
@@ -305,7 +306,7 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
-                        result: RESOURCE_GHODIUM,
+                        result: RESOURCE_HYDROXIDE,
                         amount: 10000,
                     },
                     reactions: [],
@@ -318,12 +319,12 @@ module.exports = (function() {
                 // importEnabled: false,
                 creeps: {
                     mover: 2,
-                    upgrader: 5,
+                    upgrader: 8,
                     transfer: 2,
                 },
                 minerals: {
                     wants: {
-                        [RESOURCE_ENERGY]: 0,
+                        // [RESOURCE_ENERGY]: 0,
                     },
                     reserve: {
                         [RESOURCE_HYDROGEN]: 0,
@@ -333,7 +334,7 @@ module.exports = (function() {
                     autosell: [RESOURCE_HYDROGEN],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ENERGY]: 30000,
                     }
                 },
             },
@@ -361,22 +362,22 @@ module.exports = (function() {
                     }
                 },
             },
-            eastBottom: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            eastBottomFar: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            septis: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            septisBottom: {
-                type: "outpost",
-                homeRoom: "east",
-            },
+            // eastBottom: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // eastBottomFar: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // septis: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // septisBottom: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
             h2Right: {
                 type: "outpost",
                 homeRoom: "h2",
@@ -506,6 +507,7 @@ module.exports = (function() {
             "Kaer Trolde": {},
             Blaviken: {},
             Shaerrawedd: {},
+            Drakenborg: {},
             Tokyo: {
                 claimH2: {
                     minimum: 0,
@@ -609,7 +611,7 @@ module.exports = (function() {
                     }
                 },
                 testCleaner: {
-                    minimum: 1,
+                    minimum: 2,
                     priority: 'normal',
                     // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
@@ -617,6 +619,17 @@ module.exports = (function() {
                         role: 'brawler',
                         room: 'E69N46',
                         guardFlag: 'Flag109',
+                    }
+                },
+                testCleaner2: {
+                    minimum: 2,
+                    priority: 'normal',
+                    // body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E69N46',
+                        guardFlag: 'Flag110',
                     }
                 },
             },
