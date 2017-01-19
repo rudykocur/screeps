@@ -22,6 +22,9 @@ module.exports = (function() {
 
             if(tower.energy > 300) {
                 var wallsHp = config.rooms[tower.room.customName].wallsHp || 20000;
+                var structRampartsHp = config.rooms[tower.room.customName].structRampartsHp || wallsHp;
+
+                let rampartsOverStruct = tower.room.getRampartsOverStructures();
 
                 var toRepair = tower.room.find(FIND_STRUCTURES, {
                     /**
@@ -29,6 +32,9 @@ module.exports = (function() {
                      */
                     filter: function(struct) {
                         if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
+                            if(rampartsOverStruct.indexOf(struct.id) >= 0) {
+                                return struct.hits < structRampartsHp;
+                            }
                             return struct.hits < wallsHp;
                         }
 
@@ -36,7 +42,17 @@ module.exports = (function() {
                     }
                 });
 
-                var target = _.first(_.sortBy(toRepair, struct => (struct.hits/struct.hitsMax)));
+                var target = _.first(_.sortBy(toRepair, struct => {
+                    if(rampartsOverStruct.indexOf(struct.id) >= 0) {
+                        return struct.hits/structRampartsHp;
+                    }
+
+                    if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
+                        return struct.hits/wallsHp;
+                    }
+
+                    return struct.hits/struct.hitsMax;
+                }));
 
                 if(target) {
                     tower.repair(target);

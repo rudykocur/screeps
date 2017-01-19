@@ -51,48 +51,78 @@ Room.prototype.refreshStructures = function() {
             towers: [],
             spawns: [],
             extensions: [],
+            wallsAndRamparts: [],
+            toRepair: [],
+            rampartsOverStructures: [],
         };
 
-        this.find(FIND_STRUCTURES).forEach(/**Structure*/struct => {
-            if(struct.structureType == STRUCTURE_STORAGE) {
+        let ramparts = {};
+
+        let allStructures = this.find(FIND_STRUCTURES);
+        allStructures.forEach(/**Structure*/struct => {
+
+            if (struct.structureType == STRUCTURE_STORAGE) {
                 state.structures.storage = struct.id;
             }
 
-            if(struct.structureType == STRUCTURE_OBSERVER) {
+            if (struct.structureType == STRUCTURE_OBSERVER) {
                 state.structures.observer = struct.id;
             }
 
-            if(struct.structureType == STRUCTURE_CONTAINER) {
+            if (struct.structureType == STRUCTURE_CONTAINER) {
                 state.structures.containers.push(struct.id);
             }
 
-            if(struct.structureType == STRUCTURE_TERMINAL) {
+            if (struct.structureType == STRUCTURE_TERMINAL) {
                 state.structures.terminal = struct.id;
             }
 
-            if(struct.structureType == STRUCTURE_NUKER) {
+            if (struct.structureType == STRUCTURE_NUKER) {
                 state.structures.nuke = struct.id;
             }
 
-            if(struct.structureType == STRUCTURE_TOWER) {
+            if (struct.structureType == STRUCTURE_TOWER) {
                 state.structures.towers.push(struct.id);
             }
 
-            if(struct.structureType == STRUCTURE_EXTENSION) {
+            if (struct.structureType == STRUCTURE_EXTENSION) {
                 state.structures.extensions.push(struct.id);
             }
 
-            if(struct.structureType == STRUCTURE_SPAWN) {
+            if (struct.structureType == STRUCTURE_SPAWN) {
                 state.structures.spawns.push(struct.id);
             }
 
-            if(struct.structureType == STRUCTURE_EXTRACTOR) {
+            if (struct.structureType == STRUCTURE_EXTRACTOR) {
                 let mineral = _.first(struct.pos.lookFor(LOOK_MINERALS));
                 state.structures.extractor = {
                     resource: mineral.mineralType,
                     extractorId: struct.id,
                     mineralId: mineral.id,
                     containerId: null,
+                }
+            }
+
+            if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
+                state.structures.wallsAndRamparts.push(struct.id);
+            }
+            else {
+                if((struct.hits / struct.hitsMax) < 0.75) {
+                    state.structures.toRepair.push(struct.id);
+                }
+            }
+
+            if(struct.structureType == STRUCTURE_RAMPART) {
+                ramparts[struct.pos.x+'-'+struct.pos.y] = struct.id;
+            }
+
+        });
+
+        allStructures.forEach(/**Structure*/struct => {
+            if([STRUCTURE_TOWER, STRUCTURE_SPAWN].indexOf(struct.structureType) >= 0) {
+                let rampartId = ramparts[struct.pos.x+'-'+struct.pos.y];
+                if(rampartId) {
+                    state.structures.rampartsOverStructures.push(rampartId);
                 }
             }
         });
@@ -158,7 +188,6 @@ Room.prototype.getExtractor = function() {
 };
 
 /**
- *
  * @return {Array<StructureSpawn>}
  */
 Room.prototype.getSpawns = function() {
@@ -174,6 +203,30 @@ Room.prototype.getExtensions = function() {
 Room.prototype.getTowers = function() {
     this.refreshStructures();
     return this.handlerMemory.structures.towers.map(sId => Game.getObjectById(sId));
+};
+
+/**
+ * @return {Array<StructureWall>}
+ */
+Room.prototype.getWallsAndRamparts = function() {
+    this.refreshStructures();
+    return this.handlerMemory.structures.wallsAndRamparts.map(sId => Game.getObjectById(sId));
+};
+
+/**
+ * @return {Array<OwnedStructure>}
+ */
+Room.prototype.getStructuresToRepair = function() {
+    this.refreshStructures();
+    return this.handlerMemory.structures.toRepair.map(sId => Game.getObjectById(sId));
+};
+
+/**
+ * @return {Array<String>}
+ */
+Room.prototype.getRampartsOverStructures = function() {
+    this.refreshStructures();
+    return this.handlerMemory.structures.rampartsOverStructures;
 };
 
 /**

@@ -67,6 +67,7 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 wallsHp: 3000000,
+                structRampartsHp: 5000000,
                 autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
@@ -133,7 +134,8 @@ module.exports = (function() {
                 type: "colony",
                 panicMode: false,
                 autobuyMinerals: true,
-                wallsHp: 2800000,
+                wallsHp: 3000000,
+                structRampartsHp: 4000000,
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -331,7 +333,7 @@ module.exports = (function() {
                     }
                 },
                 terminal: {
-                    autosell: [RESOURCE_HYDROGEN],
+                    // autosell: [RESOURCE_HYDROGEN],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
                         [RESOURCE_ENERGY]: 30000,
@@ -343,7 +345,7 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 4,
+                    upgrader: 10,
                     transfer: 2,
                 },
                 minerals: {
@@ -358,7 +360,7 @@ module.exports = (function() {
                     // autosell: [RESOURCE_HYDROGEN],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 30000,
+                        [RESOURCE_ENERGY]: 50000,
                     }
                 },
             },
@@ -378,14 +380,14 @@ module.exports = (function() {
             //     type: "outpost",
             //     homeRoom: "east",
             // },
-            h2Right: {
-                type: "outpost",
-                homeRoom: "h2",
-            },
-            h2Left: {
-                type: "outpost",
-                homeRoom: "h2",
-            },
+            // h2Right: {
+            //     type: "outpost",
+            //     homeRoom: "h2",
+            // },
+            // h2Left: {
+            //     type: "outpost",
+            //     homeRoom: "h2",
+            // },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
