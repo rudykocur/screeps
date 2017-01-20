@@ -84,7 +84,6 @@ class ColonyRoomHandler extends RoomHandler {
         super.process();
 
         this.runLabProcessing();
-        this.runReactions();
 
         this.maintainHarvesterPopulation();
         this.maintainMovers();
@@ -394,32 +393,6 @@ class ColonyRoomHandler extends RoomHandler {
         }
     }
 
-
-    runReactions() {
-        _.get(this.config, 'labs.reactions', []).forEach(reaction => {
-            let [in1, in2, /**StructureLab*/ out] = reaction.labs;
-            let [in1Resource, in2Resouce] = reaction.load;
-
-            in1 = Game.getObjectById(this.labNameToId[in1]);
-            in2 = Game.getObjectById(this.labNameToId[in2]);
-            out = Game.getObjectById(this.labNameToId[out]);
-
-            let outResource = REACTIONS[in1Resource][in2Resouce];
-
-            if(in1.mineralType != in1Resource) {
-                return;
-            }
-
-            if(in2.mineralType != in2Resouce) {
-                return;
-            }
-
-            if(this.getResourceTotal(outResource) < reaction.amount && out.cooldown == 0) {
-                out.runReaction(in1, in2);
-            }
-        });
-    }
-
     autobuyMinerals(orders) {
         var minerals = [RESOURCE_OXYGEN, RESOURCE_HYDROGEN, RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM, RESOURCE_LEMERGIUM,
             RESOURCE_UTRIUM, RESOURCE_CATALYST];
@@ -472,7 +445,13 @@ class ColonyRoomHandler extends RoomHandler {
         /** @type StructureTerminal */
         var terminal = this.room.getTerminal();
 
+        let extractor = this.room.getExtractor();
+
         minerals.forEach(resource => {
+            if(extractor.resource == resource && this.getResourceTotal(resource) < 50000) {
+                this.debug('Not selling ' + resource + ' because it is less than 50k');
+            }
+
             if(terminal.store[resource] > 2000) {
                 let minPrice = config.market.minerals[resource].sellPriceMin;
 
@@ -503,7 +482,7 @@ class ColonyRoomHandler extends RoomHandler {
                     let result = this._completeDeal(terminal, closestOrder);
                     var gain = result * closestOrder.price;
                     if(result) {
-                        this.info(F.green(`Sold ${resource} x${result} units for ${gain} credits. OrderID: ${closestOrder.id}`));
+                        this.info(F.green(`Sold ${resource} x${result} units for ${gain} credits (${closestOrder.price}/u). OrderID: ${closestOrder.id}`));
                     }
                 }
             }
