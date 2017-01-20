@@ -212,6 +212,7 @@ module.exports = (function() {
                     }
                 },
                 terminal: {
+                    autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 5000,
                         [RESOURCE_ENERGY]: 200000,
@@ -313,14 +314,14 @@ module.exports = (function() {
                 },
                 minerals: {
                     wants: {
-                        // [RESOURCE_ENERGY]: 0,
+                        [RESOURCE_ENERGY]: 0,
                     },
                     reserve: {
                         [RESOURCE_HYDROGEN]: 0,
                     }
                 },
                 terminal: {
-                    // autosell: [RESOURCE_HYDROGEN],
+                    autosell: [RESOURCE_HYDROGEN],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
                         [RESOURCE_ENERGY]: 40000,
@@ -344,7 +345,7 @@ module.exports = (function() {
                     }
                 },
                 terminal: {
-                    // autosell: [RESOURCE_HYDROGEN],
+                    autosell: [RESOURCE_HYDROGEN],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
                         [RESOURCE_ENERGY]: 40000,
@@ -371,7 +372,7 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "east",
                 creeps: {
-                    collector: 0,
+                    collector: 1,
                     settler: 3,
                 }
             },

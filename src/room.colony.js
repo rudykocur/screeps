@@ -449,7 +449,7 @@ class ColonyRoomHandler extends RoomHandler {
 
         minerals.forEach(resource => {
             if(extractor.resource == resource && this.getResourceTotal(resource) < 50000) {
-                this.debug('Not selling ' + resource + ' because it is less than 50k');
+                return;
             }
 
             if(terminal.store[resource] > 2000) {
