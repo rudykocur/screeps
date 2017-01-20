@@ -86,6 +86,7 @@ module.exports = (function() {
             Game.killDragon2 = killDragoon2;
             Game.testPath = testPath;
             Game.cleanPath = cleanPath;
+            Game.launchNukes = launchNukes;
 
             gang.extendGame();
             combatAction.extendGame();
@@ -224,6 +225,38 @@ function printDiagnostics() {
             var room = Game.rooms[r];
             return `${room.customName} ${room.energyAvailable}/${room.energyCapacityAvailable}`;
         }).join(', '));
+}
+
+function launchNukes() {
+    let targets = _.filter(Game.flags, /**Flag*/f => f.color == COLOR_RED && f.secondaryColor == COLOR_PURPLE);
+
+    console.log('Nuke targets:', targets);
+
+    for(let roomName in config.roomNames) {
+        let room = Game.rooms[roomName];
+        if(!room) {
+            continue;
+        }
+
+        let nuke = room.getNuke();
+
+        if(!nuke) {
+            continue;
+        }
+
+        /** @type Flag */
+        let target = targets.pop();
+
+        let result = nuke.launchNuke(target.pos);
+
+        if(result == OK) {
+            target.remove();
+            logger.log(logger.fmt.green(`Nuke launched. Target: ${target} (at ${target.pos})`));
+        }
+        else {
+            logger.error(`Failed to launch nuke from ${room} to ${target} (at ${target.pos}). Status: ${result}`);
+        }
+    }
 }
 
 function killBrot() {
