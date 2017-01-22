@@ -32,6 +32,7 @@ module.exports = (function() {
             E66N47: "h2",
             E67N47: "h2Right",
             E65N47: "h2Left",
+            E69N44: "dragon",
         },
         market: {
             processInterval: 30,
@@ -68,19 +69,19 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 wallsHp: 3000000,
-                structRampartsHp: 6000000,
+                structRampartsHp: 10000000,
                 autobuyMinerals: true,
                 creeps: {
                     upgrader: 4,
                     mover: 2,
                     transfer: 3,
                 },
-                observeRoom: 'E66N44',
+                observeRoom: 'E69N44',
                 minerals: {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_LEMERGIUM]: 13000,
-                        [RESOURCE_HYDROGEN]: 12000,
+                        [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_HYDROXIDE]: 2000,
                     },
                     reserve: {
@@ -124,8 +125,8 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'C2'],
                         output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
-                        result: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
-                        amount: 15000,
+                        result: RESOURCE_GHODIUM,
+                        amount: 10000,
                     },
                 }
             },
@@ -134,7 +135,8 @@ module.exports = (function() {
                 panicMode: false,
                 autobuyMinerals: true,
                 wallsHp: 3000000,
-                structRampartsHp: 5000000,
+                structRampartsHp: 10000000,
+                observeRoom: 'E68N44',
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -144,7 +146,7 @@ module.exports = (function() {
                     wants: {
                         [RESOURCE_OXYGEN]: 13000,
                         [RESOURCE_LEMERGIUM]: 13000,
-                        [RESOURCE_HYDROGEN]: 12000,
+                        [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_UTRIUM]: 13000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
@@ -201,7 +203,7 @@ module.exports = (function() {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
-                        [RESOURCE_HYDROGEN]: 12000,
+                        [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_HYDROXIDE]: 3000,
                         [RESOURCE_UTRIUM]: 12000,
                     },
@@ -237,7 +239,7 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
-                        result: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        result: RESOURCE_GHODIUM,
                         amount: 10000,
                     },
                 },
@@ -246,6 +248,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 700000,
                 autobuyMinerals: true,
+                observeRoom: 'E68N45',
                 creeps: {
                     upgrader: 4,
                     mover: 2,
@@ -290,13 +293,14 @@ module.exports = (function() {
                         '5878a65ce54d939f08188257': 'C4',
                     },
                     boost: {
-                        // B3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
-                        // B2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        // B1: RESOURCE_CATALYZED_UTRIUM_ACID,
+                        // A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        // A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        // B4: RESOURCE_CATALYZED_UTRIUM_ACID,
                     },
                     produce: {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
+                        // output: ['B1', 'B4', 'C1', 'C2', 'C3'],
                         result: RESOURCE_HYDROXIDE,
                         amount: 10000,
                     },
@@ -314,10 +318,10 @@ module.exports = (function() {
                 },
                 minerals: {
                     wants: {
-                        [RESOURCE_ENERGY]: 0,
+                        // [RESOURCE_ENERGY]: 0,
                     },
                     reserve: {
-                        [RESOURCE_HYDROGEN]: 0,
+                        // [RESOURCE_HYDROGEN]: 0,
                     }
                 },
                 terminal: {
@@ -333,7 +337,7 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 10,
+                    upgrader: 6,
                     transfer: 2,
                 },
                 minerals: {
@@ -341,7 +345,7 @@ module.exports = (function() {
                         // [RESOURCE_ENERGY]: 0,
                     },
                     reserve: {
-                        [RESOURCE_HYDROGEN]: 0,
+                        // [RESOURCE_HYDROGEN]: 0,
                     }
                 },
                 terminal: {
@@ -352,6 +356,16 @@ module.exports = (function() {
                     }
                 },
             },
+            // dragon: {
+            //     type: "outpost",
+            //     homeRoom: "orphan",
+            //     creeps: {
+            //         collector: 0,
+            //         harvester: 0,
+            //         claimer: 0,
+            //         settler: 0,
+            //     }
+            // },
             eastBottom: {
                 type: "outpost",
                 homeRoom: "east",
@@ -371,19 +385,15 @@ module.exports = (function() {
             underEast: {
                 type: "outpost",
                 homeRoom: "east",
-                creeps: {
-                    collector: 1,
-                    settler: 3,
-                }
             },
-            // h2Right: {
-            //     type: "outpost",
-            //     homeRoom: "h2",
-            // },
-            // h2Left: {
-            //     type: "outpost",
-            //     homeRoom: "h2",
-            // },
+            h2Right: {
+                type: "outpost",
+                homeRoom: "h2",
+            },
+            h2Left: {
+                type: "outpost",
+                homeRoom: "h2",
+            },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
@@ -508,105 +518,36 @@ module.exports = (function() {
             Drakenborg: {},
             Osaka: {},
             Tokyo: {
-                claimH2: {
+                kickDragon: {
                     minimum: 0,
-                    priority: 'critical',
-                    body: [CLAIM],
+                    priority: 'defence',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
-                        role: 'claimer',
-                        claim: true,
+                        role: 'brawler',
+                        room: 'E71N46'
                     }
                 }
             },
             Cintra: {},
             Oxygen: {},
             Brokilon: {
-                fighter: {
-                    minimum: 0,
-                    priority: 'critical',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
-                    memo: {
-                        role: 'brawler',
-                        room: 'E69N48',
-                    }
-                },
-                workH2: {
-                    minimum: 0,
+                dragonController: {
+                    minimum: 2,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK],
+                    body: [CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE],
                     memo: {
-                        role: 'settler',
-                        room: 'E66N47',
-                        via: ['E67N44', 'E67N45', 'E67N46', 'E67N47', 'E66N47'],
+                        role: 'claimer',
+                        room: 'E69N44',
                     }
                 },
-                upgradeH2: {
-                    minimum: 0,
-                    priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,CARRY,CARRY,CARRY,CARRY,WORK,WORK,WORK,WORK],
-                    memo: {
-                        role: 'settler',
-                        room: 'E66N47',
-                        disableBuild: true,
-                        disableSpawn: true,
-                        via: ['E67N44', 'E67N45', 'E67N46', 'E67N47', 'E66N47'],
-                    }
-                },
-                defendH2: {
+                dragonController2_: {
                     minimum: 1,
                     priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL],
+                    body: [CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE],
                     memo: {
-                        role: 'brawler',
-                        room: 'E66N47',
-                    }
-                },
-                dragonEngage: {
-                    minimum: 0,
-                    priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
-                    memo: {
-                        role: 'brawler',
-                        room: 'E69N44',
-                        guardFlag: 'Flag107',
-                        boost: [
-                            {part: HEAL, resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE, amount: 7},
-                            {part: MOVE, resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE, amount: 10},
-                        ]
-                    }
-                },
-                dragonHealer: {
-                    minimum: 0,
-                    priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
-                    memo: {
-                        role: 'brawler',
-                        room: 'E69N44',
-                        guardFlag: 'Flag107',
-                    }
-                },
-                dragonPunch: {
-                    minimum: 0,
-                    priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
-                    memo: {
-                        role: 'brawler',
+                        role: 'claimer',
                         room: 'E68N45',
-                        // guardFlag: 'Flag51',
-                        // boost: [{part: MOVE, resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE, amount: 8}]
-                    }
-                },
-                dragonSniper: {
-                    minimum: 0,
-                    priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK],
-                    memo: {
-                        role: 'brawler',
-                        room: 'E68N44',
-                        guardFlag: 'dragonSniper'
                     }
                 },
             },

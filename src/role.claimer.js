@@ -31,7 +31,13 @@ module.exports = (function() {
                 return;
             }
 
-            let result = creep.reserveController(ctrl);
+            let result;
+            if(!ctrl.my && ctrl.owner) {
+                result = creep.attackController(ctrl)
+            }
+            else {
+                result = creep.reserveController(ctrl);
+            }
 
             if(result == ERR_NOT_IN_RANGE) {
                 creep.moveTo(ctrl);

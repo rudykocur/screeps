@@ -103,20 +103,24 @@ module.exports = (function() {
                     delete creep.memory.attackTarget;
                 }
             }
-            else if(creep.memory.moveFlag) {
+
+            if(!target && creep.memory.moveFlag) {
                 target = Game.flags[creep.memory.moveFlag];
             }
-            else if(creep.memory.guardFlag) {
+
+            if(!target && creep.memory.guardFlag) {
                 let flag = Game.flags[creep.memory.guardFlag];
 
-                target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 5));
+                if(flag) {
+                    target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 5));
 
-                if(!target) {
-                    target = _.first(flag.pos.lookFor(LOOK_STRUCTURES));
-                }
+                    if (!target) {
+                        target = _.first(flag.pos.lookFor(LOOK_STRUCTURES));
+                    }
 
-                if(target) {
-                    // console.log("GUARD", creep.name, 'found enemy', target);
+                    if (target) {
+                        // console.log("GUARD", creep.name, 'found enemy', target);
+                    }
                 }
             }
 
