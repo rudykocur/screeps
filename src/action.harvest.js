@@ -40,7 +40,7 @@ module.exports = (function() {
          */
         tryHarvestDroppedSource: function (creep) {
 
-            let sources = creep.workRoomHandler.searchJobs({type: 'pickup', freeReserve: 50});
+            let sources = creep.workRoomHandler.searchJobs({type: 'pickup', subtype: 'source', freeReserve: 50});
             let job = _.first(_.sortBy(sources.filter(s => s.resource == RESOURCE_ENERGY), s=> s.amount*-1));
 
             if(job) {
