@@ -546,6 +546,17 @@ module.exports = (function() {
                         claim: true,
                     }
                 },
+                dragonDefender: {
+                    minimum: 1,
+                    priority: 'defence',
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E69N44',
+                    }
+                },
                 dragonSettler: {
                     minimum: 3,
                     priority: 'normal',
@@ -556,7 +567,7 @@ module.exports = (function() {
                     }
                 },
                 dragonController2_: {
-                    minimum: 1,
+                    minimum: 0,
                     priority: 'normal',
                     body: [CLAIM,MOVE],
                     memo: {
