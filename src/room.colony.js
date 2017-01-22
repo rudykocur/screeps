@@ -9,6 +9,7 @@ var roomHandlers = require('./room.handlers');
 var RoomHandler = require('./room.handlers').RoomHandler;
 
 var spawnQueue = require('./spawnQueue');
+var watchQueue = require('./watchQueue');
 
 var TerminalToStorageJobGenerator = require('./jobs.terminalToStorage').TerminalToStorageJobGenerator;
 var StorageToTerminalJobGenerator = require('./jobs.storageToTerminal').StorageToTerminalJobGenerator;
@@ -103,67 +104,10 @@ class ColonyRoomHandler extends RoomHandler {
         let observer = this.room.getObserver();
 
         if(observer) {
-            let room = this.config.observeRoom;
-            observer.observeRoom(room);
-        }
-
-        return;
-
-        if(observer) {
-            let state = this.state.observer;
-            let rooms = state.rooms || [];
-
-            if(rooms.length > 0) {
-                let visibleRoom = state.visibleRoom;
-
-                let nextRoom;
-                if(visibleRoom) {
-                    nextRoom = rooms[(rooms.indexOf(visibleRoom) + 1) % rooms.length];
-                }
-                else {
-                    nextRoom = rooms[0];
-                }
-
-                // this.debug('Observer: currently visible:', visibleRoom, ', next tick:', nextRoom);
-
-                if(visibleRoom) {
-                    this.inspectRoom(visibleRoom);
-                }
-
-                if(observer.observeRoom(nextRoom) == OK) {
-                    state.visibleRoom = nextRoom;
-                }
+            let room = watchQueue.getNextRoom();
+            if(observer.observeRoom(room) == OK) {
+                watchQueue.registerRoomVisibleNextTick(room);
             }
-        }
-    }
-
-    inspectRoom(roomName) {
-        /** @type Room */
-        let room = Game.rooms[roomName];
-
-        if(!room) {
-            this.info(F.orange('Unable to inspect room', roomName));
-            return;
-        }
-
-        if(room.controller && room.controller.my) {
-            console.log('Room', roomName, ':: IZ MINE');
-            return;
-        }
-
-        if(room.controller) {
-            if(room.controller.owner) {
-                console.log('Room', roomName, '::', room.controller.owner.username);
-            }
-            else if(room.controller.reservation) {
-                console.log('Room', roomName, '::', room.controller.reservation.username, '- reservation');
-            }
-            else {
-                console.log('Room', roomName, ':: IZ EMPTY');
-            }
-        }
-        else {
-            console.log('Room', roomName, '::', room.find(FIND_HOSTILE_STRUCTURES, {filter: {structureType: STRUCTURE_KEEPER_LAIR}}))
         }
     }
 

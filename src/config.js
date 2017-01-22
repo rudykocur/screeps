@@ -76,7 +76,6 @@ module.exports = (function() {
                     mover: 2,
                     transfer: 3,
                 },
-                observeRoom: 'E69N44',
                 minerals: {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
@@ -136,7 +135,6 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 wallsHp: 3000000,
                 structRampartsHp: 10000000,
-                observeRoom: 'E68N44',
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -248,7 +246,6 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 700000,
                 autobuyMinerals: true,
-                observeRoom: 'E68N45',
                 creeps: {
                     upgrader: 4,
                     mover: 2,
@@ -356,16 +353,16 @@ module.exports = (function() {
                     }
                 },
             },
-            // dragon: {
-            //     type: "outpost",
-            //     homeRoom: "orphan",
-            //     creeps: {
-            //         collector: 0,
-            //         harvester: 0,
-            //         claimer: 0,
-            //         settler: 0,
-            //     }
-            // },
+            dragon: {
+                type: "colony",
+                spawnRooms: ['dragon', 'orphan'],
+                creeps: {
+                    mover: 0,
+                    upgrader: 2,
+                    transfer: 0,
+                    builder: 2,
+                }
+            },
             eastBottom: {
                 type: "outpost",
                 homeRoom: "east",
@@ -467,6 +464,13 @@ module.exports = (function() {
             // }
         },
 
+        monitoring: {
+            alwaysVisible: ['E69N44', 'E68N45'],
+            watch: ['E63N40','E64N40','E65N40','E66N40','E67N40','E68N40','E69N40','E70N40',
+                'E70N41','E70N42','E70N43','E70N44','E70N45','E70N46','E70N47','E70N48','E70N49','E70N50',
+                'E67N50','E68N50','E69N50'],
+        },
+
         spawn: {
             Rabbithole: {
                 keeperKiller: {
@@ -516,6 +520,7 @@ module.exports = (function() {
             Blaviken: {},
             Shaerrawedd: {},
             Drakenborg: {},
+            Szczerbatek: {},
             Osaka: {},
             Tokyo: {
                 kickDragon: {
@@ -532,19 +537,28 @@ module.exports = (function() {
             Oxygen: {},
             Brokilon: {
                 dragonController: {
-                    minimum: 2,
+                    minimum: 0,
                     priority: 'normal',
-                    body: [CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE],
+                    body: [CLAIM,MOVE],
                     memo: {
                         role: 'claimer',
+                        room: 'E69N44',
+                        claim: true,
+                    }
+                },
+                dragonSettler: {
+                    minimum: 3,
+                    priority: 'normal',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+                    memo: {
+                        role: 'settler',
                         room: 'E69N44',
                     }
                 },
                 dragonController2_: {
                     minimum: 1,
                     priority: 'normal',
-                    body: [CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE,
-                        CLAIM,CLAIM,CLAIM,CLAIM,CLAIM,MOVE,MOVE,MOVE,MOVE,MOVE],
+                    body: [CLAIM,MOVE],
                     memo: {
                         role: 'claimer',
                         room: 'E68N45',

@@ -11,6 +11,7 @@ var creepExt = require('./creepExt');
 var config = require('./config');
 var logger = require('./logger');
 var spawnQueue = require('./spawnQueue');
+var watchQueue = require('./watchQueue');
 
 var gang = require('./gang');
 var combatAction = require('./combatAction');
@@ -100,6 +101,7 @@ module.exports = (function() {
             });
 
             spawnQueue.reset();
+            watchQueue.initialize();
 
             timer.init = Game.cpu.getUsed();
 
@@ -108,6 +110,7 @@ module.exports = (function() {
             timer.combatActions = Game.cpu.getUsed();
 
             creepSpawn.autospawn(Game.spawns.Rabbithole);
+            watchQueue.processVisibleRooms();
 
             roomHanders.processRoomHandlers();
 
