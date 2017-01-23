@@ -357,9 +357,9 @@ module.exports = (function() {
                 type: "colony",
                 creeps: {
                     mover: 0,
-                    upgrader: 4,
+                    upgrader: 5,
                     transfer: 0,
-                    builder: 2,
+                    builder: 0,
                 }
             },
             eastBottom: {
