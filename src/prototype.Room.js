@@ -149,7 +149,12 @@ Room.prototype.getTerminal = function() {
  */
 Room.prototype.getStorage = function() {
     this.refreshStructures();
-    return Game.getObjectById(this.handlerMemory.structures.storage);
+    /** @type StructureStorage */
+    let storage = Game.getObjectById(this.handlerMemory.structures.storage);
+
+    if(storage && storage.my) {
+        return storage;
+    }
 };
 
 /**

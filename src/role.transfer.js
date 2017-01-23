@@ -26,6 +26,7 @@ module.exports = (function() {
 
             if(!job) {
                 let jobs = creep.workRoomHandler.searchJobs({type: 'pickup', freeReserve: 200});
+                jobs = jobs.filter(j => RoomPosition.fromDict(j.sourcePos).lookFor(LOOK_FLAGS).length == 0);
                 job = _.first(_.sortBy(jobs, j=>j.amount * -1));
 
                 if(!job) {
@@ -90,13 +91,36 @@ module.exports = (function() {
                     }
                 }
                 else {
-                    var target = RoomPosition.fromDict(job.targetPos);
+                    let targetIsFlag = false;
+                    let target, result;
+
+                    if(job.targetPos) {
+                        target = RoomPosition.fromDict(job.targetPos);
+                    }
+                    else {
+                        target = _.first(_.filter(Game.flags, /**Flag*/f => f.pos.roomName == creep.pos.roomName && f.color == COLOR_CYAN));
+                        if(target) {
+                            targetIsFlag = true;
+                        }
+                    }
 
                     if(!creep.pos.isNearTo(target)) {
                         creep.moveTo(target);
                     }
 
-                    let result = creep.transfer(Game.getObjectById(job.targetId), job.resource);
+                    if(targetIsFlag) {
+                        if(creep.pos.isEqualTo(target)) {
+                            result = creep.drop(job.resource);
+                        }
+                        else {
+                            creep.moveTo(target);
+                            result = ERR_NOT_IN_RANGE;
+                        }
+                    }
+                    else {
+                        result = creep.transfer(Game.getObjectById(job.targetId), job.resource);
+
+                    }
 
                     if(result == OK) {
                         creep.finishJob();

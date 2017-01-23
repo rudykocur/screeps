@@ -355,10 +355,9 @@ module.exports = (function() {
             },
             dragon: {
                 type: "colony",
-                spawnRooms: ['dragon', 'orphan'],
                 creeps: {
                     mover: 0,
-                    upgrader: 2,
+                    upgrader: 4,
                     transfer: 0,
                     builder: 2,
                 }
@@ -563,6 +562,15 @@ module.exports = (function() {
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     memo: {
                         role: 'settler',
+                        room: 'E69N44',
+                    }
+                },
+                dragonTransfer: {
+                    minimum: 2,
+                    priority: 'normal',
+                    body: 'collectorOffroad',
+                    memo: {
+                        role: 'transfer',
                         room: 'E69N44',
                     }
                 },

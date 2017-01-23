@@ -164,31 +164,23 @@ class RoomHandler {
         resources.forEach(/**{id,amount,resourceType,pos}*/ res => {
             var key = `pickup-${res.resourceType}-${res.id}`;
 
-            var flags = RoomPosition.fromDict(res.pos).lookFor(LOOK_FLAGS);
-            var isDropPoint = flags.filter(/**Flag*/ f => f.color == COLOR_CYAN).length > 0;
-
-            if(!isDropPoint) {
-                if(!(key in jobs)) {
-                    jobs[key] = {
-                        key: key,
-                        room: this.room.customName,
-                        type: 'pickup',
-                        subtype: 'source',
-                        resource:res.resourceType,
-                        sourceId: res.id,
-                        sourcePos: res.pos,
-                        targetId: storage && storage.id,
-                        targetPos: storage && storage.pos,
-                        reservations: {},
-                        amount: 0,
-                    }
+            if(!(key in jobs)) {
+                jobs[key] = {
+                    key: key,
+                    room: this.room.customName,
+                    type: 'pickup',
+                    subtype: 'source',
+                    resource:res.resourceType,
+                    sourceId: res.id,
+                    sourcePos: res.pos,
+                    targetId: storage && storage.id,
+                    targetPos: storage && storage.pos,
+                    reservations: {},
+                    amount: 0,
                 }
+            }
 
-                jobs[key].amount = res.amount;
-            }
-            else {
-                delete jobs[key];
-            }
+            jobs[key].amount = res.amount;
         })
     }
 
