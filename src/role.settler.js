@@ -57,6 +57,15 @@ module.exports = (function() {
                     return
                 }
 
+                let storage = creep.room.getStorage();
+
+                if(storage && storage.store.energy > 10000 && creep.room.energyAvailable < creep.room.energyCapacityAvailable) {
+                    if(creep.withdraw(storage, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(storage);
+                    }
+                    return;
+                }
+
                 actionHarvest.run(creep);
             }
 

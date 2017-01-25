@@ -36,11 +36,11 @@ module.exports = (function() {
         },
         market: {
             processInterval: 30,
-            maxTradeRange: 35,
+            maxTradeRange: 50,
             minerals: {
                 [RESOURCE_OXYGEN]: {
                     buyPriceMax: 0.4,
-                    sellPriceMin: 0.41,
+                    sellPriceMin: 0.4,
                 },
                 [RESOURCE_HYDROGEN]: {
                     buyPriceMax: 0.85,
@@ -355,33 +355,33 @@ module.exports = (function() {
             },
             dragon: {
                 type: "colony",
+                wallsHp: 50000,
                 creeps: {
-                    mover: 0,
-                    upgrader: 5,
-                    transfer: 0,
-                    builder: 0,
+                    mover: 2,
+                    upgrader: 3,
+                    transfer: 2,
                 }
             },
-            eastBottom: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            eastBottomFar: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            septis: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            septisBottom: {
-                type: "outpost",
-                homeRoom: "east",
-            },
-            underEast: {
-                type: "outpost",
-                homeRoom: "east",
-            },
+            // eastBottom: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // eastBottomFar: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // septis: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // septisBottom: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
+            // underEast: {
+            //     type: "outpost",
+            //     homeRoom: "east",
+            // },
             h2Right: {
                 type: "outpost",
                 homeRoom: "h2",
@@ -557,7 +557,7 @@ module.exports = (function() {
                     }
                 },
                 dragonSettler: {
-                    minimum: 3,
+                    minimum: 1,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
                     memo: {
@@ -565,15 +565,15 @@ module.exports = (function() {
                         room: 'E69N44',
                     }
                 },
-                dragonTransfer: {
-                    minimum: 2,
-                    priority: 'normal',
-                    body: 'collectorOffroad',
-                    memo: {
-                        role: 'transfer',
-                        room: 'E69N44',
-                    }
-                },
+                // dragonTransfer: {
+                //     minimum: 2,
+                //     priority: 'normal',
+                //     body: 'collectorOffroad',
+                //     memo: {
+                //         role: 'transfer',
+                //         room: 'E69N44',
+                //     }
+                // },
                 dragonController2_: {
                     minimum: 0,
                     priority: 'normal',
