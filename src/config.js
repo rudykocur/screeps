@@ -361,22 +361,22 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 3,
+                    upgrader: 4,
                     transfer: 2,
                 }
             },
-            // eastBottom: {
-            //     type: "outpost",
-            //     homeRoom: "east",
-            // },
+            eastBottom: {
+                type: "outpost",
+                homeRoom: "east",
+            },
             // eastBottomFar: {
             //     type: "outpost",
             //     homeRoom: "east",
             // },
-            // septis: {
-            //     type: "outpost",
-            //     homeRoom: "east",
-            // },
+            septis: {
+                type: "outpost",
+                homeRoom: "east",
+            },
             // septisBottom: {
             //     type: "outpost",
             //     homeRoom: "east",
@@ -397,10 +397,6 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "dragon",
                 spawnRooms: ['orphan'],
-                creeps: {
-                    collector: 0,
-                    settler: 4,
-                }
             },
             dragon2: {
                 type: "outpost",
