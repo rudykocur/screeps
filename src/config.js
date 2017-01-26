@@ -399,17 +399,13 @@ module.exports = (function() {
                 spawnRooms: ['orphan'],
                 creeps: {
                     collector: 0,
-                    settler: 2,
+                    settler: 4,
                 }
             },
             dragon2: {
                 type: "outpost",
                 homeRoom: "dragon",
                 spawnRooms: ['orphan'],
-                creeps: {
-                    collector: 0,
-                    settler: 2,
-                }
             },
             brot: {
                 type:"outpost",
@@ -556,36 +552,6 @@ module.exports = (function() {
             Cintra: {},
             Oxygen: {},
             Brokilon: {
-                dragonController: {
-                    minimum: 0,
-                    priority: 'normal',
-                    body: [CLAIM,MOVE],
-                    memo: {
-                        role: 'claimer',
-                        room: 'E69N44',
-                        claim: true,
-                    }
-                },
-                dragonDefender: {
-                    minimum: 1,
-                    priority: 'defence',
-                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
-                    memo: {
-                        role: 'brawler',
-                        room: 'E69N44',
-                    }
-                },
-                dragonSettler: {
-                    minimum: 1,
-                    priority: 'normal',
-                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
-                    memo: {
-                        role: 'settler',
-                        room: 'E69N44',
-                    }
-                },
                 mudlaPush: {
                     minimum: 1,
                     priority: 'normal',
@@ -598,7 +564,7 @@ module.exports = (function() {
                     }
                 },
                 testClean: {
-                    minimum: 1,
+                    minimum: 0,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,
                         ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
@@ -608,24 +574,6 @@ module.exports = (function() {
                         role: 'brawler',
                         room: 'E68N45',
                         guardFlag: 'Flag112',
-                    }
-                },
-                // dragonTransfer: {
-                //     minimum: 2,
-                //     priority: 'normal',
-                //     body: 'collectorOffroad',
-                //     memo: {
-                //         role: 'transfer',
-                //         room: 'E69N44',
-                //     }
-                // },
-                dragonController2_: {
-                    minimum: 0,
-                    priority: 'normal',
-                    body: [CLAIM,MOVE],
-                    memo: {
-                        role: 'claimer',
-                        room: 'E68N45',
                     }
                 },
             },
