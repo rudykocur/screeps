@@ -33,6 +33,8 @@ module.exports = (function() {
             E67N47: "h2Right",
             E65N47: "h2Left",
             E69N44: "dragon",
+            E68N44: "dragonLeft",
+            E68N45: "dragon2",
         },
         market: {
             processInterval: 30,
@@ -298,8 +300,9 @@ module.exports = (function() {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
                         // output: ['B1', 'B4', 'C1', 'C2', 'C3'],
-                        result: RESOURCE_HYDROXIDE,
-                        amount: 10000,
+                        result: RESOURCE_GHODIUM,
+                        // result: RESOURCE_HYDROXIDE,
+                        amount: 15000,
                     },
                 }
             },
@@ -390,6 +393,24 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "h2",
             },
+            dragonLeft: {
+                type: "outpost",
+                homeRoom: "dragon",
+                spawnRooms: ['orphan'],
+                creeps: {
+                    collector: 0,
+                    settler: 2,
+                }
+            },
+            dragon2: {
+                type: "outpost",
+                homeRoom: "dragon",
+                spawnRooms: ['orphan'],
+                creeps: {
+                    collector: 0,
+                    settler: 2,
+                }
+            },
             brot: {
                 type:"outpost",
                 homeRoom:"home",
@@ -464,7 +485,7 @@ module.exports = (function() {
         },
 
         monitoring: {
-            alwaysVisible: ['E69N44', 'E68N45'],
+            alwaysVisible: ['E68N45', 'E69N46','E68N44'],
             watch: ['E63N40','E64N40','E65N40','E66N40','E67N40','E68N40','E69N40','E70N40',
                 'E70N41','E70N42','E70N43','E70N44','E70N45','E70N46','E70N47','E70N48','E70N49','E70N50',
                 'E67N50','E68N50','E69N50'],
@@ -563,6 +584,30 @@ module.exports = (function() {
                     memo: {
                         role: 'settler',
                         room: 'E69N44',
+                    }
+                },
+                mudlaPush: {
+                    minimum: 1,
+                    priority: 'normal',
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E69N46',
+                    }
+                },
+                testClean: {
+                    minimum: 1,
+                    priority: 'normal',
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E68N45',
+                        guardFlag: 'Flag112',
                     }
                 },
                 // dragonTransfer: {

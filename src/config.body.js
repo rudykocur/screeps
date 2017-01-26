@@ -3,7 +3,8 @@ module.exports = (function() {
         settler: {
             1: [MOVE,MOVE,CARRY,CARRY,WORK],
             2: [MOVE,MOVE,WORK,WORK,CARRY,CARRY],
-            3: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY]
+            3: [MOVE,MOVE,MOVE,WORK,WORK,WORK,CARRY,CARRY,CARRY],
+            5: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY],
         },
         builder: {
             1: [MOVE,MOVE,CARRY,CARRY,WORK],
