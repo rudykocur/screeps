@@ -53,6 +53,7 @@ Room.prototype.refreshStructures = function() {
 
         let ramparts = {};
         let allContainers = [];
+        let links = [];
 
         let allStructures = this.find(FIND_STRUCTURES);
         allStructures.forEach(/**Structure*/struct => {
@@ -67,6 +68,10 @@ Room.prototype.refreshStructures = function() {
 
             if (struct.structureType == STRUCTURE_CONTAINER) {
                 allContainers.push(struct);
+            }
+
+            if(struct.structureType == STRUCTURE_LINK) {
+                links.push(struct);
             }
 
             if (struct.structureType == STRUCTURE_TERMINAL) {
@@ -116,6 +121,65 @@ Room.prototype.refreshStructures = function() {
 
             state.structures.extractor.containerId = _.get(_.first(containers), 'id');
         }
+
+        this.updateLinks(links);
+    }
+};
+
+/**
+ *
+ * @param {Array.<StructureLink>} links
+ */
+Room.prototype.updateLinks = function(links) {
+    var state = this.handlerMemory;
+
+    if(!('links' in state)) {
+        state.links = {};
+    }
+
+    links.forEach(link => {
+        if(!(link.id in state.links)) {
+            let source = _.first(link.pos.findInRange(FIND_SOURCES, 2));
+            if(source) {
+                state.links[link.id] = {
+                    type: 'source',
+                    linkId: link.id,
+                    sourceId: source.id,
+                }
+            }
+
+            let storage = _.first(link.pos.findInRange([this.storage], 4));
+            if(storage) {
+                state.links[link.id] = {
+                    type: 'storage',
+                    linkId: link.id,
+                }
+            }
+        }
+    })
+};
+
+Room.prototype.getLinkForSource = function(sourceId) {
+    var state = this.handlerMemory;
+    let links = _.values(state.links);
+    let link = _.first(links.filter(link => link.type == 'source' && link.sourceId == sourceId));
+
+    if(link) {
+        return Game.getObjectById(link.linkId);
+    }
+};
+
+/**
+ *
+ * @returns {StructureLink|undefined}
+ */
+Room.prototype.getLinkForStorage = function() {
+    var state = this.handlerMemory;
+    let links = _.values(state.links);
+    let link = _.first(links.filter(link => link.type == 'storage'));
+
+    if(link) {
+        return Game.getObjectById(link.linkId);
     }
 };
 

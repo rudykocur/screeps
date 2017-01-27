@@ -18,6 +18,7 @@ var SpawnRefillJobGenerator = require('./jobs.spawnRefill').SpawnRefillJobGenera
 var MineralToStorageJobGenerator = require('./jobs.mineralToStorage').MineralToStorageJobGenerator;
 var LabsJobGenerator = require('./jobs.labs').LabsJobGenerator;
 var LoadNukeJobGenerator = require('./jobs.loadNuke').LoadNukeJobGenerator;
+var LinkToStorageJobGenerator = require('./jobs.linkToStorage').LinkToStorageJobGenerator;
 
 class ReactionConfig {
     constructor() {
@@ -50,7 +51,8 @@ class ColonyRoomHandler extends RoomHandler {
             new SpawnRefillJobGenerator(this),
             new MineralToStorageJobGenerator(this),
             new LabsJobGenerator(this),
-            new LoadNukeJobGenerator(this)
+            new LoadNukeJobGenerator(this),
+            new LinkToStorageJobGenerator(this)
         );
 
         this.labNameToId = {};
@@ -85,6 +87,7 @@ class ColonyRoomHandler extends RoomHandler {
         super.process();
 
         this.runLabProcessing();
+        this.runLinks();
 
         this.maintainHarvesterPopulation();
         this.maintainMovers();
@@ -338,6 +341,25 @@ class ColonyRoomHandler extends RoomHandler {
         }
     }
 
+    runLinks() {
+        if(Game.time % 10 != 0) {
+            return;
+        }
+
+        let storageLink = this.room.getLinkForStorage();
+
+        if(storageLink) {
+            this.room.find(FIND_SOURCES).forEach(source => {
+                /** @type StructureLink */
+                let link = this.room.getLinkForSource(source.id);
+
+                if(link) {
+                    link.transferEnergy(storageLink);
+                }
+            })
+        }
+    }
+
     autobuyMinerals(orders) {
         var minerals = [RESOURCE_OXYGEN, RESOURCE_HYDROGEN, RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM, RESOURCE_LEMERGIUM,
             RESOURCE_UTRIUM, RESOURCE_CATALYST];
@@ -485,7 +507,18 @@ class ColonyRoomHandler extends RoomHandler {
             return false;
         });
 
-        this.maintainPopulationAmount('harvester', sources.length, config.blueprints.colonyHarvester,
+        let harvesters = sources.length;
+        let linkHarvesters = 0;
+
+        if(this.room.getLinkForStorage()) {
+            harvesters = sources.filter(s => this.room.getLinkForSource(s.id) === undefined).length;
+            linkHarvesters = sources.length - harvesters;
+        }
+
+        this.maintainPopulationAmount('harvester', harvesters, config.blueprints.colonyHarvester,
+            spawnQueue.PRIORITY_CRITICAL);
+
+        this.maintainPopulationAmount('harvesterLink', linkHarvesters, config.blueprints.colonyHarvesterLink,
             spawnQueue.PRIORITY_CRITICAL);
 
         if(!this.config.noMinerals) {

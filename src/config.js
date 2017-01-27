@@ -364,7 +364,7 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 6,
+                    upgrader: 8,
                     transfer: 2,
                 }
             },
@@ -555,7 +555,7 @@ module.exports = (function() {
             Oxygen: {},
             Brokilon: {
                 mudlaPush: {
-                    minimum: 1,
+                    minimum: 0,
                     priority: 'normal',
                     body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
                         MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
@@ -566,21 +566,25 @@ module.exports = (function() {
                     }
                 },
                 mudlaPoke: {
-                    minimum: 3,
+                    minimum: 2,
                     priority: 'normal',
-                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,
+                    // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,
+                    //     ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                    //     ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                    //     ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
                         ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
+                        ATTACK,ATTACK,ATTACK,ATTACK],
                     memo: {
                         role: 'brawler',
                         room: 'E69N45',
-                        guardFlag: 'Flag113',
-                        boost: [
-                            {part: HEAL,resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,amount: 7},
-                            {part: TOUGH,resource: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,amount: 5},
-                            {part: MOVE,resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,amount: 10}
-                        ],
+                        // guardFlag: 'Flag113',
+                        // boost: [
+                        //     {part: HEAL,resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,amount: 7},
+                        //     {part: TOUGH,resource: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,amount: 5},
+                        //     {part: MOVE,resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,amount: 10}
+                        // ],
                     }
                 },
                 testClean: {
@@ -671,6 +675,11 @@ module.exports = (function() {
             colonyHarvesterMineral: {
                 body: 'mineralHarvester',
                 role: 'mineralHarvester',
+                memo: {}
+            },
+            colonyHarvesterLink: {
+                body: 'harvesterLink',
+                role: 'harvesterLink',
                 memo: {}
             },
             colonyUpgrader: {

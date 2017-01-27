@@ -27,6 +27,7 @@ var taskModules = [
 
 var roleModules = {
     harvester: require('./role.harvester-pure'),
+    harvesterLink: require('./role.harvester-link'),
     mineralHarvester: require('./role.harvester-pure'),
     upgrader: require('./role.upgrader'),
     mover: require('./role.mover'),

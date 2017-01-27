@@ -118,13 +118,15 @@ class RoomHandler {
         sources.forEach(s => {
             var key = 'mining-' + s.id;
 
-            if(!(key in jobs)) {
+            if(!(key in jobs) || Game.time % 1000 == 0) {
+                let hasLink = this.room.getLinkForSource(s.id);
+
                 jobs[key] = {
                     key: key,
                     room: this.room.customName,
                     permanent: true,
                     type: 'harvest',
-                    subtype: 'energy',
+                    subtype: hasLink ? 'energy-link': 'energy',
                     sourceId: s.id,
                     sourcePos: s.pos,
                     takenBy: null,

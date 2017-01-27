@@ -66,6 +66,9 @@ module.exports = (function() {
         harvesterLair: {
             7: [MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,WORK,WORK],
         },
+        harvesterLink: {
+            5: [MOVE,MOVE,MOVE,MOVE,MOVE,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY],
+        },
         claimer: {
             4: [MOVE, MOVE, CLAIM, CLAIM],
         },
