@@ -153,18 +153,13 @@ module.exports = (function() {
                     let result = creep.attack(target);
 
                     if(result != OK) {
-                        if(creep.getActiveBodyparts(HEAL) > 0) {
-                            creep.heal(creep);
-                        }
+                        creep.heal(creep);
                     }
                 }
                 else {
                     creep.rangedAttack(target);
-                    let result = creep.moveTo(target);
-
-                    if(creep.getActiveBodyparts(HEAL) > 0) {
-                        creep.heal(creep);
-                    }
+                    creep.moveTo(target);
+                    creep.heal(creep);
                 }
             }
             else {

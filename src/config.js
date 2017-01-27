@@ -87,6 +87,7 @@ module.exports = (function() {
                     },
                     reserve: {
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
+                        [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 0,
                         [RESOURCE_UTRIUM]: 12000,
                         [RESOURCE_GHODIUM]: 5000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
@@ -100,6 +101,7 @@ module.exports = (function() {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_OXYGEN]: 5000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 500,
+                        [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 2000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 1000,
@@ -258,6 +260,7 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
+                        [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 10000,
                         [RESOURCE_UTRIUM]: 13000,
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
@@ -292,14 +295,14 @@ module.exports = (function() {
                         '5878a65ce54d939f08188257': 'C4',
                     },
                     boost: {
-                        // A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
-                        // A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        // B4: RESOURCE_CATALYZED_UTRIUM_ACID,
+                        A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        B4: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
                     },
                     produce: {
                         input: ['B2', 'B3'],
-                        output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
-                        // output: ['B1', 'B4', 'C1', 'C2', 'C3'],
+                        // output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
+                        output: ['B1', 'B4', 'C1', 'C2', 'C3'],
                         result: RESOURCE_GHODIUM,
                         // result: RESOURCE_HYDROXIDE,
                         amount: 15000,
@@ -480,7 +483,7 @@ module.exports = (function() {
         },
 
         monitoring: {
-            alwaysVisible: ['E68N45', 'E69N46','E68N44'],
+            alwaysVisible: ['E69N46','E69N45'],
             watch: ['E63N40','E64N40','E65N40','E66N40','E67N40','E68N40','E69N40','E70N40',
                 'E70N41','E70N42','E70N43','E70N44','E70N45','E70N46','E70N47','E70N48','E70N49','E70N50',
                 'E67N50','E68N50','E69N50'],
@@ -562,8 +565,26 @@ module.exports = (function() {
                         room: 'E69N46',
                     }
                 },
+                mudlaPoke: {
+                    minimum: 3,
+                    priority: 'normal',
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E69N45',
+                        guardFlag: 'Flag113',
+                        boost: [
+                            {part: HEAL,resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,amount: 7},
+                            {part: TOUGH,resource: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,amount: 5},
+                            {part: MOVE,resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,amount: 10}
+                        ],
+                    }
+                },
                 testClean: {
-                    minimum: 0,
+                    minimum: 2,
                     priority: 'normal',
                     body: [MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,
                         ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
@@ -572,7 +593,7 @@ module.exports = (function() {
                     memo: {
                         role: 'brawler',
                         room: 'E68N45',
-                        guardFlag: 'Flag112',
+                        guardFlag: 'Flag114',
                     }
                 },
             },
