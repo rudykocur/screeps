@@ -126,8 +126,8 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'C2'],
                         output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
-                        result: RESOURCE_GHODIUM,
-                        amount: 10000,
+                        result: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        amount: 15000,
                     },
                 }
             },
@@ -361,7 +361,7 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 4,
+                    upgrader: 6,
                     transfer: 2,
                 }
             },
@@ -376,6 +376,9 @@ module.exports = (function() {
             septis: {
                 type: "outpost",
                 homeRoom: "east",
+                creeps: {
+                    collector: 4,
+                }
             },
             // septisBottom: {
             //     type: "outpost",

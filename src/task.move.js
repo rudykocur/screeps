@@ -20,7 +20,7 @@ class MoveTask extends CreepTask {
     /**
      *
      * @param {Creep} creep
-     * @param {RoomObject} target
+     * @param {RoomObject|RoomPosition} target
      * @param range
      */
     static create(creep, target, range = 0) {

@@ -47,16 +47,12 @@ Room.prototype.refreshStructures = function() {
                 mineralId: null,
                 containerId: null,
             },
-            containers: [],
-            towers: [],
-            spawns: [],
-            extensions: [],
-            wallsAndRamparts: [],
             toRepair: [],
             rampartsOverStructures: [],
         };
 
         let ramparts = {};
+        let allContainers = [];
 
         let allStructures = this.find(FIND_STRUCTURES);
         allStructures.forEach(/**Structure*/struct => {
@@ -70,7 +66,7 @@ Room.prototype.refreshStructures = function() {
             }
 
             if (struct.structureType == STRUCTURE_CONTAINER) {
-                state.structures.containers.push(struct.id);
+                allContainers.push(struct);
             }
 
             if (struct.structureType == STRUCTURE_TERMINAL) {
@@ -79,18 +75,6 @@ Room.prototype.refreshStructures = function() {
 
             if (struct.structureType == STRUCTURE_NUKER) {
                 state.structures.nuke = struct.id;
-            }
-
-            if (struct.structureType == STRUCTURE_TOWER) {
-                state.structures.towers.push(struct.id);
-            }
-
-            if (struct.structureType == STRUCTURE_EXTENSION) {
-                state.structures.extensions.push(struct.id);
-            }
-
-            if (struct.structureType == STRUCTURE_SPAWN) {
-                state.structures.spawns.push(struct.id);
             }
 
             if (struct.structureType == STRUCTURE_EXTRACTOR) {
@@ -104,7 +88,6 @@ Room.prototype.refreshStructures = function() {
             }
 
             if(struct.structureType == STRUCTURE_WALL || struct.structureType == STRUCTURE_RAMPART) {
-                state.structures.wallsAndRamparts.push(struct.id);
             }
             else {
                 if((struct.hits / struct.hitsMax) < 0.75) {
@@ -129,7 +112,7 @@ Room.prototype.refreshStructures = function() {
 
         if(state.structures.extractor.mineralId) {
             let mineral = Game.getObjectById(state.structures.extractor.mineralId);
-            let containers = mineral.pos.findInRange(state.structures.containers.map(sId => Game.getObjectById(sId)), 1);
+            let containers = mineral.pos.findInRange(allContainers, 1);
 
             state.structures.extractor.containerId = _.get(_.first(containers), 'id');
         }
@@ -196,26 +179,30 @@ Room.prototype.getExtractor = function() {
  * @return {Array<StructureSpawn>}
  */
 Room.prototype.getSpawns = function() {
-    this.refreshStructures();
-    return this.handlerMemory.structures.spawns.map(sId => Game.getObjectById(sId));
+    return this.find(FIND_MY_STRUCTURES, {
+        filter: {structureType: STRUCTURE_SPAWN}
+    });
 };
 
 Room.prototype.getExtensions = function() {
-    this.refreshStructures();
-    return this.handlerMemory.structures.extensions.map(id => Game.getObjectById(id));
+    return this.find(FIND_MY_STRUCTURES, {
+        filter: {structureType: STRUCTURE_EXTENSION}
+    });
 };
 
 Room.prototype.getTowers = function() {
-    this.refreshStructures();
-    return this.handlerMemory.structures.towers.map(sId => Game.getObjectById(sId));
+    return this.find(FIND_MY_STRUCTURES, {
+        filter: {structureType: STRUCTURE_TOWER}
+    });
 };
 
 /**
  * @return {Array<StructureWall>}
  */
 Room.prototype.getWallsAndRamparts = function() {
-    this.refreshStructures();
-    return this.handlerMemory.structures.wallsAndRamparts.map(sId => Game.getObjectById(sId));
+    return this.find(FIND_STRUCTURES, {
+        filter: s => s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART
+    });
 };
 
 /**
@@ -276,8 +263,9 @@ Room.prototype.getContainers = function(options) {
         amount: 0,
     });
 
-    this.refreshStructures();
-    var containers = this.handlerMemory.structures.containers.map(sId => Game.getObjectById(sId));
+    var containers = this.find(FIND_MY_STRUCTURES, {
+        filter: {structureType: STRUCTURE_CONTAINER}
+    });
 
     if(options.resource) {
         containers = containers.filter(/**StructureContainer*/ c => {
