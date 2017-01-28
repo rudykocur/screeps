@@ -21,6 +21,10 @@ class HarvesterLinkRole extends HarvesterPureRole {
             }
         }
     }
+
+    searchJobs(handler) {
+        return _.first(handler.searchJobs({type: 'harvest', subtype: 'energy-link'}));
+    }
 }
 
 module.exports = (function() {

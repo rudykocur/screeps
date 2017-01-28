@@ -83,7 +83,9 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
-                        [RESOURCE_HYDROXIDE]: 2000,
+                        [RESOURCE_HYDROXIDE]: 5000,
+                        [RESOURCE_CATALYST]: 13000,
+                        [RESOURCE_GHODIUM]: 10000,
                     },
                     reserve: {
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
@@ -100,7 +102,7 @@ module.exports = (function() {
                     require: {
                         [RESOURCE_ENERGY]: 200000,
                         [RESOURCE_OXYGEN]: 5000,
-                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 500,
+                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
                         [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 2000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 1000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 1000,
@@ -123,11 +125,12 @@ module.exports = (function() {
                         '586172d62c660f9d020f7d58': 'D3',
                     },
                     boost: {
-                        // D3: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        A3: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     produce: {
                         input: ['B2', 'C2'],
-                        output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
+                        output: ['A1', 'A2', 'B1', 'B3', 'D1', 'D2', 'D3'],
+                        // output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
                         result: RESOURCE_CATALYZED_GHODIUM_ACID,
                         amount: 15000,
                     },
@@ -150,6 +153,7 @@ module.exports = (function() {
                         [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_UTRIUM]: 13000,
+                        [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
                     reserve: {
@@ -182,12 +186,13 @@ module.exports = (function() {
                         '587824f74da28eeb27895216': 'E3',
                     },
                     boost: {
-                        // C1: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        A1: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     produce: {
                         input: ['C1', 'C2'],
-                        output: ['A1', 'A2', 'B1', 'B2', 'D3', 'E1', 'E2', 'E3'],
-                        result: RESOURCE_GHODIUM,
+                        output: ['A2', 'B1', 'B2', 'D3', 'E1', 'E2', 'E3'],
+                        // output: ['A1', 'A2', 'B1', 'B2', 'D3', 'E1', 'E2', 'E3'],
+                        result: RESOURCE_HYDROXIDE,
                         amount: 15000,
                     },
                 },
@@ -208,6 +213,8 @@ module.exports = (function() {
                         [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_HYDROXIDE]: 3000,
                         [RESOURCE_UTRIUM]: 12000,
+                        [RESOURCE_CATALYST]: 13000,
+                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
                     reserve: {
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 0,
@@ -238,9 +245,13 @@ module.exports = (function() {
                         '586c3e9d5f1a64b15d4151b8': 'C3',
                         '587ac22cb3bcbfa352090062': 'C4',
                     },
+                    boost: {
+                        C1: RESOURCE_CATALYZED_GHODIUM_ACID,
+                    },
                     produce: {
                         input: ['B2', 'B3'],
-                        output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
+                        output: ['A1', 'A2', 'B1', 'B4', 'C2', 'C3', 'C4'],
+                        // output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
                         result: RESOURCE_GHODIUM,
                         amount: 10000,
                     },
@@ -261,9 +272,11 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
                         [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 10000,
+                        [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                         [RESOURCE_UTRIUM]: 13000,
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
+                        [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_ENERGY]: 500000,
                     },
@@ -295,14 +308,15 @@ module.exports = (function() {
                         '5878a65ce54d939f08188257': 'C4',
                     },
                     boost: {
-                        A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
-                        A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        B4: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
+                        // A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        // A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        B4: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     produce: {
                         input: ['B2', 'B3'],
                         // output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
-                        output: ['B1', 'B4', 'C1', 'C2', 'C3'],
+                        output: ['A1', 'A2', 'B1', 'C1', 'C2', 'C3', 'C4'],
+                        // output: ['B1', 'B4', 'C1', 'C2', 'C3'],
                         result: RESOURCE_GHODIUM,
                         // result: RESOURCE_HYDROXIDE,
                         amount: 15000,
@@ -316,7 +330,7 @@ module.exports = (function() {
                 // importEnabled: false,
                 creeps: {
                     mover: 2,
-                    upgrader: 3,
+                    upgrader: 4,
                     transfer: 2,
                 },
                 minerals: {
@@ -340,7 +354,7 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 3,
+                    upgrader: 4,
                     transfer: 2,
                 },
                 minerals: {

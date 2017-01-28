@@ -327,7 +327,7 @@ Room.prototype.getContainers = function(options) {
         amount: 0,
     });
 
-    var containers = this.find(FIND_MY_STRUCTURES, {
+    var containers = this.find(FIND_STRUCTURES, {
         filter: {structureType: STRUCTURE_CONTAINER}
     });
 
