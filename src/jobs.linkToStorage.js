@@ -25,7 +25,7 @@ class LinkToStorageJobGenerator extends JobGenerator {
 
         if(link.energy > 0) {
             if(!(key in jobs)) {
-                jobs[key] = this._getJobTransferDict(key, link, storage, RESOURCE_ENERGY);
+                jobs[key] = this._getJobTransferDict(key, link, storage, RESOURCE_ENERGY, 'link-storage');
             }
             jobs[key].amount = link.energy;
         }

@@ -24,11 +24,12 @@ class JobGenerator {
 
     generateJobs() {}
 
-    _getJobTransferDict(key, source, target, resource) {
+    _getJobTransferDict(key, source, target, resource, subtype) {
         return {
             key: key,
             room: this.room.customName,
             type: 'transfer',
+            subtype: subtype,
             sourceId: source.id,
             sourcePos: source.pos,
             resource: resource,

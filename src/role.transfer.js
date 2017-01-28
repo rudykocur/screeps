@@ -42,10 +42,14 @@ class TransferRole extends CreepRole {
 
         if(!job) {
             let jobs = creep.workRoomHandler.searchJobs({type: 'pickup', freeReserve: 200});
-            job = _.first(_.sortByOrder(jobs, j=>j.amount, 'desc'));
+            job = _.sample(_.sortByOrder(jobs, j=>j.amount, 'desc'));
 
             if(!job) {
-                job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer'}));
+                job = _.first(creep.workRoomHandler.searchJobs({type: 'transfer', subtype: 'link-storage'}));
+            }
+
+            if(!job) {
+                job = _.sample(creep.workRoomHandler.searchJobs({type: 'transfer'}));
             }
 
             if(job) {

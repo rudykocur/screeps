@@ -28,7 +28,7 @@ var taskModules = [
 var roleModules = {
     harvester: require('./role.harvester-pure'),
     harvesterLink: require('./role.harvester-link'),
-    mineralHarvester: require('./role.harvester-pure'),
+    mineralHarvester: require('./role.harvester-mineral'),
     upgrader: require('./role.upgrader'),
     mover: require('./role.mover'),
     builder: require('./role.builder'),
@@ -45,7 +45,7 @@ var roleModules = {
     none: {run: function() {}},
 };
 
-profiler.enable();
+// profiler.enable();
 
 profiler.registerClass(Game, 'Game');
 

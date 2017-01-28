@@ -38,7 +38,7 @@ class SpawnRefillJobGenerator extends JobGenerator {
         this.room.getTowers().forEach(/**StructureTower*/ tower => {
             var key = `refill-${this.room.customName}-tower-${tower.id}`;
 
-            if(tower.energy < tower.energyCapacity) {
+            if(tower.energy < tower.energyCapacity - 150) {
                 if(!(key in jobs)) {
                     jobs[key] = {
                         key: key,

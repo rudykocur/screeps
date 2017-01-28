@@ -340,7 +340,7 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 6,
+                    upgrader: 3,
                     transfer: 2,
                 },
                 minerals: {
@@ -364,9 +364,23 @@ module.exports = (function() {
                 wallsHp: 50000,
                 creeps: {
                     mover: 2,
-                    upgrader: 8,
-                    transfer: 2,
-                }
+                    upgrader: 4,
+                    transfer: 3,
+                },
+                minerals: {
+                    wants: {
+                        // [RESOURCE_ENERGY]: 0,
+                    },
+                    reserve: {
+                        [RESOURCE_CATALYST]: 0,
+                    }
+                },
+                terminal: {
+                    require: {
+                        [RESOURCE_CATALYST]: 5000,
+                        [RESOURCE_ENERGY]: 40000,
+                    }
+                },
             },
             eastBottom: {
                 type: "outpost",
@@ -553,6 +567,7 @@ module.exports = (function() {
             },
             Cintra: {},
             Oxygen: {},
+            Hydrogen: {},
             Brokilon: {
                 mudlaPush: {
                     minimum: 0,
@@ -566,7 +581,7 @@ module.exports = (function() {
                     }
                 },
                 mudlaPoke: {
-                    minimum: 2,
+                    minimum: 0,
                     priority: 'normal',
                     // body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,
                     //     ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
