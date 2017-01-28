@@ -26,6 +26,10 @@ class HarvesterPureRole extends CreepRole {
 
         let job = this.getJob();
 
+        if(!job) {
+            return;
+        }
+
         var pos = RoomPosition.fromDict(job.sourcePos);
 
         if(creep.pos.isNearTo(pos)) {
