@@ -347,6 +347,13 @@ module.exports = (function() {
             return creepCache[roomId][role] || [];
         },
 
+        processMarket(handler, marketOrders, withTerminal) {
+            if(handler.room && handler.room.terminal && handler.importEnabled) {
+                handler.processRoomTransfers(_.without(withTerminal, handler));
+            }
+            handler.processMarket(marketOrders);
+        },
+
         processRoomHandlers: function() {
             Memory.rooms = Memory.rooms || {};
 
@@ -378,10 +385,7 @@ module.exports = (function() {
                 try {
 
                     if(marketOrders) {
-                        if(handler.room && handler.room.terminal && handler.importEnabled) {
-                            handler.processRoomTransfers(_.without(withTerminal, handler));
-                        }
-                        handler.processMarket(marketOrders);
+                        module.exports.processMarket(handler, marketOrders, withTerminal);
                     }
 
                     handler.process();
@@ -414,3 +418,6 @@ module.exports = (function() {
 })();
 
 profiler.registerClass(RoomHandler, 'RoomHandler');
+profiler.registerFN(module.exports.processRoomHandlers, 'room-manager.processRoomHandlers');
+profiler.registerFN(module.exports.getCreeps, 'room-manager.getCreeps');
+profiler.registerFN(module.exports.processMarket, 'room-manager.processMarket');

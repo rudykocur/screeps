@@ -273,6 +273,8 @@ module.exports = (function() {
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
                         [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 10000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 8000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 8000,
                         [RESOURCE_UTRIUM]: 13000,
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
@@ -325,9 +327,8 @@ module.exports = (function() {
             },
             east: {
                 type: "colony",
-                panicMode: false,
                 wallsHp: 100000,
-                // importEnabled: false,
+                autobuyMinerals: true,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
@@ -335,23 +336,47 @@ module.exports = (function() {
                 },
                 minerals: {
                     wants: {
-                        // [RESOURCE_ENERGY]: 0,
+                        [RESOURCE_ZYNTHIUM]: 13000,
                     },
                     reserve: {
-                        // [RESOURCE_HYDROGEN]: 0,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 0,
                     }
                 },
                 terminal: {
                     autosell: [RESOURCE_HYDROGEN],
+                    autobuy: [RESOURCE_KEANIUM],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
                         [RESOURCE_ENERGY]: 40000,
                     }
                 },
+                labs: {
+                    names: {
+                        // '': 'A2',
+                        // '': 'A3',
+                        '588deea7e724d73531b19149': 'B1',
+                        // '': 'B2',
+                        // '': 'B3',
+                        '588e33a898cd17a460aa2d3f': 'B4',
+                        '588de294386811861ebe5595': 'C1',
+                        '588dfc2ee73cb0e942907811': 'C2',
+                        '588e093021ec356a2e11ced3': 'C3',
+                        '588e2267589c91df6d0ec864': 'C4',
+                    },
+                    boost: {},
+                    produce: {
+                        input: ['C2', 'C3'],
+                        output: ['B1', 'B4', 'C1', 'C4'],
+                        result: RESOURCE_ZYNTHIUM_KEANITE,
+                        amount: 15000,
+                    },
+                }
             },
             h2: {
                 type: "colony",
                 wallsHp: 50000,
+                autobuyMinerals: true,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
@@ -359,19 +384,42 @@ module.exports = (function() {
                 },
                 minerals: {
                     wants: {
-                        // [RESOURCE_ENERGY]: 0,
+                        [RESOURCE_LEMERGIUM]: 13000,
                     },
                     reserve: {
-                        // [RESOURCE_HYDROGEN]: 0,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 0,
                     }
                 },
                 terminal: {
                     autosell: [RESOURCE_HYDROGEN],
+                    autobuy: [RESOURCE_UTRIUM],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                         [RESOURCE_ENERGY]: 40000,
                     }
                 },
+                labs: {
+                    names: {
+                        '588e04f9af8dded30ccb692b': 'A1',
+                        '588df66bed2a2a4716084d72': 'A2',
+                        '588df046f170a2dc6b7818e9': 'A3',
+                        '588de940af1936510b7d17ca': 'A4',
+                        '588e1a798c44065363387db7': 'B1',
+                        // '': 'B2',
+                        // '': 'B3',
+                        '588de749253680545df51c65': 'B4',
+                        // '': 'C2',
+                        // '': 'C3',
+                    },
+                    boost: {},
+                    produce: {
+                        input: ['A2', 'A3'],
+                        output: ['A1', 'A4', 'B1', 'B4'],
+                        result: RESOURCE_UTRIUM_LEMERGITE,
+                        amount: 15000,
+                    },
+                }
             },
             dragon: {
                 type: "colony",

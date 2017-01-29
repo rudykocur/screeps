@@ -361,8 +361,9 @@ class ColonyRoomHandler extends RoomHandler {
     }
 
     autobuyMinerals(orders) {
-        var minerals = [RESOURCE_OXYGEN, RESOURCE_HYDROGEN, RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM, RESOURCE_LEMERGIUM,
+        let defaultMinerals = [RESOURCE_OXYGEN, RESOURCE_HYDROGEN, RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM, RESOURCE_LEMERGIUM,
             RESOURCE_UTRIUM, RESOURCE_CATALYST];
+        var minerals = _.get(this.config, 'terminal.autobuy', defaultMinerals);
 
         var storage = this.room.getStorage();
         var terminal = this.room.getTerminal();
