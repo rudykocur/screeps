@@ -39,7 +39,7 @@ module.exports = (function() {
                 target = creep.room.getStorage();
 
                 // if we have storage built but not enough energy, then dont try to borrow from containers.
-                if(target && _.sum(target.store) < 10000) {
+                if(target && target.store.energy < 10000) {
                     return;
                 }
 

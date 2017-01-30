@@ -67,7 +67,7 @@ class TransferRole extends CreepRole {
 
     unloadUnwantedResources(job) {
         let creep = this.creep;
-        let storage = creep.room.getStorage();
+        let storage = creep.workRoom.getStorage();
 
         let toEmpty = _.omit(creep.carry, job.resource);
         if(toEmpty.energy == 0) {
@@ -145,7 +145,7 @@ class TransferRole extends CreepRole {
 
     unloadAllResources() {
         let creep = this.creep;
-        let storage = creep.workRoomHandler.room.getStorage();
+        let storage = creep.workRoom.getStorage();
 
         if(!creep.pos.isNearTo(storage)) {
             this.creep.addTask(MoveTask.create(this.creep, storage, 1));

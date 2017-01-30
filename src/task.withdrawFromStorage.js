@@ -25,7 +25,7 @@ class WithdrawFromStorageTask extends CreepTask {
             return creep.pos.findPathTo(target.pos, {
                 costCallback: actionUtils.costCallback
             });
-        })
+        });
 
         return new module.exports.task(creep, {
             target: target.id,
