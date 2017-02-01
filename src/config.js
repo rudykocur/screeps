@@ -100,7 +100,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_OXYGEN],
                     require: {
-                        [RESOURCE_ENERGY]: 200000,
+                        [RESOURCE_ENERGY]: 100000,
                         [RESOURCE_OXYGEN]: 5000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 2000,
                         [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 2000,
@@ -131,7 +131,7 @@ module.exports = (function() {
                         input: ['B2', 'C2'],
                         output: ['A1', 'A2', 'B1', 'B3', 'D1', 'D2', 'D3'],
                         // output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
-                        result: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        result: RESOURCE_GHODIUM,
                         amount: 15000,
                     },
                 }
@@ -165,7 +165,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_ZYNTHIUM],
                     require: {
-                        [RESOURCE_ENERGY]: 200000,
+                        [RESOURCE_ENERGY]: 100000,
                         [RESOURCE_ZYNTHIUM]: 5000,
                         [RESOURCE_GHODIUM]: 10000,
                         [RESOURCE_HYDROXIDE]: 3000,
@@ -226,7 +226,7 @@ module.exports = (function() {
                     autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 5000,
-                        [RESOURCE_ENERGY]: 200000,
+                        [RESOURCE_ENERGY]: 100000,
                         [RESOURCE_GHODIUM]: 10000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 5000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,

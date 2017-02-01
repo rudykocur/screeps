@@ -334,8 +334,34 @@ module.exports = (function() {
         }
     }
 
+    var handlerCache = {};
+    var handlerUpdateTick = 0;
+
+    function refreshHandlerCache() {
+        if(handlerUpdateTick != Game.time) {
+            handlerUpdateTick = Game.time;
+
+            handlerCache = {};
+
+            var handlerModules = {};
+            roomModules.forEach(modName => {
+                handlerModules[modName] = require('./room.' + modName);
+            });
+
+            _.each(config.rooms, (roomConfig, roomName) => {
+
+                var room = Room.byCustomName(roomName);
+
+                var clz = handlerModules[roomConfig.type].handler;
+                var state = Memory.rooms[roomName];
+
+                handlerCache[roomName] = new clz(roomName, state, roomConfig);
+            });
+        }
+    }
+
     return {
-        RoomHandler: RoomHandler,
+        // RoomHandler: RoomHandler,
 
         getCreeps(roomId, role) {
             refreshCreepsCache();
@@ -398,26 +424,13 @@ module.exports = (function() {
         },
 
         getRoomHandler: function(roomName) {
-            var handlers = {};
-            roomModules.forEach(modName => {
-                handlers[modName] = require('./room.' + modName);
-            });
-
-            var room = Room.byCustomName(roomName);
-
-            if(!(roomName in config.rooms)) {
-                return null;
-            }
-
-            var roomConfig = config.rooms[roomName];
-            var clz = handlers[roomConfig.type].handler;
-            var state = Memory.rooms[roomName];
-            return new clz(roomName, state, roomConfig);
+            refreshHandlerCache();
+            return handlerCache[roomName];
         }
     }
 })();
 
 profiler.registerClass(RoomHandler, 'RoomHandler');
-profiler.registerFN(module.exports.processRoomHandlers, 'room-manager.processRoomHandlers');
-profiler.registerFN(module.exports.getCreeps, 'room-manager.getCreeps');
-profiler.registerFN(module.exports.processMarket, 'room-manager.processMarket');
+profiler.registerObject(module.exports, 'room-manager');
+
+module.exports.RoomHandler = RoomHandler;
