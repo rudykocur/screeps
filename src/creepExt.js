@@ -3,6 +3,7 @@ var _ = require('lodash');
 var actionHarvest = require('./action.harvest');
 var actionUtils = require('./action.utils');
 var bookmarks = require('./bookmarks');
+var logger = require('./logger');
 var utils = require('./utils');
 var config = require('./config');
 var roomHandler = require('./room.handlers');
@@ -44,11 +45,22 @@ Creep.prototype.setPrespawnTime = function() {
 Creep.prototype.getJob = function() {
     var job = this.memory.job;
 
+    if(job && this.workRoomHandler.state.jobs[job.key]) {
+        let masterJob = this.workRoomHandler.state.jobs[job.key];
+        if(masterJob && masterJob.takenBy && masterJob.takenBy != this.id) {
+            logger.error(this, 'has not his job. Returning null!!');
+            return null;
+        }
+    }
+
     return job;
 };
 
 Creep.prototype.takeJob = function(job) {
     this.memory.job = job;
+    if(job.takenBy && job.takenBy != this.id) {
+        logger.mail(logger.error(this, 'is taking someone else job!!! ', JSON.stringify(job)));
+    }
     job.takenBy = this.id;
 };
 

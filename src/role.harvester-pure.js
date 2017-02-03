@@ -53,7 +53,7 @@ class HarvesterPureRole extends CreepRole {
         let creep = this.creep;
         let handler = creep.workRoomHandler;
 
-        var job = creep.memory.job;
+        var job = creep.getJob();
 
         if(!job) {
             job = this.searchJobs(handler);

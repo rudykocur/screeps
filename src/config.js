@@ -616,6 +616,7 @@ module.exports = (function() {
             Shaerrawedd: {},
             Drakenborg: {},
             Szczerbatek: {},
+            Drago: {},
             Osaka: {},
             Tokyo: {
                 kickDragon: {
