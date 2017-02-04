@@ -21,6 +21,10 @@ module.exports = (function() {
                 var creeps = creepsBySpawn[spawnName] || [];
                 var spawnConfig = config.spawn[spawnName];
 
+                if(!spawnConfig) {
+                    return;
+                }
+
                 var counts = {};
 
                 creeps.forEach((creep) => {

@@ -168,7 +168,7 @@ class ColonyRoomHandler extends RoomHandler {
         }
         
         if(expectedBuildersAmount > amount) {
-            amount = Math.min(expectedBuildersAmount, 3); // spawn up to 3 builders if there is lot to build
+            amount = Math.min(expectedBuildersAmount, 4); // spawn up to 3 builders if there is lot to build
         }
 
         this.maintainPopulationAmount('builder', amount, config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
@@ -248,6 +248,7 @@ class ColonyRoomHandler extends RoomHandler {
 
         let target = this.state.lab;
         let config = _.get(this.config, 'labs.produce', null);
+        let boostLabs = _.get(this.config, 'labs.boost', {});
 
         if(!target || !target.currentReaction) {
             return;
@@ -256,7 +257,8 @@ class ColonyRoomHandler extends RoomHandler {
         let labIn1 = Game.getObjectById(this.labNameToId[config.input[0]]),
             labIn2 = Game.getObjectById(this.labNameToId[config.input[1]]);
 
-        config.output.forEach(labName => {
+        let outLabs = _.without(config.output, ..._.keys(boostLabs));
+        outLabs.forEach(labName => {
             /** @type StructureLab */
             var outLab = Game.getObjectById(this.labNameToId[labName]);
 
@@ -285,11 +287,11 @@ class ColonyRoomHandler extends RoomHandler {
             return;
         }
 
-        let storage = this.room.getStorage();
+        let terminal = this.room.getTerminal();
 
         let finalResult = target.result;
 
-        if(!finalResult || (storage.store[finalResult] || 0) > target.amount) {
+        if(!finalResult || (terminal.store[finalResult] || 0) > target.amount) {
             this.state.lab = {
                 currentReaction: null,
                 target: null,
@@ -302,7 +304,7 @@ class ColonyRoomHandler extends RoomHandler {
             return;
         }
 
-        let currentReaction = this.getNextReaction(finalResult, batchSize, storage.store);
+        let currentReaction = this.getNextReaction(finalResult, batchSize, terminal.store);
 
         this.debug(`New lab target for ${finalResult} is: ${currentReaction}`);
 

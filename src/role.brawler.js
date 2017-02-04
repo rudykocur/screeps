@@ -112,7 +112,7 @@ module.exports = (function() {
                 let flag = Game.flags[creep.memory.guardFlag];
 
                 if(flag) {
-                    target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 5));
+                    target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 2));
 
                     if (!target) {
                         target = _.first(flag.pos.lookFor(LOOK_STRUCTURES));

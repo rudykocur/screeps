@@ -20,6 +20,11 @@ class TerminalToStorageJobGenerator extends JobGenerator {
         _.each(terminal.store, (amount, resource) => {
             var key = `terminal-withdraw-${this.room.customName}-${resource}`;
 
+            // all non-base resources are left in terminal
+            if(RESOURCES_BASE.indexOf(resource) < 0) {
+                return;
+            }
+
             var availableAmount = amount - (requires[resource] || 0);
 
             if(availableAmount > 0) {

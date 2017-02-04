@@ -28,6 +28,7 @@ class LabsJobGenerator extends JobGenerator {
         let reaction = this.handler.state.lab.currentReaction;
         let resultResource = this.handler.state.lab.currentResult;
         let config = _.get(this.config, 'labs.produce', null);
+        let boostLabs = _.get(this.config, 'labs.boost', {});
         let storage = this.room.getStorage();
         let terminal = this.room.getTerminal();
 
@@ -45,9 +46,10 @@ class LabsJobGenerator extends JobGenerator {
             let emptyJobKey = `labs-${labName}-empty-${this.room.customName}`;
 
             if (lab.mineralType && lab.mineralType != resource) {
+                let emptyTarget = (RESOURCES_BASE.indexOf(lab.mineralType)>=0 ? storage : terminal);
 
                 if (!(emptyJobKey in jobs)) {
-                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, storage, lab.mineralType);
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, emptyTarget, lab.mineralType);
                 }
 
                 jobs[emptyJobKey].amount = lab.mineralAmount;
@@ -72,17 +74,18 @@ class LabsJobGenerator extends JobGenerator {
             }
         });
 
-        config.output.forEach(labName => {
+        let outLabs = _.without(config.output, ..._.keys(boostLabs));
+        outLabs.forEach(labName => {
             /** @type StructureLab */
             var outLab = Game.getObjectById(this.labNameToId[labName]);
-
-            // var resultResource = REACTIONS[reaction.load[0]][reaction.load[1]];
 
             let emptyJobKey = `labs-${labName}-empty-${outLab.mineralType}`;
 
             if (outLab.mineralType && outLab.mineralType != resultResource) {
+                let emptyTarget = (RESOURCES_BASE.indexOf(outLab.mineralType)>=0 ? storage : terminal);
+
                 if (!(emptyJobKey in jobs)) {
-                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLab, storage, outLab.mineralType);
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, outLab, emptyTarget, outLab.mineralType);
                 }
 
                 jobs[emptyJobKey].amount = outLab.mineralAmount;
@@ -97,6 +100,7 @@ class LabsJobGenerator extends JobGenerator {
         var jobs = this.state.jobs;
 
         var storage = this.room.getStorage();
+        let terminal = this.room.getTerminal();
 
         _.each(_.get(this.config, 'labs.boost', {}), (resource, labName) => {
             /** @type StructureLab */
@@ -106,8 +110,10 @@ class LabsJobGenerator extends JobGenerator {
             let loadEnergyKey = `labs-${labName}-load-energy`;
 
             if(lab.mineralType && lab.mineralType != resource) {
+                let emptyTarget = (RESOURCES_BASE.indexOf(lab.mineralType)>=0 ? storage : terminal);
+
                 if(!(emptyJobKey in jobs)) {
-                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, storage, lab.mineralType);
+                    jobs[emptyJobKey] = this._getJobTransferDict(emptyJobKey, lab, emptyTarget, lab.mineralType);
                 }
 
                 jobs[emptyJobKey].amount = lab.mineralAmount;
@@ -115,18 +121,22 @@ class LabsJobGenerator extends JobGenerator {
             else {
                 delete jobs[emptyJobKey];
 
-                let key = `labs-${labName}-load-boost-${resource}`;
+                [storage, terminal].forEach(/**StructureStorage*/struct => {
+                    let key = `labs-${labName}-load-boost-${struct.structureType}-${resource}`;
 
-                if(lab.mineralAmount < lab.mineralCapacity && storage.store[resource] > 0) {
-                    if (!(key in jobs)) {
-                        jobs[key] = this._getJobTransferDict(key, storage, lab, resource);
+                    if(lab.mineralAmount < lab.mineralCapacity && struct.store[resource] > 0) {
+                        if (!(key in jobs)) {
+                            jobs[key] = this._getJobTransferDict(key, struct, lab, resource);
+                        }
+
+                        jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
                     }
+                    else {
+                        delete jobs[key];
+                    }
+                });
 
-                    jobs[key].amount = lab.mineralCapacity - lab.mineralAmount;
-                }
-                else {
-                    delete jobs[key];
-                }
+
             }
 
             if(lab.energy < lab.energyCapacity) {
@@ -145,6 +155,7 @@ class LabsJobGenerator extends JobGenerator {
     createEmptyUnusedLabTransfers() {
         var jobs = this.state.jobs;
         var storage = this.room.getStorage();
+        let terminal = this.room.getTerminal();
 
         var allLabs = _.values(_.get(this.config, 'labs.names', {}));
         var unusedLabs = _.values(_.get(this.config, 'labs.names', {}));
@@ -169,8 +180,10 @@ class LabsJobGenerator extends JobGenerator {
             }
 
             if(shouldEmpty) {
+                let emptyTarget = (RESOURCES_BASE.indexOf(lab.mineralType)>=0 ? storage : terminal);
+
                 if(!(key in jobs)) {
-                    jobs[key] = this._getJobTransferDict(key, lab, storage, lab.mineralType);
+                    jobs[key] = this._getJobTransferDict(key, lab, emptyTarget, lab.mineralType);
                 }
                 jobs[key].amount = lab.mineralAmount;
             }

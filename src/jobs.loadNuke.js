@@ -16,6 +16,7 @@ class LoadNukeJobGenerator extends JobGenerator {
 
         var nuke = this.room.getNuke();
         var storage = this.room.getStorage();
+        var terminal = this.room.getTerminal();
 
         if(!nuke) {
             return;
@@ -34,9 +35,9 @@ class LoadNukeJobGenerator extends JobGenerator {
             delete jobs[energyKey];
         }
 
-        if(storage.store[RESOURCE_GHODIUM] > 3000 && nuke.ghodium < nuke.ghodiumCapacity) {
+        if(terminal.store[RESOURCE_GHODIUM] > 3000 && nuke.ghodium < nuke.ghodiumCapacity) {
             if(!(ghodiumKey in jobs)) {
-                jobs[ghodiumKey] = this._getJobTransferDict(ghodiumKey, storage, nuke, RESOURCE_GHODIUM);
+                jobs[ghodiumKey] = this._getJobTransferDict(ghodiumKey, terminal, nuke, RESOURCE_GHODIUM);
             }
             jobs[ghodiumKey].amount = nuke.ghodiumCapacity - nuke.ghodium;
         }

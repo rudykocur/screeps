@@ -17,29 +17,33 @@ class StorageToTerminalJobGenerator extends JobGenerator {
         var reserves = _.get(this.config, 'minerals.reserve', {});
         var jobs = this.state.jobs;
 
-        _.each(requires, (amount, resource) => {
+        _.each(storage.store, (storedAmount, resource) => {
             var key = `terminal-require-${this.room.customName}-${resource}`;
 
-            var available = storage.store[resource] - _.get(reserves, resource, 10000);
+            let requiredAmount = requires[resource] || 0;
+
+            let resourceReserve = (RESOURCES_BASE.indexOf(resource) >= 0 ? 10000 : 0);
+            var available = storedAmount - _.get(reserves, resource, resourceReserve);
+
             let terminalAmount = (terminal.store[resource] || 0);
 
-            if(available > 0 && terminalAmount < amount) {
+            let shouldMove = false;
+            let moveAmount = 0;
+            if(RESOURCES_BASE.indexOf(resource) >= 0) {
+                shouldMove = (available > 0 && terminalAmount < requiredAmount);
+                moveAmount = Math.max(0, Math.min(available, requiredAmount - terminalAmount));
+            }
+            else {
+                shouldMove = true;
+                moveAmount = storedAmount;
+            }
+
+            if(shouldMove) {
                 if(!(key in jobs)) {
-                    jobs[key] = {
-                        key: key,
-                        room: this.room.customName,
-                        type: 'transfer',
-                        sourceId: storage.id,
-                        sourcePos: storage.pos,
-                        resource: resource,
-                        targetId: terminal.id,
-                        targetPos: terminal.pos,
-                        takenBy: null,
-                        amount: 0,
-                    }
+                    jobs[key] = this._getJobTransferDict(key, storage, terminal, resource);
                 }
 
-                jobs[key].amount = Math.max(0, Math.min(available, amount - terminalAmount));
+                jobs[key].amount = moveAmount;
             }
             else {
                 delete jobs[key];
