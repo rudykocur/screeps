@@ -13,10 +13,7 @@ module.exports = (function() {
     }
 
     return {
-        shouldHarvestEnergy:  function(creep, minEnergy, resource) {
-            minEnergy = minEnergy || 0;
-            resource = resource || RESOURCE_ENERGY;
-
+        shouldHarvestEnergy:  function(creep) {
             var carry = _.sum(creep.carry);
 
             if(creep.carryCapacity == 0) {return false;}

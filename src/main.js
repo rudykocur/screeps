@@ -42,6 +42,7 @@ var roleModules = {
     scout: require('./role.scout'),
     combatTank: require('./role.combatTank'),
     combatHealer: require('./role.combatHealer'),
+    thief: require('./role.thief'),
     none: {run: function() {}},
 };
 

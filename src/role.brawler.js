@@ -49,7 +49,7 @@ module.exports = (function() {
             }
 
             if(creep.pos.isNearTo(lab)) {
-                console.log('trying to boost', lab, '::', lab.mineralType, '::', toBoost.amount);
+                console.log('trying to boost', creep, 'in', lab, '::', lab.mineralType, '::', toBoost.amount);
                 lab.boostCreep(creep);
             }
             else {
@@ -112,7 +112,7 @@ module.exports = (function() {
                 let flag = Game.flags[creep.memory.guardFlag];
 
                 if(flag) {
-                    target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 2));
+                    target = _.first(flag.pos.findInRange(FIND_HOSTILE_CREEPS, 1));
 
                     if (!target) {
                         target = _.first(flag.pos.lookFor(LOOK_STRUCTURES));

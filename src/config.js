@@ -86,6 +86,8 @@ module.exports = (function() {
                         [RESOURCE_HYDROXIDE]: 5000,
                         [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_GHODIUM]: 10000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                     },
                     reserve: {
                         [RESOURCE_UTRIUM]: 12000,
@@ -194,6 +196,8 @@ module.exports = (function() {
                         [RESOURCE_HYDROXIDE]: 3000,
                         [RESOURCE_UTRIUM]: 12000,
                         [RESOURCE_CATALYST]: 13000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
                     reserve: {
@@ -246,8 +250,8 @@ module.exports = (function() {
                         // [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
                         // [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]: 10000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
-                        [RESOURCE_ZYNTHIUM_KEANITE]: 8000,
-                        [RESOURCE_UTRIUM_LEMERGITE]: 8000,
+                        [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
+                        [RESOURCE_UTRIUM_LEMERGITE]: 5000,
                         [RESOURCE_UTRIUM]: 13000,
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
@@ -296,6 +300,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 100000,
                 autobuyMinerals: true,
+                structRampartsHp: 10000000,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
@@ -327,7 +332,7 @@ module.exports = (function() {
                         '588df046f170a2dc6b7818e9': 'A3',
                         '588de940af1936510b7d17ca': 'A4',
                         '588e1a798c44065363387db7': 'B1',
-                        // '': 'B2',
+                        '5895ebb06ab52a0c20ddfc8e': 'B2',
                         '5895e244c8c08019c2a6acc4': 'B3',
                         '588de749253680545df51c65': 'B4',
                         '5895e6c3ea8a69ea44b1bceb': 'C2',
@@ -336,13 +341,13 @@ module.exports = (function() {
 
                     boost: {
                         A4: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
-                        B1: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
-                        C2: RESOURCE_CATALYZED_UTRIUM_ACID,
+                        // A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        // B1: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
+                        // C2: RESOURCE_CATALYZED_UTRIUM_ACID,
                     },
                     produce: {
-                        input: ['A2', 'A3'],
-                        output: ['A1', 'A4', 'B1', 'B3', 'B4', 'C2', 'C3'],
+                        input: ['B2', 'B3'],
+                        output: ['A1', 'A2', 'A3', 'A4', 'B1', 'B4', 'C2', 'C3'],
                         result: RESOURCE_ZYNTHIUM_KEANITE,
                         amount: 15000,
                     },
@@ -396,7 +401,8 @@ module.exports = (function() {
             },
             dragon: {
                 type: "colony",
-                wallsHp: 50000,
+                wallsHp: 200000,
+                structRampartsHp: 500000,
                 creeps: {
                     mover: 2,
                     upgrader: 3,
@@ -532,7 +538,7 @@ module.exports = (function() {
         },
 
         monitoring: {
-            alwaysVisible: ['E69N46','E69N45'],
+            alwaysVisible: ['E69N46','E69N45', 'E66N48', 'E66N49'],
             watch: ['E63N40','E64N40','E65N40','E66N40','E67N40','E68N40','E69N40','E70N40',
                 'E70N41','E70N42','E70N43','E70N44','E70N45','E70N46','E70N47','E70N48','E70N49','E70N50',
                 'E67N50','E68N50','E69N50'],
@@ -609,6 +615,28 @@ module.exports = (function() {
                             {part: TOUGH,resource: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,amount: 10},
                             {part: ATTACK,resource: RESOURCE_CATALYZED_UTRIUM_ACID,amount: 16},
                         ],
+                    }
+                },
+                stealCase: {
+                    minimum: 1,
+                    priority: 'normal',
+                    body: 'mineralThief',
+                    memo: {
+                        role: 'thief',
+                        room: 'E69N49',
+                        unloadRoom: 'E69N49',
+                        stealRoom: 'E66N48',
+                    }
+                },
+                stealCase2_: {
+                    minimum: 1,
+                    priority: 'normal',
+                    body: 'mineralThief',
+                    memo: {
+                        role: 'thief',
+                        room: 'E69N49',
+                        unloadRoom: 'E69N49',
+                        stealRoom: 'E66N49',
                     }
                 }
             },

@@ -418,7 +418,7 @@ class ColonyRoomHandler extends RoomHandler {
         let extractor = this.room.getExtractor();
 
         minerals.forEach(resource => {
-            if(extractor.resource == resource && this.getResourceTotal(resource) < 50000) {
+            if(extractor.resource == resource && this.getResourceTotal(resource) < 75000) {
                 return;
             }
 
