@@ -27,7 +27,11 @@ module.exports = (function() {
 
                 var counts = {};
 
-                creeps.forEach((creep) => {
+                creeps.forEach((/**Creep*/creep) => {
+                    if(creep.ticksToLive < (creep.memory.spawnTime+(creep.memory.prespawnTime||0))) {
+                        return;
+                    }
+
                     counts[creep.memory.group] = (counts[creep.memory.group] || 0) + 1;
                 });
 

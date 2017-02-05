@@ -35,6 +35,7 @@ module.exports = (function() {
             E69N44: "dragon",
             E68N44: "dragonLeft",
             E68N45: "dragon2",
+            E64N49: "casegrad"
         },
         market: {
             processInterval: 30,
@@ -424,6 +425,12 @@ module.exports = (function() {
                     }
                 },
             },
+            casegrad: {
+                type: "colony",
+                disableHarvesters: true,
+                creeps: {
+                }
+            },
             eastBottom: {
                 type: "outpost",
                 homeRoom: "east",
@@ -539,7 +546,7 @@ module.exports = (function() {
         },
 
         monitoring: {
-            alwaysVisible: ['E69N46','E69N45', 'E66N48', 'E66N49'],
+            alwaysVisible: ['E69N46','E69N45', 'E64N49'],
             watch: ['E63N40','E64N40','E65N40','E66N40','E67N40','E68N40','E69N40','E70N40',
                 'E70N41','E70N42','E70N43','E70N44','E70N45','E70N46','E70N47','E70N48','E70N49','E70N50',
                 'E67N50','E68N50','E69N50'],
@@ -599,25 +606,6 @@ module.exports = (function() {
             Osaka: {},
             Kioto: {},
             Tokyo: {
-                kickCase: {
-                    minimum: 0,
-                    priority: 'defence',
-                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
-                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                        HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
-                    memo: {
-                        role: 'brawler',
-                        room: 'E66N48',
-                        guardFlag: 'Flag113',
-                        boost: [
-                            {part: MOVE,resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,amount: 10},
-                            {part: HEAL,resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,amount: 14},
-                            {part: TOUGH,resource: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,amount: 10},
-                            {part: ATTACK,resource: RESOURCE_CATALYZED_UTRIUM_ACID,amount: 16},
-                        ],
-                    }
-                },
                 stealCase: {
                     minimum: 0,
                     priority: 'normal',
@@ -629,20 +617,37 @@ module.exports = (function() {
                         stealRoom: 'E66N48',
                     }
                 },
-                stealCase2_: {
-                    minimum: 0,
+                settlerCase2_: {
+                    minimum: 5,
                     priority: 'normal',
-                    body: 'mineralThief',
+                    body: 'settler',
                     memo: {
-                        role: 'thief',
-                        room: 'E69N49',
-                        unloadRoom: 'E69N49',
-                        stealRoom: 'E66N49',
+                        role: 'settler',
+                        room: 'E64N49',
                     }
                 }
             },
             Cintra: {},
-            Oxygen: {},
+            Oxygen: {
+                harvesterCase: {
+                    minimum: 2,
+                    priority: 'high',
+                    body: 'harvesterOffroad',
+                    memo: {
+                        role: 'harvester',
+                        room: 'E64N49',
+                    }
+                },
+                settlerCase: {
+                    minimum: 4,
+                    priority: 'normal',
+                    body: 'settler',
+                    memo: {
+                        role: 'settler',
+                        room: 'E64N49',
+                    }
+                }
+            },
             Hydrogen: {},
             Brokilon: {
                 mudlaPush: {

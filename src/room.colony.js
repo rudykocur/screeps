@@ -498,6 +498,10 @@ class ColonyRoomHandler extends RoomHandler {
     }
 
     maintainHarvesterPopulation() {
+        if(_.get(this.config, 'disableHarvesters', false)) {
+            return;
+        }
+
         var sources = this.room.getAllSources().filter(source => source instanceof Source);
         var minerals = this.room.getAllSources().filter(source => {
             if(source instanceof Mineral) {

@@ -343,7 +343,7 @@ Room.prototype.getContainers = function(options) {
 Room.prototype.getAllSources = function() {
     var state = this.handlerMemory;
 
-    if(!state.refreshTime_sources || (Game.time - state.refreshTime_sources) > 1000) {
+    if(!state.refreshTime_sources || ((Game.time - state.refreshTime_sources) > 1000)) {
         state.refreshTime_sources = Game.time;
 
         state.allSouces = this.find(FIND_SOURCES).concat(this.find(FIND_MINERALS)).map(r => r.id);
