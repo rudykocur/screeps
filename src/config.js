@@ -300,7 +300,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 100000,
                 autobuyMinerals: true,
-                structRampartsHp: 10000000,
+                structRampartsHp: 1000000,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
@@ -309,6 +309,7 @@ module.exports = (function() {
                 minerals: {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
+                        [RESOURCE_GHODIUM]: 4000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
@@ -618,7 +619,7 @@ module.exports = (function() {
                     }
                 },
                 stealCase: {
-                    minimum: 1,
+                    minimum: 0,
                     priority: 'normal',
                     body: 'mineralThief',
                     memo: {
@@ -629,7 +630,7 @@ module.exports = (function() {
                     }
                 },
                 stealCase2_: {
-                    minimum: 1,
+                    minimum: 0,
                     priority: 'normal',
                     body: 'mineralThief',
                     memo: {

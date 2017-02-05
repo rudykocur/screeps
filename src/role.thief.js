@@ -24,6 +24,9 @@ class ThiefRole extends CreepRole {
 
             if(!target) {
                 logger.error('No steal target for', this.creep, 'in room', this.creep.memory.stealRoom);
+                if(this.creep.carryTotal > 0) {
+                    this.creep.memory.harvesting = false;
+                }
                 return;
             }
 
