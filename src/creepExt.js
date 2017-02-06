@@ -49,6 +49,7 @@ Creep.prototype.getJob = function() {
         let masterJob = this.workRoomHandler.state.jobs[job.key];
         if(masterJob && masterJob.takenBy && masterJob.takenBy != this.id) {
             logger.error(this, 'has not his job. Returning null!!');
+            delete this.memory.job;
             return null;
         }
     }

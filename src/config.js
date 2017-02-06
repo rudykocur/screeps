@@ -117,7 +117,7 @@ module.exports = (function() {
                         '586172d62c660f9d020f7d58': 'D3',
                     },
                     boost: {
-                        A3: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        // A3: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     produce: {
                         input: ['B2', 'C2'],
@@ -170,7 +170,7 @@ module.exports = (function() {
                         '587824f74da28eeb27895216': 'E3',
                     },
                     boost: {
-                        A1: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        // A1: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     produce: {
                         input: ['C1', 'C2'],
@@ -225,7 +225,7 @@ module.exports = (function() {
                         '587ac22cb3bcbfa352090062': 'C4',
                     },
                     boost: {
-                        C1: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        // C1: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     produce: {
                         input: ['B2', 'B3'],
@@ -286,7 +286,7 @@ module.exports = (function() {
                     boost: {
                         // A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
                         // A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
-                        B4: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        // B4: RESOURCE_CATALYZED_GHODIUM_ACID,
                     },
                     produce: {
                         input: ['B2', 'B3'],
