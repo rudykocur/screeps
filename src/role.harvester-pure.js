@@ -29,7 +29,12 @@ class HarvesterPureRole extends CreepRole {
         if(!job) {
             let idle = this.creep.getIdlePosition();
             if(idle) {
-                this.creep.addTask(MoveTask.create(this.creep, idle, 1));
+                if(this.creep.pos.isNearTo(idle)) {
+                    creep.setPrespawnTime();
+                }
+                else {
+                    this.creep.addTask(MoveTask.create(this.creep, idle, 1));
+                }
             }
             return;
         }

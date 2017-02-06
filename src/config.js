@@ -430,7 +430,8 @@ module.exports = (function() {
                 type: "colony",
                 disableHarvesters: true,
                 creeps: {
-                    upgrader: 0,
+                    upgrader: 3,
+                    mover: 2,
                     builder: 0,
                 }
             },
@@ -621,7 +622,7 @@ module.exports = (function() {
                     }
                 },
                 settlerCase2_: {
-                    minimum: 5,
+                    minimum: 2,
                     priority: 'normal',
                     body: 'settler',
                     memo: {
@@ -642,7 +643,7 @@ module.exports = (function() {
                     }
                 },
                 settlerCase: {
-                    minimum: 3,
+                    minimum: 2,
                     priority: 'normal',
                     body: 'settler',
                     memo: {
