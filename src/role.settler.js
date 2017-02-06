@@ -3,7 +3,8 @@ var profiler = require('./profiler-impl');
 var actionHarvest = require('./action.harvest');
 var actionBuld = require('./action.build');
 var actionUtils = require('./action.utils');
-var logger = require('./logger');
+var logger = require('./logger'),
+    F = logger.fmt;
 
 var MoveTask = require('./task.move').MoveTask;
 var CreepRole = require('./role').CreepRole;

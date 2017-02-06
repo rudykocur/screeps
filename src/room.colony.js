@@ -86,6 +86,8 @@ class ColonyRoomHandler extends RoomHandler {
     process() {
         super.process();
 
+        this.validateRoom();
+
         this.runLabProcessing();
         this.runLinks();
 
@@ -100,6 +102,14 @@ class ColonyRoomHandler extends RoomHandler {
 
         if(Game.time % 100 == 0) {
             this.autobuildConstructionSites();
+        }
+    }
+
+    validateRoom() {
+        if(Game.time % 100 == 0) {
+            if(this.room.find(FIND_FLAGS, {filter: {color: COLOR_ORANGE}}).length == 0) {
+                this.error('Room', this, 'has no orange flag!');
+            }
         }
     }
 
@@ -160,16 +170,12 @@ class ColonyRoomHandler extends RoomHandler {
             this.state.constructionProgressLeft = _.sum(sites, /**ConstructionSite*/ s => s.progressTotal - s.progress);
         }
 
-        var amount = _.get(this.config, ['creeps', 'builder'], 0);
-
-        var expectedBuildersAmount = Math.floor(this.state.constructionProgressLeft / 20000);
+        var expectedBuildersAmount = Math.min(Math.floor(this.state.constructionProgressLeft / 20000), 4);
         if(this.state.constructionProgressLeft > 0) {
             expectedBuildersAmount = Math.max(expectedBuildersAmount, 1);
         }
         
-        if(expectedBuildersAmount > amount) {
-            amount = Math.min(expectedBuildersAmount, 4); // spawn up to 3 builders if there is lot to build
-        }
+        var amount = _.get(this.config, ['creeps', 'builder'], expectedBuildersAmount);
 
         this.maintainPopulationAmount('builder', amount, config.blueprints.colonyBuilder, spawnQueue.PRIORITY_NORMAL);
     }
@@ -464,6 +470,7 @@ class ColonyRoomHandler extends RoomHandler {
         this.placeConstructionSites(COLOR_PURPLE, COLOR_RED, STRUCTURE_TOWER);
         this.placeConstructionSites(COLOR_PURPLE, COLOR_CYAN, STRUCTURE_TERMINAL);
         this.placeConstructionSites(COLOR_PURPLE, COLOR_BLUE, STRUCTURE_EXTRACTOR);
+        this.placeConstructionSites(COLOR_PURPLE, COLOR_GREEN, STRUCTURE_STORAGE);
     }
 
     placeConstructionSites(flagColor, flagSecondaryColor, structureType) {

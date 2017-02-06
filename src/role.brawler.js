@@ -86,6 +86,9 @@ module.exports = (function() {
                     return;
                 }
             }
+            else {
+                creep.setPrespawnTime();
+            }
 
             let canAttack = creep.getActiveBodyparts(ATTACK) > 0 || creep.getActiveBodyparts(RANGED_ATTACK) > 0;
 

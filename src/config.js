@@ -311,6 +311,7 @@ module.exports = (function() {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_GHODIUM]: 4000,
+                        [RESOURCE_ENERGY]: 500000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
@@ -429,6 +430,8 @@ module.exports = (function() {
                 type: "colony",
                 disableHarvesters: true,
                 creeps: {
+                    upgrader: 0,
+                    builder: 0,
                 }
             },
             eastBottom: {
@@ -639,14 +642,25 @@ module.exports = (function() {
                     }
                 },
                 settlerCase: {
-                    minimum: 4,
+                    minimum: 3,
                     priority: 'normal',
                     body: 'settler',
                     memo: {
                         role: 'settler',
                         room: 'E64N49',
                     }
-                }
+                },
+                defenderCase: {
+                    minimum: 1,
+                    priority: 'high',
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
+                    memo: {
+                        role: 'brawler',
+                        room: 'E64N49',
+                    }
+                },
             },
             Hydrogen: {},
             Brokilon: {
