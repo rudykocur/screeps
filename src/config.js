@@ -38,7 +38,8 @@ module.exports = (function() {
             E64N49: "casegrad"
         },
         market: {
-            processInterval: 30,
+            processInterval: 5,
+            // processInterval: 30,
             maxTradeRange: 50,
             minerals: {
                 [RESOURCE_OXYGEN]: {
@@ -97,7 +98,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_OXYGEN],
                     require: {
-                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ENERGY]: 150000,
                         [RESOURCE_OXYGEN]: 5000,
                         [RESOURCE_UTRIUM]: 2000,
                         [RESOURCE_GHODIUM]: 10000,
@@ -152,7 +153,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_ZYNTHIUM],
                     require: {
-                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ENERGY]: 150000,
                         [RESOURCE_ZYNTHIUM]: 5000,
                     }
                 },
@@ -208,7 +209,7 @@ module.exports = (function() {
                     autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 5000,
-                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ENERGY]: 150000,
                     }
                 },
                 labs: {
@@ -432,6 +433,7 @@ module.exports = (function() {
                 creeps: {
                     upgrader: 3,
                     mover: 2,
+                    transfer: 3,
                     builder: 0,
                 }
             },

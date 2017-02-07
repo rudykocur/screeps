@@ -223,9 +223,12 @@ class ColonyRoomHandler extends RoomHandler {
                 let handlers = _.sortByOrder(otherRooms, /**RoomHandler*/handler => handler.getResourceTotal(resource), 'desc');
 
                 for(let /**RoomHandler*/handler of handlers) {
-                    let toTransfer = Math.min(100000, needed, handler.room.terminal.store[resource], terminalAvailable);
+                    let transferCost = Game.market.calcTransactionCost(handler.room.terminal.store[resource], this.room.name, handler.room.name);
 
-                    if(handler.room.terminal.send(resource, toTransfer, this.room.name) == OK) {
+                    let toTransfer = Math.min(100000, needed, handler.room.terminal.store[resource] - transferCost, terminalAvailable);
+                    let result = handler.room.terminal.send(resource, toTransfer, this.room.name);
+
+                    if(result == OK) {
                         needed -= toTransfer;
                         terminalAvailable -= toTransfer;
                         this.info(F.green(`Transferred ${toTransfer}x ${resource} from ${handler}`));

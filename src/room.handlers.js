@@ -256,19 +256,24 @@ class RoomHandler {
         if(newCreeps.length > 0) {
             logger.mail(this.error('New hostile creeps:', newCreeps.map(cId => creepMap[cId].idwithOwner).join(', ')));
 
-            var fleePoint = this.getFleePoint();
+            if(this.room.getTowers().length == 0) {
+                var fleePoint = this.getFleePoint();
 
-            if(fleePoint) {
+                if (fleePoint) {
 
-                this.info(logger.fmt.orange(`all creeps will go to ${fleePoint.pos}`));
+                    this.info(logger.fmt.orange(`all creeps will go to ${fleePoint.pos}`));
 
-                this.getAllCreeps().forEach(c => {
-                    c.memory.tasks = [];
-                    c.memory.fleePoint = fleePoint.pos;
-                })
+                    this.getAllCreeps().forEach(c => {
+                        c.memory.tasks = [];
+                        c.memory.fleePoint = fleePoint.pos;
+                    })
+                }
+                else {
+                    this.info(logger.fmt.orange(`unable to find fleePoint for room ${this.roomName}. There will be slaughter`))
+                }
             }
             else {
-                this.info(logger.fmt.orange(`unable to find fleePoint for room ${this.roomName}. There will be slaughter`))
+                this.info('Towers present. Creeps will be safe');
             }
         }
 
