@@ -35,7 +35,8 @@ module.exports = (function() {
             E69N44: "dragon",
             E68N44: "dragonLeft",
             E68N45: "dragon2",
-            E64N49: "casegrad"
+            E64N49: "casegrad",
+            E65N49: "caseRight",
         },
         market: {
             processInterval: 5,
@@ -429,12 +430,10 @@ module.exports = (function() {
             },
             casegrad: {
                 type: "colony",
-                disableHarvesters: true,
                 creeps: {
-                    upgrader: 3,
+                    upgrader: 5,
                     mover: 2,
                     transfer: 3,
-                    builder: 0,
                 }
             },
             eastBottom: {
@@ -467,6 +466,10 @@ module.exports = (function() {
             h2Left: {
                 type: "outpost",
                 homeRoom: "h2",
+            },
+            caseRight: {
+                type: "outpost",
+                homeRoom: "casegrad",
             },
             dragonLeft: {
                 type: "outpost",
@@ -623,36 +626,9 @@ module.exports = (function() {
                         stealRoom: 'E66N48',
                     }
                 },
-                settlerCase2_: {
-                    minimum: 2,
-                    priority: 'normal',
-                    body: 'settler',
-                    memo: {
-                        role: 'settler',
-                        room: 'E64N49',
-                    }
-                }
             },
             Cintra: {},
             Oxygen: {
-                harvesterCase: {
-                    minimum: 2,
-                    priority: 'high',
-                    body: 'harvesterOffroad',
-                    memo: {
-                        role: 'harvester',
-                        room: 'E64N49',
-                    }
-                },
-                settlerCase: {
-                    minimum: 2,
-                    priority: 'normal',
-                    body: 'settler',
-                    memo: {
-                        role: 'settler',
-                        room: 'E64N49',
-                    }
-                },
                 defenderCase: {
                     minimum: 1,
                     priority: 'high',

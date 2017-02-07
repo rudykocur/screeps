@@ -474,6 +474,7 @@ class ColonyRoomHandler extends RoomHandler {
         this.placeConstructionSites(COLOR_PURPLE, COLOR_CYAN, STRUCTURE_TERMINAL);
         this.placeConstructionSites(COLOR_PURPLE, COLOR_BLUE, STRUCTURE_EXTRACTOR);
         this.placeConstructionSites(COLOR_PURPLE, COLOR_GREEN, STRUCTURE_STORAGE);
+        this.placeConstructionSites(COLOR_PURPLE, COLOR_ORANGE, STRUCTURE_LINK);
     }
 
     placeConstructionSites(flagColor, flagSecondaryColor, structureType) {
