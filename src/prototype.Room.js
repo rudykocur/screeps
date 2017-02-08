@@ -137,6 +137,10 @@ Room.prototype.updateLinks = function(links) {
         state.links = {};
     }
 
+    if(!('linksByType' in state)) {
+        state.linksByType = {};
+    }
+
     links.forEach(link => {
         if(!(link.id in state.links)) {
             let source = _.first(link.pos.findInRange(FIND_SOURCES, 2));
@@ -150,10 +154,31 @@ Room.prototype.updateLinks = function(links) {
 
             let storage = _.first(link.pos.findInRange([this.storage], 4));
             if(storage) {
-                state.links[link.id] = {
-                    type: 'storage',
-                    linkId: link.id,
+                if(_.any(state.links, {type:'storage'})) {
+                    // we already have inbound storage link. This will be outbound link
+                    state.links[link.id] = {
+                        type: 'storage-out',
+                        linkId: link.id,
+                    };
+                    state.linksByType['storage-out'] = link.id;
                 }
+                else {
+                    // this is first link near storage. This will be inbound link
+                    state.links[link.id] = {
+                        type: 'storage',
+                        linkId: link.id,
+                    };
+                    state.linksByType['storage-in'] = link.id;
+                }
+            }
+
+            let ctrl = _.first(link.pos.findInRange([this.controller], 4));
+            if(ctrl) {
+                state.links[link.id] = {
+                    type: 'controller',
+                    linkId: link.id,
+                };
+                state.linksByType['controller'] = link.id;
             }
         }
     })
@@ -181,6 +206,15 @@ Room.prototype.getLinkForStorage = function() {
     if(link) {
         return Game.getObjectById(link.linkId);
     }
+};
+
+/**
+ * @return {StructureLink}
+ */
+Room.prototype.getLinkByType = function(type) {
+    var state = this.handlerMemory;
+
+    return Game.getObjectById(state.linksByType[type])
 };
 
 /**

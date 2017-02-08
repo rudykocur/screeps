@@ -369,6 +369,15 @@ class ColonyRoomHandler extends RoomHandler {
                 }
             })
         }
+
+        let storageOutbound = this.room.getLinkByType('storage-out');
+        let controllerLink = this.room.getLinkByType('controller');
+
+        if(storageOutbound) {
+            if(controllerLink && controllerLink.energy < controllerLink.energyCapacity * 0.8) {
+                storageOutbound.transferEnergy(controllerLink);
+            }
+        }
     }
 
     autobuyMinerals(orders) {

@@ -36,11 +36,18 @@ module.exports = (function() {
             if(creep.carry.energy == 0) {
                 var target;
 
-                target = creep.room.getStorage();
+                let link = creep.room.getLinkByType('controller');
+                if(link && link.energy > 100) {
+                    target = link;
+                }
 
-                // if we have storage built but not enough energy, then dont try to borrow from containers.
-                if(target && target.store.energy < 10000) {
-                    return;
+                if(!target) {
+                    target = creep.room.getStorage();
+
+                    // if we have storage built but not enough energy, then dont try to borrow from containers.
+                    if(target && target.store.energy < 10000) {
+                        return;
+                    }
                 }
 
                 if(!target) {

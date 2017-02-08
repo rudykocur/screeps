@@ -37,6 +37,7 @@ module.exports = (function() {
             E68N45: "dragon2",
             E64N49: "casegrad",
             E65N49: "caseRight",
+            E65N48: "caseBottom",
         },
         market: {
             processInterval: 5,
@@ -364,7 +365,7 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 creeps: {
                     mover: 2,
-                    upgrader: 4,
+                    upgrader: 3,
                     transfer: 2,
                 },
                 minerals: {
@@ -470,6 +471,18 @@ module.exports = (function() {
             caseRight: {
                 type: "outpost",
                 homeRoom: "casegrad",
+                creeps: {
+                    collector: 1,
+                    // settler: 2,
+                }
+            },
+            caseBottom: {
+                type: "outpost",
+                homeRoom: "casegrad",
+                creeps: {
+                    collector: 0,
+                    // settler: 2,
+                }
             },
             dragonLeft: {
                 type: "outpost",
@@ -638,6 +651,25 @@ module.exports = (function() {
                     memo: {
                         role: 'brawler',
                         room: 'E64N49',
+                    }
+                },
+                settlerHelper: {
+                    minimum: 0,
+                    priority: 'normal',
+                    body: 'settler',
+                    memo: {
+                        role: 'settler',
+                        room: 'E65N48',
+                    }
+                },
+                settlerHelperCollector: {
+                    minimum: 3,
+                    priority: 'normal',
+                    body: 'collector',
+                    memo: {
+                        role: 'collector',
+                        room: 'E65N48',
+                        unloadRoom: 'casegrad'
                     }
                 },
             },

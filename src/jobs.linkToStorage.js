@@ -8,10 +8,15 @@ class LinkToStorageJobGenerator extends JobGenerator {
     constructor(handler) {
         super(handler);
 
-        this.interval = 17;
+        this.interval = 11;
     }
 
     generateJobs() {
+        this.generateStorageInboundLinkJob();
+        this.generateStorageOutboundLinkJob();
+    }
+
+    generateStorageInboundLinkJob() {
         var jobs = this.state.jobs;
 
         var storage = this.room.getStorage();
@@ -28,6 +33,29 @@ class LinkToStorageJobGenerator extends JobGenerator {
                 jobs[key] = this._getJobTransferDict(key, link, storage, RESOURCE_ENERGY, 'link-storage');
             }
             jobs[key].amount = link.energy;
+        }
+        else {
+            delete jobs[key];
+        }
+    }
+
+    generateStorageOutboundLinkJob() {
+        var jobs = this.state.jobs;
+
+        var storage = this.room.getStorage();
+        let link = this.room.getLinkByType('storage-out');
+
+        if(!link) {
+            return;
+        }
+
+        var key = `storageLinkOut-${this.room.customName}-energy`;
+
+        if(link.energy < link.energyCapacity * 0.5) {
+            if(!(key in jobs)) {
+                jobs[key] = this._getJobTransferDict(key, storage, link, RESOURCE_ENERGY);
+            }
+            jobs[key].amount = link.energyCapacity - link.energy;
         }
         else {
             delete jobs[key];
