@@ -353,29 +353,29 @@ class ColonyRoomHandler extends RoomHandler {
     }
 
     runLinks() {
-        if(Game.time % 10 != 0) {
-            return;
+        if(Game.time % 10 == 0) {
+            let storageLink = this.room.getLinkForStorage();
+
+            if(storageLink) {
+                this.room.find(FIND_SOURCES).forEach(source => {
+                    /** @type StructureLink */
+                    let link = this.room.getLinkForSource(source.id);
+
+                    if(link) {
+                        link.transferEnergy(storageLink);
+                    }
+                })
+            }
         }
 
-        let storageLink = this.room.getLinkForStorage();
+        if(Game.time % 3 == 0) {
+            let storageOutbound = this.room.getLinkByType('storage-out');
+            let controllerLink = this.room.getLinkByType('controller');
 
-        if(storageLink) {
-            this.room.find(FIND_SOURCES).forEach(source => {
-                /** @type StructureLink */
-                let link = this.room.getLinkForSource(source.id);
-
-                if(link) {
-                    link.transferEnergy(storageLink);
+            if (storageOutbound) {
+                if (controllerLink && controllerLink.energy < 700) {
+                    storageOutbound.transferEnergy(controllerLink);
                 }
-            })
-        }
-
-        let storageOutbound = this.room.getLinkByType('storage-out');
-        let controllerLink = this.room.getLinkByType('controller');
-
-        if(storageOutbound) {
-            if(controllerLink && controllerLink.energy < controllerLink.energyCapacity * 0.8) {
-                storageOutbound.transferEnergy(controllerLink);
             }
         }
     }

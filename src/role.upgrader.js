@@ -33,16 +33,18 @@ module.exports = (function() {
                 }
             }
 
+            let room = Game.rooms[creep.memory.room];
+
             if(creep.carry.energy == 0) {
                 var target;
 
-                let link = creep.room.getLinkByType('controller');
+                let link = room.getLinkByType('controller');
                 if(link && link.energy > 100) {
                     target = link;
                 }
 
                 if(!target) {
-                    target = creep.room.getStorage();
+                    target = room.getStorage();
 
                     // if we have storage built but not enough energy, then dont try to borrow from containers.
                     if(target && target.store.energy < 10000) {
@@ -51,7 +53,7 @@ module.exports = (function() {
                 }
 
                 if(!target) {
-                    let targets = _(creep.room.getContainers({resource: RESOURCE_ENERGY, amount: creep.carryCapacity}));
+                    let targets = _(room.getContainers({resource: RESOURCE_ENERGY, amount: creep.carryCapacity}));
                     target = targets.sortBy(t => creep.pos.getRangeTo(t)).first();
                 }
 
@@ -60,6 +62,7 @@ module.exports = (function() {
                 }
             }
             else {
+                creep.setPrespawnTime();
                 creepExt.addTask(creep, taskUpgrade.task.create(creep));
             }
         }

@@ -19,14 +19,15 @@ module.exports = (function() {
              * @param {Creep} creep
              */
             static create(creep) {
-                var path = cache.getPath(creep.pos, creep.room.controller.pos, () => {
-                    return creep.pos.findPathTo(creep.room.controller, {
+                let room = Game.rooms[creep.memory.room];
+                var path = cache.getPath(creep.pos, room.controller.pos, () => {
+                    return creep.pos.findPathTo(room.controller, {
                         costCallback: actionUtils.costCallback
                     });
                 });
 
                 return new module.exports.task(creep, {
-                    target: creep.room.controller.id,
+                    target: room.controller.id,
                     path: path,
                 })
             }

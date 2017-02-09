@@ -65,7 +65,9 @@ class SettlerRole extends CreepRole {
                 creep.finishJob();
             }
             else {
-                creep.moveTo(target);
+                creep.moveTo(target, {
+                    costCallback: actionUtils.costCallback
+                });
             }
 
             return;

@@ -8,7 +8,7 @@ class LinkToStorageJobGenerator extends JobGenerator {
     constructor(handler) {
         super(handler);
 
-        this.interval = 11;
+        this.interval = 6;
     }
 
     generateJobs() {

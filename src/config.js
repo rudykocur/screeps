@@ -38,6 +38,8 @@ module.exports = (function() {
             E64N49: "casegrad",
             E65N49: "caseRight",
             E65N48: "caseBottom",
+            E63N49: "caseLeft",
+            E63N48: "caseX",
         },
         market: {
             processInterval: 5,
@@ -365,7 +367,7 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 creeps: {
                     mover: 2,
-                    upgrader: 3,
+                    upgrader: 5,
                     transfer: 2,
                 },
                 minerals: {
@@ -432,7 +434,7 @@ module.exports = (function() {
             casegrad: {
                 type: "colony",
                 creeps: {
-                    upgrader: 5,
+                    upgrader: 1,
                     mover: 2,
                     transfer: 3,
                 }
@@ -477,6 +479,21 @@ module.exports = (function() {
                 }
             },
             caseBottom: {
+                type: "outpost",
+                homeRoom: "casegrad",
+                creeps: {
+                    collector: 0,
+                    // settler: 2,
+                }
+            },
+            caseLeft: {
+                type: "outpost",
+                homeRoom: "casegrad",
+                creeps: {
+                    settler: 1,
+                }
+            },
+            caseX: {
                 type: "outpost",
                 homeRoom: "casegrad",
                 creeps: {
@@ -628,15 +645,15 @@ module.exports = (function() {
             Osaka: {},
             Kioto: {},
             Tokyo: {
-                stealCase: {
-                    minimum: 0,
+                upgradeCase: {
+                    minimum: 5,
                     priority: 'normal',
-                    body: 'mineralThief',
+                    body: 'upgrader',
                     memo: {
-                        role: 'thief',
-                        room: 'E69N49',
-                        unloadRoom: 'E69N49',
-                        stealRoom: 'E66N48',
+                        role: 'upgrader',
+                        room: 'E64N49',
+                        // unloadRoom: 'E69N49',
+                        // stealRoom: 'E66N48',
                     }
                 },
             },
@@ -663,12 +680,22 @@ module.exports = (function() {
                     }
                 },
                 settlerHelperCollector: {
-                    minimum: 3,
+                    minimum: 2,
                     priority: 'normal',
                     body: 'collector',
                     memo: {
                         role: 'collector',
                         room: 'E65N48',
+                        unloadRoom: 'casegrad'
+                    }
+                },
+                settlerHelperXCollector: {
+                    minimum: 2,
+                    priority: 'normal',
+                    body: 'collector',
+                    memo: {
+                        role: 'collector',
+                        room: 'E63N48',
                         unloadRoom: 'casegrad'
                     }
                 },

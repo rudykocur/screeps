@@ -1,6 +1,8 @@
 var profiler = require('./profiler-impl');
 var _ = require('lodash');
 
+var actionUtils = require('./action.utils');
+
 module.exports = {
     /**
      * @param {Creep} creep
@@ -62,7 +64,9 @@ module.exports = {
 
         if(target) {
             if(creep.build(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target);
+                creep.moveTo(target, {
+                    costCallback: actionUtils.costCallback
+                });
             }
 
             return true;
