@@ -13,6 +13,7 @@ class SpawnRefillJobGenerator extends JobGenerator {
 
     generateJobs() {
         var jobs = this.state.jobs;
+        let storage = this.room.getStorage();
 
         this.room.getSpawns().concat(this.room.getExtensions()).forEach(/**StructureSpawn*/item => {
             var key = `refill-${this.room.customName}-${item.id}`;
@@ -24,6 +25,9 @@ class SpawnRefillJobGenerator extends JobGenerator {
                         room: this.room.customName,
                         type: 'refill',
                         subtype: 'spawn',
+                        resource: RESOURCE_ENERGY,
+                        sourceId: storage && storage.id,
+                        sourcePos: storage && storage.pos,
                         targetId: item.id,
                         targetPos: item.pos,
                         takenBy: null,
@@ -45,6 +49,7 @@ class SpawnRefillJobGenerator extends JobGenerator {
                         room: this.room.customName,
                         type: 'refill',
                         subtype: 'tower',
+                        resource: RESOURCE_ENERGY,
                         targetId: tower.id,
                         targetPos: tower.pos,
                         takenBy: null,

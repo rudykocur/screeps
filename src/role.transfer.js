@@ -52,6 +52,11 @@ class TransferRole extends CreepRole {
                 job = _.sample(creep.workRoomHandler.searchJobs({type: 'transfer'}));
             }
 
+            if(!job) {
+                let jobs = creep.workRoomHandler.searchJobs({type: 'refill', subtype: 'spawn'});
+                job = _.first(_.sortBy(jobs, j => this.creep.pos.getRangeTo(RoomPosition.fromDict(j.targetPos))));
+            }
+
             if(job) {
                 if(job.type == 'pickup') {
                     creep.takePartialJob(job, creep.carryCapacity);
