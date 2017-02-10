@@ -42,8 +42,7 @@ module.exports = (function() {
             E63N48: "caseX",
         },
         market: {
-            processInterval: 5,
-            // processInterval: 30,
+            processInterval: 15,
             maxTradeRange: 50,
             minerals: {
                 [RESOURCE_OXYGEN]: {
@@ -437,6 +436,7 @@ module.exports = (function() {
                     upgrader: 1,
                     mover: 2,
                     transfer: 3,
+                    builder: 3,
                 }
             },
             eastBottom: {
@@ -489,9 +489,6 @@ module.exports = (function() {
             caseLeft: {
                 type: "outpost",
                 homeRoom: "casegrad",
-                creeps: {
-                    settler: 1,
-                }
             },
             caseX: {
                 type: "outpost",
@@ -646,7 +643,7 @@ module.exports = (function() {
             Kioto: {},
             Tokyo: {
                 upgradeCase: {
-                    minimum: 5,
+                    minimum: 7,
                     priority: 'normal',
                     body: 'upgrader',
                     memo: {
@@ -660,7 +657,7 @@ module.exports = (function() {
             Cintra: {},
             Oxygen: {
                 defenderCase: {
-                    minimum: 1,
+                    minimum: 0,
                     priority: 'high',
                     body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
                         MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,

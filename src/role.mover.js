@@ -89,6 +89,10 @@ class MoverRole extends CreepRole {
                         this.creep.addTask(MoveTask.create(this.creep, target, range))
                     }
                 }
+                else {
+                    logger.error(this.creep, 'Job target does not exists!');
+                    this.creep.finishJob();
+                }
             }
         }
         else {
