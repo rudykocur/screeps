@@ -226,6 +226,11 @@ class ColonyRoomHandler extends RoomHandler {
                     let transferCost = Game.market.calcTransactionCost(handler.room.terminal.store[resource], this.room.name, handler.room.name);
 
                     let toTransfer = Math.min(100000, needed, handler.room.terminal.store[resource] - transferCost, terminalAvailable);
+
+                    if(toTransfer < 10000 && resource == RESOURCE_ENERGY) {
+                        continue;
+                    }
+
                     let result = handler.room.terminal.send(resource, toTransfer, this.room.name);
 
                     if(result == OK) {

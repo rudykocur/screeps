@@ -412,7 +412,7 @@ module.exports = (function() {
                 structRampartsHp: 500000,
                 creeps: {
                     mover: 2,
-                    upgrader: 3,
+                    upgrader: 1,
                     transfer: 3,
                 },
                 minerals: {
@@ -436,8 +436,12 @@ module.exports = (function() {
                     upgrader: 1,
                     mover: 2,
                     transfer: 3,
-                    builder: 3,
-                }
+                },
+                terminal: {
+                    require: {
+                        [RESOURCE_ENERGY]: 40000,
+                    }
+                },
             },
             eastBottom: {
                 type: "outpost",
@@ -641,19 +645,7 @@ module.exports = (function() {
             Drago: {},
             Osaka: {},
             Kioto: {},
-            Tokyo: {
-                upgradeCase: {
-                    minimum: 7,
-                    priority: 'normal',
-                    body: 'upgrader',
-                    memo: {
-                        role: 'upgrader',
-                        room: 'E64N49',
-                        // unloadRoom: 'E69N49',
-                        // stealRoom: 'E66N48',
-                    }
-                },
-            },
+            Tokyo: {},
             Cintra: {},
             Oxygen: {
                 defenderCase: {
