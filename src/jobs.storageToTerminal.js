@@ -23,6 +23,10 @@ class StorageToTerminalJobGenerator extends JobGenerator {
             let requiredAmount = requires[resource] || 0;
 
             let resourceReserve = (RESOURCES_BASE.indexOf(resource) >= 0 ? 10000 : 0);
+            if(resource == RESOURCE_ENERGY) {
+                resourceReserve = 20000;
+            }
+
             var available = storedAmount - _.get(reserves, resource, resourceReserve);
 
             let terminalAmount = (terminal.store[resource] || 0);

@@ -123,6 +123,7 @@ module.exports = (function() {
                         }
 
                         if(freeSpawn.canCreateCreep(body) != OK ) {
+                            blockedSpawns.push(freeSpawn.id);
                             return;
                         }
 

@@ -227,7 +227,7 @@ class ColonyRoomHandler extends RoomHandler {
 
                     let toTransfer = Math.min(100000, needed, handler.room.terminal.store[resource] - transferCost, terminalAvailable);
 
-                    if(toTransfer < 10000 && resource == RESOURCE_ENERGY) {
+                    if(toTransfer < 20000 && resource == RESOURCE_ENERGY) {
                         continue;
                     }
 

@@ -51,7 +51,7 @@ class LinkToStorageJobGenerator extends JobGenerator {
 
         var key = `storageLinkOut-${this.room.customName}-energy`;
 
-        if(link.energy < link.energyCapacity * 0.5) {
+        if(link.energy < link.energyCapacity * 0.5 && storage.store.energy > 20000) {
             if(!(key in jobs)) {
                 jobs[key] = this._getJobTransferDict(key, storage, link, RESOURCE_ENERGY);
             }

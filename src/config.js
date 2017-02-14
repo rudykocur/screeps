@@ -305,6 +305,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 100000,
                 autobuyMinerals: true,
+                importEnabled: false,
                 structRampartsHp: 1000000,
                 creeps: {
                     mover: 2,
@@ -329,7 +330,7 @@ module.exports = (function() {
                     autobuy: [RESOURCE_KEANIUM],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 40000,
+                        // [RESOURCE_ENERGY]: 40000,
                     }
                 },
                 labs: {
@@ -364,9 +365,10 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 50000,
                 autobuyMinerals: true,
+                importEnabled: false,
                 creeps: {
                     mover: 2,
-                    upgrader: 5,
+                    upgrader: 1,
                     transfer: 2,
                 },
                 minerals: {
@@ -432,6 +434,7 @@ module.exports = (function() {
             },
             casegrad: {
                 type: "colony",
+                importEnabled: false,
                 creeps: {
                     upgrader: 1,
                     mover: 2,
@@ -439,7 +442,7 @@ module.exports = (function() {
                 },
                 terminal: {
                     require: {
-                        [RESOURCE_ENERGY]: 40000,
+                        // [RESOURCE_ENERGY]: 40000,
                     }
                 },
             },
