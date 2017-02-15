@@ -36,6 +36,8 @@ class CollectorRole extends CreepRole {
 
             /** @type RoomHandler */
             let handler = this.creep.workRoomHandler;
+            let isDangerous = this.creep.workRoomHandler.type == 'sourceKeeper';
+
             if(!handler) {
                 return;
             }
@@ -56,21 +58,21 @@ class CollectorRole extends CreepRole {
                             this.creep.memory.harvesting = false;
 
                             let storage = this.getStorage();
-                            this.creep.addTask(MoveTask.create(this.creep, storage, 1));
+                            this.creep.addTask(MoveTask.create(this.creep, storage, 1, isDangerous));
                         }
                     }
 
                     this.creep.repair(_.first(this.creep.pos.lookFor(LOOK_STRUCTURES)));
                 }
                 else {
-                    this.creep.addTask(MoveTask.create(this.creep, source, 1));
+                    this.creep.addTask(MoveTask.create(this.creep, source, 1, isDangerous));
                 }
             }
             else {
                 var idlePos = this.creep.getIdlePosition();
                 if(idlePos) {
                     if(!this.creep.pos.isNearTo(idlePos)) {
-                        this.creep.addTask(MoveTask.create(this.creep, idlePos, 1));
+                        this.creep.addTask(MoveTask.create(this.creep, idlePos, 1, isDangerous));
                     }
                 }
             }
@@ -78,6 +80,8 @@ class CollectorRole extends CreepRole {
         else {
             /** @type StructureStorage */
             let storage = this.getStorage();
+
+            let isDangerous = this.creep.workRoomHandler.type == 'sourceKeeper';
 
             if(_.sum(storage.store) + 5000 < storage.storeCapacity) {
 
@@ -89,7 +93,7 @@ class CollectorRole extends CreepRole {
                     }
                 }
                 else {
-                    this.creep.addTask(MoveTask.create(this.creep, storage, 1));
+                    this.creep.addTask(MoveTask.create(this.creep, storage, 1, isDangerous));
                 }
             }
             else {

@@ -112,7 +112,8 @@ class HarvesterPureRole extends CreepRole {
         }
 
         if(harvestPosition) {
-            this.creep.addTask(MoveTask.create(this.creep, harvestPosition, 0));
+            // this.creep.addTask(MoveTask.create(this.creep, harvestPosition, 0));
+            this.creep.moveTo(harvestPosition, {visualizePathStyle:{}})
         }
         else {
             this.creep.addTask(MoveTask.create(this.creep, pos, 1));

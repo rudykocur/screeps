@@ -19,28 +19,35 @@ module.exports = (function() {
                     creep.attack(nearThreat);
                 }
                 else {
-                    let result = creep.moveTo(nearThreat);
-
-                    if (creep.getActiveBodyparts(HEAL) > 0) {
-                        creep.heal(creep);
-                    }
+                    creep.moveTo(nearThreat);
+                    creep.heal(creep);
                 }
                 return;
             }
 
-            var jobs = creep.workRoomHandler.searchJobs({type: 'combat', subtype: 'defendLair', onlyFree: false});
-            var job = _.first(_.sortBy(jobs.filter(j => j.priority < 100), j => j.priority));
+            let job = creep.getJob();
 
             if(!job) {
-                job = _.first(jobs.filter(j => j.enemy));
-            }
 
-            if(!job) {
-                job = _.first(_.sortBy(jobs, j => j.priority));
+                var jobs = creep.workRoomHandler.searchJobs({type: 'combat', subtype: 'defendLair'});
+                // var jobs = creep.workRoomHandler.searchJobs({type: 'combat', subtype: 'defendLair', onlyFree: false});
+                job = _.first(_.sortBy(jobs.filter(j => j.priority < 100), j => j.priority));
+
+                if (!job) {
+                    job = _.first(jobs.filter(j => j.enemy));
+                }
+
+                if (!job) {
+                    job = _.first(_.sortBy(jobs, j => j.priority));
+                }
+
+                if(job) {
+                    creep.takeJob(job);
+                }
             }
 
             if(job) {
-
+                creep.refreshJob();
                 var room = Room.byCustomName(job.room);
 
                 if(room) {
@@ -55,15 +62,13 @@ module.exports = (function() {
                             creep.attack(target);
                         }
                         else {
-                            let result = creep.moveTo(target);
-
-                            if (creep.getActiveBodyparts(HEAL) > 0) {
-                                creep.heal(creep);
-                            }
+                            creep.moveTo(target);
+                            creep.heal(creep);
                         }
                     }
                     else {
                         if (creep.getActiveBodyparts(HEAL) > 0) {
+
                             if(creep.hits < creep.hitsMax) {
                                 creep.heal(creep);
                             }

@@ -70,6 +70,11 @@ Creep.prototype.takePartialJob = function(job, amount) {
     job.reservations[this.id] = amount;
 };
 
+Creep.prototype.refreshJob = function () {
+    var job = this.memory.job;
+    this.memory.job = this.workRoomHandler.state.jobs[job.key];
+};
+
 Creep.prototype.releaseJob = function() {
     var job = this.memory.job;
     if(job) {

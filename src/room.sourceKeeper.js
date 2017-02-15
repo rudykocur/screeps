@@ -37,11 +37,18 @@ class SourceKeeperRoom extends RoomHandler {
             }
         }
 
-        this.maintainPopulation('defender', config.blueprints.lairDefender, spawnQueue.PRIORITY_HIGH);
-        this.maintainPopulation('rangedDefender', config.blueprints.rangedDefender, spawnQueue.PRIORITY_HIGH);
-        this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
-        this.maintainPopulation('harvester', config.blueprints.lairHarvester, spawnQueue.PRIORITY_NORMAL);
-        this.maintainCollectors();
+        let invaders = this.state.hostiles.filter(hId => {
+            let creep = Game.getObjectById(hId);
+            return creep && creep.owner && creep.owner.username == 'Invader';
+        });
+
+        if(invaders.length == 0) {
+            this.maintainPopulation('defender', config.blueprints.lairDefender, spawnQueue.PRIORITY_HIGH);
+            this.maintainPopulation('rangedDefender', config.blueprints.rangedDefender, spawnQueue.PRIORITY_HIGH);
+            this.maintainPopulation('settler', config.blueprints.outpostSettler, spawnQueue.PRIORITY_NORMAL);
+            this.maintainPopulation('harvester', config.blueprints.lairHarvester, spawnQueue.PRIORITY_NORMAL);
+            this.maintainCollectors();
+        }
     }
 
     getKeeperFlags() {

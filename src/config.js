@@ -32,6 +32,7 @@ module.exports = (function() {
             E66N47: "h2",
             E67N47: "h2Right",
             E65N47: "h2Left",
+            E66N46: "h2Lair",
             E69N44: "dragon",
             E68N44: "dragonLeft",
             E68N45: "dragon2",
@@ -78,6 +79,7 @@ module.exports = (function() {
                 wallsHp: 3000000,
                 structRampartsHp: 10000000,
                 autobuyMinerals: true,
+                importEnabled: false,
                 creeps: {
                     upgrader: 4,
                     mover: 2,
@@ -134,6 +136,7 @@ module.exports = (function() {
             moria: {
                 type: "colony",
                 autobuyMinerals: true,
+                importEnabled: false,
                 wallsHp: 3000000,
                 structRampartsHp: 10000000,
                 creeps: {
@@ -156,7 +159,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_ZYNTHIUM],
                     require: {
-                        [RESOURCE_ENERGY]: 150000,
+                        [RESOURCE_ENERGY]: 100000,
                         [RESOURCE_ZYNTHIUM]: 5000,
                     }
                 },
@@ -188,6 +191,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 1000000,
                 autobuyMinerals: true,
+                importEnabled: false,
                 creeps: {
                     upgrader: 1,
                     mover: 2,
@@ -212,7 +216,7 @@ module.exports = (function() {
                     autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 5000,
-                        [RESOURCE_ENERGY]: 150000,
+                        [RESOURCE_ENERGY]: 100000,
                     }
                 },
                 labs: {
@@ -243,6 +247,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 700000,
                 autobuyMinerals: true,
+                importEnabled: false,
                 creeps: {
                     upgrader: 4,
                     mover: 2,
@@ -330,7 +335,7 @@ module.exports = (function() {
                     autobuy: [RESOURCE_KEANIUM],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        // [RESOURCE_ENERGY]: 40000,
+                        [RESOURCE_ENERGY]: 40000,
                     }
                 },
                 labs: {
@@ -412,6 +417,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 200000,
                 structRampartsHp: 500000,
+                importEnabled: false,
                 creeps: {
                     mover: 2,
                     upgrader: 1,
@@ -436,7 +442,7 @@ module.exports = (function() {
                 type: "colony",
                 importEnabled: false,
                 creeps: {
-                    upgrader: 1,
+                    upgrader: 6,
                     mover: 2,
                     transfer: 3,
                 },
@@ -476,6 +482,15 @@ module.exports = (function() {
             h2Left: {
                 type: "outpost",
                 homeRoom: "h2",
+            },
+            h2Lair: {
+                type: "sourceKeeper",
+                homeRoom: "h2",
+                creeps: {
+                    defender: 2,
+                    harvester: 2,
+                    collector: 3,
+                }
             },
             caseRight: {
                 type: "outpost",
@@ -589,7 +604,7 @@ module.exports = (function() {
         },
 
         monitoring: {
-            alwaysVisible: ['E69N46','E69N45', 'E64N49'],
+            alwaysVisible: ['E69N46','E69N45', 'E64N49', 'E66N46'],
             watch: ['E63N40','E64N40','E65N40','E66N40','E67N40','E68N40','E69N40','E70N40',
                 'E70N41','E70N42','E70N43','E70N44','E70N45','E70N46','E70N47','E70N48','E70N49','E70N50',
                 'E67N50','E68N50','E69N50'],

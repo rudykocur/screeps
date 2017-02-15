@@ -22,8 +22,9 @@ class MoveTask extends CreepTask {
      * @param {Creep} creep
      * @param {RoomObject|RoomPosition} target
      * @param range
+     * @param ignoreDanger
      */
-    static create(creep, target, range = 0) {
+    static create(creep, target, range = 0, ignoreDanger = false) {
         var path;
         var pos;
 
@@ -35,6 +36,10 @@ class MoveTask extends CreepTask {
         }
 
         path = cache.getPath(creep.pos, pos, () => {
+            if(ignoreDanger) {
+                return creep.pos.findPathTo(pos);
+            }
+
             return creep.pos.findPathTo(pos, {
                 costCallback: actionUtils.costCallback
             })
@@ -44,7 +49,6 @@ class MoveTask extends CreepTask {
         if(path.length > 0) {
             let ls = path[path.length - 1];
             isRoomBoudary = (ls.x == 0 || ls.y == 0 || ls.x == 49 || ls.y == 49);
-
         }
 
         return new module.exports.task(creep, {

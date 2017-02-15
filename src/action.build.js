@@ -64,9 +64,7 @@ module.exports = {
 
         if(target) {
             if(creep.build(target) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(target, {
-                    costCallback: actionUtils.costCallback
-                });
+                creep.moveTo(target);
             }
 
             return true;

@@ -19,17 +19,19 @@ module.exports = (function() {
             if(!(cacheKey in cache)) {
                 path = callback();
 
-                let ttl;
-                if(from.roomName == to.roomName) {
-                    ttl = path.length * 4;
-                }
-                else {
-                    ttl = 200;
-                }
+                if(path.length > 0) {
+                    let ttl;
+                    if (from.roomName == to.roomName) {
+                        ttl = path.length * 4;
+                    }
+                    else {
+                        ttl = 200;
+                    }
 
-                cache[cacheKey] = {
-                    expires: Game.time + ttl,
-                    path: Room.serializePath(path),
+                    cache[cacheKey] = {
+                        expires: Game.time + ttl,
+                        path: Room.serializePath(path),
+                    }
                 }
             }
             else {
