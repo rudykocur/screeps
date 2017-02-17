@@ -101,7 +101,17 @@ module.exports = (function() {
                     if(creep.pos.isNearTo(idlePos)) {
                         creep.setPrespawnTime();
                     }
-
+                    else {
+                        creep.moveTo(idlePos);
+                    }
+                }
+            }
+            else {
+                let idlePos = creep.getIdlePosition();
+                if(creep.pos.isNearTo(idlePos)) {
+                    creep.setPrespawnTime();
+                }
+                else {
                     creep.moveTo(idlePos);
                 }
             }
