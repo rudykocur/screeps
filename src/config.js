@@ -590,21 +590,20 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "orphan",
             },
-            // lair1: {
-            //     type: "sourceKeeper",
-            //     homeRoom: "orphan",
-            //     creeps: {
-            //         harvester: 0,
-            //         collector: 0,
-            //
-            //         defender: 0,
+            lair1: {
+                type: "sourceKeeper",
+                homeRoom: "orphan",
+                creeps: {
+                    harvester: 2,
+                    collector: 3,
+                    defender: 2,
             //         rangedDefender: 0,
-            //     },
-            // }
+                },
+            }
         },
 
         monitoring: {
-            alwaysVisible: ['E69N46','E69N45', 'E64N49', 'E66N46'],
+            alwaysVisible: ['E69N46','E69N45', 'E66N44', 'E66N46'],
             watch: ['E63N40','E64N40','E65N40','E66N40','E67N40','E68N40','E69N40','E70N40',
                 'E70N41','E70N42','E70N43','E70N44','E70N45','E70N46','E70N47','E70N48','E70N49','E70N50',
                 'E67N50','E68N50','E69N50'],

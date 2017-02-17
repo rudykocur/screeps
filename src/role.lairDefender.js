@@ -74,7 +74,7 @@ module.exports = (function() {
                             }
                             else if(job.priority > 60) {
                                 var wounded = creep.pos.findClosestByPath(FIND_MY_CREEPS, {
-                                    filter: c => c.hits < c.hitsMax
+                                    filter: c => c.hits < c.hitsMax && creep.pos.getRangeTo(c) < 8
                                 });
 
                                 if(wounded) {
