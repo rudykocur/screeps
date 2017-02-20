@@ -131,24 +131,24 @@ module.exports = (function() {
                 target = actionCombat.findAttackTarget(creep);
             }
 
-            if(creep.hits > creep.hitsMax * 0.85) {
-                let healUnderFactor = canAttack ? 0.6 : 0.9;
-                let wounded = _.first(_.filter(creep.pos.findInRange(FIND_MY_CREEPS, 2), /**Creep*/ c=> c.hits < c.hitsMax * healUnderFactor));
-                if(wounded) {
-                    if(creep.heal(wounded) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(wounded);
-                    }
-
-                    creep.rangedHeal(wounded);
-
-                    return;
-                }
-            }
-
-            if(creep.hits < creep.hitsMax * 0.6 && creep.getActiveBodyparts(HEAL)) {
-                creep.heal(creep);
-                return;
-            }
+            // if(creep.hits > creep.hitsMax * 0.85) {
+            //     let healUnderFactor = canAttack ? 0.6 : 0.9;
+            //     let wounded = _.first(_.filter(creep.pos.findInRange(FIND_MY_CREEPS, 2), /**Creep*/ c=> c.hits < c.hitsMax * healUnderFactor));
+            //     if(wounded) {
+            //         if(creep.heal(wounded) == ERR_NOT_IN_RANGE) {
+            //             creep.moveTo(wounded);
+            //         }
+            //
+            //         creep.rangedHeal(wounded);
+            //
+            //         return;
+            //     }
+            // }
+            //
+            // if(creep.hits < creep.hitsMax * 0.6 && creep.getActiveBodyparts(HEAL)) {
+            //     creep.heal(creep);
+            //     return;
+            // }
 
             if(target && canAttack) {
 

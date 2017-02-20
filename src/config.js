@@ -159,7 +159,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_ZYNTHIUM],
                     require: {
-                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ENERGY]: 150000,
                         [RESOURCE_ZYNTHIUM]: 5000,
                     }
                 },
@@ -276,7 +276,7 @@ module.exports = (function() {
                     autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 5000,
-                        [RESOURCE_ENERGY]: 25000,
+                        [RESOURCE_ENERGY]: 150000,
                     }
                 },
                 labs: {
@@ -373,7 +373,7 @@ module.exports = (function() {
                 importEnabled: false,
                 creeps: {
                     mover: 2,
-                    upgrader: 1,
+                    upgrader: 3,
                     transfer: 2,
                 },
                 minerals: {
@@ -442,7 +442,7 @@ module.exports = (function() {
                 type: "colony",
                 importEnabled: false,
                 creeps: {
-                    upgrader: 6,
+                    upgrader: 4,
                     mover: 2,
                     transfer: 3,
                 },
@@ -604,10 +604,9 @@ module.exports = (function() {
                 type: "sourceKeeper",
                 homeRoom: "orphan",
                 creeps: {
-                    harvester: 1,
-                    collector: 1,
-                    defender: 1,
-                    settler: 1,
+                    harvester: 2,
+                    collector: 4,
+                    defender: 2,
                 },
             }
         },

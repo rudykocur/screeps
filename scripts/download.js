@@ -7,7 +7,7 @@ let auth = {};
 let api = new ScreepsAPI();
 
 if (process.argv.length == 3) {
-  auth = require('./'+process.argv[2])
+  auth = require('../'+process.argv[2])
 }
 
 Promise.resolve(auth)

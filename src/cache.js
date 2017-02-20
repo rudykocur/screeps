@@ -17,7 +17,7 @@ module.exports = (function() {
             let cacheKey = `path-${from.roomName}-${from.x},${from.y}-to-${to.roomName}-${to.x}-${to.y}`;
 
             if(!(cacheKey in cache)) {
-                path = callback();
+                path = module.exports.calculatePath(callback);
 
                 if(path.length > 0) {
                     let ttl;
@@ -39,6 +39,10 @@ module.exports = (function() {
             }
 
             return path;
+        },
+
+        calculatePath(callback) {
+            return callback();
         },
 
         pruneCache: function() {

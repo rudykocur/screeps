@@ -24,9 +24,9 @@ class SourceKeeperRoom extends RoomHandler {
         super.process();
 
         if(this.state.lairs) {
-
-            this.createMiningJobs();
-            this.createDefendJobs();
+            let flags = this.getObjectsAroundFlags();
+            this.createMiningJobs2(flags);
+            this.createDefendJobs(flags);
         }
         else {
             if(this.room) {
@@ -101,14 +101,14 @@ class SourceKeeperRoom extends RoomHandler {
     /**
      * Override from base class - completely different logic
      */
-    createMiningJobs() {
+    createMiningJobs() {}
+
+    createMiningJobs2(flags) {
         if(!this.state.lairs) {
             return;
         }
 
         var jobs = this.state.jobs;
-
-        var flags = this.getObjectsAroundFlags();
 
         flags.forEach(/**{source,sourcePos}*/ data => {
             var key = `lair-mining-${data.source}`;
@@ -127,10 +127,8 @@ class SourceKeeperRoom extends RoomHandler {
         });
     }
 
-    createDefendJobs() {
+    createDefendJobs(flags) {
         var jobs = this.state.jobs;
-
-        var flags = this.getObjectsAroundFlags();
 
         flags.forEach(/**{flagName,flagPos,enemyId}*/ data => {
             var key = `lair-defend-${data.flagName}`;
