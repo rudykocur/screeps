@@ -150,7 +150,7 @@ module.exports = (function() {
                         [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_UTRIUM]: 13000,
-                        [RESOURCE_HYDROXIDE]: 3000,
+                        [RESOURCE_HYDROXIDE]: 5000,
                         [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
@@ -203,7 +203,7 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_OXYGEN]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
-                        [RESOURCE_HYDROXIDE]: 3000,
+                        [RESOURCE_HYDROXIDE]: 5000,
                         [RESOURCE_UTRIUM]: 12000,
                         [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
@@ -269,7 +269,7 @@ module.exports = (function() {
                         [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_ENERGY]: 500000,
-                        [RESOURCE_HYDROXIDE]: 3000,
+                        [RESOURCE_HYDROXIDE]: 5000,
                     },
                     reserve: {
                     }
@@ -324,7 +324,7 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_GHODIUM]: 4000,
                         [RESOURCE_ENERGY]: 500000,
-                        [RESOURCE_HYDROXIDE]: 3000,
+                        [RESOURCE_HYDROXIDE]: 5000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
@@ -356,7 +356,7 @@ module.exports = (function() {
                     },
 
                     boost: {
-                        A4: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        // A4: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
                         // A1: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
                         // B1: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
                         // C2: RESOURCE_CATALYZED_UTRIUM_ACID,
