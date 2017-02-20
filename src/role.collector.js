@@ -97,7 +97,15 @@ class CollectorRole extends CreepRole {
                 }
             }
             else {
-                this.creep.say('nospace :(');
+                let idlePos = storage.room.getIdlePosition();
+                if(idlePos) {
+                    if(!this.creep.pos.isNearTo(idlePos)) {
+                        this.creep.addTask(MoveTask.create(this.creep, idlePos, 0));
+                    }
+                    else {
+                        this.creep.say('nospace :(');
+                    }
+                }
             }
         }
     }

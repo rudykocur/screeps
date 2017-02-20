@@ -79,7 +79,7 @@ module.exports = (function() {
                 wallsHp: 3000000,
                 structRampartsHp: 10000000,
                 autobuyMinerals: true,
-                importEnabled: false,
+                // importEnabled: false,
                 creeps: {
                     upgrader: 4,
                     mover: 2,
@@ -128,15 +128,15 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'C2'],
                         output: ['A1', 'A2', 'A3', 'B1', 'B3', 'D1', 'D2', 'D3'],
-                        result: RESOURCE_GHODIUM,
-                        amount: 15000,
+                        result: RESOURCE_CATALYZED_GHODIUM_ALKALIDE,
+                        amount: 40000,
                     },
                 }
             },
             moria: {
                 type: "colony",
                 autobuyMinerals: true,
-                importEnabled: false,
+                // importEnabled: false,
                 wallsHp: 3000000,
                 structRampartsHp: 10000000,
                 creeps: {
@@ -150,6 +150,7 @@ module.exports = (function() {
                         [RESOURCE_LEMERGIUM]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_UTRIUM]: 13000,
+                        [RESOURCE_HYDROXIDE]: 3000,
                         [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_CATALYZED_GHODIUM_ACID]: 1000,
                     },
@@ -182,8 +183,8 @@ module.exports = (function() {
                     produce: {
                         input: ['C1', 'C2'],
                         output: ['A1', 'A2', 'B1', 'B2', 'D3', 'E1', 'E2', 'E3'],
-                        result: RESOURCE_HYDROXIDE,
-                        amount: 15000,
+                        result: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
+                        amount: 40000,
                     },
                 },
             },
@@ -191,7 +192,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 1000000,
                 autobuyMinerals: true,
-                importEnabled: false,
+                // importEnabled: false,
                 creeps: {
                     upgrader: 1,
                     mover: 2,
@@ -238,8 +239,8 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
-                        result: RESOURCE_GHODIUM,
-                        amount: 10000,
+                        result: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        amount: 40000,
                     },
                 },
             },
@@ -247,7 +248,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 700000,
                 autobuyMinerals: true,
-                importEnabled: false,
+                // importEnabled: false,
                 creeps: {
                     upgrader: 4,
                     mover: 2,
@@ -268,6 +269,7 @@ module.exports = (function() {
                         [RESOURCE_CATALYST]: 13000,
                         [RESOURCE_HYDROGEN]: 13000,
                         [RESOURCE_ENERGY]: 500000,
+                        [RESOURCE_HYDROXIDE]: 3000,
                     },
                     reserve: {
                     }
@@ -300,9 +302,9 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
-                        result: RESOURCE_GHODIUM,
+                        result: RESOURCE_CATALYZED_UTRIUM_ACID,
                         // result: RESOURCE_HYDROXIDE,
-                        amount: 15000,
+                        amount: 40000,
                     },
                 }
             },
@@ -310,7 +312,7 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 100000,
                 autobuyMinerals: true,
-                importEnabled: false,
+                // importEnabled: false,
                 structRampartsHp: 1000000,
                 creeps: {
                     mover: 2,
@@ -322,6 +324,7 @@ module.exports = (function() {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_GHODIUM]: 4000,
                         [RESOURCE_ENERGY]: 500000,
+                        [RESOURCE_HYDROXIDE]: 3000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 8000,
                         [RESOURCE_CATALYZED_UTRIUM_ACID]: 8000,
@@ -361,8 +364,8 @@ module.exports = (function() {
                     produce: {
                         input: ['B2', 'B3'],
                         output: ['A1', 'A2', 'A3', 'A4', 'B1', 'B4', 'C2', 'C3'],
-                        result: RESOURCE_ZYNTHIUM_KEANITE,
-                        amount: 15000,
+                        result: RESOURCE_CATALYZED_KEANIUM_ACID,
+                        amount: 40000,
                     },
                 }
             },
@@ -370,15 +373,15 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 50000,
                 autobuyMinerals: true,
-                importEnabled: false,
+                // importEnabled: false,
                 creeps: {
                     mover: 2,
                     upgrader: 3,
-                    transfer: 2,
+                    transfer: 3,
                 },
                 minerals: {
                     wants: {
-                        [RESOURCE_LEMERGIUM]: 13000,
+                        [RESOURCE_OXYGEN]: 13000,
                     },
                     reserve: {
                     }
@@ -393,11 +396,11 @@ module.exports = (function() {
                 },
                 labs: {
                     names: {
-                        // '': 'A2',
-                        // '': 'A3',
+                        '58aadfa8b56883711663c3e5': 'A2',
+                        '58aaf01ff40e6a7a607a3223': 'A3',
                         '588deea7e724d73531b19149': 'B1',
-                        // '': 'B2',
-                        // '': 'B3',
+                        '58aae846da912c2444968076': 'B2',
+                        '58aaf88a20ede08b5c7d11c9': 'B3',
                         '588e33a898cd17a460aa2d3f': 'B4',
                         '588de294386811861ebe5595': 'C1',
                         '588dfc2ee73cb0e942907811': 'C2',
@@ -406,10 +409,10 @@ module.exports = (function() {
                     },
                     boost: {},
                     produce: {
-                        input: ['C2', 'C3'],
-                        output: ['B1', 'B4', 'C1', 'C4'],
-                        result: RESOURCE_UTRIUM_LEMERGITE,
-                        amount: 15000,
+                        input: ['B2', 'B3'],
+                        output: ['A2', 'A3', 'B1', 'B4', 'C1', 'C2', 'C3', 'C4'],
+                        result: RESOURCE_HYDROXIDE,
+                        amount: 40000,
                     },
                 }
             },
@@ -417,15 +420,16 @@ module.exports = (function() {
                 type: "colony",
                 wallsHp: 200000,
                 structRampartsHp: 500000,
-                importEnabled: false,
+                // importEnabled: false,
                 creeps: {
                     mover: 2,
-                    upgrader: 3,
+                    upgrader: 5,
                     transfer: 3,
                 },
                 minerals: {
                     wants: {
-                        // [RESOURCE_ENERGY]: 0,
+                        [RESOURCE_OXYGEN]: 10000,
+                        [RESOURCE_HYDROGEN]: 10000,
                     },
                     reserve: {
                         [RESOURCE_CATALYST]: 0,
@@ -436,6 +440,28 @@ module.exports = (function() {
                         [RESOURCE_CATALYST]: 5000,
                         [RESOURCE_ENERGY]: 40000,
                     }
+                },
+                labs: {
+                    names: {
+                        '589612a47ba18e9574ec5aed': 'A2',
+                        '589607ffc7a7d4821ff4983a': 'A3',
+                        // '': 'B1',
+                        // '': 'B2',
+                        '589601c2719bddf506d3cb12': 'B3',
+                        // '': 'C1',
+                        // '': 'C2',
+                        '5895f81acdade16519d84d01': 'C3',
+                        '589609249068a20b3ad980d8': 'D2',
+                        '5895f2643bade6359499ee6f': 'D3',
+                    },
+
+                    boost: {},
+                    produce: {
+                        input: ['B3', 'C3'],
+                        output: ['A2', 'A3', 'D2', 'D3'],
+                        result: RESOURCE_HYDROXIDE,
+                        amount: 40000,
+                    },
                 },
             },
             casegrad: {

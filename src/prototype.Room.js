@@ -385,3 +385,12 @@ Room.prototype.getAllSources = function() {
 
     return state.allSouces.map(id => Game.getObjectById(id));
 };
+
+Room.prototype.getIdlePosition = function() {
+    var flags = _.filter(Game.flags, f => f.color == COLOR_ORANGE);
+    var flag = _.first(_.groupBy(flags, 'pos.roomName')[this.name]);
+
+    if(flag) {
+        return flag.pos;
+    }
+};
