@@ -56,7 +56,7 @@ module.exports = (function() {
                 },
                 [RESOURCE_LEMERGIUM]: {
                     buyPriceMax: 0.5,
-                    sellPriceMin: 0.15,
+                    sellPriceMin: 0.1,
                 },
                 [RESOURCE_ZYNTHIUM]: {
                     buyPriceMax: 0.5,
@@ -323,6 +323,8 @@ module.exports = (function() {
                     wants: {
                         [RESOURCE_ZYNTHIUM]: 13000,
                         [RESOURCE_GHODIUM]: 4000,
+                        [RESOURCE_OXYGEN]: 5000,
+                        [RESOURCE_CATALYST]: 5000,
                         [RESOURCE_ENERGY]: 500000,
                         [RESOURCE_HYDROXIDE]: 5000,
                         [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 8000,
@@ -338,7 +340,7 @@ module.exports = (function() {
                     autobuy: [RESOURCE_KEANIUM],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 40000,
+                        [RESOURCE_ENERGY]: 150000,
                     }
                 },
                 labs: {
@@ -391,7 +393,7 @@ module.exports = (function() {
                     autobuy: [RESOURCE_UTRIUM],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 40000,
+                        [RESOURCE_ENERGY]: 20000,
                     }
                 },
                 labs: {
@@ -423,7 +425,7 @@ module.exports = (function() {
                 // importEnabled: false,
                 creeps: {
                     mover: 2,
-                    upgrader: 5,
+                    upgrader: 7,
                     transfer: 3,
                 },
                 minerals: {
@@ -460,7 +462,7 @@ module.exports = (function() {
                         input: ['B3', 'C3'],
                         output: ['A2', 'A3', 'D2', 'D3'],
                         result: RESOURCE_HYDROXIDE,
-                        amount: 40000,
+                        amount: 20000,
                     },
                 },
             },
