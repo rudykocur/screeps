@@ -468,9 +468,9 @@ module.exports = (function() {
             },
             casegrad: {
                 type: "colony",
-                importEnabled: false,
+                // importEnabled: false,
                 creeps: {
-                    upgrader: 4,
+                    upgrader: 8,
                     mover: 2,
                     transfer: 3,
                 },
