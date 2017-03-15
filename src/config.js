@@ -48,11 +48,11 @@ module.exports = (function() {
             minerals: {
                 [RESOURCE_OXYGEN]: {
                     buyPriceMax: 0.4,
-                    sellPriceMin: 0.4,
+                    sellPriceMin: 0.1,
                 },
                 [RESOURCE_HYDROGEN]: {
                     buyPriceMax: 0.85,
-                    sellPriceMin: 0.71,
+                    sellPriceMin: 0.30,
                 },
                 [RESOURCE_LEMERGIUM]: {
                     buyPriceMax: 0.5,
@@ -95,6 +95,8 @@ module.exports = (function() {
                         [RESOURCE_GHODIUM]: 10000,
                         [RESOURCE_ZYNTHIUM_KEANITE]: 5000,
                         [RESOURCE_UTRIUM_LEMERGITE]: 5000,
+                        [RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE]: 5000,
+                        [RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE]: 5000,
                     },
                     reserve: {
                         [RESOURCE_UTRIUM]: 12000,
@@ -123,7 +125,8 @@ module.exports = (function() {
                         '586172d62c660f9d020f7d58': 'D3',
                     },
                     boost: {
-                        // A3: RESOURCE_CATALYZED_GHODIUM_ACID,
+                        A3: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE,
+                        A2: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE,
                     },
                     produce: {
                         input: ['B2', 'C2'],
@@ -392,8 +395,8 @@ module.exports = (function() {
                     autosell: [RESOURCE_HYDROGEN],
                     autobuy: [RESOURCE_UTRIUM],
                     require: {
-                        [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 20000,
+                        [RESOURCE_HYDROGEN]: 10000,
+                        [RESOURCE_ENERGY]: 50000,
                     }
                 },
                 labs: {
@@ -475,8 +478,10 @@ module.exports = (function() {
                     transfer: 3,
                 },
                 terminal: {
+                    autosell: [RESOURCE_HYDROGEN],
                     require: {
-                        // [RESOURCE_ENERGY]: 40000,
+                        [RESOURCE_HYDROGEN]: 10000,
+                        [RESOURCE_ENERGY]: 40000,
                     }
                 },
             },
@@ -618,25 +623,25 @@ module.exports = (function() {
                 type: "outpost",
                 homeRoom: "orphan",
             },
-            lair1: {
-                type: "sourceKeeper",
-                homeRoom: "orphan",
-                creeps: {
-                    harvester: 2,
-                    collector: 3,
-                    defender: 2,
-            //         rangedDefender: 0,
-                },
-            },
-            lair2: {
-                type: "sourceKeeper",
-                homeRoom: "orphan",
-                creeps: {
-                    harvester: 2,
-                    collector: 4,
-                    defender: 2,
-                },
-            }
+            // lair1: {
+            //     type: "sourceKeeper",
+            //     homeRoom: "orphan",
+            //     creeps: {
+            //         harvester: 2,
+            //         collector: 3,
+            //         defender: 2,
+            // //         rangedDefender: 0,
+            //     },
+            // },
+            // lair2: {
+            //     type: "sourceKeeper",
+            //     homeRoom: "orphan",
+            //     creeps: {
+            //         harvester: 2,
+            //         collector: 4,
+            //         defender: 2,
+            //     },
+            // }
         },
 
         monitoring: {
@@ -650,21 +655,22 @@ module.exports = (function() {
             Rabbithole: {
                 keeperKiller: {
                     minimum: 0,
-                    priority: 'critical',
+                    priority: 'defence',
                     // body: [TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
                     //     MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
                     //     ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
-                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
-                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
-                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,HEAL,HEAL],
+                    body: [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,
+                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,
+                        ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,
+                        HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL,HEAL],
                     memo: {
                         role: 'brawler',
-                        room: 'E66N44',
-                        guardFlag: 'skIdleFlag',
-                        // boost: [
-                        //     {part: MOVE, resource: RESOURCE_ZYNTHIUM_ALKALIDE, amount: 3},
-                        //     {part: HEAL, resource: RESOURCE_LEMERGIUM_ALKALIDE, amount: 3},
-                        // ]
+                        room: 'E65N41',
+                        // guardFlag: 'skIdleFlag',
+                        boost: [
+                            {part: MOVE, resource: RESOURCE_CATALYZED_ZYNTHIUM_ALKALIDE, amount: 10},
+                            {part: HEAL, resource: RESOURCE_CATALYZED_LEMERGIUM_ALKALIDE, amount: 15},
+                        ]
                     }
                 },
 
