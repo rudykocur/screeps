@@ -52,7 +52,7 @@ module.exports = (function() {
                 },
                 [RESOURCE_HYDROGEN]: {
                     buyPriceMax: 0.85,
-                    sellPriceMin: 0.30,
+                    sellPriceMin: 0.25,
                 },
                 [RESOURCE_LEMERGIUM]: {
                     buyPriceMax: 0.5,
@@ -77,13 +77,14 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 wallsHp: 3000000,
-                structRampartsHp: 10000000,
+                structRampartsHp: 12000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
                     upgrader: 4,
                     mover: 2,
                     transfer: 3,
+                    builder: 2,
                 },
                 minerals: {
                     wants: {
@@ -141,7 +142,7 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 // importEnabled: false,
                 wallsHp: 3000000,
-                structRampartsHp: 10000000,
+                structRampartsHp: 12000000,
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -194,6 +195,7 @@ module.exports = (function() {
             kaerMorhen: {
                 type: "colony",
                 wallsHp: 1000000,
+                structRampartsHp: 5000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -249,7 +251,8 @@ module.exports = (function() {
             },
             orphan: {
                 type: "colony",
-                wallsHp: 700000,
+                wallsHp: 1000000,
+                structRampartsHp: 3000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -316,7 +319,7 @@ module.exports = (function() {
                 wallsHp: 100000,
                 autobuyMinerals: true,
                 // importEnabled: false,
-                structRampartsHp: 1000000,
+                structRampartsHp: 3000000,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
@@ -376,7 +379,7 @@ module.exports = (function() {
             },
             h2: {
                 type: "colony",
-                wallsHp: 50000,
+                wallsHp: 500000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -423,8 +426,8 @@ module.exports = (function() {
             },
             dragon: {
                 type: "colony",
-                wallsHp: 200000,
-                structRampartsHp: 500000,
+                wallsHp: 500000,
+                structRampartsHp: 1000000,
                 // importEnabled: false,
                 creeps: {
                     mover: 2,
@@ -471,6 +474,8 @@ module.exports = (function() {
             },
             casegrad: {
                 type: "colony",
+                wallsHp: 500000,
+                structRampartsHp: 1000000,
                 // importEnabled: false,
                 creeps: {
                     upgrader: 8,
