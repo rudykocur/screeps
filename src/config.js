@@ -77,7 +77,7 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 wallsHp: 3000000,
-                structRampartsHp: 12000000,
+                structRampartsHp: 15000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -106,7 +106,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_OXYGEN],
                     require: {
-                        [RESOURCE_ENERGY]: 150000,
+                        [RESOURCE_ENERGY]: 50000,
                         [RESOURCE_OXYGEN]: 5000,
                         [RESOURCE_UTRIUM]: 2000,
                         [RESOURCE_GHODIUM]: 10000,
@@ -142,7 +142,7 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 // importEnabled: false,
                 wallsHp: 3000000,
-                structRampartsHp: 12000000,
+                structRampartsHp: 15000000,
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -164,7 +164,7 @@ module.exports = (function() {
                 terminal: {
                     autosell: [RESOURCE_ZYNTHIUM],
                     require: {
-                        [RESOURCE_ENERGY]: 150000,
+                        [RESOURCE_ENERGY]: 50000,
                         [RESOURCE_ZYNTHIUM]: 5000,
                     }
                 },
@@ -195,7 +195,7 @@ module.exports = (function() {
             kaerMorhen: {
                 type: "colony",
                 wallsHp: 1000000,
-                structRampartsHp: 5000000,
+                structRampartsHp: 7000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -222,7 +222,7 @@ module.exports = (function() {
                     autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 5000,
-                        [RESOURCE_ENERGY]: 100000,
+                        [RESOURCE_ENERGY]: 50000,
                     }
                 },
                 labs: {
@@ -252,7 +252,7 @@ module.exports = (function() {
             orphan: {
                 type: "colony",
                 wallsHp: 1000000,
-                structRampartsHp: 3000000,
+                structRampartsHp: 5000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -284,7 +284,7 @@ module.exports = (function() {
                     autosell: [RESOURCE_LEMERGIUM],
                     require: {
                         [RESOURCE_LEMERGIUM]: 5000,
-                        [RESOURCE_ENERGY]: 150000,
+                        [RESOURCE_ENERGY]: 50000,
                     }
                 },
                 labs: {
@@ -319,7 +319,7 @@ module.exports = (function() {
                 wallsHp: 100000,
                 autobuyMinerals: true,
                 // importEnabled: false,
-                structRampartsHp: 3000000,
+                structRampartsHp: 5000000,
                 creeps: {
                     mover: 2,
                     upgrader: 4,
@@ -346,7 +346,7 @@ module.exports = (function() {
                     autobuy: [RESOURCE_KEANIUM],
                     require: {
                         [RESOURCE_HYDROGEN]: 5000,
-                        [RESOURCE_ENERGY]: 150000,
+                        [RESOURCE_ENERGY]: 50000,
                     }
                 },
                 labs: {
@@ -380,6 +380,7 @@ module.exports = (function() {
             h2: {
                 type: "colony",
                 wallsHp: 500000,
+                structRampartsHp: 3000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -427,7 +428,7 @@ module.exports = (function() {
             dragon: {
                 type: "colony",
                 wallsHp: 500000,
-                structRampartsHp: 1000000,
+                structRampartsHp: 3000000,
                 // importEnabled: false,
                 creeps: {
                     mover: 2,
@@ -446,7 +447,7 @@ module.exports = (function() {
                 terminal: {
                     require: {
                         [RESOURCE_CATALYST]: 5000,
-                        [RESOURCE_ENERGY]: 40000,
+                        [RESOURCE_ENERGY]: 100000,
                     }
                 },
                 labs: {
@@ -475,7 +476,7 @@ module.exports = (function() {
             casegrad: {
                 type: "colony",
                 wallsHp: 500000,
-                structRampartsHp: 1000000,
+                structRampartsHp: 3000000,
                 // importEnabled: false,
                 creeps: {
                     upgrader: 8,
@@ -561,12 +562,10 @@ module.exports = (function() {
             dragonLeft: {
                 type: "outpost",
                 homeRoom: "dragon",
-                spawnRooms: ['orphan'],
             },
             dragon2: {
                 type: "outpost",
                 homeRoom: "dragon",
-                spawnRooms: ['orphan'],
             },
             brot: {
                 type:"outpost",
