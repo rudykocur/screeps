@@ -77,7 +77,7 @@ module.exports = (function() {
             home: {
                 type: "colony",
                 wallsHp: 3000000,
-                structRampartsHp: 15000000,
+                structRampartsHp: 20000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -142,7 +142,7 @@ module.exports = (function() {
                 autobuyMinerals: true,
                 // importEnabled: false,
                 wallsHp: 3000000,
-                structRampartsHp: 15000000,
+                structRampartsHp: 20000000,
                 creeps: {
                     upgrader: 3,
                     mover: 2,
@@ -380,7 +380,7 @@ module.exports = (function() {
             h2: {
                 type: "colony",
                 wallsHp: 500000,
-                structRampartsHp: 3000000,
+                structRampartsHp: 4000000,
                 autobuyMinerals: true,
                 // importEnabled: false,
                 creeps: {
@@ -476,7 +476,7 @@ module.exports = (function() {
             casegrad: {
                 type: "colony",
                 wallsHp: 500000,
-                structRampartsHp: 3000000,
+                structRampartsHp: 10000000,
                 // importEnabled: false,
                 creeps: {
                     upgrader: 8,
